@@ -18,13 +18,19 @@ public class Window {
 
 	}
 
+	public static void dispose() {
+		
+		Display.destroy();
+		
+	}
+	
 	public static void render() {
 
 		Display.update();
 
 	}
 
-	public static boolean closeRequested() {
+	public static boolean isCloseRequested() {
 
 		return (Display.isCloseRequested());
 
