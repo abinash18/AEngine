@@ -5,9 +5,13 @@ import org.lwjgl.Sys;
 public class MainComponent {
 
 	private boolean isRuning;
+	private Game game;
 
 	public MainComponent() {
+
 		isRuning = false;
+		game = new Game();
+
 	}
 
 	public void start() {
@@ -37,11 +41,11 @@ public class MainComponent {
 
 		long lastTime = Time.getTime();
 		double unprocessedTime = 0;
+		int frames = 0;
+		long frameCounter = 0;
 
 		while (isRuning) {
 
-			int frames = 0;
-			long frameCounter = 0;
 			boolean render = false;
 			long startTime = Time.getTime();
 			long passedTime = startTime - lastTime;
@@ -60,14 +64,21 @@ public class MainComponent {
 					stop();
 				}
 
-				// TODO: Update Game
+				///////////////////////////////
+				// Update Game
+				///////////////////////////////
+				game.input();
+				game.update();
+				///////////////////////////////
 
 				if (frameCounter >= Time.SECOND) {
+
 					System.out.println(frames);
 					frameCounter = 0;
 					frames = 0;
+
 				}
-				
+
 			}
 
 			if (render) {
@@ -78,9 +89,13 @@ public class MainComponent {
 			} else {
 
 				try {
+
 					Thread.sleep(1);
+
 				} catch (InterruptedException e) {
+
 					e.printStackTrace();
+
 				}
 
 			}
@@ -93,6 +108,7 @@ public class MainComponent {
 
 	private void render() {
 
+		game.render();
 		Window.render();
 
 	}
