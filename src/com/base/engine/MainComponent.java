@@ -1,7 +1,5 @@
 package com.base.engine;
 
-import org.lwjgl.Sys;
-
 public class MainComponent {
 
 	private boolean isRuning;
@@ -11,7 +9,6 @@ public class MainComponent {
 
 		isRuning = false;
 		game = new Game();
-
 	}
 
 	public void start() {
@@ -20,7 +17,6 @@ public class MainComponent {
 			return;
 		}
 		run();
-
 	}
 
 	public void stop() {
@@ -28,9 +24,7 @@ public class MainComponent {
 		if (!isRuning) {
 			return;
 		}
-
 		isRuning = false;
-
 	}
 
 	private void run() {
@@ -67,6 +61,7 @@ public class MainComponent {
 				///////////////////////////////
 				// Update Game
 				///////////////////////////////
+				Input.update();
 				game.input();
 				game.update();
 				///////////////////////////////
@@ -82,28 +77,17 @@ public class MainComponent {
 			}
 
 			if (render) {
-
 				render();
 				frames++;
-
 			} else {
-
 				try {
-
 					Thread.sleep(1);
-
 				} catch (InterruptedException e) {
-
 					e.printStackTrace();
-
 				}
-
 			}
-
 		}
-
 		cleanUp();
-
 	}
 
 	private void render() {

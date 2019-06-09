@@ -8,7 +8,9 @@ public class InitializeEngine {
 	public static final double FRAME_CAP = 5000.0;
 
 	public static void InitializeEngineGL() {
+
 		Window.createWindow(WIDTH, HEIGHT, TITLE);
+
 	}
 
 	public static int getWidth() {
