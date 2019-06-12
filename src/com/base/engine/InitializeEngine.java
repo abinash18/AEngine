@@ -10,7 +10,8 @@ public class InitializeEngine {
 	public static void InitializeEngineGL() {
 
 		Window.createWindow(WIDTH, HEIGHT, TITLE);
-
+		RenderUtil.InitGraphics();
+		
 	}
 
 	public static int getWidth() {

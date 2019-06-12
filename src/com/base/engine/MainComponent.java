@@ -7,6 +7,7 @@ public class MainComponent {
 
 	public MainComponent() {
 
+		InitializeEngine.InitializeEngineGL();
 		isRuning = false;
 		game = new Game();
 	}
@@ -61,8 +62,12 @@ public class MainComponent {
 				///////////////////////////////
 				// Update Game
 				///////////////////////////////
-				Input.update();
 				game.input();
+				///////////////////////////////
+				// Update Input
+				///////////////////////////////
+				Input.update();
+				///////////////////////////////
 				game.update();
 				///////////////////////////////
 
@@ -92,6 +97,7 @@ public class MainComponent {
 
 	private void render() {
 
+		RenderUtil.ClearScreen();
 		game.render();
 		Window.render();
 
@@ -111,7 +117,7 @@ public class MainComponent {
 
 		System.out.println("Engine Initializing.");
 
-		InitializeEngine.InitializeEngineGL();
+		
 
 		MainComponent game = new MainComponent();
 
