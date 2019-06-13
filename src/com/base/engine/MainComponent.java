@@ -117,10 +117,8 @@ public class MainComponent {
 
 		System.out.println("Engine Initializing.");
 
-		
-
 		MainComponent game = new MainComponent();
-
+		System.out.println("GL Version: " + RenderUtil.GetOpenGlVersion());
 		game.start();
 
 		System.out.println("Engine Terminating.");
