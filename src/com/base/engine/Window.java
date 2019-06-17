@@ -6,53 +6,48 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
-public class Window 
-{
-	public static void createWindow(int width, int height, String title)
-	{
+public class Window {
+	public static void createWindow(int width, int height, String title) {
 		Display.setTitle(title);
-		try 
-		{
+		try {
 			Display.setDisplayMode(new DisplayMode(width, height));
 			Display.create();
 			Keyboard.create();
 			Mouse.create();
-		} 
-		catch (LWJGLException e) 
-		{
+		} catch (LWJGLException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	public static void render()
-	{
+
+	public static void render() {
 		Display.update();
 	}
-	
-	public static void dispose()
-	{
+
+	public static void dispose() {
 		Display.destroy();
 		Keyboard.destroy();
 		Mouse.destroy();
 	}
-	
-	public static boolean isCloseRequested()
-	{
+
+	public static Vector2f getCenter() {
+
+		return (new Vector2f(Display.getWidth() / 2, Display.getHeight() / 2));
+
+	}
+
+	public static boolean isCloseRequested() {
 		return Display.isCloseRequested();
 	}
-	
-	public static int getWidth()
-	{
+
+	public static int getWidth() {
 		return Display.getDisplayMode().getWidth();
 	}
-	
-	public static int getHeight()
-	{
+
+	public static int getHeight() {
 		return Display.getDisplayMode().getHeight();
 	}
-	
-	public static String getTitle()
-	{
+
+	public static String getTitle() {
 		return Display.getTitle();
 	}
 }

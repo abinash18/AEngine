@@ -2,6 +2,7 @@ package com.base.engine;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
 
 import org.lwjgl.BufferUtils;
 
@@ -21,6 +22,8 @@ public class Util {
 			buffer.put(vertices[i].getPos().getX());
 			buffer.put(vertices[i].getPos().getY());
 			buffer.put(vertices[i].getPos().getZ());
+			buffer.put(vertices[i].getTexCoord().getX());
+			buffer.put(vertices[i].getTexCoord().getY());
 		}
 
 		buffer.flip();
@@ -49,4 +52,33 @@ public class Util {
 
 		return buffer;
 	}
+
+	public static String[] removeEmptyStrings(String[] data) {
+
+		ArrayList<String> result = new ArrayList<String>();
+
+		for (int i = 0; i < data.length; i++) {
+
+			if (!data[i].equals(" ")) {
+				result.add(data[i]);
+			}
+		}
+		String[] res = new String[result.size()];
+		result.toArray(res);
+
+		return (res);
+	}
+
+	public static int[] toIntArray(Integer[] array) {
+
+		int[] result = new int[array.length];
+
+		for (int i = 0; i < array.length; i++) {
+			result[i] = array[i].intValue();
+		}
+
+		return (result);
+
+	}
+
 }

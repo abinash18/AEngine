@@ -2,59 +2,63 @@ package com.base.engine;
 
 public class Game {
 	private Mesh mesh;
-	private Shader shader;
+	private BasicShader shader;
 	private Transform transform;
+	//private Texture tex;
+	private Material mat;
+	private Camera cam;
 
 	public Game() {
-		mesh = new Mesh();
-		shader = new Shader();
+		mesh = new Mesh();// ResourceLoader.LoadMesh("monkey.obj");
+		shader = new BasicShader();
+		cam = new Camera();
+		mat = new Material(ResourceLoader.loadTexture("brick_wall.png"), new Vector3f(0.1f, 1, 1));
+		//tex = ResourceLoader.loadTexture("brick_wall.png");
+		Vertex[] data = new Vertex[] { new Vertex(new Vector3f(-1, -1, 0), new Vector2f(0, 0)),
+				new Vertex(new Vector3f(0, 1, 0), new Vector2f(0.5f, 0)),
+				new Vertex(new Vector3f(1, -1, 0), new Vector2f(1.0f, 0)),
+				new Vertex(new Vector3f(0, -1, 1), new Vector2f(0, 0.5f)) };
 
-		Vertex[] data = new Vertex[] { new Vertex(new Vector3f(-1, -1, 0)), new Vertex(new Vector3f(0, 1, 0)),
-				new Vertex(new Vector3f(1, -1, 0)), new Vertex(new Vector3f(0, -1, 1)) };
-
-		int[] indices = new int[] { 0, 1, 3, 
-									3, 1, 2,
-									2, 1, 0,
-									0, 2, 3};
+		int[] indices = new int[] { 3, 1, 0, 2, 1, 3, 0, 1, 2, 0, 2, 3 };
 
 		mesh.addVertices(data, indices);
 
+		Transform.setCam(cam);
 		transform = new Transform();
+		Transform.setProjection(70f, Window.getWidth(), Window.getHeight(), 0.1f, 1000f);
 
-		shader.addVertexShader(ResourceLoader.loadShader("basicVertex.vs"));
-		shader.addFragmentShader(ResourceLoader.loadShader("basicFragment.fs"));
-		shader.compileShader();
-
-		shader.addUniform("transform");
+//		shader.addVertexShader(ResourceLoader.loadShader("basicVertex.vs"));
+//		shader.addFragmentShader(ResourceLoader.loadShader("basicFragment.fs"));
+//		shader.compileShader();
+//
+//		shader.addUniform("transform");
 	}
 
 	public void input() {
-		if (Input.getKeyDown(Input.KEY_UP))
-			System.out.println("We've just pressed up!");
-		if (Input.getKeyUp(Input.KEY_UP))
-			System.out.println("We've just released up!");
 
-		if (Input.getMouseDown(1))
-			System.out.println("We've just right clicked at " + Input.getMousePosition().toString());
-		if (Input.getMouseUp(1))
-			System.out.println("We've just released right mouse button!");
 	}
 
 	float temp = 0.0f;
 
 	public void update() {
 		temp += Time.getDelta();
-
+		cam.input();
 		float sin = (float) Math.sin(temp);
 
-		// transform.setTranslation(sin, 0, 0);
-		 transform.setRotation(0, sin * 180, 0);
-		 transform.setScale(0.75f, 0.75f, 0.75f);
+		transform.setTranslation(0, 0, 5);
+		transform.setRotation(0, sin * 180, 0);
+		// transform.setScale(0.25f, 0.25f, 0.25f);
 	}
 
 	public void render() {
+
+		// RenderUtil.setClearColor(new Vector3f(0.0f, 0.0f, 0.0f));
+		RenderUtil.setClearColor(Transform.getCam().getPos().div(2048f).abs());
+
 		shader.bind();
-		shader.setUniform("transform", transform.getTransformation());
+		shader.updateUniform(transform.getProjectedTrasformation(), transform.getProjectedTrasformation(), mat);
+		//tex.bind();
+		// shader.setUniform("transform", transform.getProjectedTrasformation());
 		mesh.draw();
 	}
 }
