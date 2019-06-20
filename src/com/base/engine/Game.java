@@ -2,18 +2,19 @@ package com.base.engine;
 
 public class Game {
 	private Mesh mesh;
-	private BasicShader shader;
+	private PhongShader shader;
 	private Transform transform;
-	//private Texture tex;
+	// private Texture tex;
 	private Material mat;
 	private Camera cam;
 
 	public Game() {
 		mesh = new Mesh();// ResourceLoader.LoadMesh("monkey.obj");
-		shader = new BasicShader();
+		shader = new PhongShader().getInstance();
 		cam = new Camera();
 		mat = new Material(ResourceLoader.loadTexture("brick_wall.png"), new Vector3f(0.1f, 1, 1));
-		//tex = ResourceLoader.loadTexture("brick_wall.png");
+		transform = new Transform();
+		// tex = ResourceLoader.loadTexture("brick_wall.png");
 		Vertex[] data = new Vertex[] { new Vertex(new Vector3f(-1, -1, 0), new Vector2f(0, 0)),
 				new Vertex(new Vector3f(0, 1, 0), new Vector2f(0.5f, 0)),
 				new Vertex(new Vector3f(1, -1, 0), new Vector2f(1.0f, 0)),
@@ -24,8 +25,10 @@ public class Game {
 		mesh.addVertices(data, indices);
 
 		Transform.setCam(cam);
-		transform = new Transform();
+		
 		Transform.setProjection(70f, Window.getWidth(), Window.getHeight(), 0.1f, 1000f);
+
+		PhongShader.setAmbientLight(new Vector3f(.03f, .03f, .03f));
 
 //		shader.addVertexShader(ResourceLoader.loadShader("basicVertex.vs"));
 //		shader.addFragmentShader(ResourceLoader.loadShader("basicFragment.fs"));
@@ -57,7 +60,7 @@ public class Game {
 
 		shader.bind();
 		shader.updateUniform(transform.getProjectedTrasformation(), transform.getProjectedTrasformation(), mat);
-		//tex.bind();
+		// tex.bind();
 		// shader.setUniform("transform", transform.getProjectedTrasformation());
 		mesh.draw();
 	}

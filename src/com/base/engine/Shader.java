@@ -9,6 +9,13 @@ public class Shader {
 	private int program;
 	private HashMap<String, Integer> uniforms;
 
+	private static final Shader instance = new Shader();
+
+	public static Shader getInstance()
+	{
+		return instance;
+	}
+	
 	public Shader() {
 		program = glCreateProgram();
 		uniforms = new HashMap<String, Integer>();
