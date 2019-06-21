@@ -8,7 +8,9 @@ public class PhongShader extends Shader {
 		return instance;
 	}
 
-	private static Vector3f ambientLight;
+	private static Vector3f ambientLight = new Vector3f(.03f, .03f, .03f);
+	private static BaseLight baseLight = new BaseLight(new Vector3f(1, 1, 1), 0);
+	private static DirectionalLight directionalLight = new DirectionalLight(baseLight, new Vector3f(0, 0, 0));
 
 	public PhongShader() {
 		super();
@@ -21,6 +23,12 @@ public class PhongShader extends Shader {
 		addUniform("baseColor");
 		addUniform("ambientLight");
 
+		addUniform("directionalLight.base.color");
+		addUniform("directionalLight.base.intensity");
+		addUniform("directionalLight.direction");
+
+		addUniform("transformProjected");
+		
 	}
 
 	@Override
@@ -32,9 +40,12 @@ public class PhongShader extends Shader {
 			RenderUtil.unBindTextures();
 		}
 
-		setUniform("transform", projectedMatrix);
+		
+		setUniform("transformProjected", projectedMatrix);
+		setUniform("transform", worldMatrix);
 		setUniform("baseColor", mat.getColor());
 		setUniform("ambientLight", ambientLight);
+		setUniform("directionalLight", directionalLight);
 
 	}
 
@@ -45,4 +56,35 @@ public class PhongShader extends Shader {
 	public static void setAmbientLight(Vector3f ambientLight) {
 		PhongShader.ambientLight = ambientLight;
 	}
+
+	public void setUniform(String uniformName, BaseLight baseLight) {
+
+		setUniform(uniformName + ".color", baseLight.getColor());
+		setUniformf(uniformName + ".intensity", baseLight.getIntensity());
+
+	}
+
+	public void setUniform(String uniformName, DirectionalLight directionalLight) {
+
+		setUniform(uniformName + ".base", directionalLight.getBase());
+		setUniform(uniformName + ".direction", directionalLight.getDirection());
+
+	}
+
+	public static BaseLight getBaseLight() {
+		return baseLight;
+	}
+
+	public static DirectionalLight getDirectionalLight() {
+		return directionalLight;
+	}
+
+	public static void setBaseLight(BaseLight baseLight) {
+		PhongShader.baseLight = baseLight;
+	}
+
+	public static void setDirectionalLight(DirectionalLight directionalLight) {
+		PhongShader.directionalLight = directionalLight;
+	}
+
 }

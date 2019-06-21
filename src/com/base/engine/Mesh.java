@@ -42,7 +42,7 @@ public class Mesh {
 
 		glVertexAttribPointer(0, 3, GL_FLOAT, false, Vertex.SIZE * 4, 0);
 		glVertexAttribPointer(1, 2, GL_FLOAT, false, Vertex.SIZE * 4, 12);
-		glVertexAttribPointer(2, 2, GL_FLOAT, false, Vertex.SIZE * 4, 20);
+		glVertexAttribPointer(2, 3, GL_FLOAT, false, Vertex.SIZE * 4, 20);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 
@@ -66,8 +66,8 @@ public class Mesh {
 			Vector3f normal = v1.cross(v2).normalize();
 
 			vertices[i0].setNormal(vertices[i0].getNormal().add(normal));
-			vertices[i1].setNormal(vertices[i0].getNormal().add(normal));
-			vertices[i2].setNormal(vertices[i0].getNormal().add(normal));
+			vertices[i1].setNormal(vertices[i1].getNormal().add(normal));
+			vertices[i2].setNormal(vertices[i2].getNormal().add(normal));
 
 		}
 

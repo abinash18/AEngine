@@ -1,7 +1,7 @@
 package com.base.engine;
 
 public class Vertex {
-	public static final int SIZE = 5;
+	public static final int SIZE = 8;
 
 	private Vector3f pos, normal;
 	private Vector2f texCoord;

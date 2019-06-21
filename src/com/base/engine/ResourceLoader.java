@@ -111,7 +111,7 @@ public class ResourceLoader {
 			Integer[] indicesData = new Integer[indices.size()];
 			indices.toArray(indicesData);
 
-			res.addVertices(vertexData, Util.toIntArray(indicesData));
+			res.addVertices(vertexData, Util.toIntArray(indicesData), true);
 
 			return (res);
 

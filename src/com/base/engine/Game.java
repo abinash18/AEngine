@@ -9,26 +9,37 @@ public class Game {
 	private Camera cam;
 
 	public Game() {
-		mesh = new Mesh();// ResourceLoader.LoadMesh("monkey.obj");
+		mesh = ResourceLoader.LoadMesh("simpleCube.obj"); // new Mesh();//
 		shader = new PhongShader().getInstance();
 		cam = new Camera();
-		mat = new Material(ResourceLoader.loadTexture("brick_wall.png"), new Vector3f(0.1f, 1, 1));
+		mat = new Material(ResourceLoader.loadTexture("defaultTexture.png"), new Vector3f(0.1f, 1, 1));
 		transform = new Transform();
 		// tex = ResourceLoader.loadTexture("brick_wall.png");
-		Vertex[] data = new Vertex[] { new Vertex(new Vector3f(-1, -1, 0), new Vector2f(0, 0)),
-				new Vertex(new Vector3f(0, 1, 0), new Vector2f(0.5f, 0)),
-				new Vertex(new Vector3f(1, -1, 0), new Vector2f(1.0f, 0)),
-				new Vertex(new Vector3f(0, -1, 1), new Vector2f(0, 0.5f)) };
+//		Vertex[] data = new Vertex[] { new Vertex(new Vector3f(-1, -1, 0), new Vector2f(0, 0)),
+//				new Vertex(new Vector3f(0, 1, 0), new Vector2f(0.5f, 0)),
+//				new Vertex(new Vector3f(1, -1, 0), new Vector2f(1.0f, 0)),
+//				new Vertex(new Vector3f(0, -1, 1), new Vector2f(0, 0.5f)) };
+//
+//		int[] indices = new int[] { 1, 3, 2, 2, 3, 0, 1, 2, 0 };
+//
+//		mesh.addVertices(data, indices, true);
 
-		int[] indices = new int[] { 3, 1, 0, 2, 1, 3, 0, 1, 2, 0, 2, 3 };
+		Vertex[] vertices = new Vertex[] { new Vertex(new Vector3f(-1.0f, -1.0f, 0.5773f), new Vector2f(0.0f, 0.0f)),
+				new Vertex(new Vector3f(0.0f, -1.0f, -1.15475f), new Vector2f(0.5f, 0.0f)),
+				new Vertex(new Vector3f(1.0f, -1.0f, 0.5773f), new Vector2f(1.0f, 0.0f)),
+				new Vertex(new Vector3f(0.0f, 1.0f, 0.0f), new Vector2f(0.5f, 1.0f)) };
 
-		mesh.addVertices(data, indices);
+		int indices[] = { 0, 3, 1, 1, 3, 2, 2, 3, 0, 1, 2, 0 };
+
+		//mesh.addVertices(vertices, indices, true);
 
 		Transform.setCam(cam);
-		
+
 		Transform.setProjection(70f, Window.getWidth(), Window.getHeight(), 0.1f, 1000f);
 
 		PhongShader.setAmbientLight(new Vector3f(.03f, .03f, .03f));
+		PhongShader.getBaseLight().setIntensity(0.8f);
+		PhongShader.setDirectionalLight(new DirectionalLight(PhongShader.getBaseLight(), new Vector3f(1, 1, 1)));
 
 //		shader.addVertexShader(ResourceLoader.loadShader("basicVertex.vs"));
 //		shader.addFragmentShader(ResourceLoader.loadShader("basicFragment.fs"));
