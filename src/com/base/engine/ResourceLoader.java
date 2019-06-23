@@ -18,10 +18,11 @@ public class ResourceLoader {
 
 		try {
 
-			int id = TextureLoader.getTexture(extenstion, new FileInputStream(new File("./res/textures/" + fileName))).getTextureID();
+			int id = TextureLoader.getTexture(extenstion, new FileInputStream(new File("./res/textures/" + fileName)))
+					.getTextureID();
 
 			return (new Texture(id));
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(1);

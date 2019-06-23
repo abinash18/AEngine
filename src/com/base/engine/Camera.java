@@ -14,8 +14,8 @@ public class Camera {
 
 	public Camera(Vector3f pos, Vector3f forward, Vector3f up) {
 		this.pos = pos;
-		this.forward = forward;
-		this.up = up;
+		this.forward = forward.normalize();
+		this.up = up.normalize();
 
 		up.normalize();
 		forward.normalize();
@@ -43,28 +43,27 @@ public class Camera {
 	}
 
 	public void rotateX(float angle) {
-		Vector3f Haxis = yAxis.cross(forward);
+		Vector3f Haxis = yAxis.cross(forward).normalize();
 
-		Haxis.normalize();
+		forward = forward.rotate(angle, Haxis).normalize();
 
-		forward.rotate(angle, Haxis);
-		forward.normalize();
-
-		up = forward.cross(Haxis);
-		up.normalize();
+		up = forward.cross(Haxis).normalize();
 
 	}
 
 	public void rotateY(float angle) {
-		Vector3f Haxis = yAxis.cross(forward);
+		Vector3f Haxis = yAxis.cross(forward).normalize();
 
-		Haxis.normalize();
+		forward = forward.rotate(angle, yAxis).normalize();
 
-		forward.rotate(angle, yAxis);
-		forward.normalize();
+		up = forward.cross(Haxis).normalize();
 
-		up = forward.cross(Haxis);
-		up.normalize();
+	}
+
+	public void setView(Vector3f forword, Vector3f up) {
+
+		this.forward = forword;
+		this.up = up;
 
 	}
 
@@ -106,6 +105,7 @@ public class Camera {
 		if (Input.getKey(Input.KEY_ESCAPE)) {
 			Input.setCursor(true);
 			mouseGrabbed = false;
+			System.out.println(this);
 		}
 		if (Mouse.isButtonDown(0)) {
 			Input.setMousePosition(centerWindow);
@@ -133,6 +133,12 @@ public class Camera {
 
 		}
 
+	}
+
+	@Override
+	public String toString() {
+		return "Camera [pos=" + pos + ", forward=" + forward + ", up=" + up + ", mouseGrabbed=" + mouseGrabbed
+				+ ", mouseOrigin=" + mouseOrigin + ", centerWindow=" + centerWindow + "]";
 	}
 
 	public void move(Vector3f dir, float amt) {

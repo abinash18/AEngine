@@ -23,7 +23,7 @@ public class Transform {
 		return translationMatrix.mul(rotationMatrix.mul(scaleMatrix));
 	}
 
-	public Matrix4f getProjectedTrasformation() {
+	public Matrix4f getProjectedTransformation() {
 
 		Matrix4f projectionMatrix = new Matrix4f().initProjection(fov, width, height, zNear, zFar);
 		Matrix4f transformationMatrix = getTransformation();

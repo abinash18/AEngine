@@ -117,4 +117,10 @@ public class Vector3f {
 	public void setZ(float z) {
 		this.z = z;
 	}
+
+	@Override
+	public String toString() {
+		return "Vector3f [x=" + x + ", y=" + y + ", z=" + z + "] (" + x + ", " + y + ", " + z + ")";
+	}
+
 }
