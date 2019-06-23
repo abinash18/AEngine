@@ -1,4 +1,7 @@
-package com.base.engine;
+package com.base.engine.core;
+
+import com.base.engine.rendering.Camera;
+import com.base.engine.rendering.Matrix4f;
 
 public class Transform {
 

@@ -1,4 +1,4 @@
-package com.base.engine;
+package com.base.engine.rendering;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,6 +7,9 @@ import java.io.FileReader;
 import java.util.ArrayList;
 
 import org.newdawn.slick.opengl.TextureLoader;
+
+import com.base.engine.core.Util;
+import com.base.engine.core.Vector3f;
 
 public class ResourceLoader {
 
@@ -104,7 +107,7 @@ public class ResourceLoader {
 
 			meshReader.close();
 
-			Mesh res = new Mesh();
+			//Mesh res = new Mesh();
 
 			Vertex[] vertexData = new Vertex[vertices.size()];
 			vertices.toArray(vertexData);
@@ -112,9 +115,9 @@ public class ResourceLoader {
 			Integer[] indicesData = new Integer[indices.size()];
 			indices.toArray(indicesData);
 
-			res.addVertices(vertexData, Util.toIntArray(indicesData), true);
+			//res.addVertices(vertexData, Util.toIntArray(indicesData), true);
 
-			return (res);
+			//return (res);
 
 		} catch (Exception e) {
 			e.printStackTrace();

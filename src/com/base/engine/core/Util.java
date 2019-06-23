@@ -1,10 +1,13 @@
-package com.base.engine;
+package com.base.engine.core;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 
 import org.lwjgl.BufferUtils;
+
+import com.base.engine.rendering.Matrix4f;
+import com.base.engine.rendering.Vertex;
 
 public class Util {
 	public static FloatBuffer createFloatBuffer(int size) {

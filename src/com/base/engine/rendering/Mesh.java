@@ -1,4 +1,4 @@
-package com.base.engine;
+package com.base.engine.rendering;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
@@ -8,22 +8,44 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 
+import com.base.engine.core.Util;
+import com.base.engine.core.Vector3f;
+
 public class Mesh {
 	private int vbo, size, ibo;
+	public Mesh(String fileName) {
+		initMeshData();
+		loadMesh(fileName);
+	}
+	
+	public Mesh(Vertex[] vertices, int[] indices) {
+		this(vertices, indices, false);
+	}
 
-	public Mesh() {
+//	public Mesh() {
+//		vbo = glGenBuffers();
+//		size = 0;
+//		ibo = glGenBuffers();
+//	}
+	
+	public Mesh(Vertex[] vertices, int[] indices, boolean calcNormals) {
+		initMeshData();
+		addVertices(vertices, indices, calcNormals);
+	}
+
+	private void initMeshData() {
 		vbo = glGenBuffers();
-		size = 0;
 		ibo = glGenBuffers();
+		size = 0;
 	}
+	
+//	public void addVertices(Vertex[] vertices, int[] indices) {
+//		addVertices(vertices, indices, false);
+//	}
 
-	public void addVertices(Vertex[] vertices, int[] indices) {
-		addVertices(vertices, indices, false);
-	}
+	private void addVertices(Vertex[] vertices, int[] indices, boolean calcNormals) {
 
-	public void addVertices(Vertex[] vertices, int[] indices, boolean calcNormal) {
-
-		if (calcNormal) {
+		if (calcNormals) {
 			calcNormals(vertices, indices);
 		}
 
@@ -81,7 +103,7 @@ public class Mesh {
 
 	}
 
-	public static Mesh LoadMesh(String fileName) {
+	private Mesh loadMesh(String fileName) {
 
 		String[] splitArray = fileName.split("\\.");
 
@@ -132,17 +154,13 @@ public class Mesh {
 
 			meshReader.close();
 
-			Mesh res = new Mesh();
-
 			Vertex[] vertexData = new Vertex[vertices.size()];
 			vertices.toArray(vertexData);
 
 			Integer[] indicesData = new Integer[indices.size()];
 			indices.toArray(indicesData);
 
-			res.addVertices(vertexData, Util.toIntArray(indicesData), true);
-
-			return (res);
+			addVertices(vertexData, Util.toIntArray(indicesData), true);
 
 		} catch (Exception e) {
 			e.printStackTrace();

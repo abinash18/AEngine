@@ -1,4 +1,6 @@
-package com.base.engine;
+package com.base.engine.rendering;
+
+import com.base.engine.core.Material;
 
 public class BasicShader extends Shader {
 
@@ -12,8 +14,8 @@ public class BasicShader extends Shader {
 	public BasicShader() {
 		super();
 
-		addVertexShader(ResourceLoader.loadShader("basicVertex.vs"));
-		addFragmentShader(ResourceLoader.loadShader("basicFragment.fs"));
+		addVertexShaderFromFile("basicVertex.vs");
+		addFragmentShaderFromFile("basicFragment.fs");
 		compileShader();
 
 		addUniform("transform");

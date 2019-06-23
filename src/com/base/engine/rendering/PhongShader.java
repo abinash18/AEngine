@@ -1,4 +1,8 @@
-package com.base.engine;
+package com.base.engine.rendering;
+
+import com.base.engine.core.Material;
+import com.base.engine.core.Transform;
+import com.base.engine.core.Vector3f;
 
 public class PhongShader extends Shader {
 
@@ -19,8 +23,8 @@ public class PhongShader extends Shader {
 	public PhongShader() {
 		super();
 
-		addVertexShader(ResourceLoader.loadShader("phongVertex.vs"));
-		addFragmentShader(ResourceLoader.loadShader("phongFragment.fs"));
+		addVertexShaderFromFile("phongVertex.vs");
+		addFragmentShaderFromFile("phongFragment.fs");
 		compileShader();
 
 		addUniform("transform");

@@ -1,10 +1,12 @@
-package com.base.engine;
+package com.base.engine.rendering;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+
+import com.base.engine.core.Vector2f;
 
 public class Window {
 	public static void createWindow(int width, int height, String title) {

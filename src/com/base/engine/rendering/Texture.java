@@ -1,4 +1,4 @@
-package com.base.engine;
+package com.base.engine.rendering;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -11,6 +11,10 @@ public class Texture {
 
 	private int id;
 
+	public Texture(String fileName) {
+		this(loadTexture(fileName));
+	}
+	
 	public Texture(int id) {
 		this.id = id;
 	}
@@ -27,7 +31,7 @@ public class Texture {
 		this.id = id;
 	}
 
-	public static Texture loadTexture(String fileName) {
+	private static int loadTexture(String fileName) {
 
 		String[] splitArray = fileName.split("\\.");
 
@@ -38,14 +42,14 @@ public class Texture {
 			int id = TextureLoader.getTexture(extenstion, new FileInputStream(new File("./res/textures/" + fileName)))
 					.getTextureID();
 
-			return (new Texture(id));
+			return id;
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
 
-		return (null);
+		return 0;
 
 	}
 

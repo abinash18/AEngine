@@ -1,4 +1,4 @@
-package com.base.engine;
+package com.base.engine.rendering;
 
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL32.*;
@@ -6,6 +6,11 @@ import static org.lwjgl.opengl.GL32.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.HashMap;
+
+import com.base.engine.core.Material;
+import com.base.engine.core.Util;
+import com.base.engine.core.Vector2f;
+import com.base.engine.core.Vector3f;
 
 public class Shader {
 	private int program;
@@ -57,6 +62,18 @@ public class Shader {
 
 	public void addFragmentShader(String text) {
 		addProgram(text, GL_FRAGMENT_SHADER);
+	}
+	
+	public void addVertexShaderFromFile(String fileName) {
+		addProgram(loadShader(fileName), GL_VERTEX_SHADER);
+	}
+
+	public void addGeometryShaderFromFile(String fileName) {
+		addProgram(loadShader(fileName), GL_GEOMETRY_SHADER);
+	}
+
+	public void addFragmentShaderFromFile(String fileName) {
+		addProgram(loadShader(fileName), GL_FRAGMENT_SHADER);
 	}
 
 	public void compileShader() {
@@ -114,7 +131,7 @@ public class Shader {
 		glUniformMatrix4(uniforms.get(uniformName), true, Util.createFlippedBuffer(value));
 	}
 
-	public static String loadShader(String fileName) {
+	private static String loadShader(String fileName) {
 		StringBuilder shaderSource = new StringBuilder();
 		BufferedReader shaderReader = null;
 
