@@ -1,4 +1,4 @@
-package com.base.engine.rendering;
+package com.base.engine.unusedclasses;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,6 +10,9 @@ import org.newdawn.slick.opengl.TextureLoader;
 
 import com.base.engine.core.Util;
 import com.base.engine.core.Vector3f;
+import com.base.engine.rendering.Mesh;
+import com.base.engine.rendering.Texture;
+import com.base.engine.rendering.Vertex;
 
 public class ResourceLoader {
 

@@ -3,6 +3,7 @@ package com.base.engine.rendering;
 import com.base.engine.core.Material;
 import com.base.engine.core.Transform;
 import com.base.engine.core.Vector3f;
+import com.base.engine.unusedclasses.RenderUtil;
 
 public class PhongShader extends Shader {
 
@@ -68,11 +69,11 @@ public class PhongShader extends Shader {
 	@Override
 	public void updateUniform(Matrix4f worldMatrix, Matrix4f projectedMatrix, Material mat) {
 
-		if (mat.getTexture() != null) {
-			mat.getTexture().bind();
-		} else {
-			RenderUtil.unBindTextures();
-		}
+//		if (mat.getTexture() != null) {
+		mat.getTexture().bind();
+//		} else {
+//			RenderUtil.unBindTextures();
+//		}
 
 		setUniform("transformProjected", projectedMatrix);
 		setUniform("transform", worldMatrix);

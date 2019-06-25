@@ -1,4 +1,4 @@
-package com.base.engine.rendering;
+package com.base.engine.unusedclasses;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL30.*;

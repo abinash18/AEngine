@@ -14,7 +14,7 @@ public class Texture {
 	public Texture(String fileName) {
 		this(loadTexture(fileName));
 	}
-	
+
 	public Texture(int id) {
 		this.id = id;
 	}

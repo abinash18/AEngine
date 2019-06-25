@@ -9,7 +9,9 @@ public class Main {
 		int width = 800, height = 600, frameRate = 60;
 		String windowTitle = "3D Engine";
 
-		CoreEngine engine = new CoreEngine(frameRate, new TestGame());
+		TestGame game = new TestGame();
+		
+		CoreEngine engine = new CoreEngine(frameRate, game);
 		engine.createWindow(width, height, windowTitle);
 		engine.start();
 	}

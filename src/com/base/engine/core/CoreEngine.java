@@ -1,7 +1,6 @@
 package com.base.engine.core;
 
 import com.base.engine.internalGame.Game;
-import com.base.engine.rendering.RenderUtil;
 import com.base.engine.rendering.Window;
 
 public class CoreEngine {
@@ -15,17 +14,19 @@ public class CoreEngine {
 	private boolean isRunning;
 	private String windowTitle;
 	private Game game;
+	private RenderingEngine renderEngine;
 
 	public CoreEngine(double framerate, Game game) {
 		this.isRunning = false;
 		this.game = game;
 		this.frameTime = 1.0 / framerate;
+
 	}
 
-	private void initGL() {
-		System.out.println(RenderUtil.getOpenGLVersion());
-		RenderUtil.initGraphics();
-	}
+//	private void initGL() {
+//		System.out.println(RenderUtil.getOpenGLVersion());
+//		RenderUtil.initGraphics();
+//	}
 
 	public void createWindow(int width, int height, String windowTitle) {
 		this.width = width;
@@ -33,7 +34,16 @@ public class CoreEngine {
 		this.windowTitle = windowTitle;
 
 		Window.createWindow(width, height, windowTitle);
-		initGL();
+		this.renderEngine = new RenderingEngine();
+		System.out.println(renderEngine.getOpenGLVersion());
+		// initGL();
+
+		// this.game.init();
+
+	}
+
+	public void init() {
+		game.getRootObject().init();
 	}
 
 	public void start() {
@@ -94,7 +104,8 @@ public class CoreEngine {
 				}
 			}
 			if (render) {
-				render();
+				renderEngine.render(game.getRootObject());
+				Window.render();
 				frames++;
 			} else {
 				try {
@@ -108,11 +119,11 @@ public class CoreEngine {
 		cleanUp();
 	}
 
-	private void render() {
-		RenderUtil.clearScreen();
-		game.render();
-		Window.render();
-	}
+//	private void render() {
+//		RenderUtil.clearScreen();
+//		game.render();
+//		Window.render();
+//	}
 
 	private void cleanUp() {
 		Window.dispose();
