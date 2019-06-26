@@ -19,11 +19,20 @@ import static org.lwjgl.opengl.GL11.glGetString;
 import static org.lwjgl.opengl.GL32.GL_DEPTH_CLAMP;
 
 import com.base.engine.rendering.BasicShader;
+import com.base.engine.rendering.Camera;
+import com.base.engine.rendering.Shader;
+import com.base.engine.rendering.Window;
 
 public class RenderingEngine {
 
+	private Camera mainCamera;
+
 	public RenderingEngine() {
 		initGraphics();
+
+		mainCamera = new Camera((float) Math.toRadians(70f), (float) Window.getWidth() / (float) Window.getWidth(),
+				0.01f, 1000.0f);
+
 	}
 
 	public static void clearScreen() {
@@ -70,8 +79,24 @@ public class RenderingEngine {
 	public void render(GameObject gameObject) {
 		// Clear Screen Before Rendering
 		clearScreen();
-		gameObject.render(BasicShader.getInstance());
 
+		Shader shader = BasicShader.getInstance();
+		shader.setRenderingEngine(this);
+
+		gameObject.render(shader);
+
+	}
+
+	public Camera getMainCamera() {
+		return mainCamera;
+	}
+
+	public void setMainCamera(Camera cam) {
+		this.mainCamera = cam;
+	}
+
+	public void input() {
+		mainCamera.input();
 	}
 
 }

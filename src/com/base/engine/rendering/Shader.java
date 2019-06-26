@@ -8,11 +8,14 @@ import java.io.FileReader;
 import java.util.HashMap;
 
 import com.base.engine.core.Material;
+import com.base.engine.core.RenderingEngine;
+import com.base.engine.core.Transform;
 import com.base.engine.core.Util;
 import com.base.engine.core.Vector2f;
 import com.base.engine.core.Vector3f;
 
 public class Shader {
+	private RenderingEngine renderingEngine;
 	private int program;
 	private HashMap<String, Integer> uniforms;
 
@@ -36,7 +39,11 @@ public class Shader {
 		glUseProgram(program);
 	}
 
-	public void updateUniform(Matrix4f worldMatrix, Matrix4f projectedMatrix, Material mat) {
+	public void setRenderingEngine(RenderingEngine rengeringEngine) {
+		this.renderingEngine = rengeringEngine;
+	}
+	
+ 	public void updateUniform(Transform transform, Material mat) {
 
 	}
 
@@ -63,7 +70,7 @@ public class Shader {
 	public void addFragmentShader(String text) {
 		addProgram(text, GL_FRAGMENT_SHADER);
 	}
-	
+
 	public void addVertexShaderFromFile(String fileName) {
 		addProgram(loadShader(fileName), GL_VERTEX_SHADER);
 	}
@@ -150,6 +157,26 @@ public class Shader {
 		}
 
 		return shaderSource.toString();
+	}
+
+	public int getProgram() {
+		return program;
+	}
+
+	public void setProgram(int program) {
+		this.program = program;
+	}
+
+	public HashMap<String, Integer> getUniforms() {
+		return uniforms;
+	}
+
+	public void setUniforms(HashMap<String, Integer> uniforms) {
+		this.uniforms = uniforms;
+	}
+
+	public RenderingEngine getRenderingEngine() {
+		return renderingEngine;
 	}
 
 }

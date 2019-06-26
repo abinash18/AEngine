@@ -35,7 +35,7 @@ public class CoreEngine {
 
 		Window.createWindow(width, height, windowTitle);
 		this.renderEngine = new RenderingEngine();
-		System.out.println(renderEngine.getOpenGLVersion());
+		System.out.println(RenderingEngine.getOpenGLVersion());
 		// initGL();
 
 		// this.game.init();
@@ -94,7 +94,7 @@ public class CoreEngine {
 
 				game.input();
 				Input.update();
-
+				renderEngine.input();
 				game.update();
 
 				if (frameCounter >= Time.SECOND) {

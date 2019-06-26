@@ -24,7 +24,7 @@ public class MeshRenderer implements GameComponent {
 
 		// shader.compileShader();
 		shader.bind();
-		shader.updateUniform(transform.getTransformation(), transform.getProjectedTransformation(), mat);
+		shader.updateUniform(transform, mat);
 		mesh.draw();
 	}
 

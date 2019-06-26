@@ -4,7 +4,7 @@ import com.base.engine.internalGame.*;
 import com.base.engine.rendering.*;
 
 public class TestGame extends Game {
-	private Camera cam;
+	//private Camera cam;
 	// private GameObject planeObject;
 
 //	PointLight pLight1 = new PointLight(new BaseLight(new Vector3f(1, 0.5f, 0), 0.8f), new Attenuation(0, 0, 1),
@@ -19,7 +19,7 @@ public class TestGame extends Game {
 
 	public void init() {
 
-		cam = new Camera();
+		//cam = new Camera();
 
 		float fieldDepth = 10.0f;
 		float fieldWidth = 10.0f;
@@ -33,6 +33,7 @@ public class TestGame extends Game {
 		int indices[] = { 0, 1, 2, 2, 1, 3 };
 
 		Mesh mesh = new Mesh(vertices, indices, true);
+		// new Mesh(vertices, indices, true);
 		Material material = new Material(new Texture("defaultTexture.png"), new Vector3f(1, 1, 1), 1, 8);
 
 		MeshRenderer meshRenderer = new MeshRenderer(mesh, material);
@@ -43,8 +44,8 @@ public class TestGame extends Game {
 
 		getRootObject().addChild(planeObject);
 
-		Transform.setProjection(500f, Window.getWidth(), Window.getHeight(), 0.1f, 1000);
-		Transform.setCam(cam);
+//		Transform.setProjection(70f, Window.getWidth(), Window.getHeight(), 0.1f, 1000);
+//		Transform.setCam(cam);
 		// MeshRenderer meshRenderer = new MeshRenderer(mesh, mat);
 		// root.addComponent(meshRenderer);
 

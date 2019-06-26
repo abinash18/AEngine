@@ -1,6 +1,7 @@
 package com.base.engine.rendering;
 
 import com.base.engine.core.Material;
+import com.base.engine.core.Transform;
 import com.base.engine.unusedclasses.RenderUtil;
 
 public class BasicShader extends Shader {
@@ -24,13 +25,17 @@ public class BasicShader extends Shader {
 	}
 
 	@Override
-	public void updateUniform(Matrix4f worldMatrix, Matrix4f projectedMatrix, Material mat) {
+	public void updateUniform(Transform transform, Material mat) {
 
 //		if (mat.getTexture() != null) {
-		mat.getTexture().bind();
+		// mat.getTexture().bind();
 //		} else {
 //			RenderUtil.unBindTextures();
 //		}
+
+		Matrix4f worldMatrix = transform.getTransformation(),
+				projectedMatrix = getRenderingEngine().getMainCamera().getViewProjection().mul(worldMatrix);
+		mat.getTexture().bind();
 
 		setUniform("transform", projectedMatrix);
 		setUniform("color", mat.getColor());

@@ -13,8 +13,16 @@ public class Camera {
 
 	private Vector3f pos, forward, up;
 
-	public Camera() {
-		this(new Vector3f(0, 0, 0), new Vector3f(0, 0, 1), new Vector3f(0, 1, 0));
+	private Matrix4f projection;
+
+	public Camera(float fov, float aspectRatio, float zNear, float zFar) {
+		// this(new Vector3f(0, 0, 0), new Vector3f(0, 0, 1), new Vector3f(0, 1, 0));
+
+		this.pos = new Vector3f(0, 0, 0);
+		this.forward = new Vector3f(0, 0, 1).normalize();
+		this.up = new Vector3f(0, 1, 0).normalize();
+		this.projection = new Matrix4f().initProjection(fov, aspectRatio, zNear, zFar);
+
 	}
 
 	public Camera(Vector3f pos, Vector3f forward, Vector3f up) {
@@ -24,6 +32,14 @@ public class Camera {
 
 		up.normalize();
 		forward.normalize();
+
+	}
+
+	public Matrix4f getViewProjection() {
+		Matrix4f cameraRotationMatrix = new Matrix4f().initRotation(forward, up);
+		Matrix4f cameraTranslationMatrix = new Matrix4f().initTranslation(-pos.getX(), -pos.getY(), -pos.getZ());
+
+		return projection.mul(cameraRotationMatrix.mul(cameraTranslationMatrix));
 
 	}
 
@@ -178,6 +194,34 @@ public class Camera {
 
 	public static Vector3f getYaxis() {
 		return yAxis;
+	}
+
+	public void setProjection(Matrix4f projection) {
+		this.projection = projection;
+	}
+
+	public boolean isMouseGrabbed() {
+		return mouseGrabbed;
+	}
+
+	public void setMouseGrabbed(boolean mouseGrabbed) {
+		this.mouseGrabbed = mouseGrabbed;
+	}
+
+	public Vector2f getMouseOrigin() {
+		return mouseOrigin;
+	}
+
+	public void setMouseOrigin(Vector2f mouseOrigin) {
+		this.mouseOrigin = mouseOrigin;
+	}
+
+	public Vector2f getCenterWindow() {
+		return centerWindow;
+	}
+
+	public void setCenterWindow(Vector2f centerWindow) {
+		this.centerWindow = centerWindow;
 	}
 
 }

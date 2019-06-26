@@ -5,14 +5,14 @@ import com.base.engine.rendering.Matrix4f;
 
 public class Transform {
 
-	private static Camera cam;
+	//private static Camera cam;
 	private static float zNear, zFar, width, height, fov;
 	private Vector3f translation, rotation, scale;
 
 	public Transform() {
-		translation = new Vector3f(0, 0, 0);
-		rotation = new Vector3f(0, 0, 0);
-		scale = new Vector3f(1, 1, 1);
+		this.translation = new Vector3f(0, 0, 0);
+		this.rotation = new Vector3f(0, 0, 0);
+		this.scale = new Vector3f(1, 1, 1);
 
 	}
 
@@ -26,27 +26,27 @@ public class Transform {
 		return translationMatrix.mul(rotationMatrix.mul(scaleMatrix));
 	}
 
-	public Matrix4f getProjectedTransformation() {
+//	public Matrix4f getProjectedTransformation(Camera cam) {
+//
+////		Matrix4f projectionMatrix = new Matrix4f().initProjection(fov, width, height, zNear, zFar);
+////		Matrix4f transformationMatrix = getTransformation();
+////		Matrix4f cameraRotationMatrix = new Matrix4f().initRotation(cam.getForward(), cam.getUp());
+////		Matrix4f cameraTranslationMatrix = new Matrix4f().initTranslation(-cam.getPos().getX(), -cam.getPos().getY(),
+////				-cam.getPos().getZ());
+//
+//		return (cam.getViewProjection().mul(getTransformation()));
+//
+//	}
 
-		Matrix4f projectionMatrix = new Matrix4f().initProjection(fov, width, height, zNear, zFar);
-		Matrix4f transformationMatrix = getTransformation();
-		Matrix4f cameraRotationMatrix = new Matrix4f().initCamera(cam.getForward(), cam.getUp());
-		Matrix4f cameraTranslationMatrix = new Matrix4f().initTranslation(-cam.getPos().getX(), -cam.getPos().getY(),
-				-cam.getPos().getZ());
-
-		return (projectionMatrix.mul(cameraRotationMatrix.mul(cameraTranslationMatrix.mul(transformationMatrix))));
-
-	}
-
-	public static void setProjection(float fov, float width, float height, float zNear, float zFar) {
-
-		Transform.fov = fov;
-		Transform.width = width;
-		Transform.height = height;
-		Transform.zNear = zNear;
-		Transform.zFar = zFar;
-
-	}
+//	public static void setProjection(float fov, float width, float height, float zNear, float zFar) {
+//
+//		Transform.fov = fov;
+//		Transform.width = width;
+//		Transform.height = height;
+//		Transform.zNear = zNear;
+//		Transform.zFar = zFar;
+//
+//	}
 
 	public Vector3f getTranslation() {
 		return translation;
@@ -84,13 +84,13 @@ public class Transform {
 		this.scale = new Vector3f(x, y, z);
 	}
 
-	public static Camera getCam() {
-		return cam;
-	}
-
-	public static void setCam(Camera cam) {
-		Transform.cam = cam;
-	}
+//	public static Camera getCam() {
+//		return cam;
+//	}
+//
+//	public static void setCam(Camera cam) {
+//		Transform.cam = cam;
+//	}
 
 	public static float getzNear() {
 		return zNear;

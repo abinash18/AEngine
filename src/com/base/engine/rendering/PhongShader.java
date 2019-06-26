@@ -67,13 +67,16 @@ public class PhongShader extends Shader {
 	}
 
 	@Override
-	public void updateUniform(Matrix4f worldMatrix, Matrix4f projectedMatrix, Material mat) {
+	public void updateUniform(Transform transform, Material mat) {
 
 //		if (mat.getTexture() != null) {
 		mat.getTexture().bind();
 //		} else {
 //			RenderUtil.unBindTextures();
 //		}
+
+		Matrix4f worldMatrix = transform.getTransformation(),
+				projectedMatrix = getRenderingEngine().getMainCamera().getViewProjection().mul(worldMatrix);
 
 		setUniform("transformProjected", projectedMatrix);
 		setUniform("transform", worldMatrix);
@@ -90,7 +93,7 @@ public class PhongShader extends Shader {
 
 		setUniformf("specularIntensity", mat.getSpecularIntensity());
 		setUniformf("specularPower", mat.getSpecularPower());
-		setUniform("eyePos", Transform.getCam().getPos());
+		setUniform("eyePos", getRenderingEngine().getMainCamera().getPos());
 
 	}
 
