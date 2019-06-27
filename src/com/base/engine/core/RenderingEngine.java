@@ -26,13 +26,14 @@ import com.base.engine.rendering.Window;
 public class RenderingEngine {
 
 	private Camera mainCamera;
-
+	private Vector3f ambientLight;
+	
 	public RenderingEngine() {
 		initGraphics();
 
-		mainCamera = new Camera((float) Math.toRadians(70f), (float) Window.getWidth() / (float) Window.getWidth(),
+		mainCamera = new Camera((float) Math.toRadians(70f), (float) Window.getWidth() / (float) Window.getHeight(),
 				0.01f, 1000.0f);
-
+		ambientLight = new Vector3f(0.2f, 0.2f, 0.2f);
 	}
 
 	public static void clearScreen() {
@@ -95,8 +96,8 @@ public class RenderingEngine {
 		this.mainCamera = cam;
 	}
 
-	public void input() {
-		mainCamera.input();
+	public void input(float delta) {
+		mainCamera.input(delta);
 	}
 
 }

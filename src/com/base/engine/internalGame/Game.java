@@ -10,12 +10,12 @@ public abstract class Game {
 		getRootObject().init();
 	}
 
-	public void update() {
-		getRootObject().update();
+	public void update(float delta) {
+		getRootObject().update(delta);
 	}
 
-	public void input() {
-		getRootObject().input();
+	public void input(float delta) {
+		getRootObject().input(delta);
 	}
 
 //	public void render() {

@@ -1,6 +1,5 @@
 package com.base.engine.rendering;
 
-import com.base.engine.core.Material;
 import com.base.engine.core.Transform;
 import com.base.engine.unusedclasses.RenderUtil;
 

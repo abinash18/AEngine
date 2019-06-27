@@ -1,9 +1,9 @@
 package com.base.engine.internalGame;
 
 import com.base.engine.core.GameComponent;
-import com.base.engine.core.Material;
 import com.base.engine.core.Transform;
 import com.base.engine.rendering.BasicShader;
+import com.base.engine.rendering.Material;
 import com.base.engine.rendering.Mesh;
 import com.base.engine.rendering.PhongShader;
 import com.base.engine.rendering.Shader;
@@ -41,13 +41,13 @@ public class MeshRenderer implements GameComponent {
 	}
 
 	@Override
-	public void update(Transform transform) {
+	public void update(Transform transform, float delta) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void input(Transform transform) {
+	public void input(Transform transform, float delta) {
 		// TODO Auto-generated method stub
 
 	}

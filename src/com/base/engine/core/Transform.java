@@ -1,16 +1,15 @@
 package com.base.engine.core;
 
-import com.base.engine.rendering.Camera;
 import com.base.engine.rendering.Matrix4f;
 
 public class Transform {
 
-	//private static Camera cam;
+	// private static Camera cam;
 	private static float zNear, zFar, width, height, fov;
-	private Vector3f translation, rotation, scale;
+	private Vector3f position, rotation, scale;
 
 	public Transform() {
-		this.translation = new Vector3f(0, 0, 0);
+		this.position = new Vector3f(0, 0, 0);
 		this.rotation = new Vector3f(0, 0, 0);
 		this.scale = new Vector3f(1, 1, 1);
 
@@ -18,8 +17,7 @@ public class Transform {
 
 	public Matrix4f getTransformation() {
 
-		Matrix4f translationMatrix = new Matrix4f().initTranslation(translation.getX(), translation.getY(),
-				translation.getZ());
+		Matrix4f translationMatrix = new Matrix4f().initTranslation(position.getX(), position.getY(), position.getZ());
 		Matrix4f rotationMatrix = new Matrix4f().initRotation(rotation.getX(), rotation.getY(), rotation.getZ());
 		Matrix4f scaleMatrix = new Matrix4f().initScale(scale.getX(), scale.getY(), scale.getZ());
 
@@ -28,11 +26,11 @@ public class Transform {
 
 //	public Matrix4f getProjectedTransformation(Camera cam) {
 //
-////		Matrix4f projectionMatrix = new Matrix4f().initProjection(fov, width, height, zNear, zFar);
-////		Matrix4f transformationMatrix = getTransformation();
-////		Matrix4f cameraRotationMatrix = new Matrix4f().initRotation(cam.getForward(), cam.getUp());
-////		Matrix4f cameraTranslationMatrix = new Matrix4f().initTranslation(-cam.getPos().getX(), -cam.getPos().getY(),
-////				-cam.getPos().getZ());
+//		Matrix4f projectionMatrix = new Matrix4f().initProjection(fov, width, height, zNear, zFar);
+//		Matrix4f transformationMatrix = getTransformation();
+//		Matrix4f cameraRotationMatrix = new Matrix4f().initRotation(cam.getForward(), cam.getUp());
+//		Matrix4f cameraTranslationMatrix = new Matrix4f().initTranslation(-cam.getPos().getX(), -cam.getPos().getY(),
+//				-cam.getPos().getZ());
 //
 //		return (cam.getViewProjection().mul(getTransformation()));
 //
@@ -48,16 +46,16 @@ public class Transform {
 //
 //	}
 
-	public Vector3f getTranslation() {
-		return translation;
+	public Vector3f getPosition() {
+		return position;
 	}
 
-	public void setTranslation(Vector3f translation) {
-		this.translation = translation;
+	public void setPosition(Vector3f translation) {
+		this.position = translation;
 	}
 
 	public void setTranslation(float x, float y, float z) {
-		this.translation = new Vector3f(x, y, z);
+		this.position = new Vector3f(x, y, z);
 	}
 
 	public Vector3f getRotation() {

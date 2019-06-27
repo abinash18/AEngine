@@ -30,7 +30,7 @@ public class Matrix4f
 	 * @param zFar
 	 * @return
 	 */
-	public Matrix4f initProjection(float fov, float width, float height, float zNear, float zFar)
+	public Matrix4f initPerspective(float fov, float width, float height, float zNear, float zFar)
 	{
 		
 		float aspectRatio = width / height;
@@ -60,6 +60,22 @@ public class Matrix4f
 		return this;
 	}
 	
+	/**
+	 *
+	 * @return
+	 */
+	public Matrix4f initOrthographic(float left, float right, float bottom, float top, float near, float far)
+	{
+		
+		float width = right - left, height = top - bottom, depth = far - near;
+		
+		m[0][0] = 2 / width;	m[0][1] = 0;	m[0][2] = 0;	m[0][3] = -(right + left) / width;
+		m[1][0] = 0;	m[1][1] = 2 / height;	m[1][2] = 0;	m[1][3] = -(top + bottom) / height;
+		m[2][0] = 0;	m[2][1] = 0;	m[2][2] = -2 / depth;	m[2][3] = -(far + near) / depth;
+		m[3][0] = 0;	m[3][1] = 0;	m[3][2] = 0;	m[3][3] = 1;
+		
+		return this;
+	}
 	
 	public Matrix4f initTranslation(float x, float y, float z)
 	{

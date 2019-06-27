@@ -33,7 +33,7 @@ public class Window {
 
 	public static Vector2f getCenter() {
 
-		return (new Vector2f(Display.getWidth() / 2, Display.getHeight() / 2));
+		return (new Vector2f(getWidth() / 2, getHeight() / 2));
 
 	}
 

@@ -45,9 +45,7 @@ public class Camera {
 
 	public Vector3f getLeft() {
 
-		Vector3f left = forward.cross(up);
-
-		left.normalize();
+		Vector3f left = forward.cross(up).normalize();
 
 		return (left);
 
@@ -55,9 +53,7 @@ public class Camera {
 
 	public Vector3f getRight() {
 
-		Vector3f right = up.cross(forward);
-
-		right.normalize();
+		Vector3f right = up.cross(forward).normalize();
 
 		return (right);
 
@@ -91,11 +87,11 @@ public class Camera {
 	boolean mouseGrabbed = false;
 	Vector2f mouseOrigin = Input.getMousePosition(), centerWindow = Window.getCenter();
 
-	public void input() {
+	public void input(float delta) {
 
 		float sensitivity = 0.25f;
-		float moveAmount = (float) (10 * Time.getDelta());
-		float rotationAmount = (float) (100 * Time.getDelta());
+		float moveAmount = (float) (10 * delta);
+		// float rotationAmount = (float) (100 * delta);
 
 		if (Input.getKey(Input.KEY_W)) {
 			move(getForward(), moveAmount);
