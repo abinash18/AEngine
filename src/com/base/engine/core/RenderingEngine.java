@@ -22,12 +22,13 @@ import com.base.engine.rendering.BasicShader;
 import com.base.engine.rendering.Camera;
 import com.base.engine.rendering.Shader;
 import com.base.engine.rendering.Window;
+import com.base.engine.unusedclasses.ResourceLoader;
 
 public class RenderingEngine {
 
 	private Camera mainCamera;
 	private Vector3f ambientLight;
-	
+
 	public RenderingEngine() {
 		initGraphics();
 
@@ -55,7 +56,7 @@ public class RenderingEngine {
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
-	private static void initGraphics() {
+	private void initGraphics() {
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 		glFrontFace(GL_CW);
@@ -85,6 +86,11 @@ public class RenderingEngine {
 		shader.setRenderingEngine(this);
 
 		gameObject.render(shader);
+
+//		Shader shader = BasicShader.getInstance();
+//		shader.setRenderingEngine(this);
+//
+//		gameObject.render(shader);
 
 	}
 
