@@ -1,14 +1,11 @@
-package com.base.engine.internalGame;
+package com.base.engine.components;
 
-import com.base.engine.core.GameComponent;
 import com.base.engine.core.Transform;
-import com.base.engine.rendering.BasicShader;
 import com.base.engine.rendering.Material;
 import com.base.engine.rendering.Mesh;
-import com.base.engine.rendering.PhongShader;
 import com.base.engine.rendering.Shader;
 
-public class MeshRenderer implements GameComponent {
+public class MeshRenderer extends GameComponent {
 
 	private Mesh mesh;
 	private Material mat;

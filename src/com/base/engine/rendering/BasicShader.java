@@ -1,7 +1,6 @@
 package com.base.engine.rendering;
 
 import com.base.engine.core.Transform;
-import com.base.engine.unusedclasses.RenderUtil;
 
 public class BasicShader extends Shader {
 
@@ -36,8 +35,8 @@ public class BasicShader extends Shader {
 				projectedMatrix = getRenderingEngine().getMainCamera().getViewProjection().mul(worldMatrix);
 		mat.getTexture().bind();
 
-		setUniform("transform", projectedMatrix);
-		setUniform("color", mat.getColor());
+		setUniformMatrix4f("transform", projectedMatrix);
+		setUniform3f("color", mat.getColor());
 
 	}
 

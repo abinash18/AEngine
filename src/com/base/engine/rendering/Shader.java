@@ -7,6 +7,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.HashMap;
 
+import com.base.engine.components.BaseLight;
+import com.base.engine.components.DirectionalLight;
+import com.base.engine.components.PointLight;
 import com.base.engine.core.RenderingEngine;
 import com.base.engine.core.Transform;
 import com.base.engine.core.Util;
@@ -41,8 +44,8 @@ public class Shader {
 	public void setRenderingEngine(RenderingEngine rengeringEngine) {
 		this.renderingEngine = rengeringEngine;
 	}
-	
- 	public void updateUniform(Transform transform, Material mat) {
+
+	public void updateUniform(Transform transform, Material mat) {
 
 	}
 
@@ -56,6 +59,10 @@ public class Shader {
 		}
 
 		uniforms.put(uniform, uniformLocation);
+	}
+
+	public void setAttribLocation(String attribName, int location) {
+		glBindAttribLocation(program, location, attribName);
 	}
 
 	public void addVertexShader(String text) {
@@ -85,14 +92,14 @@ public class Shader {
 	public void compileShader() {
 		glLinkProgram(program);
 
-		if (glGetProgram(program, GL_LINK_STATUS) == 0) {
+		if (glGetProgrami(program, GL_LINK_STATUS) == 0) {
 			System.err.println(glGetProgramInfoLog(program, 1024));
 			System.exit(1);
 		}
 
 		glValidateProgram(program);
 
-		if (glGetProgram(program, GL_VALIDATE_STATUS) == 0) {
+		if (glGetProgrami(program, GL_VALIDATE_STATUS) == 0) {
 			System.err.println(glGetProgramInfoLog(program, 1024));
 			System.exit(1);
 		}
@@ -109,7 +116,7 @@ public class Shader {
 		glShaderSource(shader, text);
 		glCompileShader(shader);
 
-		if (glGetShader(shader, GL_COMPILE_STATUS) == 0) {
+		if (glGetShaderi(shader, GL_COMPILE_STATUS) == 0) {
 			System.err.println(glGetShaderInfoLog(shader, 1024));
 			System.exit(1);
 		}
@@ -125,16 +132,41 @@ public class Shader {
 		glUniform1f(uniforms.get(uniformName), value);
 	}
 
-	public void setUniform(String uniformName, Vector2f value) {
+	public void setUniform2f(String uniformName, Vector2f value) {
 		glUniform3f(uniforms.get(uniformName), value.getX(), value.getY(), 0);
 	}
 
-	public void setUniform(String uniformName, Vector3f value) {
+	public void setUniform3f(String uniformName, Vector3f value) {
 		glUniform3f(uniforms.get(uniformName), value.getX(), value.getY(), value.getZ());
 	}
 
-	public void setUniform(String uniformName, Matrix4f value) {
+	public void setUniformMatrix4f(String uniformName, Matrix4f value) {
 		glUniformMatrix4(uniforms.get(uniformName), true, Util.createFlippedBuffer(value));
+	}
+
+	public void setUniformBaseLight(String uniformName, BaseLight baseLight) {
+
+		setUniform3f(uniformName + ".color", baseLight.getColor());
+		setUniformf(uniformName + ".intensity", baseLight.getIntensity());
+
+	}
+
+	public void setUniformPointLight(String uniformName, PointLight pointLight) {
+
+		setUniformBaseLight(uniformName + ".base", pointLight);
+		setUniformf(uniformName + ".atten.constant", pointLight.getConstant());
+		setUniformf(uniformName + ".atten.linear", pointLight.getLinear());
+		setUniformf(uniformName + ".atten.exponent", pointLight.getExponent());
+		setUniform3f(uniformName + ".position", pointLight.getPosition());
+		setUniformf(uniformName + ".range", pointLight.getRange());
+
+	}
+
+	public void setUniformDirectionalLight(String uniformName, DirectionalLight directionalLight) {
+
+		setUniformBaseLight(uniformName + ".base", (BaseLight) directionalLight);
+		setUniform3f(uniformName + ".direction", directionalLight.getDirection());
+
 	}
 
 	private static String loadShader(String fileName) {

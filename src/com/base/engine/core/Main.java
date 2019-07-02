@@ -1,13 +1,10 @@
-package com.base.engine.builds.prealpha;
-
-import com.base.engine.core.CoreEngine;
-import com.base.engine.core.TestGame;
+package com.base.engine.core;
 
 public class Main {
 
 	public static void main(String[] args) {
 
-		int width = 800, height = 600, frameRate = 60;
+		int width = 1920, height = 1080, frameRate = 60;
 		String windowTitle = "3D Engine";
 
 		TestGame game = new TestGame();

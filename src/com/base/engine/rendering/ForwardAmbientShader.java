@@ -13,12 +13,16 @@ public class ForwardAmbientShader extends Shader {
 	public ForwardAmbientShader() {
 		super();
 
-		addVertexShaderFromFile("forward-ambient.vs");
-		addFragmentShaderFromFile("forward-ambient.fs");
-		compileShader();
+		super.addVertexShaderFromFile("forward-ambient.vs");
+		super.addFragmentShaderFromFile("forward-ambient.fs");
 
-		addUniform("MVP");
-		addUniform("ambientIntensity");
+		super.setAttribLocation("position", 0);
+		super.setAttribLocation("texCoord", 1);
+
+		super.compileShader();
+
+		super.addUniform("MVP");
+		super.addUniform("ambientIntensity");
 
 	}
 
@@ -29,8 +33,8 @@ public class ForwardAmbientShader extends Shader {
 				projectedMatrix = getRenderingEngine().getMainCamera().getViewProjection().mul(worldMatrix);
 		mat.getTexture().bind();
 
-		setUniform("MVP", projectedMatrix);
-		setUniform("ambientIntensity", mat.getColor());
+		super.setUniformMatrix4f("MVP", projectedMatrix);
+		super.setUniform3f("ambientIntensity", getRenderingEngine().getAmbientLight());
 
 	}
 

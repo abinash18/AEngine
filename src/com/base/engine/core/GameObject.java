@@ -2,6 +2,7 @@ package com.base.engine.core;
 
 import java.util.ArrayList;
 
+import com.base.engine.components.GameComponent;
 import com.base.engine.rendering.Shader;
 
 public class GameObject {
@@ -32,6 +33,16 @@ public class GameObject {
 		this.children = children;
 	}
 
+	public void addToRenderingEngine(RenderingEngine engine) {
+		for (GameComponent component : components) {
+			component.addToRenderingEngine(engine);
+		}
+
+		for (GameObject child : children) {
+			child.addToRenderingEngine(engine);
+		}
+	}
+	
 	public void init() {
 		for (GameComponent component : components) {
 			component.init(transform);

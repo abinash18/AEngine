@@ -9,10 +9,10 @@ public class CoreEngine {
 //	public static final String TITLE = "3D Engine";
 //	public static final double FRAME_CAP = 5000.0;
 
-	private int width, height;
+//	private int width, height;
 	private double frameTime;
 	private boolean isRunning;
-	private String windowTitle;
+//	private String windowTitle;
 	private Game game;
 	private RenderingEngine renderEngine;
 
@@ -29,9 +29,6 @@ public class CoreEngine {
 //	}
 
 	public void createWindow(int width, int height, String windowTitle) {
-		this.width = width;
-		this.height = height;
-		this.windowTitle = windowTitle;
 
 		Window.createWindow(width, height, windowTitle);
 		this.renderEngine = new RenderingEngine();

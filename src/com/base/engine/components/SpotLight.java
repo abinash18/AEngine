@@ -1,8 +1,8 @@
-package com.base.engine.rendering;
+package com.base.engine.components;
 
 import com.base.engine.core.Vector3f;
 
-public class SpotLight {
+public class SpotLight extends GameComponent {
 
 	private PointLight pointLight;
 	private float cutoff;
@@ -24,6 +24,7 @@ public class SpotLight {
 
 	public float getCutoff() {
 		return cutoff;
+		
 	}
 
 	public void setCutoff(float cutoff) {
