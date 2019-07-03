@@ -9,10 +9,15 @@ import org.lwjgl.opengl.DisplayMode;
 import com.base.engine.core.Vector2f;
 
 public class Window {
-	public static void createWindow(int width, int height, String title) {
+	public static void createWindow(int width, int height, String title, boolean fullscreen, boolean vSync) {
 		Display.setTitle(title);
 		try {
-			Display.setDisplayMode(new DisplayMode(width, height));
+
+//			Display.setDisplayMode(getFullscreen());
+//			Display.setFullscreen(true);
+
+			setDisplayMode(width, height, fullscreen);
+			Display.setVSyncEnabled(vSync);
 			Display.create();
 			Keyboard.create();
 			Mouse.create();
@@ -21,14 +26,94 @@ public class Window {
 		}
 	}
 
-	public static void render() {
+	public static void render(double fps) {
 		Display.update();
+		Display.sync((int) fps);
 	}
 
 	public static void dispose() {
 		Display.destroy();
 		Keyboard.destroy();
 		Mouse.destroy();
+	}
+
+	public static DisplayMode[] getAvailableDisplayModes() {
+
+		DisplayMode[] modes = null;
+		try {
+			modes = Display.getAvailableDisplayModes();
+		} catch (LWJGLException e) {
+			e.printStackTrace();
+		}
+
+		for (int i = 0; i < modes.length; i++) {
+			DisplayMode current = modes[i];
+			System.out.println(current.getWidth() + "x" + current.getHeight() + "x" + current.getBitsPerPixel() + " "
+					+ current.getFrequency() + "Hz");
+		}
+
+		return modes;
+	}
+
+	/**
+	 * Set the display mode to be used
+	 * 
+	 * @param width      The width of the display required
+	 * @param height     The height of the display required
+	 * @param fullscreen True if we want fullscreen mode
+	 */
+	public static void setDisplayMode(int width, int height, boolean fullscreen) {
+
+		// return if requested DisplayMode is already set
+		if ((Display.getDisplayMode().getWidth() == width) && (Display.getDisplayMode().getHeight() == height)
+				&& (Display.isFullscreen() == fullscreen)) {
+			return;
+		}
+
+		try {
+			DisplayMode targetDisplayMode = null;
+
+			if (fullscreen) {
+				DisplayMode[] modes = getAvailableDisplayModes();
+				int freq = 0;
+
+				for (int i = 0; i < modes.length; i++) {
+					DisplayMode current = modes[i];
+
+					if ((current.getWidth() == width) && (current.getHeight() == height)) {
+						if ((targetDisplayMode == null) || (current.getFrequency() >= freq)) {
+							if ((targetDisplayMode == null)
+									|| (current.getBitsPerPixel() > targetDisplayMode.getBitsPerPixel())) {
+								targetDisplayMode = current;
+								freq = targetDisplayMode.getFrequency();
+							}
+						}
+
+						// if we've found a match for Bits Per Pixel and frequency against the
+						// original display mode then it's probably best to go for this one
+						// since it's most likely compatible with the monitor
+						if ((current.getBitsPerPixel() == Display.getDesktopDisplayMode().getBitsPerPixel())
+								&& (current.getFrequency() == Display.getDesktopDisplayMode().getFrequency())) {
+							targetDisplayMode = current;
+							break;
+						}
+					}
+				}
+			} else {
+				targetDisplayMode = new DisplayMode(width, height);
+			}
+
+			if (targetDisplayMode == null) {
+				System.out.println("Failed to find value mode: " + width + "x" + height + " fs=" + fullscreen);
+				return;
+			}
+
+			Display.setDisplayMode(targetDisplayMode);
+			Display.setFullscreen(fullscreen);
+
+		} catch (LWJGLException e) {
+			System.out.println("Unable to setup mode " + width + "x" + height + " fullscreen=" + fullscreen + e);
+		}
 	}
 
 	public static Vector2f getCenter() {

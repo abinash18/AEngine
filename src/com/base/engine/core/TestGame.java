@@ -10,6 +10,8 @@ import com.base.engine.rendering.Mesh;
 import com.base.engine.rendering.RenderingEngine;
 import com.base.engine.rendering.Texture;
 import com.base.engine.rendering.Vertex;
+import com.base.engine.util.Attenuation;
+import com.base.engine.util.Color;
 
 public class TestGame extends Game {
 
@@ -17,8 +19,8 @@ public class TestGame extends Game {
 		// init();
 	}
 
-	private GameObject dirLight, pLight, sLight;
-	private DirectionalLight dLight;
+	private GameObject dirLight, dirLight2, pLight, sLight;
+	private DirectionalLight dLight, dLight2;
 	private PointLight pointLight;
 	private SpotLight spotLight;
 
@@ -26,11 +28,13 @@ public class TestGame extends Game {
 
 		// cam = new Camera();
 		dirLight = new GameObject();
-		dLight = new DirectionalLight(new Vector3f(0, 0, 1), 0.4f, new Vector3f(1, 1, 1));
+		dirLight2 = new GameObject();
+		dLight = new DirectionalLight(new Color(0, 0, 1), 0.4f, new Vector3f(1, 1, 1));
+		dLight2 = new DirectionalLight(new Color(0, 1, 1), 0.4f, new Vector3f(1, 1, 0));
 		pLight = new GameObject();
-		pointLight = new PointLight(new Vector3f(1, 0, 0), 0.4f, 0, 0, 1, new Vector3f(5, 0, 20), 10);
+		pointLight = new PointLight(new Color(1, 0, 0), 0.4f, new Attenuation(0, 0, 1), new Vector3f(5, 0, 20), 10);
 		sLight = new GameObject();
-		spotLight = new SpotLight(new Vector3f(0, 1, 0), 0.8f, 0, 0, 0.1f, new Vector3f(5, 0, 5), 100,
+		spotLight = new SpotLight(new Color(1, 1, 1), 0.8f, new Attenuation(0, 0, 0.1f), new Vector3f(5, 0, 5), 500,
 				new Vector3f(1, 0, 0), 0.7f);
 
 		float fieldDepth = 10.0f;
@@ -44,7 +48,8 @@ public class TestGame extends Game {
 
 		int indices[] = { 0, 1, 2, 2, 1, 3 };
 
-		Mesh mesh = new Mesh(vertices, indices, true);
+		// Mesh mesh = new Mesh(vertices, indices, true);
+		Mesh mesh = new Mesh("IronMan.obj", true);
 		// new Mesh(vertices, indices, true);
 		Material material = new Material(new Texture("defaultTexture.png"), new Vector3f(1, 1, 1), 1, 8);
 
@@ -53,14 +58,17 @@ public class TestGame extends Game {
 		GameObject planeObject = new GameObject();
 		planeObject.addComponent(meshRenderer);
 		planeObject.getTransform().setTranslation(0, -1, 5);
+		planeObject.getTransform().setScale(0.25f, 0.25f, 0.25f);
 
 		getRootObject().addChild(planeObject);
 
 		dirLight.addComponent(dLight);
+		dirLight2.addComponent(dLight2);
 		pLight.addComponent(pointLight);
 		sLight.addComponent(spotLight);
-		//getRootObject().addChild(dirLight);
-		//getRootObject().addChild(pLight);
+		getRootObject().addChild(dirLight);
+		getRootObject().addChild(dirLight2);
+		getRootObject().addChild(pLight);
 		getRootObject().addChild(sLight);
 
 	}
@@ -68,7 +76,7 @@ public class TestGame extends Game {
 	@Override
 	public void update(float delta) {
 		super.update(delta);
-		spotLight.setDirection(RenderingEngine.mainCamera.getForward().normalize());
+		spotLight.setDirection(RenderingEngine.mainCamera.getForward());
 		spotLight.setPosition(RenderingEngine.mainCamera.getPosition());
 	}
 }

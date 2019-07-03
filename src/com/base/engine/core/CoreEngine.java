@@ -5,39 +5,25 @@ import com.base.engine.rendering.RenderingEngine;
 import com.base.engine.rendering.Window;
 
 public class CoreEngine {
-//	public static final int WIDTH = 800;
-//	public static final int HEIGHT = 600;
-//	public static final String TITLE = "3D Engine";
-//	public static final double FRAME_CAP = 5000.0;
 
-//	private int width, height;
-	private double frameTime;
+	private double frameTime, frameRate;
 	private boolean isRunning;
-//	private String windowTitle;
 	private Game game;
 	private RenderingEngine renderEngine;
 
 	public CoreEngine(double framerate, Game game) {
 		this.isRunning = false;
 		this.game = game;
+		this.frameRate = framerate;
 		this.frameTime = 1.0 / framerate;
 
 	}
 
-//	private void initGL() {
-//		System.out.println(RenderUtil.getOpenGLVersion());
-//		RenderUtil.initGraphics();
-//	}
+	public void createWindow(int width, int height, String windowTitle, boolean fullscreen, boolean vSync) {
 
-	public void createWindow(int width, int height, String windowTitle) {
-
-		Window.createWindow(width, height, windowTitle);
+		Window.createWindow(width, height, windowTitle, fullscreen, vSync);
 		this.renderEngine = new RenderingEngine();
 		System.out.println(RenderingEngine.getOpenGLVersion());
-		// initGL();
-
-		// this.game.init();
-
 	}
 
 	public void init() {
@@ -104,7 +90,7 @@ public class CoreEngine {
 			}
 			if (render) {
 				renderEngine.render(game.getRootObject());
-				Window.render();
+				Window.render(frameRate);
 				frames++;
 			} else {
 				try {
@@ -118,22 +104,8 @@ public class CoreEngine {
 		cleanUp();
 	}
 
-//	private void render() {
-//		RenderUtil.clearScreen();
-//		game.render();
-//		Window.render();
-//	}
-
 	private void cleanUp() {
 		Window.dispose();
 	}
 
-//	public static void main(String[] args)
-//	{
-//		Window.createWindow(WIDTH, HEIGHT, TITLE);
-//		
-//		MainComponent game = new MainComponent();
-//		
-//		game.start();
-//	}
 }

@@ -36,7 +36,8 @@ public class Camera {
 
 	public Matrix4f getViewProjection() {
 		Matrix4f cameraRotationMatrix = new Matrix4f().initRotation(forward, up);
-		Matrix4f cameraTranslationMatrix = new Matrix4f().initTranslation(-position.getX(), -position.getY(), -position.getZ());
+		Matrix4f cameraTranslationMatrix = new Matrix4f().initTranslation(-position.getX(), -position.getY(),
+				-position.getZ());
 
 		return projection.mul(cameraRotationMatrix.mul(cameraTranslationMatrix));
 
@@ -122,6 +123,7 @@ public class Camera {
 			Input.setCursor(true);
 			mouseGrabbed = false;
 			System.out.println(this);
+			System.exit(1);
 		}
 		if (Mouse.isButtonDown(0)) {
 			Input.setMousePosition(centerWindow);

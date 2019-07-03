@@ -1,31 +1,9 @@
 package com.base.engine.rendering;
 
-import static org.lwjgl.opengl.GL11.GL_BACK;
-import static org.lwjgl.opengl.GL11.GL_BLEND;
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
-import static org.lwjgl.opengl.GL11.GL_CW;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
-import static org.lwjgl.opengl.GL11.GL_EQUAL;
-import static org.lwjgl.opengl.GL11.GL_LESS;
-import static org.lwjgl.opengl.GL11.GL_ONE;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.GL_VERSION;
-import static org.lwjgl.opengl.GL11.glBindTexture;
-import static org.lwjgl.opengl.GL11.glBlendFunc;
-import static org.lwjgl.opengl.GL11.glClear;
-import static org.lwjgl.opengl.GL11.glClearColor;
-import static org.lwjgl.opengl.GL11.glCullFace;
-import static org.lwjgl.opengl.GL11.glDepthFunc;
-import static org.lwjgl.opengl.GL11.glDepthMask;
-import static org.lwjgl.opengl.GL11.glDisable;
-import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL11.glFrontFace;
-import static org.lwjgl.opengl.GL11.glGetString;
-import static org.lwjgl.opengl.GL32.GL_DEPTH_CLAMP;
-
 import java.util.ArrayList;
+
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL32;
 
 import com.base.engine.components.BaseLight;
 import com.base.engine.core.GameObject;
@@ -57,45 +35,45 @@ public class RenderingEngine {
 
 	public static void clearScreen() {
 		// TODO: Stencil Buffer
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 	}
 
 	@Deprecated
 	public void setTextures(boolean enabled) {
 
 		if (enabled) {
-			glEnable(GL_TEXTURE_2D);
+			GL11.glEnable(GL11.GL_TEXTURE_2D);
 		} else {
-			glDisable(GL_TEXTURE_2D);
+			GL11.glDisable(GL11.GL_TEXTURE_2D);
 		}
 
 	}
 
 	public static void unBindTextures() {
-		glBindTexture(GL_TEXTURE_2D, 0);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 	}
 
 	private void initGraphics() {
-		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+		GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-		glFrontFace(GL_CW);
-		glCullFace(GL_BACK);
-		glEnable(GL_CULL_FACE);
-		glEnable(GL_DEPTH_TEST);
+		GL11.glFrontFace(GL11.GL_CW);
+		GL11.glCullFace(GL11.GL_BACK);
+		GL11.glEnable(GL11.GL_CULL_FACE);
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
 
-		glEnable(GL_DEPTH_CLAMP);
+		GL11.glEnable(GL32.GL_DEPTH_CLAMP);
 
-		glEnable(GL_TEXTURE_2D);
-		// glEnable(GL_FRAMEBUFFER_SRGB);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		// GL11.glEnable(GL32.GL_FRAMEBUFFER_SRGB);
 	}
 
 	@Deprecated
 	public void setClearColor(Vector3f color) {
-		glClearColor(color.getX(), color.getY(), color.getZ(), 1.0f);
+		GL11.glClearColor(color.getX(), color.getY(), color.getZ(), 1.0f);
 	}
 
 	public static String getOpenGLVersion() {
-		return glGetString(GL_VERSION);
+		return GL11.glGetString(GL11.GL_VERSION);
 	}
 
 	public void render(GameObject gameObject) {
@@ -111,13 +89,13 @@ public class RenderingEngine {
 
 		gameObject.render(forwardAmbientShader);
 
-		glEnable(GL_BLEND);
+		GL11.glEnable(GL11.GL_BLEND);
 
-		glBlendFunc(GL_ONE, GL_ONE);
+		GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
 
-		glDepthMask(false);
+		GL11.glDepthMask(false);
 
-		glDepthFunc(GL_EQUAL);
+		GL11.glDepthFunc(GL11.GL_EQUAL);
 
 		for (BaseLight light : lights) {
 			light.getShader().setRenderingEngine(this); // CHECK THIS AFTER
@@ -128,11 +106,11 @@ public class RenderingEngine {
 
 		}
 
-		glDepthFunc(GL_LESS);
+		GL11.glDepthFunc(GL11.GL_LESS);
 
-		glDepthMask(true);
+		GL11.glDepthMask(true);
 
-		glDisable(GL_BLEND);
+		GL11.glDisable(GL11.GL_BLEND);
 
 	}
 

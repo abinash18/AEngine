@@ -13,21 +13,16 @@ import com.base.engine.core.Vector3f;
 
 public class Mesh {
 	private int vbo, size, ibo;
-	public Mesh(String fileName) {
+
+	public Mesh(String fileName, boolean calcNormals) {
 		initMeshData();
-		loadMesh(fileName);
+		loadMesh(fileName, calcNormals);
 	}
-	
+
 	public Mesh(Vertex[] vertices, int[] indices) {
 		this(vertices, indices, false);
 	}
 
-//	public Mesh() {
-//		vbo = glGenBuffers();
-//		size = 0;
-//		ibo = glGenBuffers();
-//	}
-	
 	public Mesh(Vertex[] vertices, int[] indices, boolean calcNormals) {
 		initMeshData();
 		addVertices(vertices, indices, calcNormals);
@@ -38,10 +33,6 @@ public class Mesh {
 		ibo = glGenBuffers();
 		size = 0;
 	}
-	
-//	public void addVertices(Vertex[] vertices, int[] indices) {
-//		addVertices(vertices, indices, false);
-//	}
 
 	private void addVertices(Vertex[] vertices, int[] indices, boolean calcNormals) {
 
@@ -103,7 +94,7 @@ public class Mesh {
 
 	}
 
-	private Mesh loadMesh(String fileName) {
+	private Mesh loadMesh(String fileName, boolean calcNormals) {
 
 		String[] splitArray = fileName.split("\\.");
 
@@ -160,7 +151,7 @@ public class Mesh {
 			Integer[] indicesData = new Integer[indices.size()];
 			indices.toArray(indicesData);
 
-			addVertices(vertexData, Util.toIntArray(indicesData), true);
+			addVertices(vertexData, Util.toIntArray(indicesData), calcNormals);
 
 		} catch (Exception e) {
 			e.printStackTrace();
