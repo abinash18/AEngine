@@ -1,4 +1,4 @@
-package com.base.engine.core;
+package com.base.engine.rendering;
 
 import static org.lwjgl.opengl.GL11.GL_BACK;
 import static org.lwjgl.opengl.GL11.GL_BLEND;
@@ -28,17 +28,12 @@ import static org.lwjgl.opengl.GL32.GL_DEPTH_CLAMP;
 import java.util.ArrayList;
 
 import com.base.engine.components.BaseLight;
-import com.base.engine.rendering.Camera;
-import com.base.engine.rendering.ForwardAmbientShader;
-import com.base.engine.rendering.ForwardDirectionalShader;
-import com.base.engine.rendering.ForwardPointShader;
-import com.base.engine.rendering.ForwardSpotShader;
-import com.base.engine.rendering.Shader;
-import com.base.engine.rendering.Window;
+import com.base.engine.core.GameObject;
+import com.base.engine.core.Vector3f;
 
 public class RenderingEngine {
 
-	private Camera mainCamera;
+	public static Camera mainCamera;
 	private Vector3f ambientLight;
 
 	// More Permanent Structs
@@ -114,15 +109,6 @@ public class RenderingEngine {
 		Shader forwardAmbientShader = ForwardAmbientShader.getInstance();
 		forwardAmbientShader.setRenderingEngine(this);
 
-		Shader forwardDirectionalShader = ForwardDirectionalShader.getInstance();
-		forwardDirectionalShader.setRenderingEngine(this);
-
-		Shader forwardPointShader = ForwardPointShader.getInstance();
-		forwardPointShader.setRenderingEngine(this);
-
-		Shader forwardSpotShader = ForwardSpotShader.getInstance();
-		forwardSpotShader.setRenderingEngine(this);
-
 		gameObject.render(forwardAmbientShader);
 
 		glEnable(GL_BLEND);
@@ -139,6 +125,7 @@ public class RenderingEngine {
 			activeLight = light;
 
 			gameObject.render(light.getShader());
+
 		}
 
 		glDepthFunc(GL_LESS);

@@ -3,20 +3,35 @@ package com.base.engine.core;
 import com.base.engine.components.DirectionalLight;
 import com.base.engine.components.MeshRenderer;
 import com.base.engine.components.PointLight;
+import com.base.engine.components.SpotLight;
 import com.base.engine.internalGame.Game;
 import com.base.engine.rendering.Material;
 import com.base.engine.rendering.Mesh;
+import com.base.engine.rendering.RenderingEngine;
 import com.base.engine.rendering.Texture;
 import com.base.engine.rendering.Vertex;
 
 public class TestGame extends Game {
 
 	public TestGame() {
+		// init();
 	}
+
+	private GameObject dirLight, pLight, sLight;
+	private DirectionalLight dLight;
+	private PointLight pointLight;
+	private SpotLight spotLight;
 
 	public void init() {
 
 		// cam = new Camera();
+		dirLight = new GameObject();
+		dLight = new DirectionalLight(new Vector3f(0, 0, 1), 0.4f, new Vector3f(1, 1, 1));
+		pLight = new GameObject();
+		pointLight = new PointLight(new Vector3f(1, 0, 0), 0.4f, 0, 0, 1, new Vector3f(5, 0, 20), 10);
+		sLight = new GameObject();
+		spotLight = new SpotLight(new Vector3f(0, 1, 0), 0.8f, 0, 0, 0.1f, new Vector3f(5, 0, 5), 100,
+				new Vector3f(1, 0, 0), 0.7f);
 
 		float fieldDepth = 10.0f;
 		float fieldWidth = 10.0f;
@@ -41,14 +56,19 @@ public class TestGame extends Game {
 
 		getRootObject().addChild(planeObject);
 
-		GameObject dirLight = new GameObject();
-		DirectionalLight dLight = new DirectionalLight(new Vector3f(0, 0, 1), 0.4f, new Vector3f(1, 1, 1));
-		PointLight pointLight = new PointLight(new Vector3f(1, 0, 0), 0.4f, 0, 0, 1, new Vector3f(5, 0, 20), 10);
-		// SpotLight spotLight = new SpotLight(pointLight, new Vector3f(5, 0, 5), 10);
 		dirLight.addComponent(dLight);
-		dirLight.addComponent(pointLight);
-		// dirLight.addComponent(spotLight);
-		getRootObject().addChild(dirLight);
+		pLight.addComponent(pointLight);
+		sLight.addComponent(spotLight);
+		//getRootObject().addChild(dirLight);
+		//getRootObject().addChild(pLight);
+		getRootObject().addChild(sLight);
 
+	}
+
+	@Override
+	public void update(float delta) {
+		super.update(delta);
+		spotLight.setDirection(RenderingEngine.mainCamera.getForward().normalize());
+		spotLight.setPosition(RenderingEngine.mainCamera.getPosition());
 	}
 }

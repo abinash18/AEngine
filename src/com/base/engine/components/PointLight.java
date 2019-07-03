@@ -8,6 +8,7 @@ public class PointLight extends BaseLight {
 	private Vector3f position;
 	private float range, constant, linear, exponent;
 
+	// TODO: Find a better way or add baselight back to parameter.
 	public PointLight(Vector3f color, float intensity, float constant, float linear, float exponent, Vector3f position,
 			float range) {
 
@@ -19,7 +20,7 @@ public class PointLight extends BaseLight {
 		this.position = position;
 		this.range = range;
 
-		setShader(ForwardPointShader.getInstance());
+		super.setShader(ForwardPointShader.getInstance());
 
 	}
 

@@ -1,16 +1,12 @@
 package com.base.engine.rendering;
 
-import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL32.*;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.HashMap;
 
-import com.base.engine.components.BaseLight;
-import com.base.engine.components.DirectionalLight;
-import com.base.engine.components.PointLight;
-import com.base.engine.core.RenderingEngine;
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL32;
+
 import com.base.engine.core.Transform;
 import com.base.engine.core.Util;
 import com.base.engine.core.Vector2f;
@@ -28,7 +24,7 @@ public class Shader {
 	}
 
 	public Shader() {
-		program = glCreateProgram();
+		program = GL20.glCreateProgram();
 		uniforms = new HashMap<String, Integer>();
 
 		if (program == 0) {
@@ -38,7 +34,7 @@ public class Shader {
 	}
 
 	public void bind() {
-		glUseProgram(program);
+		GL20.glUseProgram(program);
 	}
 
 	public void setRenderingEngine(RenderingEngine rengeringEngine) {
@@ -50,7 +46,7 @@ public class Shader {
 	}
 
 	public void addUniform(String uniform) {
-		int uniformLocation = glGetUniformLocation(program, uniform);
+		int uniformLocation = GL20.glGetUniformLocation(program, uniform);
 
 		if (uniformLocation == 0xFFFFFFFF) {
 			System.err.println("Error: Could not find uniform: " + uniform);
@@ -62,111 +58,86 @@ public class Shader {
 	}
 
 	public void setAttribLocation(String attribName, int location) {
-		glBindAttribLocation(program, location, attribName);
+		GL20.glBindAttribLocation(program, location, attribName);
 	}
 
 	public void addVertexShader(String text) {
-		addProgram(text, GL_VERTEX_SHADER);
+		addProgram(text, GL20.GL_VERTEX_SHADER);
 	}
 
 	public void addGeometryShader(String text) {
-		addProgram(text, GL_GEOMETRY_SHADER);
+		addProgram(text, GL32.GL_GEOMETRY_SHADER);
 	}
 
 	public void addFragmentShader(String text) {
-		addProgram(text, GL_FRAGMENT_SHADER);
+		addProgram(text, GL20.GL_FRAGMENT_SHADER);
 	}
 
 	public void addVertexShaderFromFile(String fileName) {
-		addProgram(loadShader(fileName), GL_VERTEX_SHADER);
+		addProgram(loadShader(fileName), GL20.GL_VERTEX_SHADER);
 	}
 
 	public void addGeometryShaderFromFile(String fileName) {
-		addProgram(loadShader(fileName), GL_GEOMETRY_SHADER);
+		addProgram(loadShader(fileName), GL32.GL_GEOMETRY_SHADER);
 	}
 
 	public void addFragmentShaderFromFile(String fileName) {
-		addProgram(loadShader(fileName), GL_FRAGMENT_SHADER);
+		addProgram(loadShader(fileName), GL20.GL_FRAGMENT_SHADER);
 	}
 
 	public void compileShader() {
-		glLinkProgram(program);
+		GL20.glLinkProgram(program);
 
-		if (glGetProgrami(program, GL_LINK_STATUS) == 0) {
-			System.err.println(glGetProgramInfoLog(program, 1024));
+		if (GL20.glGetProgrami(program, GL20.GL_LINK_STATUS) == 0) {
+			System.err.println(GL20.glGetProgramInfoLog(program, 1024));
 			System.exit(1);
 		}
 
-		glValidateProgram(program);
+		GL20.glValidateProgram(program);
 
-		if (glGetProgrami(program, GL_VALIDATE_STATUS) == 0) {
-			System.err.println(glGetProgramInfoLog(program, 1024));
+		if (GL20.glGetProgrami(program, GL20.GL_VALIDATE_STATUS) == 0) {
+			System.err.println(GL20.glGetProgramInfoLog(program, 1024));
 			System.exit(1);
 		}
 	}
 
 	private void addProgram(String text, int type) {
-		int shader = glCreateShader(type);
+		int shader = GL20.glCreateShader(type);
 
 		if (shader == 0) {
 			System.err.println("Shader creation failed: Could not find valid memory location when adding shader");
 			System.exit(1);
 		}
 
-		glShaderSource(shader, text);
-		glCompileShader(shader);
+		GL20.glShaderSource(shader, text);
+		GL20.glCompileShader(shader);
 
-		if (glGetShaderi(shader, GL_COMPILE_STATUS) == 0) {
-			System.err.println(glGetShaderInfoLog(shader, 1024));
+		if (GL20.glGetShaderi(shader, GL20.GL_COMPILE_STATUS) == 0) {
+			System.err.println(GL20.glGetShaderInfoLog(shader, 1024));
 			System.exit(1);
 		}
 
-		glAttachShader(program, shader);
+		GL20.glAttachShader(program, shader);
 	}
 
 	public void setUniformi(String uniformName, int value) {
-		glUniform1i(uniforms.get(uniformName), value);
+		GL20.glUniform1i(uniforms.get(uniformName), value);
 	}
 
 	public void setUniformf(String uniformName, float value) {
-		glUniform1f(uniforms.get(uniformName), value);
+		GL20.glUniform1f(uniforms.get(uniformName), value);
 	}
 
 	public void setUniform2f(String uniformName, Vector2f value) {
-		glUniform3f(uniforms.get(uniformName), value.getX(), value.getY(), 0);
+		GL20.glUniform3f(uniforms.get(uniformName), value.getX(), value.getY(), 0);
 	}
 
 	public void setUniform3f(String uniformName, Vector3f value) {
-		glUniform3f(uniforms.get(uniformName), value.getX(), value.getY(), value.getZ());
+		GL20.glUniform3f(uniforms.get(uniformName), value.getX(), value.getY(), value.getZ());
 	}
 
 	public void setUniformMatrix4f(String uniformName, Matrix4f value) {
-		glUniformMatrix4(uniforms.get(uniformName), true, Util.createFlippedBuffer(value));
-	}
-
-	public void setUniformBaseLight(String uniformName, BaseLight baseLight) {
-
-		setUniform3f(uniformName + ".color", baseLight.getColor());
-		setUniformf(uniformName + ".intensity", baseLight.getIntensity());
-
-	}
-
-	public void setUniformPointLight(String uniformName, PointLight pointLight) {
-
-		setUniformBaseLight(uniformName + ".base", pointLight);
-		setUniformf(uniformName + ".atten.constant", pointLight.getConstant());
-		setUniformf(uniformName + ".atten.linear", pointLight.getLinear());
-		setUniformf(uniformName + ".atten.exponent", pointLight.getExponent());
-		setUniform3f(uniformName + ".position", pointLight.getPosition());
-		setUniformf(uniformName + ".range", pointLight.getRange());
-
-	}
-
-	public void setUniformDirectionalLight(String uniformName, DirectionalLight directionalLight) {
-
-		setUniformBaseLight(uniformName + ".base", (BaseLight) directionalLight);
-		setUniform3f(uniformName + ".direction", directionalLight.getDirection());
-
+		GL20.glUniformMatrix4(uniforms.get(uniformName), true, Util.createFlippedBuffer(value));
 	}
 
 	private static String loadShader(String fileName) {

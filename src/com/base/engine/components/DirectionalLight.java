@@ -7,6 +7,7 @@ public class DirectionalLight extends BaseLight {
 
 	private Vector3f direction;
 
+	// TODO: Add Base light back into parameter.
 	public DirectionalLight(Vector3f color, float intensity, Vector3f direction) {
 		super(color, intensity);
 		this.direction = direction.normalize();

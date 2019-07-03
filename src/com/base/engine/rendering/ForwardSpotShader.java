@@ -1,5 +1,7 @@
 package com.base.engine.rendering;
 
+import com.base.engine.components.BaseLight;
+import com.base.engine.components.PointLight;
 import com.base.engine.components.SpotLight;
 import com.base.engine.core.Transform;
 
@@ -55,16 +57,34 @@ public class ForwardSpotShader extends Shader {
 		super.setUniformf("specularIntensity", mat.getSpecularIntensity());
 		super.setUniformf("specularPower", mat.getSpecularPower());
 
-		super.setUniform3f("eyePos", super.getRenderingEngine().getMainCamera().getPos());
+		super.setUniform3f("eyePos", super.getRenderingEngine().getMainCamera().getPosition());
 
-//		setUniform2f("spotLight", super.getRenderingEngine().getSpotLight());
+		setUniformSpotLight("spotLight", (SpotLight) super.getRenderingEngine().getActiveLight());
 
 	}
 
-	private void setUniform(String uniformName, SpotLight spotLight) {
-		super.setUniformPointLight(uniformName + ".pointLight", spotLight.getPointLight());
-		super.setUniform3f(uniformName + ".direction", spotLight.getDirection());
-		super.setUniformf(uniformName + ".cutoff", spotLight.getCutoff());
+	public void setUniformPointLight(String uniformName, PointLight pointLight) {
+
+		setUniformBaseLight(uniformName + ".base", pointLight);
+		setUniformf(uniformName + ".atten.constant", pointLight.getConstant());
+		setUniformf(uniformName + ".atten.linear", pointLight.getLinear());
+		setUniformf(uniformName + ".atten.exponent", pointLight.getExponent());
+		setUniform3f(uniformName + ".position", pointLight.getPosition());
+		setUniformf(uniformName + ".range", pointLight.getRange());
+
+	}
+
+	public void setUniformBaseLight(String uniformName, BaseLight baseLight) {
+
+		setUniform3f(uniformName + ".color", baseLight.getColor());
+		setUniformf(uniformName + ".intensity", baseLight.getIntensity());
+
+	}
+
+	public void setUniformSpotLight(String uniformName, SpotLight spotLight) {
+		setUniformPointLight(uniformName + ".pointLight", (PointLight) spotLight);
+		setUniform3f(uniformName + ".direction", spotLight.getDirection());
+		setUniformf(uniformName + ".cutoff", spotLight.getCutoff());
 
 	}
 

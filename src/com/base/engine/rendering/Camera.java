@@ -10,14 +10,14 @@ public class Camera {
 
 	private static final Vector3f yAxis = new Vector3f(0, 1, 0);
 
-	private Vector3f pos, forward, up;
+	private Vector3f position, forward, up;
 
 	private Matrix4f projection;
 
 	public Camera(float fov, float aspectRatio, float zNear, float zFar) {
 		// this(new Vector3f(0, 0, 0), new Vector3f(0, 0, 1), new Vector3f(0, 1, 0));
 
-		this.pos = new Vector3f(0, 0, 0);
+		this.position = new Vector3f(0, 0, 0);
 		this.forward = new Vector3f(0, 0, 1).normalize();
 		this.up = new Vector3f(0, 1, 0).normalize();
 		this.projection = new Matrix4f().initProjection(fov, aspectRatio, zNear, zFar);
@@ -25,7 +25,7 @@ public class Camera {
 	}
 
 	public Camera(Vector3f pos, Vector3f forward, Vector3f up) {
-		this.pos = pos;
+		this.position = pos;
 		this.forward = forward.normalize();
 		this.up = up.normalize();
 
@@ -36,7 +36,7 @@ public class Camera {
 
 	public Matrix4f getViewProjection() {
 		Matrix4f cameraRotationMatrix = new Matrix4f().initRotation(forward, up);
-		Matrix4f cameraTranslationMatrix = new Matrix4f().initTranslation(-pos.getX(), -pos.getY(), -pos.getZ());
+		Matrix4f cameraTranslationMatrix = new Matrix4f().initTranslation(-position.getX(), -position.getY(), -position.getZ());
 
 		return projection.mul(cameraRotationMatrix.mul(cameraTranslationMatrix));
 
@@ -153,22 +153,22 @@ public class Camera {
 
 	@Override
 	public String toString() {
-		return "Camera [pos=" + pos + ", forward=" + forward + ", up=" + up + ", mouseGrabbed=" + mouseGrabbed
+		return "Camera [position=" + position + ", forward=" + forward + ", up=" + up + ", mouseGrabbed=" + mouseGrabbed
 				+ ", mouseOrigin=" + mouseOrigin + ", centerWindow=" + centerWindow + "]";
 	}
 
 	public void move(Vector3f dir, float amt) {
 
-		pos = pos.add(dir.mul(amt));
+		position = position.add(dir.mul(amt));
 
 	}
 
-	public Vector3f getPos() {
-		return pos;
+	public Vector3f getPosition() {
+		return position;
 	}
 
-	public void setPos(Vector3f pos) {
-		this.pos = pos;
+	public void setPosition(Vector3f pos) {
+		this.position = pos;
 	}
 
 	public Vector3f getForward() {
