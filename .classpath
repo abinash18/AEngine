@@ -9,5 +9,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/jar/slick-util.jar"/>
+	<classpathentry kind="lib" path="commons-cli-1.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
