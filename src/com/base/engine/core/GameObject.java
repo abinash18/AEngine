@@ -23,6 +23,7 @@ public class GameObject {
 	}
 
 	public void addComponent(GameComponent gameComponent) {
+		gameComponent.setParent(this);
 		components.add(gameComponent);
 	}
 
@@ -43,10 +44,10 @@ public class GameObject {
 			child.addToRenderingEngine(engine);
 		}
 	}
-	
+
 	public void init() {
 		for (GameComponent component : components) {
-			component.init(transform);
+			component.init();
 		}
 		for (GameObject child : children) {
 			child.init();
@@ -56,7 +57,7 @@ public class GameObject {
 	public void input(float delta) {
 
 		for (GameComponent component : components) {
-			component.input(transform, delta);
+			component.input(delta);
 		}
 
 		for (GameObject child : children) {
@@ -66,7 +67,7 @@ public class GameObject {
 
 	public void update(float delta) {
 		for (GameComponent component : components) {
-			component.update(transform, delta);
+			component.update(delta);
 		}
 		for (GameObject child : children) {
 			child.update(delta);
@@ -75,7 +76,7 @@ public class GameObject {
 
 	public void render(Shader shader) {
 		for (GameComponent component : components) {
-			component.render(transform, shader);
+			component.render(shader);
 		}
 		for (GameObject child : children) {
 			child.render(shader);

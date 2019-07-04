@@ -16,36 +16,32 @@ public class MeshRenderer extends GameComponent {
 	}
 
 	@Override
-	public void render(Transform transform, Shader shader) {
+	public void render(Shader shader) {
 		// Shader shader = BasicShader.getInstance();
 
 		// shader.compileShader();
 		shader.bind();
-		shader.updateUniform(transform, mat);
+		shader.updateUniform(super.getTransform(), mat);
 		mesh.draw();
 	}
 
 	@Override
-	public void init(Transform transform) {
-		// TODO Auto-generated method stub
+	public void init() {
 
 	}
 
 	@Override
 	public void setGameObject() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void update(Transform transform, float delta) {
-		// TODO Auto-generated method stub
+	public void update(float delta) {
 
 	}
 
 	@Override
-	public void input(Transform transform, float delta) {
-		// TODO Auto-generated method stub
+	public void input(float delta) {
 
 	}
 

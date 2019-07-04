@@ -9,20 +9,18 @@ import com.base.engine.rendering.ForwardPointShader;
  */
 public class PointLight extends BaseLight {
 
-	private Vector3f position, attenuation;
+	private Vector3f attenuation;
 	private float range, constant, linear, exponent;
 
 	// TODO: Find a better way or add baselight back to parameter.
-	public PointLight(Vector3f color, float intensity, float constant, float linear, float exponent, Vector3f position,
-			float range) {
+	public PointLight(Vector3f color, float intensity, float constant, float linear, float exponent) {
 
 		super(color, intensity);
 
 		this.constant = constant;
 		this.linear = linear;
 		this.exponent = exponent;
-		this.position = position;
-		this.range = range;
+		this.range = 1000.0f; // TODO: Try To Calculate This.
 		super.setShader(ForwardPointShader.getInstance());
 
 	}
@@ -35,14 +33,13 @@ public class PointLight extends BaseLight {
 	 * @param position
 	 * @param range
 	 */
-	public PointLight(Vector3f color, float intensity, Vector3f attenuation, Vector3f position, float range) {
+	public PointLight(Vector3f color, float intensity, Vector3f attenuation) {
 		super(color, intensity);
-		this.position = position;
 		this.attenuation = attenuation;
 		this.constant = attenuation.getX();
 		this.linear = attenuation.getY();
 		this.exponent = attenuation.getZ();
-		this.range = range;
+		this.range = 1000.0f; // TODO: Try To Calculate This.
 		super.setShader(ForwardPointShader.getInstance());
 	}
 
@@ -79,14 +76,6 @@ public class PointLight extends BaseLight {
 
 	public void setRange(float range) {
 		this.range = range;
-	}
-
-	public Vector3f getPosition() {
-		return position;
-	}
-
-	public void setPosition(Vector3f position) {
-		this.position = position;
 	}
 
 	public Vector3f getAttenuation() {

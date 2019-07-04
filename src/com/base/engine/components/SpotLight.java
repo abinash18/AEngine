@@ -20,10 +20,9 @@ public class SpotLight extends PointLight {
 	 * @param direction
 	 * @param cutoff
 	 */
-	public SpotLight(Vector3f color, float intensity, Vector3f attenuation, Vector3f position, float range,
-			Vector3f direction, float cutoff) {
+	public SpotLight(Vector3f color, float intensity, Vector3f attenuation, Vector3f direction, float cutoff) {
 
-		super(color, intensity, attenuation, position, range);
+		super(color, intensity, attenuation);
 		this.direction = direction.normalize();
 		this.cutoff = cutoff;
 

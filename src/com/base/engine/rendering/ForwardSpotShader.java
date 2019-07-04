@@ -69,7 +69,7 @@ public class ForwardSpotShader extends Shader {
 		setUniformf(uniformName + ".atten.constant", pointLight.getConstant());
 		setUniformf(uniformName + ".atten.linear", pointLight.getLinear());
 		setUniformf(uniformName + ".atten.exponent", pointLight.getExponent());
-		setUniform3f(uniformName + ".position", pointLight.getPosition());
+		setUniform3f(uniformName + ".position", pointLight.getTransform().getPosition());
 		setUniformf(uniformName + ".range", pointLight.getRange());
 
 	}

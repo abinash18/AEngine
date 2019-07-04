@@ -32,10 +32,9 @@ public class TestGame extends Game {
 		dLight = new DirectionalLight(new Color(0, 0, 1), 0.4f, new Vector3f(1, 1, 1));
 		dLight2 = new DirectionalLight(new Color(0, 1, 1), 0.4f, new Vector3f(1, 1, 0));
 		pLight = new GameObject();
-		pointLight = new PointLight(new Color(1, 0, 0), 0.4f, new Attenuation(0, 0, 1), new Vector3f(5, 0, 20), 10);
+		pointLight = new PointLight(new Color(1, 0, 0), 0.4f, new Attenuation(0, 0, 1));
 		sLight = new GameObject();
-		spotLight = new SpotLight(new Color(1, 1, 1), 0.8f, new Attenuation(0, 0, 0.1f), new Vector3f(5, 0, 5), 500,
-				new Vector3f(1, 0, 0), 0.7f);
+		spotLight = new SpotLight(new Color(1, 1, 1), 0.8f, new Attenuation(0, 0, 0.1f), new Vector3f(1, 0, 0), 0.7f);
 
 		float fieldDepth = 10.0f;
 		float fieldWidth = 10.0f;
@@ -48,8 +47,8 @@ public class TestGame extends Game {
 
 		int indices[] = { 0, 1, 2, 2, 1, 3 };
 
-		// Mesh mesh = new Mesh(vertices, indices, true);
-		Mesh mesh = new Mesh("IronMan.obj", true);
+		Mesh mesh = new Mesh(vertices, indices, true);
+		// Mesh mesh = new Mesh("IronMan.obj", true);
 		// new Mesh(vertices, indices, true);
 		Material material = new Material(new Texture("defaultTexture.png"), new Vector3f(1, 1, 1), 1, 8);
 
@@ -58,7 +57,7 @@ public class TestGame extends Game {
 		GameObject planeObject = new GameObject();
 		planeObject.addComponent(meshRenderer);
 		planeObject.getTransform().setTranslation(0, -1, 5);
-		planeObject.getTransform().setScale(0.25f, 0.25f, 0.25f);
+		// planeObject.getTransform().setScale(0.25f, 0.25f, 0.25f);
 
 		getRootObject().addChild(planeObject);
 
@@ -77,6 +76,6 @@ public class TestGame extends Game {
 	public void update(float delta) {
 		super.update(delta);
 		spotLight.setDirection(RenderingEngine.mainCamera.getForward());
-		spotLight.setPosition(RenderingEngine.mainCamera.getPosition());
+		sLight.getTransform().setPosition((RenderingEngine.mainCamera.getPosition()));
 	}
 }
