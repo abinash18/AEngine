@@ -126,8 +126,8 @@ public class RenderingEngine {
 		return mainCamera;
 	}
 
-	public void setMainCamera(Camera cam) {
-		this.mainCamera = cam;
+	public static void setMainCamera(Camera cam) {
+		RenderingEngine.mainCamera = cam;
 	}
 
 	public void input(float delta) {

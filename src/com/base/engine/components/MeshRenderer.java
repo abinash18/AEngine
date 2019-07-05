@@ -1,6 +1,5 @@
 package com.base.engine.components;
 
-import com.base.engine.core.Transform;
 import com.base.engine.rendering.Material;
 import com.base.engine.rendering.Mesh;
 import com.base.engine.rendering.Shader;
@@ -27,11 +26,6 @@ public class MeshRenderer extends GameComponent {
 
 	@Override
 	public void init() {
-
-	}
-
-	@Override
-	public void setGameObject() {
 
 	}
 

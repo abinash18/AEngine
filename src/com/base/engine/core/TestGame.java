@@ -7,7 +7,6 @@ import com.base.engine.components.SpotLight;
 import com.base.engine.internalGame.Game;
 import com.base.engine.rendering.Material;
 import com.base.engine.rendering.Mesh;
-import com.base.engine.rendering.RenderingEngine;
 import com.base.engine.rendering.Texture;
 import com.base.engine.rendering.Vertex;
 import com.base.engine.util.Attenuation;
@@ -34,7 +33,7 @@ public class TestGame extends Game {
 		pLight = new GameObject();
 		pointLight = new PointLight(new Color(1, 0, 0), 0.4f, new Attenuation(0, 0, 1));
 		sLight = new GameObject();
-		spotLight = new SpotLight(new Color(1, 1, 1), 0.8f, new Attenuation(0, 0, 0.1f), new Vector3f(1, 0, 0), 0.7f);
+		spotLight = new SpotLight(new Color(1, 1, 1), 0.8f, new Attenuation(0, 0, 0.1f), 0.7f);
 
 		float fieldDepth = 10.0f;
 		float fieldWidth = 10.0f;
@@ -56,7 +55,7 @@ public class TestGame extends Game {
 
 		GameObject planeObject = new GameObject();
 		planeObject.addComponent(meshRenderer);
-		planeObject.getTransform().setTranslation(0, -1, 5);
+		planeObject.getTransform().getPosition().set(0, -1, 5);
 		// planeObject.getTransform().setScale(0.25f, 0.25f, 0.25f);
 
 		getRootObject().addChild(planeObject);
@@ -65,8 +64,10 @@ public class TestGame extends Game {
 		dirLight2.addComponent(dLight2);
 		pLight.addComponent(pointLight);
 		sLight.addComponent(spotLight);
-		getRootObject().addChild(dirLight);
-		getRootObject().addChild(dirLight2);
+		spotLight.getTransform()
+				.setRotation(new Quaternion().initRotationRad(new Vector3f(0, 1, 0), (float) Math.toRadians(-90.0f)));
+		// getRootObject().addChild(dirLight);
+		// getRootObject().addChild(dirLight2);
 		getRootObject().addChild(pLight);
 		getRootObject().addChild(sLight);
 
@@ -75,7 +76,8 @@ public class TestGame extends Game {
 	@Override
 	public void update(float delta) {
 		super.update(delta);
-		spotLight.setDirection(RenderingEngine.mainCamera.getForward());
-		sLight.getTransform().setPosition((RenderingEngine.mainCamera.getPosition()));
+		// spotLight.setDirection(RenderingEngine.mainCamera.getForward());
+		// sLight.getTransform().setPosition((RenderingEngine.mainCamera.getPosition()));
+		// sLight.getTransform().setScale(delta, delta, delta);
 	}
 }

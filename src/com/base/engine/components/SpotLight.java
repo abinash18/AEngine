@@ -2,6 +2,7 @@ package com.base.engine.components;
 
 import com.base.engine.core.Vector3f;
 import com.base.engine.rendering.ForwardSpotShader;
+import com.sun.org.apache.bcel.internal.generic.GETFIELD;
 
 public class SpotLight extends PointLight {
 
@@ -20,10 +21,19 @@ public class SpotLight extends PointLight {
 	 * @param direction
 	 * @param cutoff
 	 */
-	public SpotLight(Vector3f color, float intensity, Vector3f attenuation, Vector3f direction, float cutoff) {
+//	public SpotLight(Vector3f color, float intensity, Vector3f attenuation, Vector3f direction, float cutoff) {
+//
+//		super(color, intensity, attenuation);
+//		this.direction = direction.normalize();
+//		this.cutoff = cutoff;
+//
+//		super.setShader(ForwardSpotShader.getInstance());
+//
+//	}
+
+	public SpotLight(Vector3f color, float intensity, Vector3f attenuation, float cutoff) {
 
 		super(color, intensity, attenuation);
-		this.direction = direction.normalize();
 		this.cutoff = cutoff;
 
 		super.setShader(ForwardSpotShader.getInstance());
@@ -40,7 +50,7 @@ public class SpotLight extends PointLight {
 	}
 
 	public Vector3f getDirection() {
-		return direction;
+		return getTransform().getRotation().getForward();
 	}
 
 	public void setDirection(Vector3f direction) {

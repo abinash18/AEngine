@@ -9,6 +9,8 @@ import com.base.engine.rendering.ForwardPointShader;
  */
 public class PointLight extends BaseLight {
 
+	private static final int COLOR_DEPTH = 256;
+
 	private Vector3f attenuation;
 	private float range, constant, linear, exponent;
 
@@ -20,9 +22,12 @@ public class PointLight extends BaseLight {
 		this.constant = constant;
 		this.linear = linear;
 		this.exponent = exponent;
-		this.range = 1000.0f; // TODO: Try To Calculate This.
-		super.setShader(ForwardPointShader.getInstance());
 
+		float a = exponent, b = linear, c = constant - COLOR_DEPTH * getIntensity() * getColor().max();
+
+		this.range = (float) (-b + Math.sqrt(b * b - 4 * a * c)) / (2 * a);// 1000.0f; // TODO: Try To Calculate This.
+		super.setShader(ForwardPointShader.getInstance());
+		// System.out.println(range);
 	}
 
 	/**
@@ -39,8 +44,11 @@ public class PointLight extends BaseLight {
 		this.constant = attenuation.getX();
 		this.linear = attenuation.getY();
 		this.exponent = attenuation.getZ();
-		this.range = 1000.0f; // TODO: Try To Calculate This.
+		float a = exponent, b = linear, c = constant - COLOR_DEPTH * getIntensity() * getColor().max();
+
+		this.range = (float) (-b + Math.sqrt(b * b - 4 * a * c)) / (2 * a);// 1000.0f; // TODO: Try To Calculate This.
 		super.setShader(ForwardPointShader.getInstance());
+		// System.out.println(range);
 	}
 
 	public float getConstant() {

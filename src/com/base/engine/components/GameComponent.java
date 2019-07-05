@@ -23,10 +23,7 @@ public abstract class GameComponent {
 
 	public void init() {
 	}
-
-	public void setGameObject() {
-	}
-
+	
 	public void update(float delta) {
 	}
 

@@ -106,19 +106,6 @@ public class Camera {
 			move(getForward(), -moveAmount);
 		}
 
-//		if (Input.getKey(Input.KEY_UP)) {
-//			rotateX(-rotationAmount);
-//		}
-//		if (Input.getKey(Input.KEY_LEFT)) {
-//			rotateY(-rotationAmount);
-//		}
-//		if (Input.getKey(Input.KEY_RIGHT)) {
-//			rotateY(rotationAmount);
-//		}
-//		if (Input.getKey(Input.KEY_DOWN)) {
-//			rotateX(rotationAmount);
-//		}
-
 		if (Input.getKey(Input.KEY_ESCAPE)) {
 			Input.setCursor(true);
 			mouseGrabbed = false;
@@ -138,11 +125,11 @@ public class Camera {
 			boolean rotY = deltaPos.getX() != 0, rotX = deltaPos.getY() != 0;
 
 			if (rotY) {
-				rotateY(deltaPos.getX() * sensitivity);
+				rotateY((float) Math.toRadians(deltaPos.getX() * sensitivity));
 			}
 
 			if (rotX) {
-				rotateX(-deltaPos.getY() * sensitivity);
+				rotateX((float) Math.toRadians(-deltaPos.getY() * sensitivity));
 			}
 
 			if (rotY || rotX) {

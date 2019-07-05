@@ -6,11 +6,12 @@ public class Transform {
 
 	// private static Camera cam;
 	private static float zNear, zFar, width, height, fov;
-	private Vector3f position, rotation, scale;
+	private Vector3f position, scale;
+	private Quaternion rotation;
 
 	public Transform() {
 		this.position = new Vector3f(0, 0, 0);
-		this.rotation = new Vector3f(0, 0, 0);
+		this.rotation = new Quaternion(0, 0, 0, 1);
 		this.scale = new Vector3f(1, 1, 1);
 
 	}
@@ -18,33 +19,11 @@ public class Transform {
 	public Matrix4f getTransformation() {
 
 		Matrix4f translationMatrix = new Matrix4f().initTranslation(position.getX(), position.getY(), position.getZ());
-		Matrix4f rotationMatrix = new Matrix4f().initRotation(rotation.getX(), rotation.getY(), rotation.getZ());
+		Matrix4f rotationMatrix = rotation.toRotationMatrix();
 		Matrix4f scaleMatrix = new Matrix4f().initScale(scale.getX(), scale.getY(), scale.getZ());
 
 		return translationMatrix.mul(rotationMatrix.mul(scaleMatrix));
 	}
-
-//	public Matrix4f getProjectedTransformation(Camera cam) {
-//
-//		Matrix4f projectionMatrix = new Matrix4f().initProjection(fov, width, height, zNear, zFar);
-//		Matrix4f transformationMatrix = getTransformation();
-//		Matrix4f cameraRotationMatrix = new Matrix4f().initRotation(cam.getForward(), cam.getUp());
-//		Matrix4f cameraTranslationMatrix = new Matrix4f().initTranslation(-cam.getPos().getX(), -cam.getPos().getY(),
-//				-cam.getPos().getZ());
-//
-//		return (cam.getViewProjection().mul(getTransformation()));
-//
-//	}
-
-//	public static void setProjection(float fov, float width, float height, float zNear, float zFar) {
-//
-//		Transform.fov = fov;
-//		Transform.width = width;
-//		Transform.height = height;
-//		Transform.zNear = zNear;
-//		Transform.zFar = zFar;
-//
-//	}
 
 	public Vector3f getPosition() {
 		return position;
@@ -58,16 +37,16 @@ public class Transform {
 		this.position = new Vector3f(x, y, z);
 	}
 
-	public Vector3f getRotation() {
+	public Quaternion getRotation() {
 		return rotation;
 	}
 
-	public void setRotation(Vector3f rotation) {
+	public void setRotation(Quaternion rotation) {
 		this.rotation = rotation;
 	}
 
-	public void setRotation(float x, float y, float z) {
-		this.rotation = new Vector3f(x, y, z);
+	public void setRotation(float x, float y, float z, float w) {
+		this.rotation = new Quaternion(x, y, z, w);
 	}
 
 	public Vector3f getScale() {

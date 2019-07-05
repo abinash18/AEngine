@@ -40,6 +40,10 @@ public class Vector2f {
 
 	}
 
+	public float max() {
+		return Math.max(x, y);
+	}
+
 	public Vector2f lerp(Vector2f dest, float lerpFactor) {
 
 		return (dest.sub(this).mul(lerpFactor).add(this));
