@@ -1,4 +1,4 @@
-package com.base.engine.core;
+package com.base.engine.math;
 
 public class Vector2f {
 	private float x;
@@ -110,4 +110,14 @@ public class Vector2f {
 	public void setY(float y) {
 		this.y = y;
 	}
+
+	public void set(float x, float y) {
+		this.x = x;
+		this.y = y;
+	}
+
+	public void set(Vector2f other) {
+		this.set(other.getX(), other.getY());
+	}
+
 }

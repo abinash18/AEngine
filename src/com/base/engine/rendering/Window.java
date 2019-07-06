@@ -6,7 +6,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
-import com.base.engine.core.Vector2f;
+import com.base.engine.math.Vector2f;
 
 public class Window {
 	public static void createWindow(int width, int height, String title, boolean fullscreen, boolean vSync) {

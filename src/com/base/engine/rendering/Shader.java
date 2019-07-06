@@ -7,10 +7,11 @@ import java.util.HashMap;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL32;
 
-import com.base.engine.core.Transform;
 import com.base.engine.core.Util;
-import com.base.engine.core.Vector2f;
-import com.base.engine.core.Vector3f;
+import com.base.engine.math.Matrix4f;
+import com.base.engine.math.Transform;
+import com.base.engine.math.Vector2f;
+import com.base.engine.math.Vector3f;
 
 public class Shader {
 	private RenderingEngine renderingEngine;

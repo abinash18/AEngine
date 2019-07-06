@@ -3,6 +3,7 @@ package com.base.engine.core;
 import java.util.ArrayList;
 
 import com.base.engine.components.GameComponent;
+import com.base.engine.math.Transform;
 import com.base.engine.rendering.RenderingEngine;
 import com.base.engine.rendering.Shader;
 
@@ -19,12 +20,15 @@ public class GameObject {
 	}
 
 	public void addChild(GameObject child) {
+		child.getTransform().setParent(transform);
 		children.add(child);
 	}
 
-	public void addComponent(GameComponent gameComponent) {
+	public GameObject addComponent(GameComponent gameComponent) {
 		gameComponent.setParent(this);
 		components.add(gameComponent);
+
+		return this;
 	}
 
 	public ArrayList<GameObject> getChildren() {

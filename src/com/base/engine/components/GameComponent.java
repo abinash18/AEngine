@@ -1,7 +1,7 @@
 package com.base.engine.components;
 
 import com.base.engine.core.GameObject;
-import com.base.engine.core.Transform;
+import com.base.engine.math.Transform;
 import com.base.engine.rendering.RenderingEngine;
 import com.base.engine.rendering.Shader;
 

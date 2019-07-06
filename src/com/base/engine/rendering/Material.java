@@ -1,6 +1,6 @@
 package com.base.engine.rendering;
 
-import com.base.engine.core.Vector3f;
+import com.base.engine.math.Vector3f;
 
 public class Material {
 

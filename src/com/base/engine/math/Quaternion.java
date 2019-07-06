@@ -1,10 +1,9 @@
-package com.base.engine.core;
-
-import com.base.engine.rendering.Matrix4f;
+package com.base.engine.math;
 
 public class Quaternion {
 	private float x, y, z, w;
 
+	@Deprecated
 	public Quaternion() {
 		this(0, 0, 0, 1);
 	}
@@ -16,6 +15,18 @@ public class Quaternion {
 		this.w = w;
 	}
 
+	public Quaternion(Vector3f axis, float angledeg) {
+		float sinHalfAngle = (float) Math.sin(angledeg / 2);
+		float cosHalfAngle = (float) Math.cos(angledeg / 2);
+
+		this.x = axis.getX() * sinHalfAngle;
+		this.y = axis.getY() * sinHalfAngle;
+		this.z = axis.getZ() * sinHalfAngle;
+		this.w = cosHalfAngle;
+
+	}
+
+	@Deprecated
 	public Quaternion initRotationRad(Vector3f axis, float angleInRadians) {
 
 		float sinHalfAngle = (float) Math.sin(angleInRadians / 2);
@@ -30,6 +41,7 @@ public class Quaternion {
 
 	}
 
+	@Deprecated
 	public Quaternion initRotationDeg(Vector3f axis, float angleInDegrees) {
 
 		float sinHalfAngle = (float) Math.sin(Math.toRadians(angleInDegrees / 2));
@@ -42,6 +54,10 @@ public class Quaternion {
 
 		return (this);
 
+	}
+
+	public boolean equals(Quaternion r) {
+		return (x == r.getX() && y == r.getY() && z == r.getZ() && w == r.getW());
 	}
 
 	public float length() {
@@ -102,6 +118,17 @@ public class Quaternion {
 		float z_ = w * r.getZ() + x * r.getY() - y * r.getX();
 
 		return new Quaternion(x_, y_, z_, w_);
+	}
+
+	public void set(float x, float y, float z, float w) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.w = w;
+	}
+
+	public void set(Quaternion other) {
+		this.set(other.getX(), other.getY(), other.getZ(), other.getW());
 	}
 
 	public float getX() {

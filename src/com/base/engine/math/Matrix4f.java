@@ -1,6 +1,4 @@
-package com.base.engine.rendering;
-
-import com.base.engine.core.Vector3f;
+package com.base.engine.math;
 
 public class Matrix4f
 {

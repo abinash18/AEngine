@@ -1,6 +1,6 @@
 package com.base.engine.util;
 
-import com.base.engine.core.Vector3f;
+import com.base.engine.math.Vector3f;
 
 /**
  * This Class Allows To Have A Alpha Value To Be Set And Wraps Around A Vector3f To Include Alpha As Well.

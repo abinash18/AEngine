@@ -1,7 +1,7 @@
 package com.base.engine.rendering;
 
-import com.base.engine.core.Vector2f;
-import com.base.engine.core.Vector3f;
+import com.base.engine.math.Vector2f;
+import com.base.engine.math.Vector3f;
 
 public class Vertex {
 	public static final int SIZE = 8;

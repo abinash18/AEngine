@@ -6,8 +6,9 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL32;
 
 import com.base.engine.components.BaseLight;
+import com.base.engine.components.Camera;
 import com.base.engine.core.GameObject;
-import com.base.engine.core.Vector3f;
+import com.base.engine.math.Vector3f;
 
 public class RenderingEngine {
 
@@ -23,8 +24,9 @@ public class RenderingEngine {
 
 		lights = new ArrayList<BaseLight>();
 
-		mainCamera = new Camera((float) Math.toRadians(70f), (float) Window.getWidth() / (float) Window.getHeight(),
-				0.01f, 1000.0f);
+		// mainCamera = new Camera((float) Math.toRadians(70f), (float)
+		// Window.getWidth() / (float) Window.getHeight(),
+		// 0.01f, 1000.0f);
 		ambientLight = new Vector3f(0.1f, 0.1f, 0.1f);
 
 	}
@@ -114,6 +116,10 @@ public class RenderingEngine {
 
 	}
 
+	public void addCamera(Camera camera) {
+		mainCamera = camera;
+	}
+
 	public BaseLight getActiveLight() {
 		return activeLight;
 	}
@@ -130,6 +136,7 @@ public class RenderingEngine {
 		RenderingEngine.mainCamera = cam;
 	}
 
+	@Deprecated
 	public void input(float delta) {
 		mainCamera.input(delta);
 	}

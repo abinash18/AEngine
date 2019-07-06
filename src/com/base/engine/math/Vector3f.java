@@ -1,4 +1,4 @@
-package com.base.engine.core;
+package com.base.engine.math;
 
 public class Vector3f {
 	private float x;
@@ -37,9 +37,17 @@ public class Vector3f {
 		return new Vector3f(x, y, z);
 	}
 
-	public Vector3f rotate(float angleInRadians, Vector3f axis) {
+	public Vector3f rotate(float angleInDegrees, Vector3f axis) {
+		float sinAngle = (float) Math.sin(-angleInDegrees);
+		float cosAngle = (float) Math.cos(-angleInDegrees);
 
-		Quaternion rotation = new Quaternion().initRotationRad(axis, angleInRadians);
+		return this.cross(axis.mul(sinAngle)).add( // Rotation on local X
+				(this.mul(cosAngle)).add( // Rotation on local Z
+						axis.mul(this.dot(axis.mul(1 - cosAngle))))); // Rotation on local Y
+	}
+
+	public Vector3f rotate(Quaternion rotation) {
+
 		Quaternion conjugate = rotation.conjugate();
 		Quaternion w = rotation.mul(this).mul(conjugate);
 
@@ -58,6 +66,10 @@ public class Vector3f {
 		this.x = x;
 		this.y = y;
 		this.z = z;
+	}
+
+	public void set(Vector3f other) {
+		this.set(other.getX(), other.getY(), other.getZ());
 	}
 
 	public Vector3f lerp(Vector3f dest, float lerpFactor) {

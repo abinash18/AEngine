@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import org.lwjgl.BufferUtils;
 
-import com.base.engine.rendering.Matrix4f;
+import com.base.engine.math.Matrix4f;
 import com.base.engine.rendering.Vertex;
 
 public class Util {

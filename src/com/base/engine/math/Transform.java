@@ -1,18 +1,23 @@
-package com.base.engine.core;
-
-import com.base.engine.rendering.Matrix4f;
+package com.base.engine.math;
 
 public class Transform {
 
-	// private static Camera cam;
+	private Transform parent;
+	private Matrix4f parentMatrix;
+
 	private static float zNear, zFar, width, height, fov;
-	private Vector3f position, scale;
-	private Quaternion rotation;
+	private Vector3f position, scale, oldPosition, oldScale;
+	private Quaternion rotation, oldRotation;
 
 	public Transform() {
 		this.position = new Vector3f(0, 0, 0);
 		this.rotation = new Quaternion(0, 0, 0, 1);
 		this.scale = new Vector3f(1, 1, 1);
+		this.parentMatrix = new Matrix4f().initIdentity();
+
+		oldPosition = new Vector3f(0, 0, 0);
+		oldRotation = new Quaternion(0, 0, 0, 0);
+		oldScale = new Vector3f(0, 0, 0);
 
 	}
 
@@ -22,7 +27,39 @@ public class Transform {
 		Matrix4f rotationMatrix = rotation.toRotationMatrix();
 		Matrix4f scaleMatrix = new Matrix4f().initScale(scale.getX(), scale.getY(), scale.getZ());
 
-		return translationMatrix.mul(rotationMatrix.mul(scaleMatrix));
+		if (parent != null && parent.hasChanged()) {
+			this.parentMatrix = parent.getTransformation();
+		}
+
+		oldPosition.set(position);
+		oldRotation.set(rotation);
+		oldScale.set(scale);
+
+		return parentMatrix.mul(translationMatrix.mul(rotationMatrix.mul(scaleMatrix)));
+	}
+
+	public boolean hasChanged() {
+
+		if (!position.equals(oldPosition)) {
+			return true;
+		}
+		if (!rotation.equals(oldRotation)) {
+			return true;
+		}
+		if (!scale.equals(oldScale)) {
+			return true;
+		}
+
+		return false;
+
+	}
+
+	public void setParent(Transform parent) {
+		this.parent = parent;
+	}
+
+	public Transform getParent() {
+		return parent;
 	}
 
 	public Vector3f getPosition() {
@@ -60,14 +97,6 @@ public class Transform {
 	public void setScale(float x, float y, float z) {
 		this.scale = new Vector3f(x, y, z);
 	}
-
-//	public static Camera getCam() {
-//		return cam;
-//	}
-//
-//	public static void setCam(Camera cam) {
-//		Transform.cam = cam;
-//	}
 
 	public static float getzNear() {
 		return zNear;

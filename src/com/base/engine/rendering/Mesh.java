@@ -9,7 +9,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 
 import com.base.engine.core.Util;
-import com.base.engine.core.Vector3f;
+import com.base.engine.math.Vector3f;
 
 public class Mesh {
 	private int vbo, size, ibo;

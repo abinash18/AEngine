@@ -79,7 +79,7 @@ public class CoreEngine {
 
 				game.input((float) frameTime);
 				Input.update();
-				renderEngine.input((float) frameTime);
+				// renderEngine.input((float) frameTime);
 				game.update((float) frameTime);
 
 				if (frameCounter >= 1.0) {

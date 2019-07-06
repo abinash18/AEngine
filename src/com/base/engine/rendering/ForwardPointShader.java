@@ -2,7 +2,8 @@ package com.base.engine.rendering;
 
 import com.base.engine.components.BaseLight;
 import com.base.engine.components.PointLight;
-import com.base.engine.core.Transform;
+import com.base.engine.math.Matrix4f;
+import com.base.engine.math.Transform;
 
 public class ForwardPointShader extends Shader {
 
@@ -54,7 +55,7 @@ public class ForwardPointShader extends Shader {
 		super.setUniformf("specularIntensity", mat.getSpecularIntensity());
 		super.setUniformf("specularPower", mat.getSpecularPower());
 
-		super.setUniform3f("eyePos", super.getRenderingEngine().getMainCamera().getPosition());
+		super.setUniform3f("eyePos", super.getRenderingEngine().getMainCamera().getTransform().getPosition());
 
 		setUniformPointLight("pointLight", (PointLight) super.getRenderingEngine().getActiveLight());
 
