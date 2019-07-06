@@ -34,7 +34,7 @@ public class Camera extends GameComponent {
 	}
 
 	public Matrix4f getViewProjection() {
-		Matrix4f cameraRotationMatrix = super.getTransform().getRotation().conjugate().toRotationMatrix();
+		Matrix4f cameraRotationMatrix = super.getTransform().getTransformedRotation().conjugate().toRotationMatrix();
 		Vector3f cameraPosition = super.getTransform().getTransformedPosition().mul(-1); // Doing Negative
 																							// multiplication here to
 																							// eradicate the use of it
@@ -110,20 +110,17 @@ public class Camera extends GameComponent {
 			boolean rotY = deltaPos.getX() != 0, rotX = deltaPos.getY() != 0;
 
 			if (rotY) {
-//				super.getTransform().setRotation(super.getTransform().getRotation()
-//						.mul(new Quaternion(Y_AXIS, (float) Math.toRadians(deltaPos.getX() * sensitivity)))
-//						.normalize());
 
 				super.getTransform().rotate(Y_AXIS, (float) Math.toRadians(deltaPos.getX() * sensitivity));
 
 			}
 
 			if (rotX) {
-//				super.getTransform().setRotation(super.getTransform().getRotation()
-//						.mul(new Quaternion(super.getTransform().getTransformedRotation().getRight(),
-//								(float) Math.toRadians(-deltaPos.getY() * sensitivity)))
-//						.normalize());
 
+				/*
+				 * There Is No Need To have The transformed rotation because it is already done
+				 * when calling the conjugate in the getViewProjection() Method.
+				 */
 				super.getTransform().rotate(super.getTransform().getRotation().getRight(),
 						(float) Math.toRadians(-deltaPos.getY() * sensitivity));
 
