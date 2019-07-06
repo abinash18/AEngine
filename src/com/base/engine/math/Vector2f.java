@@ -111,13 +111,15 @@ public class Vector2f {
 		this.y = y;
 	}
 
-	public void set(float x, float y) {
+	public Vector2f set(float x, float y) {
 		this.x = x;
 		this.y = y;
+		return this;
 	}
 
-	public void set(Vector2f other) {
+	public Vector2f set(Vector2f other) {
 		this.set(other.getX(), other.getY());
+		return this;
 	}
 
 }

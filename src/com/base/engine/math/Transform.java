@@ -15,10 +15,6 @@ public class Transform {
 		this.scale = new Vector3f(1, 1, 1);
 		this.parentMatrix = new Matrix4f().initIdentity();
 
-		oldPosition = new Vector3f(0, 0, 0);
-		oldRotation = new Quaternion(0, 0, 0, 0);
-		oldScale = new Vector3f(0, 0, 0);
-
 	}
 
 	public Matrix4f getTransformation() {
@@ -27,18 +23,38 @@ public class Transform {
 		Matrix4f rotationMatrix = rotation.toRotationMatrix();
 		Matrix4f scaleMatrix = new Matrix4f().initScale(scale.getX(), scale.getY(), scale.getZ());
 
-		if (parent != null && parent.hasChanged()) {
-			this.parentMatrix = parent.getTransformation();
+		return getParentMatrix().mul(translationMatrix.mul(rotationMatrix.mul(scaleMatrix)));
+	}
+
+	public void update() {
+		if (oldPosition != null) {
+			oldPosition.set(position);
+			oldRotation.set(rotation);
+			oldScale.set(scale);
+		} else {
+			oldPosition = new Vector3f(0, 0, 0).set(position).add(1.0f); // This way if these are not set somehow it is guaranteed
+																// that they will not be null.
+			oldRotation = new Quaternion(0, 0, 0, 0).set(rotation).mul(0.5f);
+			oldScale = new Vector3f(0, 0, 0).set(scale).add(1.0f);
 		}
 
-		oldPosition.set(position);
-		oldRotation.set(rotation);
-		oldScale.set(scale);
+	}
 
-		return parentMatrix.mul(translationMatrix.mul(rotationMatrix.mul(scaleMatrix)));
+	public void rotate(Vector3f axis, float anglerad) {
+
+		this.rotation = new Quaternion(axis, anglerad).mul(rotation).normalize();
+
 	}
 
 	public boolean hasChanged() {
+
+		/*
+		 * This crawls up the hierarchy until the top one that has changed and is not
+		 * null and uses that ones value.
+		 */
+		if (parent != null && parent.hasChanged()) {
+			return true;
+		}
 
 		if (!position.equals(oldPosition)) {
 			return true;
@@ -51,6 +67,39 @@ public class Transform {
 		}
 
 		return false;
+
+	}
+
+	private Matrix4f getParentMatrix() {
+		/*
+		 * This crawls up the hierarchy until the top one that has changed and is not
+		 * null and uses that ones value.
+		 */
+		if (parent != null && parent.hasChanged()) {
+			this.parentMatrix = parent.getTransformation();
+		}
+
+		return parentMatrix;
+
+	}
+
+	public Quaternion getTransformedRotation() {
+		Quaternion parentRotation = new Quaternion(0, 0, 0, 1);
+		/*
+		 * This crawls up the hierarchy until the top one that has changed and is not
+		 * null and uses that ones value. In this case there is no rotation cache for
+		 * the parent like there is for position and scale. So there is no
+		 * .hasChanged();
+		 */
+		if (parent != null) {
+			parentRotation = parent.getTransformedRotation();
+		}
+		return parentRotation.mul(rotation);
+	}
+
+	public Vector3f getTransformedPosition() {
+
+		return getParentMatrix().transform(position);
 
 	}
 

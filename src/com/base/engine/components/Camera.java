@@ -34,9 +34,13 @@ public class Camera extends GameComponent {
 	}
 
 	public Matrix4f getViewProjection() {
-		Matrix4f cameraRotationMatrix = super.getTransform().getRotation().toRotationMatrix();
-		Matrix4f cameraTranslationMatrix = new Matrix4f().initTranslation(-super.getTransform().getPosition().getX(),
-				-super.getTransform().getPosition().getY(), -super.getTransform().getPosition().getZ());
+		Matrix4f cameraRotationMatrix = super.getTransform().getRotation().conjugate().toRotationMatrix();
+		Vector3f cameraPosition = super.getTransform().getTransformedPosition().mul(-1); // Doing Negative
+																							// multiplication here to
+																							// eradicate the use of it
+																							// in the return statement.
+		Matrix4f cameraTranslationMatrix = new Matrix4f().initTranslation(cameraPosition.getX(), cameraPosition.getY(),
+				cameraPosition.getZ());
 
 		return projection.mul(cameraRotationMatrix.mul(cameraTranslationMatrix));
 
@@ -71,9 +75,8 @@ public class Camera extends GameComponent {
 	@Override
 	public void input(float delta) {
 
-		float sensitivity = -0.25f;
+		float sensitivity = 0.25f;
 		float moveAmount = (float) (10 * delta);
-		// float rotationAmount = (float) (100 * delta);
 
 		if (Input.getKey(Input.KEY_W)) {
 			move(super.getTransform().getRotation().getForward(), moveAmount);
@@ -107,16 +110,23 @@ public class Camera extends GameComponent {
 			boolean rotY = deltaPos.getX() != 0, rotX = deltaPos.getY() != 0;
 
 			if (rotY) {
-				super.getTransform().setRotation(super.getTransform().getRotation()
-						.mul(new Quaternion(Y_AXIS, (float) Math.toRadians(deltaPos.getX() * sensitivity)))
-						.normalize());
+//				super.getTransform().setRotation(super.getTransform().getRotation()
+//						.mul(new Quaternion(Y_AXIS, (float) Math.toRadians(deltaPos.getX() * sensitivity)))
+//						.normalize());
+
+				super.getTransform().rotate(Y_AXIS, (float) Math.toRadians(deltaPos.getX() * sensitivity));
+
 			}
 
 			if (rotX) {
-				super.getTransform().setRotation(super.getTransform().getRotation()
-						.mul(new Quaternion(super.getTransform().getRotation().getRight(),
-								(float) Math.toRadians(-deltaPos.getY() * sensitivity)))
-						.normalize());
+//				super.getTransform().setRotation(super.getTransform().getRotation()
+//						.mul(new Quaternion(super.getTransform().getTransformedRotation().getRight(),
+//								(float) Math.toRadians(-deltaPos.getY() * sensitivity)))
+//						.normalize());
+
+				super.getTransform().rotate(super.getTransform().getRotation().getRight(),
+						(float) Math.toRadians(-deltaPos.getY() * sensitivity));
+
 			}
 
 			if (rotY || rotX) {

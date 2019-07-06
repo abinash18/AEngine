@@ -33,8 +33,9 @@ public class TestGame extends Game {
 		// cam = new Camera();
 		dirLight = new GameObject();
 		dirLight2 = new GameObject();
-		dLight = new DirectionalLight(new Color(0, 0, 1), 0.4f, new Vector3f(1, 1, 1));
-		dLight2 = new DirectionalLight(new Color(0, 1, 1), 0.4f, new Vector3f(1, 1, 0));
+		dLight = new DirectionalLight(new Color(0, 0, 1), 0.4f);
+
+		dLight2 = new DirectionalLight(new Color(0, 1, 1), 0.4f);
 		pLight = new GameObject();
 		pointLight = new PointLight(new Color(1, 0, 0), 0.4f, new Attenuation(0, 0, 1));
 		sLight = new GameObject();
@@ -73,10 +74,13 @@ public class TestGame extends Game {
 		pLight.addComponent(pointLight);
 		// sLight.addComponent(spotLight);
 		spotLight.getTransform().setRotation(new Quaternion(new Vector3f(0, 1, 0), (float) Math.toRadians(-90.0f)));
-		getRootObject().addChild(dirLight);
-		getRootObject().addChild(dirLight2);
+		super.getRootObject().addChild(dirLight);
+		dirLight.getTransform().setRotation(new Quaternion(new Vector3f(1, 1, 1), (float) Math.toRadians(45.0f)));
+		// getRootObject().addChild(dirLight2);
 		// getRootObject().addChild(pLight);
 		// getRootObject().addChild(sLight);
+		// dLight.getTransform().setRotation(new Quaternion(new Vector3f(1, 0, 0),
+		// (float) Math.toRadians(45.0f)));
 
 	}
 

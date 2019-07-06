@@ -205,4 +205,13 @@ public class Matrix4f
 	{
 		m[x][y] = value;
 	}
+	
+	public Vector3f transform(Vector3f other) {
+		
+		return new Vector3f(m[0][0] * other.getX() + m[0][1] * other.getY() + m[0][2] * other.getZ() + m[0][3],
+							m[1][0] * other.getX() + m[1][1] * other.getY() + m[1][2] * other.getZ() + m[1][3],
+							m[2][0] * other.getX() + m[2][1] * other.getY() + m[2][2] * other.getZ() + m[2][3]);
+		
+	}
+	
 }

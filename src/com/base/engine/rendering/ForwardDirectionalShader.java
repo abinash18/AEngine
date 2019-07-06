@@ -51,7 +51,8 @@ public class ForwardDirectionalShader extends Shader {
 		super.setUniformf("specularIntensity", mat.getSpecularIntensity());
 		super.setUniformf("specularPower", mat.getSpecularPower());
 
-		super.setUniform3f("eyePos", super.getRenderingEngine().getMainCamera().getTransform().getPosition());
+		super.setUniform3f("eyePos",
+				super.getRenderingEngine().getMainCamera().getTransform().getTransformedPosition());
 		setUniformDirectionalLight("directionalLight", (DirectionalLight) super.getRenderingEngine().getActiveLight());
 
 	}

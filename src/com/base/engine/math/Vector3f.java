@@ -62,14 +62,16 @@ public class Vector3f {
 		return Math.max(x, Math.max(y, z));
 	}
 
-	public void set(float x, float y, float z) {
+	public Vector3f set(float x, float y, float z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
+		return this;
 	}
 
-	public void set(Vector3f other) {
+	public Vector3f set(Vector3f other) {
 		this.set(other.getX(), other.getY(), other.getZ());
+		return this;
 	}
 
 	public Vector3f lerp(Vector3f dest, float lerpFactor) {
