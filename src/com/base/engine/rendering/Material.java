@@ -1,58 +1,85 @@
 package com.base.engine.rendering;
 
+import java.util.HashMap;
+
 import com.base.engine.math.Vector3f;
 
 public class Material {
 
-	private Texture texture;
-	private Vector3f color;
-	private float specularIntensity, specularPower;
+	private HashMap<String, Texture> textureBinds;
+	private HashMap<String, Float> floatBinds;
+	private HashMap<String, Vector3f> vec3fBinds;
 
-	public Material(Texture texture) {
-		this(texture, new Vector3f(1, 1, 1));
+	public Material() {
+		textureBinds = new HashMap<String, Texture>();
+		floatBinds = new HashMap<String, Float>();
+		vec3fBinds = new HashMap<String, Vector3f>();
 	}
 
-	public Material(Texture texture, Vector3f color) {
-		this(texture, color, 2, 32);
+	public void addTexture(String name, Texture texture) {
+		textureBinds.put(name, texture);
 	}
 
-	public Material(Texture texture, Vector3f color, float specularIntensity, float specularPower) {
-		this.texture = texture;
-		this.color = color;
-		this.specularIntensity = specularIntensity;
-		this.specularPower = specularPower;
+	public void addFloat(String name, float value) {
+		floatBinds.put(name, value);
 	}
 
-	public Texture getTexture() {
-		return texture;
+	public void addVector3f(String name, Vector3f value) {
+		vec3fBinds.put(name, value);
 	}
 
-	public void setTexture(Texture texture) {
-		this.texture = texture;
+	public Texture getTexture(String name) {
+		Texture result = textureBinds.get(name);
+		if (result != null) {
+			return result;
+		}
+
+		return new Texture("defaultTexture.png");
+
 	}
 
-	public Vector3f getColor() {
-		return color;
+	public float getFloat(String name) {
+		Float result = floatBinds.get(name);
+		if (result != null) {
+			return result;
+		}
+
+		return 0;
+
 	}
 
-	public void setColor(Vector3f color) {
-		this.color = color;
+	public Vector3f getVector3f(String name) {
+		Vector3f result = vec3fBinds.get(name);
+		if (result != null) {
+			return result;
+		}
+
+		return new Vector3f(0, 0, 0);
+
 	}
 
-	public float getSpecularIntensity() {
-		return specularIntensity;
+	public HashMap<String, Texture> getTextureBinds() {
+		return textureBinds;
 	}
 
-	public float getSpecularPower() {
-		return specularPower;
+	public void setTextureBinds(HashMap<String, Texture> textureBinds) {
+		this.textureBinds = textureBinds;
 	}
 
-	public void setSpecularIntensity(float specularIntensity) {
-		this.specularIntensity = specularIntensity;
+	public HashMap<String, Float> getFloatBinds() {
+		return floatBinds;
 	}
 
-	public void setSpecularPower(float specularPower) {
-		this.specularPower = specularPower;
+	public void setFloatBinds(HashMap<String, Float> floatBinds) {
+		this.floatBinds = floatBinds;
+	}
+
+	public HashMap<String, Vector3f> getVec3fBinds() {
+		return vec3fBinds;
+	}
+
+	public void setVec3fBinds(HashMap<String, Vector3f> vec3fBinds) {
+		this.vec3fBinds = vec3fBinds;
 	}
 
 }

@@ -2,6 +2,10 @@ package com.base.engine.math;
 
 public class Transform {
 
+	public static final Vector3f X_AXIS = new Vector3f(1, 0, 0);
+	public static final Vector3f Y_AXIS = new Vector3f(0, 1, 0);
+	public static final Vector3f Z_AXIS = new Vector3f(0, 0, 1);
+
 	private Transform parent;
 	private Matrix4f parentMatrix;
 
@@ -23,7 +27,7 @@ public class Transform {
 		Matrix4f rotationMatrix = rotation.toRotationMatrix();
 		Matrix4f scaleMatrix = new Matrix4f().initScale(scale.getX(), scale.getY(), scale.getZ());
 
-		return getParentMatrix().mul(translationMatrix.mul(rotationMatrix.mul(scaleMatrix)));
+		return this.getParentMatrix().mul(translationMatrix.mul(rotationMatrix.mul(scaleMatrix)));
 	}
 
 	public void update() {
@@ -32,8 +36,9 @@ public class Transform {
 			oldRotation.set(rotation);
 			oldScale.set(scale);
 		} else {
-			oldPosition = new Vector3f(0, 0, 0).set(position).add(1.0f); // This way if these are not set somehow it is guaranteed
-																// that they will not be null.
+			oldPosition = new Vector3f(0, 0, 0).set(position).add(1.0f); // This way if these are not set somehow it is
+																			// guaranteed
+			// that they will not be null.
 			oldRotation = new Quaternion(0, 0, 0, 0).set(rotation).mul(0.5f);
 			oldScale = new Vector3f(0, 0, 0).set(scale).add(1.0f);
 		}

@@ -27,7 +27,7 @@ public class CoreEngine {
 	}
 
 	public void init() {
-		game.getRootObject().init();
+		game.init();
 	}
 
 	public void start() {
@@ -89,7 +89,8 @@ public class CoreEngine {
 				}
 			}
 			if (render) {
-				renderEngine.render(game.getRootObject());
+				game.render(renderEngine);
+				// renderEngine.render(game.getRootObject());
 				Window.render(frameRate);
 				frames++;
 			} else {

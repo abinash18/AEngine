@@ -11,7 +11,7 @@ public class DirectionalLight extends BaseLight {
 	public DirectionalLight(Vector3f color, float intensity) {
 		super(color, intensity);
 
-		setShader(ForwardDirectionalShader.getInstance());
+		super.setShader(ForwardDirectionalShader.getInstance());
 
 	}
 

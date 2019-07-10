@@ -87,9 +87,9 @@ public class RenderingEngine {
 		gameObject.addToRenderingEngine(this);
 
 		Shader forwardAmbientShader = ForwardAmbientShader.getInstance();
-		forwardAmbientShader.setRenderingEngine(this);
+		// forwardAmbientShader.setRenderingEngine(this);
 
-		gameObject.render(forwardAmbientShader);
+		gameObject.render(forwardAmbientShader, this);
 
 		GL11.glEnable(GL11.GL_BLEND);
 
@@ -100,11 +100,11 @@ public class RenderingEngine {
 		GL11.glDepthFunc(GL11.GL_EQUAL);
 
 		for (BaseLight light : lights) {
-			light.getShader().setRenderingEngine(this); // CHECK THIS AFTER
+			// light.getShader().setRenderingEngine(this); // CHECK THIS AFTER
 
 			activeLight = light;
 
-			gameObject.render(light.getShader());
+			gameObject.render(light.getShader(), this);
 
 		}
 

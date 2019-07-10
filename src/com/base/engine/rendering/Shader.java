@@ -14,7 +14,6 @@ import com.base.engine.math.Vector2f;
 import com.base.engine.math.Vector3f;
 
 public class Shader {
-	private RenderingEngine renderingEngine;
 	private int program;
 	private HashMap<String, Integer> uniforms;
 
@@ -38,11 +37,7 @@ public class Shader {
 		GL20.glUseProgram(program);
 	}
 
-	public void setRenderingEngine(RenderingEngine rengeringEngine) {
-		this.renderingEngine = rengeringEngine;
-	}
-
-	public void updateUniform(Transform transform, Material mat) {
+	public void updateUniform(Transform transform, Material mat, RenderingEngine engine) {
 
 	}
 
@@ -176,10 +171,6 @@ public class Shader {
 
 	public void setUniforms(HashMap<String, Integer> uniforms) {
 		this.uniforms = uniforms;
-	}
-
-	public RenderingEngine getRenderingEngine() {
-		return renderingEngine;
 	}
 
 }

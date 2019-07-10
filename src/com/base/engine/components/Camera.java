@@ -5,16 +5,13 @@ import org.lwjgl.input.Mouse;
 import com.base.engine.core.Input;
 import com.base.engine.math.Matrix4f;
 import com.base.engine.math.Quaternion;
+import com.base.engine.math.Transform;
 import com.base.engine.math.Vector2f;
 import com.base.engine.math.Vector3f;
 import com.base.engine.rendering.RenderingEngine;
 import com.base.engine.rendering.Window;
 
 public class Camera extends GameComponent {
-
-	private static final Vector3f X_AXIS = new Vector3f(1, 0, 0);
-	private static final Vector3f Y_AXIS = new Vector3f(0, 1, 0);
-	private static final Vector3f Z_AXIS = new Vector3f(0, 0, 1);
 
 	// private Vector3f position, forward, up;
 
@@ -111,7 +108,7 @@ public class Camera extends GameComponent {
 
 			if (rotY) {
 
-				super.getTransform().rotate(Y_AXIS, (float) Math.toRadians(deltaPos.getX() * sensitivity));
+				super.getTransform().rotate(Transform.Y_AXIS, (float) Math.toRadians(deltaPos.getX() * sensitivity));
 
 			}
 
@@ -146,10 +143,6 @@ public class Camera extends GameComponent {
 
 		super.getTransform().setPosition(super.getTransform().getPosition().add(dir.mul(amt)));
 
-	}
-
-	public static Vector3f getYaxis() {
-		return Y_AXIS;
 	}
 
 	public void setProjection(Matrix4f projection) {

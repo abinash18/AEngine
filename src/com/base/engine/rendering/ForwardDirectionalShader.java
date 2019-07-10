@@ -40,20 +40,19 @@ public class ForwardDirectionalShader extends Shader {
 	}
 
 	@Override
-	public void updateUniform(Transform transform, Material mat) {
+	public void updateUniform(Transform transform, Material mat, RenderingEngine engine) {
 
 		Matrix4f worldMatrix = transform.getTransformation(),
-				projectedMatrix = super.getRenderingEngine().getMainCamera().getViewProjection().mul(worldMatrix);
-		mat.getTexture().bind();
+				projectedMatrix = engine.getMainCamera().getViewProjection().mul(worldMatrix);
+		mat.getTexture("diffuse").bind();
 
 		super.setUniformMatrix4f("model", worldMatrix);
 		super.setUniformMatrix4f("MVP", projectedMatrix);
-		super.setUniformf("specularIntensity", mat.getSpecularIntensity());
-		super.setUniformf("specularPower", mat.getSpecularPower());
+		super.setUniformf("specularIntensity", mat.getFloat("specularIntensity"));
+		super.setUniformf("specularPower", mat.getFloat("specularPower"));
 
-		super.setUniform3f("eyePos",
-				super.getRenderingEngine().getMainCamera().getTransform().getTransformedPosition());
-		setUniformDirectionalLight("directionalLight", (DirectionalLight) super.getRenderingEngine().getActiveLight());
+		super.setUniform3f("eyePos", engine.getMainCamera().getTransform().getTransformedPosition());
+		setUniformDirectionalLight("directionalLight", (DirectionalLight) engine.getActiveLight());
 
 	}
 

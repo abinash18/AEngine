@@ -30,7 +30,7 @@ public abstract class GameComponent {
 	public void input(float delta) {
 	}
 
-	public void render(Shader shader) {
+	public void render(Shader shader, RenderingEngine engine) {
 	}
 
 	public void addToRenderingEngine(RenderingEngine engine) {

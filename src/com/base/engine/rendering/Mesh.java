@@ -1,15 +1,25 @@
 package com.base.engine.rendering;
 
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL15.*;
-import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL11.GL_FLOAT;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
+import static org.lwjgl.opengl.GL11.glDrawElements;
+import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
+import static org.lwjgl.opengl.GL15.GL_ELEMENT_ARRAY_BUFFER;
+import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
+import static org.lwjgl.opengl.GL15.glBindBuffer;
+import static org.lwjgl.opengl.GL15.glBufferData;
+import static org.lwjgl.opengl.GL15.glGenBuffers;
+import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
+import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
+import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.util.ArrayList;
 
 import com.base.engine.core.Util;
 import com.base.engine.math.Vector3f;
+import com.base.engine.rendering.meshLoading.IndexedModel;
+import com.base.engine.rendering.meshLoading.OBJModel;
 
 public class Mesh {
 	private int vbo, size, ibo;
@@ -106,57 +116,78 @@ public class Mesh {
 			System.exit(1);
 		}
 
-		ArrayList<Vertex> vertices = new ArrayList<Vertex>();
-		ArrayList<Integer> indices = new ArrayList<Integer>();
+		OBJModel test = new OBJModel("./res/models/" + fileName);
+		IndexedModel model = test.toIndexedModel();
 
-		// StringBuilder shaderSource = new StringBuilder();
-		BufferedReader meshReader = null;
-
-		try {
-			meshReader = new BufferedReader(new FileReader("./res/models/" + fileName));
-			String line;
-
-			while ((line = meshReader.readLine()) != null) {
-
-				String[] tokens = line.split(" ");
-
-				tokens = Util.removeEmptyStrings(tokens);
-
-				if (tokens.length == 0 || tokens[0].equals("#")) {
-					continue;
-				} else if (tokens[0].equals("v")) {
-					vertices.add(new Vertex(new Vector3f(Float.valueOf(tokens[1]), Float.valueOf(tokens[2]),
-							Float.valueOf(tokens[3]))));
-
-				} else if (tokens[0].equals("f")) {
-					indices.add(Integer.parseInt(tokens[1].split("/")[0]) - 1);
-					indices.add(Integer.parseInt(tokens[2].split("/")[0]) - 1);
-					indices.add(Integer.parseInt(tokens[3].split("/")[0]) - 1);
-
-					if (tokens.length > 4) {
-						indices.add(Integer.parseInt(tokens[1].split("/")[0]) - 1);
-						indices.add(Integer.parseInt(tokens[3].split("/")[0]) - 1);
-						indices.add(Integer.parseInt(tokens[4].split("/")[0]) - 1);
-					}
-
-				}
-
-			}
-
-			meshReader.close();
-
-			Vertex[] vertexData = new Vertex[vertices.size()];
-			vertices.toArray(vertexData);
-
-			Integer[] indicesData = new Integer[indices.size()];
-			indices.toArray(indicesData);
-
-			addVertices(vertexData, Util.toIntArray(indicesData), calcNormals);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(1);
+		if (calcNormals) {
+			model.calcNormals();
 		}
+		ArrayList<Vertex> vertices = new ArrayList<Vertex>();
+
+		for (int i = 0; i < model.getPositions().size(); i++) {
+			vertices.add(
+					new Vertex(model.getPositions().get(i), model.getTexCoords().get(i), model.getNormals().get(i)));
+		}
+
+		Vertex[] vertexData = new Vertex[vertices.size()];
+		vertices.toArray(vertexData);
+
+		Integer[] indicesData = new Integer[model.getIndices().size()];
+		model.getIndices().toArray(indicesData);
+
+		addVertices(vertexData, Util.toIntArray(indicesData), calcNormals);
+
+//		ArrayList<Vertex> vertices = new ArrayList<Vertex>();
+//		ArrayList<Integer> indices = new ArrayList<Integer>();
+//
+//		// StringBuilder shaderSource = new StringBuilder();
+//		BufferedReader meshReader = null;
+//
+//		try {
+//			meshReader = new BufferedReader(new FileReader("./res/models/" + fileName));
+//			String line;
+//
+//			while ((line = meshReader.readLine()) != null) {
+//
+//				String[] tokens = line.split(" ");
+//
+//				tokens = Util.removeEmptyStrings(tokens);
+//
+//				if (tokens.length == 0 || tokens[0].equals("#")) {
+//					continue;
+//				} else if (tokens[0].equals("v")) {
+//					vertices.add(new Vertex(new Vector3f(Float.valueOf(tokens[1]), Float.valueOf(tokens[2]),
+//							Float.valueOf(tokens[3]))));
+//
+//				} else if (tokens[0].equals("f")) {
+//					indices.add(Integer.parseInt(tokens[1].split("/")[0]) - 1);
+//					indices.add(Integer.parseInt(tokens[2].split("/")[0]) - 1);
+//					indices.add(Integer.parseInt(tokens[3].split("/")[0]) - 1);
+//
+//					if (tokens.length > 4) {
+//						indices.add(Integer.parseInt(tokens[1].split("/")[0]) - 1);
+//						indices.add(Integer.parseInt(tokens[3].split("/")[0]) - 1);
+//						indices.add(Integer.parseInt(tokens[4].split("/")[0]) - 1);
+//					}
+//
+//				}
+//
+//			}
+//
+//			meshReader.close();
+//
+//			Vertex[] vertexData = new Vertex[vertices.size()];
+//			vertices.toArray(vertexData);
+//
+//			Integer[] indicesData = new Integer[indices.size()];
+//			indices.toArray(indicesData);
+//
+//			addVertices(vertexData, Util.toIntArray(indicesData), calcNormals);
+//
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			System.exit(1);
+//		}
 
 		return null;
 

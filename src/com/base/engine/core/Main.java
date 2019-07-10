@@ -11,7 +11,7 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		int width = 800, height = 600, frameRate = 60;
+		int width = 800, height = 600, frameRate = 600;
 		boolean fullScreen = false, vSync = false;
 		String windowTitle = "Project Quaternion | pre-alpha release";
 

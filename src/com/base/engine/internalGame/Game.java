@@ -1,6 +1,8 @@
 package com.base.engine.internalGame;
 
+import com.base.engine.components.GameComponent;
 import com.base.engine.core.GameObject;
+import com.base.engine.rendering.RenderingEngine;
 
 public abstract class Game {
 
@@ -18,11 +20,19 @@ public abstract class Game {
 		getRootObject().input(delta);
 	}
 
-//	public void render() {
-//		getRootObject().render();
-//	}
+	public void render(RenderingEngine engine) {
+		engine.render(getRootObject());
+	}
 
-	public GameObject getRootObject() {
+	public void addChild(GameObject child) {
+		getRootObject().addChild(child);
+	}
+
+	public void addComponent(GameComponent component) {
+		getRootObject().addComponent(component);
+	}
+
+	private GameObject getRootObject() {
 		if (root == null) {
 			root = new GameObject();
 		}
