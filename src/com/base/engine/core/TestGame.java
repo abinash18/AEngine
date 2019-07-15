@@ -22,7 +22,7 @@ public class TestGame extends Game {
 		// init();
 	}
 
-	private GameObject monkey, dirLight, dirLight2, pLight, sLight;
+	private GameObject monkey, monkey2, dirLight, dirLight2, pLight, sLight;
 	private DirectionalLight dLight, dLight2;
 	private PointLight pointLight;
 	private SpotLight spotLight;
@@ -111,6 +111,12 @@ public class TestGame extends Game {
 		monkey.getTransform().setRotation(new Quaternion(Transform.Z_AXIS, (float) Math.toRadians((90.0f))));
 
 		super.addChild(monkey);
+		
+		monkey2 = new GameObject();
+		monkey2.addComponent(new MeshRenderer(new Mesh("monkey.obj", true), material));
+		monkey2.getTransform().setTranslation(5, 0, 5);;
+
+		super.addChild(monkey2);
 
 	}
 
@@ -121,9 +127,8 @@ public class TestGame extends Game {
 		super.update(delta);
 
 		temp = temp + delta;
-		float angle = (float) Math.toRadians(Math.sin(temp) * 180);
-		//System.out.println(angle);
-		monkey.getTransform().setRotation(new Quaternion(Transform.ZX_AXIS, (float)Math.toRadians(250)));
+		float angle = (float) Math.toRadians(temp * 180 * 2);
+		monkey.getTransform().setRotation(new Quaternion(Transform.X_AXIS, angle));
 
 	}
 

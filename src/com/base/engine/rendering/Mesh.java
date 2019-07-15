@@ -15,6 +15,9 @@ import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import org.lwjgl.opengl.GL15;
 
 import com.base.engine.components.MeshRenderer;
 import com.base.engine.core.Util;
@@ -24,12 +27,26 @@ import com.base.engine.rendering.meshLoading.OBJModel;
 import com.base.engine.rendering.resourceManagement.MeshResource;
 
 public class Mesh {
+
+	private static HashMap<String, MeshResource> loadedModels = new HashMap<String, MeshResource>();
 	private MeshResource meshBuffers;
-	private int size;
+	private String fileName;
 
 	public Mesh(String fileName, boolean calcNormals) {
-		initMeshData();
-		loadMesh(fileName, calcNormals);
+
+		MeshResource oldResource = loadedModels.get(fileName);
+
+		this.fileName = fileName;
+
+		if (oldResource != null) {
+			this.meshBuffers = oldResource;
+			this.meshBuffers.addReference();
+		} else {
+			// initMeshData();
+			this.loadMesh(fileName, calcNormals);
+			this.loadedModels.put(fileName, meshBuffers);
+		}
+
 	}
 
 	public Mesh(Vertex[] vertices, int[] indices) {
@@ -38,12 +55,13 @@ public class Mesh {
 
 	public Mesh(Vertex[] vertices, int[] indices, boolean calcNormals) {
 		initMeshData();
-		addVertices(vertices, indices, calcNormals);
+		this.fileName = "";
+		this.addVertices(vertices, indices, calcNormals);
 	}
 
+	@Deprecated
 	private void initMeshData() {
-		meshBuffers = new MeshResource();
-		size = 0;
+		meshBuffers = new MeshResource(0);
 	}
 
 	private void addVertices(Vertex[] vertices, int[] indices, boolean calcNormals) {
@@ -52,7 +70,8 @@ public class Mesh {
 			calcNormals(vertices, indices);
 		}
 
-		size = indices.length;
+		// meshBuffers.setSize(indices.length);
+		meshBuffers = new MeshResource(indices.length);
 
 		glBindBuffer(GL_ARRAY_BUFFER, meshBuffers.getVbo());
 		glBufferData(GL_ARRAY_BUFFER, Util.createFlippedBuffer(vertices), GL_STATIC_DRAW);
@@ -75,7 +94,7 @@ public class Mesh {
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshBuffers.getIbo());
 
-		glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, meshBuffers.getSize(), GL_UNSIGNED_INT, 0);
 
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
@@ -141,6 +160,18 @@ public class Mesh {
 
 		return null;
 
+	}
+
+	@Override
+	protected void finalize() {
+		try {
+			super.finalize();
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+		if (meshBuffers.removeRefrence() && fileName.isEmpty()) {
+			loadedModels.remove(fileName);
+		}
 	}
 
 }
