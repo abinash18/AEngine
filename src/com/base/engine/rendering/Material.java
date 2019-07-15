@@ -6,6 +6,8 @@ import com.base.engine.math.Vector3f;
 
 public class Material {
 
+	public static final String DEFAULT_TEXTURE = "defaultModelTexture.png";
+	
 	private HashMap<String, Texture> textureBinds;
 	private HashMap<String, Float> floatBinds;
 	private HashMap<String, Vector3f> vec3fBinds;
@@ -32,9 +34,11 @@ public class Material {
 		Texture result = textureBinds.get(name);
 		if (result != null) {
 			return result;
+		} else {
+			this.addTexture(name, new Texture(DEFAULT_TEXTURE));
 		}
 
-		return new Texture("defaultTexture.png");
+		return this.getTexture(name);
 
 	}
 

@@ -5,6 +5,9 @@ public class Transform {
 	public static final Vector3f X_AXIS = new Vector3f(1, 0, 0);
 	public static final Vector3f Y_AXIS = new Vector3f(0, 1, 0);
 	public static final Vector3f Z_AXIS = new Vector3f(0, 0, 1);
+	public static final Vector3f XY_AXIS = new Vector3f(1, 1, 0);
+	public static final Vector3f ZX_AXIS = new Vector3f(1, 0, 1);
+	public static final Vector3f YZ_AXIS = new Vector3f(0, 1, 1);
 
 	private Transform parent;
 	private Matrix4f parentMatrix;
@@ -133,11 +136,15 @@ public class Transform {
 	}
 
 	public void setRotation(Quaternion rotation) {
-		this.rotation = rotation;
+		/*
+		 * You Have To Normalize The Quaternion Or It Will Give You A Mesh That Might
+		 * Just Become A New MEME Format.
+		 **/
+		this.rotation = rotation.normalize(); // Ha Ha I fixed It m8 bin looking for did for a while now.
 	}
 
 	public void setRotation(float x, float y, float z, float w) {
-		this.rotation = new Quaternion(x, y, z, w);
+		this.rotation = new Quaternion(x, y, z, w).normalize();
 	}
 
 	public Vector3f getScale() {

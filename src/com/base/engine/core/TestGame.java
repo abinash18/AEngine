@@ -22,7 +22,7 @@ public class TestGame extends Game {
 		// init();
 	}
 
-	private GameObject dirLight, dirLight2, pLight, sLight;
+	private GameObject monkey, dirLight, dirLight2, pLight, sLight;
 	private DirectionalLight dLight, dLight2;
 	private PointLight pointLight;
 	private SpotLight spotLight;
@@ -48,7 +48,7 @@ public class TestGame extends Game {
 
 		int indices2[] = { 0, 1, 2, 2, 1, 3 };
 
-	//	Mesh mesh2 = new Mesh(vertices2, indices2, true);
+		// Mesh mesh2 = new Mesh(vertices2, indices2, true);
 
 		Mesh mesh = new Mesh(vertices, indices, true);
 		Material material = new Material();
@@ -56,7 +56,7 @@ public class TestGame extends Game {
 		material.addFloat("specularIntensity", 1);
 		material.addFloat("specularPower", 8);
 		Material material2 = new Material();
-		material2.addTexture("diffuse", new Texture("square-16.png"));
+		material2.addTexture("diffuse", new Texture("defaultModelTexture.png"));
 		material2.addFloat("specularIntensity", 1);
 		material2.addFloat("specularPower", 8);
 		MeshRenderer meshRenderer = new MeshRenderer(mesh, material);
@@ -81,10 +81,12 @@ public class TestGame extends Game {
 		super.addChild(planeObject);
 		super.addChild(directionalLightObject);
 
-		//GameObject testMesh1 = new GameObject().addComponent(new MeshRenderer(mesh2, material));
-		//GameObject testMesh2 = new GameObject().addComponent(new MeshRenderer(mesh2, material));
+		// GameObject testMesh1 = new GameObject().addComponent(new MeshRenderer(mesh2,
+		// material));
+		// GameObject testMesh2 = new GameObject().addComponent(new MeshRenderer(mesh2,
+		// material));
 
-		//testMesh1.getTransform().getPosition().set(0, 2, 0);
+		// testMesh1.getTransform().getPosition().set(0, 2, 0);
 		// testMesh1.getTransform().setRotation(new Quaternion(new Vector3f(0, 1, 0),
 		// 0.2f));
 
@@ -98,17 +100,31 @@ public class TestGame extends Game {
 
 		super.addChild(cameraObject);
 
-		//super.addChild(testMesh1);
+		// super.addChild(testMesh1);
 
 		directionalLight.getTransform().rotate(new Vector3f(1, 0, 0), (float) Math.toRadians(-135));
 
-		//Mesh m = new Mesh("monkey.obj", true);
+		// Mesh m = new Mesh("monkey.obj", true);
 
-		GameObject monkey = new GameObject();
+		monkey = new GameObject();
 		monkey.addComponent(meshRenderer2);
 		monkey.getTransform().setRotation(new Quaternion(Transform.Z_AXIS, (float) Math.toRadians((90.0f))));
 
 		super.addChild(monkey);
 
 	}
+
+	float temp = 0.0f;
+
+	@Override
+	public void update(float delta) {
+		super.update(delta);
+
+		temp = temp + delta;
+		float angle = (float) Math.toRadians(Math.sin(temp) * 180);
+		//System.out.println(angle);
+		monkey.getTransform().setRotation(new Quaternion(Transform.ZX_AXIS, (float)Math.toRadians(250)));
+
+	}
+
 }

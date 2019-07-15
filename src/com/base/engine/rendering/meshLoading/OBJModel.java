@@ -107,8 +107,9 @@ public class OBJModel {
 
 				result.getPositions().add(currentPosition);
 				result.getTexCoords().add(currentTexCoord);
-				result.getNormals().add(currentNormal);
-
+				if (hasNormals) {
+					result.getNormals().add(currentNormal);
+				}
 			}
 
 			Integer normalModelIndex = normalIndexMap.get(currentIndex.vertexIndex);
