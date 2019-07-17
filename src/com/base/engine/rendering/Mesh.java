@@ -28,8 +28,12 @@ import com.base.engine.rendering.resourceManagement.MeshResource;
 
 public class Mesh {
 
+	/*
+	 * Saves An Unnecessary Allocation Of Resources If The Mesh Has Been Loaded In A
+	 * Different Call.
+	 */
 	private static HashMap<String, MeshResource> loadedModels = new HashMap<String, MeshResource>();
-	private MeshResource meshBuffers;
+	private MeshResource meshBuffers; // The Mesh That Is Being Loaded.
 	private String fileName;
 
 	public Mesh(String fileName, boolean calcNormals) {
@@ -38,13 +42,16 @@ public class Mesh {
 
 		this.fileName = fileName;
 
+		// If the mesh being loaded already exists in the loadedModels map than use the
+		// mesh there
 		if (oldResource != null) {
 			this.meshBuffers = oldResource;
-			this.meshBuffers.addReference();
-		} else {
+			this.meshBuffers.addReference(); // Increment the reference counter for garbage collection
+		} else { // Else if the mesh dose not exist create a new mesh by calling the load mesh
+					// method.
 			// initMeshData();
 			this.loadMesh(fileName, calcNormals);
-			this.loadedModels.put(fileName, meshBuffers);
+			Mesh.loadedModels.put(fileName, meshBuffers); // Then put the mesh in the loaded models map for future use.
 		}
 
 	}
@@ -170,7 +177,7 @@ public class Mesh {
 			e.printStackTrace();
 		}
 		if (meshBuffers.removeRefrence() && fileName.isEmpty()) {
-			loadedModels.remove(fileName);
+			Mesh.loadedModels.remove(fileName);
 		}
 	}
 

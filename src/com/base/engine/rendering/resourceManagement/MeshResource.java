@@ -7,7 +7,7 @@ import org.lwjgl.opengl.GL15;
 
 /**
  * @author abinash
- *
+ * Stores A Mesh And All Its Components
  */
 public class MeshResource {
 
@@ -66,6 +66,14 @@ public class MeshResource {
 
 	public int getSize() {
 		return size;
+	}
+
+	public int getRefCount() {
+		return refCount;
+	}
+
+	public void setRefCount(int refCount) {
+		this.refCount = refCount;
 	}
 
 	@Deprecated
