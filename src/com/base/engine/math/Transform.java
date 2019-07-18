@@ -8,6 +8,7 @@ public class Transform {
 	public static final Vector3f XY_AXIS = new Vector3f(1, 1, 0);
 	public static final Vector3f ZX_AXIS = new Vector3f(1, 0, 1);
 	public static final Vector3f YZ_AXIS = new Vector3f(0, 1, 1);
+	public static final Vector3f XYZ_AXIS = new Vector3f(1, 1, 1);
 
 	private Transform parent;
 	private Matrix4f parentMatrix;

@@ -41,6 +41,86 @@ public class Shader {
 
 	}
 
+	public void addAllUniforms(String shaderText) {
+
+		// System.out.println("Attempting To Add Uniforms Automatically...");
+
+		final String UNIFORM_KEYWORD = "uniform", LINE_END_CHAR = ";";
+
+		int uniformStartLocation = shaderText.indexOf(UNIFORM_KEYWORD);
+
+		while (uniformStartLocation != -1) {
+
+			/*
+			 * Calculates the starting position of the uniform variable type and name
+			 * definition in the line.
+			 */
+			int beginUniformDefinitionIndex = uniformStartLocation + UNIFORM_KEYWORD.length() + 1;
+
+			// Finds the line end character and returns the index of it.
+			int endOfDefinitionIndex = shaderText.indexOf(LINE_END_CHAR, beginUniformDefinitionIndex);
+
+			String uniformLine = shaderText.substring(beginUniformDefinitionIndex, endOfDefinitionIndex);
+
+			// Returns that name of the uniform skipping the type and one index after the
+			// space to the name definition.
+			String uniformName = uniformLine.substring(uniformLine.indexOf(' ') + 1, uniformLine.length());
+
+			this.addUniform(uniformName);
+
+			// System.out.println("'" + uniformLine + "' Extracted Text: '" + uniformName +
+			// "'");
+
+			uniformStartLocation = shaderText.indexOf(UNIFORM_KEYWORD, uniformStartLocation
+					+ UNIFORM_KEYWORD.length()); /* This is to prevent it from looping over the same uniform keyword. */
+		}
+
+		// System.out.println("Finished Adding Uniforms From File.");
+
+	}
+
+	public void addAllAttributes(String shaderText) {
+
+		// System.out.println("Attempting To Add Attributes Automatically...");
+
+		final String ATTRIBUTE_KEYWORD = "uniform", LINE_END_CHAR = ";";
+
+		int attribStartLocation = shaderText.indexOf(ATTRIBUTE_KEYWORD);
+		int attribLocationIndex = 0;
+
+		while (attribStartLocation != -1) {
+
+			/*
+			 * Calculates the starting position of the Attribute variable type and name
+			 * definition in the line.
+			 */
+			int beginAtrribDefinitionIndex = attribStartLocation + ATTRIBUTE_KEYWORD.length() + 1;
+
+			// Finds the line end character and returns the index of it.
+			int endOfDefinitionIndex = shaderText.indexOf(LINE_END_CHAR, beginAtrribDefinitionIndex);
+
+			String attribLine = shaderText.substring(beginAtrribDefinitionIndex, endOfDefinitionIndex);
+
+			// Returns that name of the Attribute skipping the type and one index after the
+			// space to the name definition.
+			String attribName = attribLine.substring(attribLine.indexOf(' ') + 1, attribLine.length());
+
+			// System.out.println("'" + attribLine + "' Extracted Text: '" + attribName +
+			// "'");
+
+			// Sets the attribute using attrib name and the attrib index counter and then
+			// increments it for the next one.
+			this.setAttribLocation(attribName, attribLocationIndex);
+			attribLocationIndex++;
+
+			attribStartLocation = shaderText.indexOf(ATTRIBUTE_KEYWORD, attribStartLocation + ATTRIBUTE_KEYWORD
+					.length()); /* This is to prevent it from looping over the same uniform keyword. */
+		}
+
+		// System.out.println("Finished Adding Attributes From File.");
+
+	}
+
 	public void addUniform(String uniform) {
 		int uniformLocation = GL20.glGetUniformLocation(program, uniform);
 
@@ -136,16 +216,35 @@ public class Shader {
 		GL20.glUniformMatrix4(uniforms.get(uniformName), true, Util.createFlippedBuffer(value));
 	}
 
-	private static String loadShader(String fileName) {
+	public static String loadShader(String fileName) {
 		StringBuilder shaderSource = new StringBuilder();
 		BufferedReader shaderReader = null;
+
+		final String INCLUDE_DIRECTIVE = "#include";
+
+		// glsl include
 
 		try {
 			shaderReader = new BufferedReader(new FileReader("./res/shaders/" + fileName));
 			String line;
 
 			while ((line = shaderReader.readLine()) != null) {
-				shaderSource.append(line).append("\n");
+
+				if (line.startsWith(INCLUDE_DIRECTIVE)) {
+
+					// #include 'file'
+					// INCLUDE_DIRECTIE length puts it at the end of the include and i add 2 to move
+					// it past the first quote to the file name.
+					// AND THEN IT ENDS AT THE END OF THE LINE NO WHITE SPACE AT THE END.
+					shaderSource.append( // This appends the loaded shader to the source of the file
+							loadShader( // Loads the shader specified in the #include
+									line.substring(INCLUDE_DIRECTIVE.length() + 2, line.length() - 1)));
+					// Figures out the name of the file being included.
+
+				} else {
+					shaderSource.append(line).append("\n");
+				}
+
 			}
 
 			shaderReader.close();

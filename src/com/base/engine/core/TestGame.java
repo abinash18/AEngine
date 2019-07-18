@@ -108,7 +108,7 @@ public class TestGame extends Game {
 
 		monkey = new GameObject();
 		monkey.addComponent(meshRenderer2);
-		monkey.getTransform().setRotation(new Quaternion(Transform.Z_AXIS, (float) Math.toRadians((90.0f))));
+		//monkey.getTransform().setRotation(new Quaternion(Transform.Z_AXIS, (float) Math.toRadians((90.0f))));
 
 		super.addChild(monkey);
 		
@@ -128,7 +128,7 @@ public class TestGame extends Game {
 
 		temp = temp + delta;
 		float angle = (float) Math.toRadians(temp * 180 * 2);
-		monkey.getTransform().setRotation(new Quaternion(Transform.X_AXIS, angle));
+		//monkey.getTransform().setRotation(new Quaternion(Transform.X_AXIS, angle));
 
 	}
 

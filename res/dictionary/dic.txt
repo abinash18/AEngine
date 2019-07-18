@@ -8,3 +8,4 @@ structs
 fullscreen
 aswell
 quaternion
+attrib
