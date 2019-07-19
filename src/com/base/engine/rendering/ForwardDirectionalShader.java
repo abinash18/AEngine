@@ -16,27 +16,20 @@ public class ForwardDirectionalShader extends Shader {
 	public ForwardDirectionalShader() {
 		super();
 
-		super.addVertexShaderFromFile("forward-directional.vs");
-		super.addFragmentShaderFromFile("forward-directional.fs");
+		String vertexShaderText = super.loadShader("forward-directional.vs");
+		String fragmentShaderText = super.loadShader("forward-directional.fs");
 
-		super.setAttribLocation("position", 0);
-		super.setAttribLocation("texCoord", 1);
-		super.setAttribLocation("normal", 2);
+		super.addVertexShader(vertexShaderText);
+		super.addFragmentShader(fragmentShaderText);
+
+		super.addAllAttributes(vertexShaderText);
 
 		// After Setting Attributes And Loading Shaders
 		super.compileShader();
 
-		super.addUniform("model");
-		super.addUniform("MVP");
-
-		super.addUniform("specularIntensity");
-		super.addUniform("specularPower");
-		super.addUniform("eyePos");
-
-		super.addUniform("directionalLight.base.color");
-		super.addUniform("directionalLight.base.intensity");
-		super.addUniform("directionalLight.direction");
-
+		super.addAllUniforms(vertexShaderText);
+		super.addAllUniforms(fragmentShaderText);
+		
 	}
 
 	@Override
