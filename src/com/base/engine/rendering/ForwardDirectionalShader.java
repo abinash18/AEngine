@@ -14,22 +14,7 @@ public class ForwardDirectionalShader extends Shader {
 	}
 
 	public ForwardDirectionalShader() {
-		super();
-
-		String vertexShaderText = super.loadShader("forward-directional.vs");
-		String fragmentShaderText = super.loadShader("forward-directional.fs");
-
-		super.addVertexShader(vertexShaderText);
-		super.addFragmentShader(fragmentShaderText);
-
-		super.addAllAttributes(vertexShaderText);
-
-		// After Setting Attributes And Loading Shaders
-		super.compileShader();
-
-		super.addAllUniforms(vertexShaderText);
-		super.addAllUniforms(fragmentShaderText);
-		
+		super("forward-directional");
 	}
 
 	@Override

@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL32;
@@ -20,13 +19,7 @@ public class Shader {
 	private int program;
 	private HashMap<String, Integer> uniforms;
 
-	private static final Shader instance = new Shader();
-
-	public static Shader getInstance() {
-		return instance;
-	}
-
-	public Shader() {
+	public Shader(String fileName) {
 		program = GL20.glCreateProgram();
 		uniforms = new HashMap<String, Integer>();
 
@@ -35,19 +28,19 @@ public class Shader {
 			System.exit(1);
 		}
 
-//		String vertexShaderText = loadShader(fileName + ".vs");
-//		String fragmentShaderText = loadShader(fileName + ".fs");
-//
-//		this.addVertexShader(vertexShaderText);
-//		this.addFragmentShader(fragmentShaderText);
-//
-//		this.addAllAttributes(vertexShaderText);
-//
-//		// After Setting Attributes And Loading Shaders
-//		this.compileShader();
-//
-//		this.addAllUniforms(vertexShaderText);
-//		this.addAllUniforms(fragmentShaderText);
+		String vertexShaderText = loadShader(fileName + ".glvs");
+		String fragmentShaderText = loadShader(fileName + ".glfs");
+
+		this.addVertexShader(vertexShaderText);
+		this.addFragmentShader(fragmentShaderText);
+
+		this.addAllAttributes(vertexShaderText);
+
+		// After Setting Attributes And Loading Shaders
+		this.compileShader();
+
+		this.addAllUniforms(vertexShaderText);
+		this.addAllUniforms(fragmentShaderText);
 
 	}
 
@@ -63,11 +56,6 @@ public class Shader {
 		public String name, type;
 	}
 
-	/*
-	 * TODO: try to reuse the addAllUniforms() code to attempt to parse the uniforms
-	 * with in the struct. NOTE: There is no uniform key word inside a struct. Try
-	 * to make it parse either way.
-	 */
 	private HashMap<String, ArrayList<GLSLStruct>> findUniformStructs(String shaderText) {
 
 		// System.out.println("Attempting To Add Uniforms Automatically...");
@@ -79,6 +67,13 @@ public class Shader {
 		int structStartLocation = shaderText.indexOf(STRUCT_KEYWORD);
 
 		while (structStartLocation != -1) {
+
+			if (!(structStartLocation != 0
+					&& (Character.isWhitespace(shaderText.charAt(structStartLocation - 1))
+							|| shaderText.charAt(structStartLocation - 1) == ';')
+					&& Character.isWhitespace(shaderText.charAt(structStartLocation + STRUCT_KEYWORD.length())))) {
+				continue;
+			}
 
 			/*
 			 * Calculates the starting position of the uniform variable type and name
@@ -122,7 +117,7 @@ public class Shader {
 				 * backwards from the uniform definition. As soon as we hit a space it means we
 				 * are at the end of the name of the uniform.
 				 */
-				while (Character.isWhitespace(shaderText.charAt(componentNameStart - 1))) {
+				while (!Character.isWhitespace(shaderText.charAt(componentNameStart - 1))) {
 					componentNameStart--; // Back up a character.
 				}
 
@@ -131,11 +126,11 @@ public class Shader {
 
 				/*
 				 * ComponentTypeEnd is one char before the component name start, it is the end
-				 * char pos of the type. And this loop whill find the position at which it
+				 * char pos of the type. And this loop will find the position at which it
 				 * starts, it loops as long as there is no white space at the character it is
 				 * on.
 				 */
-				while (Character.isWhitespace(shaderText.charAt(componentTypeStart - 1))) {
+				while (!Character.isWhitespace(shaderText.charAt(componentTypeStart - 1))) {
 					componentTypeStart--; // Back up a character.
 				}
 
@@ -148,16 +143,17 @@ public class Shader {
 				// System.out.println("'" + shaderText.substring(componentNameStart,
 				// componentLineEndCharPos) + "'");
 
-				/*
-				 * Finds the next end char pos in the file.
-				 */
-				componentLineEndCharPos = shaderText.indexOf(LINE_END_CHAR, componentLineEndCharPos + 1);
-
 				GLSLStruct glslStruct = new GLSLStruct();
 				glslStruct.name = componentName;
 				glslStruct.type = componentType;
 
 				glslStructs.add(glslStruct);
+
+				/*
+				 * Finds the next end char pos in the file.
+				 */
+				componentLineEndCharPos = shaderText.indexOf(LINE_END_CHAR, componentLineEndCharPos + 1);
+
 			}
 
 			// Adds the found struct and all of its component uniforms in the HashMap.
@@ -196,12 +192,10 @@ public class Shader {
 
 			int whiteSpacePos = uniformLine.indexOf(' ');
 
-			// Returns that name of the uniform skipping the type and one index after the
+			// Returns that name of the uniform skipping the type and one is index after the
 			// space to the name definition.
-			String uniformName = uniformLine.substring(uniformLine.indexOf(' ') + 1, uniformLine.length());
+			String uniformName = uniformLine.substring(whiteSpacePos + 1, uniformLine.length());
 			String uniformType = uniformLine.substring(0, whiteSpacePos);
-
-			ArrayList<GLSLStruct> structComponents = structs.get(uniformType);
 
 			this.addUniformWithStructCheck(uniformName, uniformType, structs);
 
@@ -232,68 +226,28 @@ public class Shader {
 				 * Send struct again to this recursively to check for for structs inside of
 				 * this.
 				 */
-				addUniformWithStructCheck(uniformName + "." /* A dot for the dot notation glsl takes */
-						+ struct.name, struct.type, structs);
+				addUniformWithStructCheck(uniformName + "." + struct.name, struct.type, structs);
+				// System.out.println(uniformName + "." + struct.name);
 			}
 
 		}
 
 		if (addThis) {
 			this.addUniform(uniformName);
+			// System.out.println(uniformType + " " + uniformName);
 		}
 
 	}
 
-//	public ArrayList<String> getAllUniforms(String shaderText) {
-//
-//		// System.out.println("Attempting To Add Uniforms Automatically...");
-//
-//		final String UNIFORM_KEYWORD = "uniform", LINE_END_CHAR = ";";
-//
-//		ArrayList<String> uniformsInText = new ArrayList<String>();
-//
-//		int uniformStartLocation = shaderText.indexOf(UNIFORM_KEYWORD);
-//
-//		while (uniformStartLocation != -1) {
-//
-//			/*
-//			 * Calculates the starting position of the uniform variable type and name
-//			 * definition in the line.
-//			 */
-//			int beginUniformDefinitionIndex = uniformStartLocation + UNIFORM_KEYWORD.length() + 1;
-//
-//			// Finds the line end character and returns the index of it.
-//			int endOfDefinitionIndex = shaderText.indexOf(LINE_END_CHAR, beginUniformDefinitionIndex);
-//
-//			String uniformLine = shaderText.substring(beginUniformDefinitionIndex, endOfDefinitionIndex);
-//
-//			// Returns that name of the uniform skipping the type and one index after the
-//			// space to the name definition.
-//			String uniformName = uniformLine.substring(uniformLine.indexOf(' ') + 1, uniformLine.length());
-//
-//			// Add the uniforms to the text.
-//			uniformsInText.add(uniformName);
-//
-//			System.out.println("'" + uniformName + "'");
-//
-//			// System.out.println("'" + uniformLine + "' Extracted Text: '" + uniformName +
-//			// "'");
-//
-//			uniformStartLocation = shaderText.indexOf(UNIFORM_KEYWORD, uniformStartLocation
-//					+ UNIFORM_KEYWORD.length()); /* This is to prevent it from looping over the same uniform keyword. */
-//		}
-//
-//		return (uniformsInText);
-//
-//		// System.out.println("Finished Adding Uniforms From File.");
-
-//	}
-
 	public void addAllAttributes(String shaderText) {
 
 		// System.out.println("Attempting To Add Attributes Automatically...");
-
-		final String ATTRIBUTE_KEYWORD = "uniform", LINE_END_CHAR = ";";
+		/*
+		 * Oh this one wasn't easy on the brain. I had to re do the entire shader class
+		 * just to find out that it was just the wrong keyword I had uniform here
+		 * instead of attribute.
+		 */
+		final String ATTRIBUTE_KEYWORD = "attribute", LINE_END_CHAR = ";";
 
 		int attribStartLocation = shaderText.indexOf(ATTRIBUTE_KEYWORD);
 		int attribLocationIndex = 0;

@@ -14,33 +14,7 @@ public class ForwardPointShader extends Shader {
 	}
 
 	public ForwardPointShader() {
-		super();
-
-		super.addVertexShaderFromFile("forward-point.vs");
-		super.addFragmentShaderFromFile("forward-point.fs");
-
-		super.setAttribLocation("position", 0);
-		super.setAttribLocation("texCoord", 1);
-		super.setAttribLocation("normal", 2);
-
-		// After Setting Attributes And Loading Shaders
-		super.compileShader();
-
-		super.addUniform("model");
-		super.addUniform("MVP");
-
-		super.addUniform("specularIntensity");
-		super.addUniform("specularPower");
-		super.addUniform("eyePos");
-
-		super.addUniform("pointLight.base.color");
-		super.addUniform("pointLight.base.intensity");
-		super.addUniform("pointLight.atten.constant");
-		super.addUniform("pointLight.atten.linear");
-		super.addUniform("pointLight.atten.exponent");
-		super.addUniform("pointLight.position");
-		super.addUniform("pointLight.range");
-
+		super("forward-point");
 	}
 
 	@Override
