@@ -9,13 +9,17 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL32;
 
 import com.base.engine.core.Util;
+import com.base.engine.handlers.logging.LogManager;
+import com.base.engine.handlers.logging.Logger;
 import com.base.engine.math.Matrix4f;
 import com.base.engine.math.Transform;
 import com.base.engine.math.Vector2f;
 import com.base.engine.math.Vector3f;
 
-// TODO: Fix parsing: Make it faster by adding trim() to remove white space automatically.
 public class Shader {
+
+	private static Logger logger = LogManager.getLogger(Shader.class.getName());
+
 	private int program;
 	private HashMap<String, Integer> uniforms;
 
@@ -24,7 +28,11 @@ public class Shader {
 		uniforms = new HashMap<String, Integer>();
 
 		if (program == 0) {
-			System.err.println("Shader creation failed: Could not find valid memory location in constructor");
+			// System.err.println("Shader creation failed: Could not find valid memory
+			// location in constructor");
+			logger.error("Shader creation failed: Could not find valid memory location in constructor",
+					new Exception());
+			logger.info("Exiting...");
 			System.exit(1);
 		}
 
@@ -72,6 +80,7 @@ public class Shader {
 					&& (Character.isWhitespace(shaderText.charAt(structStartLocation - 1))
 							|| shaderText.charAt(structStartLocation - 1) == ';')
 					&& Character.isWhitespace(shaderText.charAt(structStartLocation + STRUCT_KEYWORD.length())))) {
+				structStartLocation = shaderText.indexOf(STRUCT_KEYWORD, structStartLocation + STRUCT_KEYWORD.length());
 				continue;
 			}
 
@@ -110,6 +119,12 @@ public class Shader {
 			 */
 			while (componentLineEndCharPos != -1 && componentLineEndCharPos < bracketEnd) {
 
+				int componentNameEnd = componentLineEndCharPos + 1;
+
+				while (Character.isWhitespace(shaderText.charAt(componentNameEnd - 1))
+						|| shaderText.charAt(componentNameEnd - 1) == ';')
+					componentNameEnd--;
+
 				int componentNameStart = componentLineEndCharPos;
 
 				/*
@@ -121,7 +136,11 @@ public class Shader {
 					componentNameStart--; // Back up a character.
 				}
 
-				int componentTypeEnd = componentNameStart - 1;
+				int componentTypeEnd = componentNameStart;
+
+				while (Character.isWhitespace(shaderText.charAt(componentTypeEnd - 1)))
+					componentTypeEnd--;
+
 				int componentTypeStart = componentTypeEnd;
 
 				/*
@@ -180,6 +199,20 @@ public class Shader {
 		while (uniformStartLocation != -1) {
 
 			/*
+			 * This performs a check to see whether the keyword being parsed is in fact an
+			 * keyword and not part of a function name or a variable name.
+			 */
+			if (!(uniformStartLocation != 0 /* Checks if the starting position is not the first character in the file */
+					/* Checks if there is white space before the keyword. */
+					&& (Character.isWhitespace(shaderText.charAt(uniformStartLocation - 1))
+							/* Or if there is a semicolon on the previous character */
+							|| shaderText.charAt(uniformStartLocation - 1) == ';')
+					/* Checks if there is whitespace after the keyword. */
+					&& Character.isWhitespace(shaderText.charAt(uniformStartLocation + UNIFORM_KEYWORD.length())))) {
+				continue;
+			}
+
+			/*
 			 * Calculates the starting position of the uniform variable type and name
 			 * definition in the line.
 			 */
@@ -188,16 +221,16 @@ public class Shader {
 			// Finds the line end character and returns the index of it.
 			int endOfDefinitionIndex = shaderText.indexOf(LINE_END_CHAR, beginUniformDefinitionIndex);
 
-			String uniformLine = shaderText.substring(beginUniformDefinitionIndex, endOfDefinitionIndex);
+			String uniformLine = shaderText.substring(beginUniformDefinitionIndex, endOfDefinitionIndex).trim();
 
 			int whiteSpacePos = uniformLine.indexOf(' ');
 
 			// Returns that name of the uniform skipping the type and one is index after the
 			// space to the name definition.
-			String uniformName = uniformLine.substring(whiteSpacePos + 1, uniformLine.length());
-			String uniformType = uniformLine.substring(0, whiteSpacePos);
+			String uniformName = uniformLine.substring(whiteSpacePos + 1, uniformLine.length()).trim();
+			String uniformType = uniformLine.substring(0, whiteSpacePos).trim();
 
-			this.addUniformWithStructCheck(uniformName, uniformType, structs);
+			this.addUniform(uniformName, uniformType, structs);
 
 			// this.addUniform(uniformName);
 
@@ -212,8 +245,7 @@ public class Shader {
 
 	}
 
-	private void addUniformWithStructCheck(String uniformName, String uniformType,
-			HashMap<String, ArrayList<GLSLStruct>> structs) {
+	private void addUniform(String uniformName, String uniformType, HashMap<String, ArrayList<GLSLStruct>> structs) {
 
 		boolean addThis = true;
 		ArrayList<GLSLStruct> structComponents = structs.get(uniformType);
@@ -226,7 +258,7 @@ public class Shader {
 				 * Send struct again to this recursively to check for for structs inside of
 				 * this.
 				 */
-				addUniformWithStructCheck(uniformName + "." + struct.name, struct.type, structs);
+				addUniform(uniformName + "." + struct.name, struct.type, structs);
 				// System.out.println(uniformName + "." + struct.name);
 			}
 
@@ -253,6 +285,16 @@ public class Shader {
 		int attribLocationIndex = 0;
 
 		while (attribStartLocation != -1) {
+
+			if (!(attribStartLocation != 0
+					&& (Character.isWhitespace(shaderText.charAt(attribStartLocation - 1))
+							|| shaderText.charAt(attribStartLocation - 1) == ';')
+					&& Character.isWhitespace(shaderText.charAt(attribStartLocation + ATTRIBUTE_KEYWORD.length())))) {
+				attribStartLocation = shaderText.indexOf(ATTRIBUTE_KEYWORD,
+						attribStartLocation + ATTRIBUTE_KEYWORD.length());
+				continue;
+
+			}
 
 			/*
 			 * Calculates the starting position of the Attribute variable type and name
@@ -287,11 +329,26 @@ public class Shader {
 
 	public void addUniform(String uniform) {
 		int uniformLocation = GL20.glGetUniformLocation(program, uniform);
+		logger.fine("Uniform " + "'" + uniform + "'" + " At Location: " + uniformLocation);
+
+		/*
+		 * System.out.println("Uniform " + "'" + uniform + "'" + " At Location: " +
+		 * uniformLocation);
+		 */
 
 		if (uniformLocation == 0xFFFFFFFF) {
-			System.err.println("Error: Could not find uniform: " + uniform);
+			/* Change level of this message to warning or informal */
+
+			logger.warning("Error: Could not find uniform: " + "'" + uniform + "'"
+					+ "Or it is not being used please check shader code and remove any un-used code or variables.");
+
+			/*
+			 * System.err.println("Error: Could not find uniform: " + "'" + uniform + "'" +
+			 * "Or it is not being used please check shader code and remove any un-used code or variables."
+			 * );
+			 */
 			new Exception().printStackTrace();
-			System.exit(1);
+			/* System.exit(1); */
 		}
 
 		uniforms.put(uniform, uniformLocation);
@@ -329,6 +386,7 @@ public class Shader {
 		GL20.glLinkProgram(program);
 
 		if (GL20.glGetProgrami(program, GL20.GL_LINK_STATUS) == 0) {
+
 			System.err.println(GL20.glGetProgramInfoLog(program, 1024));
 			System.exit(1);
 		}
@@ -345,7 +403,13 @@ public class Shader {
 		int shader = GL20.glCreateShader(type);
 
 		if (shader == 0) {
-			System.err.println("Shader creation failed: Could not find valid memory location when adding shader");
+			logger.error("Shader creation failed: Could not find valid memory location when adding shader");
+			logger.info("Exiting...");
+			/*
+			 * System.err.
+			 * println("Shader creation failed: Could not find valid memory location when adding shader"
+			 * );
+			 */
 			System.exit(1);
 		}
 
@@ -353,11 +417,15 @@ public class Shader {
 		GL20.glCompileShader(shader);
 
 		if (GL20.glGetShaderi(shader, GL20.GL_COMPILE_STATUS) == 0) {
-			System.err.println(GL20.glGetShaderInfoLog(shader, 1024));
+			logger.error(GL20.glGetShaderInfoLog(shader, 1024));
+			logger.info("Exiting...");
+			// System.err.println(GL20.glGetShaderInfoLog(shader, 1024));
 			System.exit(1);
 		}
 
 		GL20.glAttachShader(program, shader);
+		logger.fine(
+				"Successfully Attached Shader: " + program + " Log: " + "\n" + GL20.glGetShaderInfoLog(shader, 1024));
 	}
 
 	public void setUniformi(String uniformName, int value) {
@@ -413,7 +481,9 @@ public class Shader {
 
 			shaderReader.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			// e.printStackTrace();
+			logger.error("Unable to parse shader " + fileName, e);
+			logger.info("Exiting...");
 			System.exit(1);
 		}
 

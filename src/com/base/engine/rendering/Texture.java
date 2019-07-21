@@ -10,10 +10,13 @@ import javax.imageio.ImageIO;
 import org.lwjgl.opengl.GL11;
 
 import com.base.engine.core.Util;
+import com.base.engine.handlers.logging.LogManager;
+import com.base.engine.handlers.logging.Logger;
 import com.base.engine.rendering.resourceManagement.TextureResource;
 
 public class Texture {
 
+	private static Logger logger = LogManager.getLogger(Texture.class.getName());
 	private static HashMap<String, TextureResource> loadedTextures = new HashMap<String, TextureResource>();
 	private TextureResource resource;
 	private String fileName;
@@ -130,7 +133,9 @@ public class Texture {
 			return id;
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			// e.printStackTrace();
+			logger.error("Unable to load texture.", e);
+			logger.info("Exiting...");
 			System.exit(1);
 		}
 
@@ -143,7 +148,8 @@ public class Texture {
 		try {
 			super.finalize();
 		} catch (Throwable e) {
-			e.printStackTrace();
+			// e.printStackTrace();
+			logger.error("Unable to finalize.", e);
 		}
 		if (resource.removeRefrence() && fileName.isEmpty()) {
 			Texture.loadedTextures.remove(fileName);

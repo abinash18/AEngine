@@ -9,3 +9,5 @@ fullscreen
 aswell
 quaternion
 attrib
+pos
+eg

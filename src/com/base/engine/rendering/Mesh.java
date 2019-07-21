@@ -9,7 +9,6 @@ import static org.lwjgl.opengl.GL15.GL_ELEMENT_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
 import static org.lwjgl.opengl.GL15.glBindBuffer;
 import static org.lwjgl.opengl.GL15.glBufferData;
-import static org.lwjgl.opengl.GL15.glGenBuffers;
 import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
@@ -17,10 +16,9 @@ import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.lwjgl.opengl.GL15;
-
-import com.base.engine.components.MeshRenderer;
 import com.base.engine.core.Util;
+import com.base.engine.handlers.logging.LogManager;
+import com.base.engine.handlers.logging.Logger;
 import com.base.engine.math.Vector3f;
 import com.base.engine.rendering.meshLoading.IndexedModel;
 import com.base.engine.rendering.meshLoading.OBJModel;
@@ -28,6 +26,7 @@ import com.base.engine.rendering.resourceManagement.MeshResource;
 
 public class Mesh {
 
+	private static Logger logger = LogManager.getLogger(Mesh.class.getName());
 	/*
 	 * Saves An Unnecessary Allocation Of Resources If The Mesh Has Been Loaded In A
 	 * Different Call.
@@ -139,8 +138,10 @@ public class Mesh {
 		String extenstion = splitArray[splitArray.length - 1];
 
 		if (!extenstion.equals("obj")) {
-			System.err.println("File Format Not Supported For Mesh Loading " + fileName);
-			new Exception().printStackTrace();
+			// System.err.println("File Format Not Supported For Mesh Loading " + fileName);
+			// new Exception().printStackTrace();
+			logger.error("File Format Not Supported For Mesh Loading " + fileName, new Exception());
+			logger.info("Exiting...");
 			System.exit(1);
 		}
 
@@ -174,7 +175,8 @@ public class Mesh {
 		try {
 			super.finalize();
 		} catch (Throwable e) {
-			e.printStackTrace();
+			// e.printStackTrace();
+			logger.error("Unable to finalize.", e);
 		}
 		if (meshBuffers.removeRefrence() && fileName.isEmpty()) {
 			Mesh.loadedModels.remove(fileName);

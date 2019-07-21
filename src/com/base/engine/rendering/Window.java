@@ -6,9 +6,14 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
+import com.base.engine.handlers.logging.LogManager;
+import com.base.engine.handlers.logging.Logger;
 import com.base.engine.math.Vector2f;
 
 public class Window {
+
+	private static Logger logger = LogManager.getLogger(Window.class.getName());
+
 	public static void createWindow(int width, int height, String title, boolean fullscreen, boolean vSync) {
 		Display.setTitle(title);
 		try {
@@ -22,7 +27,8 @@ public class Window {
 			Keyboard.create();
 			Mouse.create();
 		} catch (LWJGLException e) {
-			e.printStackTrace();
+			// e.printStackTrace();
+			logger.error("Unable to create window.", e);
 		}
 	}
 
@@ -43,7 +49,8 @@ public class Window {
 		try {
 			modes = Display.getAvailableDisplayModes();
 		} catch (LWJGLException e) {
-			e.printStackTrace();
+			// e.printStackTrace();
+			logger.error("Unable to get display modes.", e);
 		}
 
 		for (int i = 0; i < modes.length; i++) {
@@ -112,7 +119,9 @@ public class Window {
 			Display.setFullscreen(fullscreen);
 
 		} catch (LWJGLException e) {
-			System.out.println("Unable to setup mode " + width + "x" + height + " fullscreen=" + fullscreen + e);
+			// System.out.println("Unable to setup mode " + width + "x" + height + "
+			// fullscreen=" + fullscreen + e);
+			logger.error("Unable to setup mode " + width + "x" + height + " fullscreen=" + fullscreen, e);
 		}
 	}
 

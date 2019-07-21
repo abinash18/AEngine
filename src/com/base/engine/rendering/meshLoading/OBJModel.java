@@ -149,8 +149,10 @@ public class OBJModel {
 		OBJIndex result = new OBJIndex();
 		result.vertexIndex = Integer.parseInt(values[0]) - 1;
 		if (values.length > 1) {
-			hasTexCoords = true;
-			result.texCoordIndex = Integer.parseInt(values[1]) - 1;
+			if (!values[1].isEmpty()) {
+				hasTexCoords = true;
+				result.texCoordIndex = Integer.parseInt(values[1]) - 1;
+			}
 			if (values.length > 2) {
 				hasNormals = true;
 				result.normalIndex = Integer.parseInt(values[2]) - 1;

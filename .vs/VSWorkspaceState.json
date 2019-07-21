@@ -1,6 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\res",
+    "\\res\\shaders"
   ],
+  "SelectedNode": "\\res\\shaders\\forward-ambient.glvs",
   "PreviewInSolutionExplorer": false
 }

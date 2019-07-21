@@ -7,7 +7,13 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
+import com.base.engine.handlers.logging.LogLevel;
+import com.base.engine.handlers.logging.LogManager;
+import com.base.engine.handlers.logging.Logger;
+
 public class Main {
+
+	private static Logger logger = LogManager.getLogger(Main.class.getName());
 
 	public static void main(String[] args) {
 
@@ -17,11 +23,12 @@ public class Main {
 
 		Options opts = new Options();
 
+		LogManager.setCurrentLevel(LogLevel.ALL);
 		opts.addOption(new Option("t", "title", true, "The Title Of The Frame."));
 		opts.addOption(new Option("w", "width", true, "The Width Of The Frame."));
 		opts.addOption(new Option("h", "height", true, "The Height Of The Frame."));
 		opts.addOption(new Option("fps", "fps", true, "The Maximum Frame Rate Of The Engine."));
-		// opts.addOption(new Option("r", "refreshrate", true, "The Maximum RefreshRate
+		// opts.addOption(new Option("r", "refresh rate", true, "The Maximum RefreshRate
 		// Of The Engine."));
 		opts.addOption(
 				new Option("fs", "fullscreen", false, "Add This If The Game Is To Be Launched In Full Screen Mode."));
@@ -33,8 +40,9 @@ public class Main {
 			CommandLineParser parser = new DefaultParser();
 			cmd = parser.parse(opts, args);
 		} catch (ParseException e) {
-			System.err.println("Unable to parse given arguments.");
-			e.printStackTrace();
+			// System.err.println("Unable to parse given arguments.");
+			// e.printStackTrace();
+			logger.error("Unable to parse given arguments.", e);
 			System.exit(1);
 		}
 

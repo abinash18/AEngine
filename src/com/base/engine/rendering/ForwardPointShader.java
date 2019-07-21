@@ -4,6 +4,7 @@ import com.base.engine.components.BaseLight;
 import com.base.engine.components.PointLight;
 import com.base.engine.math.Matrix4f;
 import com.base.engine.math.Transform;
+import com.base.engine.math.Vector3f;
 
 public class ForwardPointShader extends Shader {
 
@@ -28,6 +29,8 @@ public class ForwardPointShader extends Shader {
 		super.setUniformMatrix4f("MVP", projectedMatrix);
 		super.setUniformf("specularIntensity", mat.getFloat("specularIntensity"));
 		super.setUniformf("specularPower", mat.getFloat("specularPower"));
+
+		super.setUniform3f("testuniforms", new Vector3f(0, 0, 0));
 
 		super.setUniform3f("eyePos", engine.getMainCamera().getTransform().getTransformedPosition());
 

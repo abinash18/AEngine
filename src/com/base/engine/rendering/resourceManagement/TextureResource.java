@@ -2,8 +2,13 @@ package com.base.engine.rendering.resourceManagement;
 
 import org.lwjgl.opengl.GL15;
 
+import com.base.engine.handlers.logging.LogManager;
+import com.base.engine.handlers.logging.Logger;
+
 public class TextureResource {
 	private int id, refCount;
+
+	private static Logger logger = LogManager.getLogger(TextureResource.class.getName());
 
 	public TextureResource(int id) {
 		this.id = id;
@@ -15,7 +20,8 @@ public class TextureResource {
 		try {
 			super.finalize();
 		} catch (Throwable e) {
-			e.printStackTrace();
+			logger.error("Unable to finalize.", e);
+			// e.printStackTrace();
 		}
 		GL15.glDeleteBuffers(id);
 
