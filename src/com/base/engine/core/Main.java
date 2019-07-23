@@ -17,13 +17,14 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		int width = 800, height = 600, frameRate = 600;
+		int width = 800, height = 600, frameRate = 60;
 		boolean fullScreen = false, vSync = false;
 		String windowTitle = "Project Quaternion | pre-alpha release";
 
 		Options opts = new Options();
-
+		LogManager.addFileHandler();
 		LogManager.setCurrentLevel(LogLevel.ALL);
+
 		opts.addOption(new Option("t", "title", true, "The Title Of The Frame."));
 		opts.addOption(new Option("w", "width", true, "The Width Of The Frame."));
 		opts.addOption(new Option("h", "height", true, "The Height Of The Frame."));

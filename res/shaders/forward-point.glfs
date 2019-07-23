@@ -5,12 +5,10 @@ varying vec2 texCoord0;
 varying vec3 normal0;
 varying vec3 worldPosition0;
 
-uniform float test;
 uniform sampler2D diffuse;
 
 uniform PointLight pointLight;
 
 void main() {
-	float test2 = test + 0;
-	gl_FragColor = texture2D(diffuse, texCoord0.xy) * calcPointLight(pointLight, normalize(normal0), worldPosition0 + test2);
+	gl_FragColor = texture2D(diffuse, texCoord0.xy) * calcPointLight(pointLight, normalize(normal0), worldPosition0);
 }

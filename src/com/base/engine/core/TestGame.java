@@ -93,12 +93,12 @@ public class TestGame extends Game {
 
 		directionalLight.getTransform().rotate(new Vector3f(1, 0, 0), (float) Math.toRadians(-135));
 
-		GameObject ironMan = new GameObject();
-		ironMan.addComponent(new MeshRenderer(new Mesh("IronMan.obj", true), material2));
-
-		ironMan.getTransform().setScale(.025f, .025f, .025f);
-		
-		super.addChild(ironMan);
+//		GameObject ironMan = new GameObject();
+//		ironMan.addComponent(new MeshRenderer(new Mesh("IronMan.obj", true), material2));
+//
+//		ironMan.getTransform().setScale(.025f, .025f, .025f);
+//		
+//		super.addChild(ironMan);
 		
 		monkey = new GameObject();
 		monkey.addComponent(meshRenderer2);
