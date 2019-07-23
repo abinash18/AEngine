@@ -3,24 +3,31 @@ package com.base.engine.handlers.logging;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import com.base.engine.handlers.file.FileHandler;
+import com.sun.xml.internal.bind.v2.runtime.Name;
 
-// TODO: Add Allowed Levels Array List To Allow Only Certain Levels To Be Shown (Eg. INFO, ERROR only).
+// TODO: Fix File Name Problem.
 public class LogManager {
 
 	private static HashMap<String, Logger> loggers = new HashMap<String, Logger>();
-	// private static ArrayList<LogLevel> allowedLevels = new ArrayList<LogLevel>();
+	private static ArrayList<LogLevel> allowedLevels = new ArrayList<LogLevel>();
 
-	private static LogLevel currentLevel = LogLevel.ALL;
+	private static LogLevel currentLevel;
 
 	public static FileHandler fileHandler;
 
 	public static Logger getLogger(String className) {
 		if (!loggers.containsKey(className)) {
-			loggers.put(className, new Logger(className));
+			Logger resultLogger = new Logger(className);
+			loggers.put(className, resultLogger);
+			if (fileHandler != null) {
+				resultLogger.setOutputForLogFile(fileHandler.out);
+			}
 		}
 		return (loggers.get(className));
 	}
@@ -33,10 +40,38 @@ public class LogManager {
 				fileHandler.initializeWriter();
 				fileHandler.out.println("\n-------------------------------------" + getCurrentTimeAndDate()
 						+ "-------------------------------------\n");
+
+				for (Entry<String, Logger> entry : loggers.entrySet()) {
+					String key = entry.getKey();
+					Logger value = entry.getValue();
+
+					System.out.println("Adding output " + key);
+					value.setOutputForLogFile(fileHandler.out);
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+
 		}
+	}
+
+	public static void addAllowedLevel(LogLevel l) {
+		if (!allowedLevels.contains(l)) {
+			allowedLevels.add(l);
+		}
+	}
+
+	public static void removeAllowedLevel(LogLevel l) {
+		if (!allowedLevels.contains(l)) {
+			allowedLevels.remove(l);
+		}
+	}
+
+	public static boolean isLevelAllowed(LogLevel l) {
+		if (allowedLevels.contains(l)) {
+			return (true);
+		}
+		return (false);
 	}
 
 	public static void setLogLevel(LogLevel l) {

@@ -1,5 +1,8 @@
 package com.base.engine.core;
 
+import java.io.IOError;
+import java.io.IOException;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -23,7 +26,7 @@ public class Main {
 
 		Options opts = new Options();
 		LogManager.addFileHandler();
-		LogManager.setCurrentLevel(LogLevel.ALL);
+		LogManager.addAllowedLevel(LogLevel.ALL);
 
 		opts.addOption(new Option("t", "title", true, "The Title Of The Frame."));
 		opts.addOption(new Option("w", "width", true, "The Width Of The Frame."));
@@ -69,6 +72,8 @@ public class Main {
 		}
 
 		TestGame game = new TestGame();
+
+		// logger.debug("ad", new IOException());
 
 		CoreEngine engine = new CoreEngine(frameRate, game);
 		engine.createWindow(width, height, windowTitle, fullScreen, vSync);
