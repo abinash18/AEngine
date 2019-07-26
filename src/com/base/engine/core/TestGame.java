@@ -118,7 +118,6 @@ public class TestGame extends Game {
 		temp = temp + delta;
 		float angle = (float) Math.toRadians(temp * 180 * 2);
 		monkey.getTransform().setRotation(new Quaternion(Transform.X_AXIS, angle));
-
 	}
 
 }
