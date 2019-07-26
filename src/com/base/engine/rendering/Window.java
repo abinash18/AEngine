@@ -55,7 +55,7 @@ public class Window {
 
 		for (int i = 0; i < modes.length; i++) {
 			DisplayMode current = modes[i];
-			System.out.println(current.getWidth() + "x" + current.getHeight() + "x" + current.getBitsPerPixel() + " "
+			logger.debug(current.getWidth() + "x" + current.getHeight() + "x" + current.getBitsPerPixel() + " "
 					+ current.getFrequency() + "Hz");
 		}
 
@@ -102,6 +102,8 @@ public class Window {
 						if ((current.getBitsPerPixel() == Display.getDesktopDisplayMode().getBitsPerPixel())
 								&& (current.getFrequency() == Display.getDesktopDisplayMode().getFrequency())) {
 							targetDisplayMode = current;
+							logger.info("Setting Current Display Mode To: " + current.getWidth() + "x"
+									+ current.getHeight() + current.getFrequency() + "Hz");
 							break;
 						}
 					}
@@ -111,7 +113,7 @@ public class Window {
 			}
 
 			if (targetDisplayMode == null) {
-				System.out.println("Failed to find value mode: " + width + "x" + height + " fs=" + fullscreen);
+				logger.error("Failed to find value mode: " + width + "x" + height + " fs=" + fullscreen);
 				return;
 			}
 

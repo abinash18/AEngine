@@ -1,8 +1,5 @@
 package com.base.engine.core;
 
-import java.io.IOError;
-import java.io.IOException;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -20,13 +17,20 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		int width = 800, height = 600, frameRate = 60;
+		int width = 800, height = 600, frameRate = 1000;
+		// int width = 1920, height = 1080, frameRate = 1000;
 		boolean fullScreen = false, vSync = false;
 		String windowTitle = "Project Quaternion | pre-alpha release";
 
 		Options opts = new Options();
-		LogManager.addFileHandler();
-		LogManager.addAllowedLevel(LogLevel.ALL);
+		LogManager.addFileHandler(1000);
+		LogManager.setCurrentLevel(LogLevel.ALL);
+//		LogManager.addAllowedLevel(LogLevel.DEBUG);
+//		LogManager.addAllowedLevel(LogLevel.INFO);
+//		LogManager.addAllowedLevel(LogLevel.ERROR);
+//		LogManager.addAllowedLevel(LogLevel.FINEST);
+//		LogManager.addAllowedLevel(LogLevel.WARNING);
+		LogManager.fileHandler.setAppend(true);
 
 		opts.addOption(new Option("t", "title", true, "The Title Of The Frame."));
 		opts.addOption(new Option("w", "width", true, "The Width Of The Frame."));

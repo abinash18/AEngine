@@ -27,15 +27,17 @@ public class Logger {
 		this.name = className;
 	}
 
-	private void println(String line) {
+	int lineCount = 0;
+
+	private synchronized void println(String line) {
 		System.out.println(line);
-		if (out != null) {
+		if (out != null && lineCount <= LogManager.fileHandler.getMaxLines()) {
 			this.out.println(line);
-			this.out.flush();
+			lineCount++;
 		}
 	}
 
-	private void println(Throwable e) {
+	private synchronized void println(Throwable e) {
 		e.printStackTrace();
 		if (out != null) {
 			this.out.println(e.getClass().getSimpleName() + ": ");
@@ -44,44 +46,46 @@ public class Logger {
 		}
 	}
 
-	public void log(String msg) {
-		println(this.formatLog(LogLevel.ALL) + msg);
+	public synchronized void log(LogLevel l, String msg) {
+		if (checkAllowed(l)) {
+			println(this.formatLog(l) + msg);
+		}
 	}
 
-	public void log(String msg, Throwable e) {
-		println(this.formatLog(LogLevel.ALL) + msg);
-		println(e);
+	public synchronized void log(LogLevel l, String msg, Throwable e) {
+		if (checkAllowed(l)) {
+			println(this.formatLog(l) + msg);
+			println(e);
+		}
 	}
 
-	private String formatLog(LogLevel l) {
-		String log = "[" + LogManager.getCurrentTimeAndDate() + "] [" + this.name + "] " + l + ": ";
-		return log;
+	private synchronized String formatLog(LogLevel l) {
+		// String log = "[" + LogManager.getCurrentTimeAndDate() + "] [" + this.name +
+		// "] " + l + ": ";
+		return String.format("[%s] [%s] %s: ", LogManager.getCurrentTimeAndDate(), this.name, l);
 	}
 
 	private boolean checkAllowed(LogLevel l) {
-		if (LogManager.getCurrentLevel() == l || LogManager.getCurrentLevel() == LogLevel.ALL
-				|| (LogManager.isLevelAllowed(l) || LogManager.isLevelAllowed(LogLevel.ALL))) {
+		return (LogManager.getCurrentLevel() == l || LogManager.getCurrentLevel() == LogLevel.ALL
+				|| (LogManager.isLevelAllowed(l) || LogManager.isLevelAllowed(LogLevel.ALL)));
+	}
+
+	public synchronized boolean finest(String msg) {
+		if (checkAllowed(LogLevel.FINEST)) {
+			println(this.formatLog(LogLevel.FINEST) + msg);
 			return (true);
 		}
 		return (false);
 	}
 
-	public boolean finnest(String msg) {
-		if (checkAllowed(LogLevel.FINNEST)) {
-			println(this.formatLog(LogLevel.FINNEST) + msg);
-			return (true);
-		}
-		return (false);
-	}
-
-	public void finnest(String msg, Throwable e) {
-		if (finnest(msg)) {
+	public synchronized void finest(String msg, Throwable e) {
+		if (finest(msg)) {
 			// e.printStackTrace();
 			println(e);
 		}
 	}
 
-	public boolean fine(String msg) {
+	public synchronized boolean fine(String msg) {
 		if (checkAllowed(LogLevel.FINE)) {
 			println(this.formatLog(LogLevel.FINE) + msg);
 			return (true);
@@ -89,13 +93,13 @@ public class Logger {
 		return (false);
 	}
 
-	public void fine(String msg, Throwable e) {
+	public synchronized void fine(String msg, Throwable e) {
 		if (fine(msg)) {
 			println(e);
 		}
 	}
 
-	public boolean debug(String msg) {
+	public synchronized boolean debug(String msg) {
 		if (checkAllowed(LogLevel.DEBUG)) {
 			println(this.formatLog(LogLevel.DEBUG) + msg);
 			return (true);
@@ -103,13 +107,13 @@ public class Logger {
 		return (false);
 	}
 
-	public void debug(String msg, Throwable e) {
+	public synchronized void debug(String msg, Throwable e) {
 		if (debug(msg)) {
 			println(e);
 		}
 	}
 
-	public boolean info(String msg) {
+	public synchronized boolean info(String msg) {
 		if (checkAllowed(LogLevel.INFO)) {
 			println(this.formatLog(LogLevel.INFO) + msg);
 			return (true);
@@ -117,13 +121,13 @@ public class Logger {
 		return (false);
 	}
 
-	public void info(String msg, Throwable e) {
+	public synchronized void info(String msg, Throwable e) {
 		if (info(msg)) {
 			println(e);
 		}
 	}
 
-	public boolean warning(String msg) {
+	public synchronized boolean warning(String msg) {
 		if (checkAllowed(LogLevel.WARNING)) {
 			println(this.formatLog(LogLevel.WARNING) + msg);
 			return (true);
@@ -131,13 +135,13 @@ public class Logger {
 		return (false);
 	}
 
-	public void warning(String msg, Throwable e) {
+	public synchronized void warning(String msg, Throwable e) {
 		if (warning(msg)) {
 			println(e);
 		}
 	}
 
-	public boolean error(String msg) {
+	public synchronized boolean error(String msg) {
 		if (checkAllowed(LogLevel.ERROR)) {
 			println(this.formatLog(LogLevel.ERROR) + msg);
 			return (true);
@@ -145,7 +149,7 @@ public class Logger {
 		return (false);
 	}
 
-	public void error(String msg, Throwable e) {
+	public synchronized void error(String msg, Throwable e) {
 		if (error(msg)) {
 			println(e);
 		}

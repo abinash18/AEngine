@@ -128,8 +128,14 @@ public class Transform {
 		this.position = translation;
 	}
 
-	public void setTranslation(float x, float y, float z) {
+	public Transform setTranslation(float x, float y, float z) {
 		this.position = new Vector3f(x, y, z);
+		return (this);
+	}
+
+	public Transform setTranslation(Vector3f trs) {
+		this.position = trs;
+		return (this);
 	}
 
 	public Quaternion getRotation() {

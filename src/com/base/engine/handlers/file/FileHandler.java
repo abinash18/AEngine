@@ -13,11 +13,12 @@ import com.base.engine.handlers.logging.Logger;
 public class FileHandler {
 
 	private static Logger logger = LogManager.getLogger(FileHandler.class.getName());
-	private String fileName, filePath;
+	final String fileName, filePath;
 	private File file;
 	public PrintWriter out;
 	private BufferedReader bufferedReader;
-	private boolean append, autoFlush = true;
+	private boolean append;
+	private int maxLines;
 
 	/**
 	 * 
@@ -26,7 +27,7 @@ public class FileHandler {
 	 * @param filePath The complete path to the file or relative ./
 	 * @throws IOException
 	 */
-	public FileHandler(String fileName, String filePath) throws IOException {
+	public FileHandler(String fileName, String filePath) throws Exception {
 		this.fileName = fileName;
 		this.filePath = filePath;
 		this.file = new File(filePath + fileName);
@@ -34,6 +35,7 @@ public class FileHandler {
 			file.createNewFile();
 		}
 		this.append = false;
+		this.maxLines = 0;
 	}
 
 	/**
@@ -42,15 +44,30 @@ public class FileHandler {
 	 * 
 	 * @throws IOException
 	 */
-	public void initializeWriter() throws IOException {
+	public synchronized void initializeWriter(boolean autoFlush) throws Exception {
 		if (!checkFileExists()) {
 			logger.debug("File Dose Not Exist Creating: " + filePath + fileName);
 			file.createNewFile();
 		}
-		out = new PrintWriter(new FileOutputStream(file, append));
+		out = new PrintWriter(new FileOutputStream(file, append), autoFlush);
 	}
 
-	public void initializeReader() throws IOException {
+	/**
+	 * setAppend Needs To Be Called Before Initializing Writer If The File Already
+	 * Exists. Otherwise It Will Overwrite The End Of The File.
+	 * 
+	 * @throws IOException
+	 */
+	public synchronized void initializeWriter(boolean autoFlush, int maxLines) throws Exception {
+		if (!checkFileExists()) {
+			logger.debug("File Dose Not Exist Creating: " + filePath + fileName);
+			file.createNewFile();
+		}
+		this.maxLines = maxLines;
+		out = new PrintWriter(new FileOutputStream(file, append), autoFlush);
+	}
+
+	public synchronized void initializeReader() throws IOException {
 		File file = new File(filePath + fileName);
 
 		bufferedReader = new BufferedReader(new FileReader(file));
@@ -61,19 +78,7 @@ public class FileHandler {
 		return file.exists();
 	}
 
-	public void write(String line) throws IOException {
-
-		if (out == null) {
-			new Exception("Buffered Writer Not Initialized.").printStackTrace();
-			return;
-		}
-
-		System.out.println("ss");
-		out.println(line);
-
-	}
-
-	public String readLine() throws IOException {
+	public String readLine() throws Exception {
 
 		if (bufferedReader == null) {
 			new Exception("Buffered Writer Not Initialized.").printStackTrace();
@@ -100,70 +105,15 @@ public class FileHandler {
 		}
 	}
 
-	public static Logger getLogger() {
-		return logger;
-	}
-
-	public static void setLogger(Logger logger) {
-		FileHandler.logger = logger;
-	}
-
-	public String getFileName() {
-		return fileName;
-	}
-
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
-
-	public String getFilePath() {
-		return filePath;
-	}
-
-	public void setFilePath(String filePath) {
-		this.filePath = filePath;
-	}
-
-	public File getFile() {
-		return file;
-	}
-
-	public void setFile(File file) {
-		this.file = file;
-	}
-
-	public BufferedReader getBufferedReader() {
-		return bufferedReader;
-	}
-
-	public void setBufferedReader(BufferedReader bufferedReader) {
-		this.bufferedReader = bufferedReader;
-	}
-
-	public PrintWriter getOut() {
-		return out;
-	}
-
-	public void setOut(PrintWriter out) {
-		this.out = out;
+	public boolean isAppend() {
+		return append;
 	}
 
 	public void setAppend(boolean append) {
 		this.append = append;
 	}
 
-	/**
-	 * @return the autoFlush
-	 */
-	public boolean isAutoFlush() {
-		return autoFlush;
+	public int getMaxLines() {
+		return maxLines;
 	}
-
-	/**
-	 * @param autoFlush the autoFlush to set
-	 */
-	public void autoFlush() {
-		this.autoFlush = true;
-	}
-
 }

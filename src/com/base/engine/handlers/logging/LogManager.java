@@ -6,79 +6,78 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import com.base.engine.handlers.file.FileHandler;
-import com.sun.xml.internal.bind.v2.runtime.Name;
+import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 
 // TODO: Fix File Name Problem.
 public class LogManager {
 
-	private static HashMap<String, Logger> loggers = new HashMap<String, Logger>();
-	private static ArrayList<LogLevel> allowedLevels = new ArrayList<LogLevel>();
+	private static Map<String, Logger> loggers = new HashMap<>();
+	private static Set<LogLevel> allowedLevels = new HashSet<>();
 
 	private static LogLevel currentLevel;
 
 	public static FileHandler fileHandler;
 
-	public static Logger getLogger(String className) {
-		if (!loggers.containsKey(className)) {
-			Logger resultLogger = new Logger(className);
-			loggers.put(className, resultLogger);
+	public synchronized static Logger getLogger(String className) {
+		return loggers.computeIfAbsent(className, name -> {
+			Logger result = new Logger(name);
 			if (fileHandler != null) {
-				resultLogger.setOutputForLogFile(fileHandler.out);
+				result.setOutputForLogFile(fileHandler.out);
 			}
-		}
-		return (loggers.get(className));
+			return result;
+		});
 	}
 
-	public static void addFileHandler() {
-		if (fileHandler == null) {
-			try {
-				fileHandler = new FileHandler("log.log", "./logs/");
-				fileHandler.setAppend(false);
-				fileHandler.initializeWriter();
-				fileHandler.out.println("\n-------------------------------------" + getCurrentTimeAndDate()
-						+ "-------------------------------------\n");
+	public synchronized static void addFileHandler(int maxLines) {
+		if (fileHandler != null) {
+			return;
+		}
 
-				for (Entry<String, Logger> entry : loggers.entrySet()) {
-					String key = entry.getKey();
-					Logger value = entry.getValue();
+		try {
+			fileHandler = new FileHandler("log.log", "./logs/");
+			fileHandler.setAppend(false);
+			fileHandler.initializeWriter(true, maxLines);
+			fileHandler.out.println("\n-------------------------------------" + getCurrentTimeAndDate()
+					+ "-------------------------------------\n");
 
-					System.out.println("Adding output " + key);
-					value.setOutputForLogFile(fileHandler.out);
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
+			for (Entry<String, Logger> entry : loggers.entrySet()) {
+				String key = entry.getKey();
+				Logger value = entry.getValue();
+
+				System.out.println("Adding output " + key);
+				value.setOutputForLogFile(fileHandler.out);
 			}
 
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+
 	}
 
-	public static void addAllowedLevel(LogLevel l) {
-		if (!allowedLevels.contains(l)) {
-			allowedLevels.add(l);
-		}
+	public synchronized static void addAllowedLevel(LogLevel l) {
+		allowedLevels.add(l);
 	}
 
-	public static void removeAllowedLevel(LogLevel l) {
-		if (!allowedLevels.contains(l)) {
-			allowedLevels.remove(l);
-		}
+	public synchronized static void removeAllowedLevel(LogLevel l) {
+		allowedLevels.remove(l);
 	}
 
-	public static boolean isLevelAllowed(LogLevel l) {
-		if (allowedLevels.contains(l)) {
-			return (true);
-		}
-		return (false);
+	public synchronized static boolean isLevelAllowed(LogLevel l) {
+		return allowedLevels.contains(l);
 	}
 
 	public static void setLogLevel(LogLevel l) {
 		currentLevel = l;
 	}
 
-	public static HashMap<String, Logger> getLoggers() {
+	public static Map<String, Logger> getLoggers() {
 		return loggers;
 	}
 
@@ -100,9 +99,9 @@ public class LogManager {
 
 	static SimpleDateFormat sdf = new SimpleDateFormat("yyyyy.MMMMM.dd GGG hh:mm aaa");
 
-	private static String getCurrentTimeAndDateForFile() {
-		return (sdf.format(new Date()));
-	}
+//	private static String getCurrentTimeAndDateForFile() {
+//		return sdf.format(new Date());
+//	}
 
 	public static void setFileHandler(FileHandler fileHandler) {
 		LogManager.fileHandler = fileHandler;

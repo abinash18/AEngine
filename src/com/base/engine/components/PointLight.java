@@ -1,7 +1,7 @@
 package com.base.engine.components;
 
 import com.base.engine.math.Vector3f;
-import com.base.engine.rendering.ForwardPointShader;
+import com.base.engine.rendering.shaders.ForwardPointShader;
 
 /**
  * @author abinash

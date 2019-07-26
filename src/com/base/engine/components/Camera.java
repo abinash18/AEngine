@@ -4,7 +4,6 @@ import org.lwjgl.input.Mouse;
 
 import com.base.engine.core.Input;
 import com.base.engine.math.Matrix4f;
-import com.base.engine.math.Quaternion;
 import com.base.engine.math.Transform;
 import com.base.engine.math.Vector2f;
 import com.base.engine.math.Vector3f;
@@ -32,33 +31,26 @@ public class Camera extends GameComponent {
 
 	public Matrix4f getViewProjection() {
 		Matrix4f cameraRotationMatrix = super.getTransform().getTransformedRotation().conjugate().toRotationMatrix();
-		Vector3f cameraPosition = super.getTransform().getTransformedPosition().mul(-1); // Doing Negative
-																							// multiplication here to
-																							// eradicate the use of it
-																							// in the return statement.
+		/*
+		 * Doing Negative multiplication here to eradicate the use of it in the return
+		 * statement.
+		 */
+		Vector3f cameraPosition = super.getTransform().getTransformedPosition().mul(-1);
 		Matrix4f cameraTranslationMatrix = new Matrix4f().initTranslation(cameraPosition.getX(), cameraPosition.getY(),
 				cameraPosition.getZ());
-
 		return projection.mul(cameraRotationMatrix.mul(cameraTranslationMatrix));
-
 	}
 
 	public Vector3f getLeft() {
-
 		Vector3f left = super.getTransform().getRotation().getForward()
 				.cross(super.getTransform().getRotation().getUp()).normalize();
-
 		return (left);
-
 	}
 
 	public Vector3f getRight() {
-
 		Vector3f right = super.getTransform().getRotation().getUp()
 				.cross(super.getTransform().getRotation().getForward()).normalize();
-
 		return (right);
-
 	}
 
 	boolean mouseGrabbed = false;
@@ -74,6 +66,15 @@ public class Camera extends GameComponent {
 
 		float sensitivity = 0.25f;
 		float moveAmount = (float) (10 * delta);
+
+		/*
+		 * Add Any Motivations To Movement Before The Move Method Is Called. NOTE: You
+		 * Do Not Need To Use Input.getKeyDown Because It Automatically Returns The Key
+		 * If It Is Down.
+		 */
+		if (Input.getKey(Input.KEY_LSHIFT)) {
+			moveAmount = (float) (5 * delta);
+		}
 
 		if (Input.getKey(Input.KEY_W)) {
 			move(super.getTransform().getRotation().getForward(), moveAmount);
@@ -107,28 +108,22 @@ public class Camera extends GameComponent {
 			boolean rotY = deltaPos.getX() != 0, rotX = deltaPos.getY() != 0;
 
 			if (rotY) {
-
 				super.getTransform().rotate(Transform.Y_AXIS, (float) Math.toRadians(deltaPos.getX() * sensitivity));
-
 			}
 
 			if (rotX) {
-
 				/*
 				 * There Is No Need To have The transformed rotation because it is already done
 				 * when calling the conjugate in the getViewProjection() Method.
 				 */
 				super.getTransform().rotate(super.getTransform().getRotation().getRight(),
 						(float) Math.toRadians(-deltaPos.getY() * sensitivity));
-
 			}
 
 			if (rotY || rotX) {
 				Input.setMousePosition(centerWindow);
 			}
-
 		}
-
 	}
 
 	@Override
@@ -140,9 +135,7 @@ public class Camera extends GameComponent {
 	}
 
 	public void move(Vector3f dir, float amt) {
-
 		super.getTransform().setPosition(super.getTransform().getPosition().add(dir.mul(amt)));
-
 	}
 
 	public void setProjection(Matrix4f projection) {
@@ -171,6 +164,10 @@ public class Camera extends GameComponent {
 
 	public void setCenterWindow(Vector2f centerWindow) {
 		this.centerWindow = centerWindow;
+	}
+
+	public Matrix4f getProjection() {
+		return projection;
 	}
 
 }

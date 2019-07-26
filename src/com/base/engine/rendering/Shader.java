@@ -186,7 +186,7 @@ public class Shader {
 
 	}
 
-	public void addAllUniforms(String shaderText) {
+	private void addAllUniforms(String shaderText) {
 
 		HashMap<String, ArrayList<GLSLStruct>> structs = findUniformStructs(shaderText);
 
@@ -271,7 +271,7 @@ public class Shader {
 
 	}
 
-	public void addAllAttributes(String shaderText) {
+	private void addAllAttributes(String shaderText) {
 
 		// System.out.println("Attempting To Add Attributes Automatically...");
 		/*
@@ -327,7 +327,7 @@ public class Shader {
 
 	}
 
-	public void addUniform(String uniform) {
+	private void addUniform(String uniform) {
 		int uniformLocation = GL20.glGetUniformLocation(program, uniform);
 		logger.fine("Uniform " + "'" + uniform + "'" + " At Location: " + uniformLocation);
 
@@ -358,31 +358,31 @@ public class Shader {
 		GL20.glBindAttribLocation(program, location, attribName);
 	}
 
-	public void addVertexShader(String text) {
+	private void addVertexShader(String text) {
 		addProgram(text, GL20.GL_VERTEX_SHADER);
 	}
 
-	public void addGeometryShader(String text) {
+	private void addGeometryShader(String text) {
 		addProgram(text, GL32.GL_GEOMETRY_SHADER);
 	}
 
-	public void addFragmentShader(String text) {
+	private void addFragmentShader(String text) {
 		addProgram(text, GL20.GL_FRAGMENT_SHADER);
 	}
 
-	public void addVertexShaderFromFile(String fileName) {
+	private void addVertexShaderFromFile(String fileName) {
 		addProgram(loadShader(fileName), GL20.GL_VERTEX_SHADER);
 	}
 
-	public void addGeometryShaderFromFile(String fileName) {
+	private void addGeometryShaderFromFile(String fileName) {
 		addProgram(loadShader(fileName), GL32.GL_GEOMETRY_SHADER);
 	}
 
-	public void addFragmentShaderFromFile(String fileName) {
+	private void addFragmentShaderFromFile(String fileName) {
 		addProgram(loadShader(fileName), GL20.GL_FRAGMENT_SHADER);
 	}
 
-	public void compileShader() {
+	private void compileShader() {
 		GL20.glLinkProgram(program);
 
 		if (GL20.glGetProgrami(program, GL20.GL_LINK_STATUS) == 0) {
@@ -448,7 +448,7 @@ public class Shader {
 		GL20.glUniformMatrix4(uniforms.get(uniformName), true, Util.createFlippedBuffer(value));
 	}
 
-	public static String loadShader(String fileName) {
+	private static String loadShader(String fileName) {
 		StringBuilder shaderSource = new StringBuilder();
 		BufferedReader shaderReader = null;
 

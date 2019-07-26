@@ -40,20 +40,23 @@ public class CoreEngine {
 	}
 
 	public void start() {
-		if (isRunning)
+		if (isRunning) {
 			return;
-
+		}
 		run();
 	}
 
 	public void stop() {
-		if (!isRunning)
+		logger.info("Terminating Engine.");
+		if (!isRunning) {
 			return;
-
+		}
 		isRunning = false;
 	}
 
 	private void run() {
+
+		logger.info("Starting Engine.");
 		game.init();
 		isRunning = true;
 
@@ -93,7 +96,7 @@ public class CoreEngine {
 
 				if (frameCounter >= 1.0) {
 					// System.out.println(frames);
-					logger.finnest("Frames: " + frames);
+					logger.finest("Frames: " + frames);
 					frames = 0;
 					frameCounter = 0;
 				}

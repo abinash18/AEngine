@@ -9,6 +9,7 @@ import com.base.engine.components.BaseLight;
 import com.base.engine.components.Camera;
 import com.base.engine.core.GameObject;
 import com.base.engine.math.Vector3f;
+import com.base.engine.rendering.shaders.ForwardAmbientShader;
 
 public class RenderingEngine {
 

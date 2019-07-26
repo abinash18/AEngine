@@ -1,21 +1,25 @@
-package com.base.engine.rendering;
+package com.base.engine.rendering.shaders;
 
 import com.base.engine.components.BaseLight;
 import com.base.engine.components.PointLight;
+import com.base.engine.components.SpotLight;
 import com.base.engine.math.Matrix4f;
 import com.base.engine.math.Transform;
-import com.base.engine.math.Vector3f;
+import com.base.engine.rendering.Material;
+import com.base.engine.rendering.RenderingEngine;
+import com.base.engine.rendering.Shader;
 
-public class ForwardPointShader extends Shader {
+public class ForwardSpotShader extends Shader {
 
-	private static final ForwardPointShader instance = new ForwardPointShader();
+	private static final ForwardSpotShader instance = new ForwardSpotShader();
 
-	public static ForwardPointShader getInstance() {
+	public static ForwardSpotShader getInstance() {
 		return instance;
 	}
 
-	public ForwardPointShader() {
-		super("forward-point");
+	public ForwardSpotShader() {
+		super("forward-spot");
+
 	}
 
 	@Override
@@ -30,11 +34,20 @@ public class ForwardPointShader extends Shader {
 		super.setUniformf("specularIntensity", mat.getFloat("specularIntensity"));
 		super.setUniformf("specularPower", mat.getFloat("specularPower"));
 
-		super.setUniform3f("testuniforms", new Vector3f(0, 0, 0));
-
 		super.setUniform3f("eyePos", engine.getMainCamera().getTransform().getTransformedPosition());
 
-		setUniformPointLight("pointLight", (PointLight) engine.getActiveLight());
+		setUniformSpotLight("spotLight", (SpotLight) engine.getActiveLight());
+
+	}
+
+	public void setUniformPointLight(String uniformName, PointLight pointLight) {
+
+		setUniformBaseLight(uniformName + ".base", pointLight);
+		setUniformf(uniformName + ".atten.constant", pointLight.getConstant());
+		setUniformf(uniformName + ".atten.linear", pointLight.getLinear());
+		setUniformf(uniformName + ".atten.exponent", pointLight.getExponent());
+		setUniform3f(uniformName + ".position", pointLight.getTransform().getPosition());
+		setUniformf(uniformName + ".range", pointLight.getRange());
 
 	}
 
@@ -45,14 +58,10 @@ public class ForwardPointShader extends Shader {
 
 	}
 
-	public void setUniformPointLight(String uniformName, PointLight pointLight) {
-
-		setUniformBaseLight(uniformName + ".base", pointLight);
-		setUniformf(uniformName + ".atten.constant", pointLight.getConstant());
-		setUniformf(uniformName + ".atten.linear", pointLight.getLinear());
-		setUniformf(uniformName + ".atten.exponent", pointLight.getExponent());
-		setUniform3f(uniformName + ".position", pointLight.getTransform().getTransformedPosition());
-		setUniformf(uniformName + ".range", pointLight.getRange());
+	public void setUniformSpotLight(String uniformName, SpotLight spotLight) {
+		setUniformPointLight(uniformName + ".pointLight", (PointLight) spotLight);
+		setUniform3f(uniformName + ".direction", spotLight.getDirection());
+		setUniformf(uniformName + ".cutoff", spotLight.getCutoff());
 
 	}
 
