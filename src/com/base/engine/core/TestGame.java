@@ -111,7 +111,7 @@ public class TestGame extends Game {
 	}
 
 	float temp = 0.0f;
-s
+
 	@Override
 	public void update(float delta) {
 		
