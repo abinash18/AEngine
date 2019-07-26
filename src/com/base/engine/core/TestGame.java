@@ -113,8 +113,7 @@ public class TestGame extends Game {
 	float temp = 0.0f;
 
 	@Override
-	public void update(float delta) {
-		
+	public void update(float delta) {		
 		super.update(delta);
 		temp = temp + delta;
 		float angle = (float) Math.toRadians(temp * 180 * 2);
