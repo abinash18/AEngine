@@ -56,7 +56,7 @@ public class Shader {
 		GL20.glUseProgram(program);
 	}
 
-	public void updateUniform(Transform transform, Material mat, RenderingEngine engine) {
+	public void updateUniforms(Transform transform, Material mat, RenderingEngine engine) {
 
 	}
 

@@ -23,7 +23,7 @@ public class ForwardSpotShader extends Shader {
 	}
 
 	@Override
-	public void updateUniform(Transform transform, Material mat, RenderingEngine engine) {
+	public void updateUniforms(Transform transform, Material mat, RenderingEngine engine) {
 
 		Matrix4f worldMatrix = transform.getTransformation(),
 				projectedMatrix = engine.getMainCamera().getViewProjection().mul(worldMatrix);

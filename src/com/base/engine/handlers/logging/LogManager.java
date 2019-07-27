@@ -1,19 +1,15 @@
 package com.base.engine.handlers.logging;
 
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
 import com.base.engine.handlers.file.FileHandler;
-import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 
 // TODO: Fix File Name Problem.
 public class LogManager {

@@ -21,7 +21,7 @@ public class MeshRenderer extends GameComponent {
 
 		// shader.compileShader();
 		shader.bind();
-		shader.updateUniform(super.getTransform(), mat, engine);
+		shader.updateUniforms(super.getTransform(), mat, engine);
 		mesh.draw();
 	}
 
