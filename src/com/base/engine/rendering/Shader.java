@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL32;
@@ -22,10 +23,19 @@ public class Shader {
 
 	private int program;
 	private HashMap<String, Integer> uniforms;
+	/*
+	 * TODO: Make This Into A Private Wrapper Class Like GLSLStruct To Use With Out
+	 * Two ArrayLists.
+	 */
+	private List<String> uniformNames;
+	private List<String> uniformTypes;
 
 	public Shader(String fileName) {
 		program = GL20.glCreateProgram();
 		uniforms = new HashMap<String, Integer>();
+
+		uniformNames = new ArrayList<>();
+		uniformTypes = new ArrayList<>();
 
 		if (program == 0) {
 			// System.err.println("Shader creation failed: Could not find valid memory
@@ -57,6 +67,25 @@ public class Shader {
 	}
 
 	public void updateUniforms(Transform transform, Material mat, RenderingEngine engine) {
+
+		Matrix4f worldMatrix = transform.getTransformation(),
+				MVPMatrix = engine.getMainCamera().getViewProjection().mul(worldMatrix);
+
+		for (int i = 0; i < uniformNames.size(); i++) {
+
+			/* These Were Added At The Same Time So They Should Have The Same Index. */
+			String uniformName = uniformNames.get(i);
+			String uniformType = uniformTypes.get(i);
+
+			if (uniformName.startsWith("T_")) {
+				if (uniformName.equals("T_MVP")) {
+					setUniformMatrix4f(uniformName, MVPMatrix);
+				} else if (uniformName.equals("T_world")) {
+					setUniformMatrix4f(uniformName, worldMatrix);
+				}
+			}
+
+		}
 
 	}
 
@@ -245,6 +274,13 @@ public class Shader {
 
 	}
 
+	/**
+	 * Previously Known As addUniformWithStructCheck.
+	 * 
+	 * @param uniformName
+	 * @param uniformType
+	 * @param structs
+	 */
 	private void addUniform(String uniformName, String uniformType, HashMap<String, ArrayList<GLSLStruct>> structs) {
 
 		boolean addThis = true;
@@ -264,10 +300,37 @@ public class Shader {
 
 		}
 
-		if (addThis) {
-			this.addUniform(uniformName);
-			// System.out.println(uniformType + " " + uniformName);
+		if (!addThis) {
+			return;
 		}
+		// this.addUniform(uniformName);
+
+		int uniformLocation = GL20.glGetUniformLocation(program, uniformName);
+		logger.fine("Uniform " + "'" + uniformName + "'" + " At Location: " + uniformLocation);
+
+		/*
+		 * System.out.println("Uniform " + "'" + uniform + "'" + " At Location: " +
+		 * uniformLocation);
+		 */
+
+		if (uniformLocation == 0xFFFFFFFF) {
+			/* Change level of this message to warning or informal */
+
+			logger.warning("Error: Could not find uniform: " + "'" + uniformName + "'"
+					+ "Or it is not being used please check shader code and remove any un-used code or variables.");
+
+			/*
+			 * System.err.println("Error: Could not find uniform: " + "'" + uniform + "'" +
+			 * "Or it is not being used please check shader code and remove any un-used code or variables."
+			 * );
+			 */
+			new Exception().printStackTrace();
+			/* System.exit(1); */
+		}
+
+		uniforms.put(uniformName, uniformLocation);
+		uniformNames.add(uniformName);
+		uniformTypes.add(uniformType);
 
 	}
 
@@ -327,6 +390,7 @@ public class Shader {
 
 	}
 
+	@Deprecated
 	private void addUniform(String uniform) {
 		int uniformLocation = GL20.glGetUniformLocation(program, uniform);
 		logger.fine("Uniform " + "'" + uniform + "'" + " At Location: " + uniformLocation);
@@ -352,6 +416,7 @@ public class Shader {
 		}
 
 		uniforms.put(uniform, uniformLocation);
+		uniformNames.add(uniform);
 	}
 
 	public void setAttribLocation(String attribName, int location) {

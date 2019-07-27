@@ -26,8 +26,8 @@ public class ForwardAmbientShader extends Shader {
 				projectedMatrix = engine.getMainCamera().getViewProjection().mul(worldMatrix);
 		mat.getTexture("diffuse").bind();
 
-		super.setUniformMatrix4f("MVP", projectedMatrix);
-		super.setUniform3f("ambientIntensity", engine.getAmbientLight());
+		super.setUniformMatrix4f("T_MVP", projectedMatrix);
+		super.setUniform3f("R_ambient", engine.getAmbientLight());
 
 	}
 
