@@ -88,6 +88,7 @@ public class Shader {
 		}
 
 	}
+	
 
 	private class GLSLStruct {
 		public String name, type;
