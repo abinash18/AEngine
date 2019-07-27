@@ -8,6 +8,7 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
 
 import com.base.engine.core.Util;
 import com.base.engine.handlers.logging.LogManager;
@@ -55,6 +56,12 @@ public class Texture {
 	}
 
 	public void bind() {
+		this.bind(0);
+	}
+	
+	public void bind(int samplerSlot) {
+		assert (samplerSlot >= 0 && samplerSlot <= 31);
+		GL13.glActiveTexture(GL13.GL_TEXTURE0 + samplerSlot);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, resource.getId());
 	}
 

@@ -1,71 +1,85 @@
 
--------------------------------------July 26, 2019 8:54 PM-------------------------------------
+-------------------------------------July 27, 2019 5:13 PM-------------------------------------
 
-[July 26, 2019 8:54 PM] [com.base.engine.core.CoreEngine] INFO: 4.5.13399 Compatibility Profile Context 15.200.1062.1004
-[July 26, 2019 8:54 PM] [com.base.engine.core.CoreEngine] INFO: OpenGL version: 4.5.13399 Compatibility Profile Context 15.200.1062.1004 bytes
-[July 26, 2019 8:54 PM] [com.base.engine.core.CoreEngine] INFO: Max Geometry Uniform Blocks: 35372 bytes
-[July 26, 2019 8:54 PM] [com.base.engine.core.CoreEngine] INFO: Max Geometry Shader Invocations: 36442 bytes
-[July 26, 2019 8:54 PM] [com.base.engine.core.CoreEngine] INFO: Max Uniform Buffer Bindings: 35375 bytes
-[July 26, 2019 8:54 PM] [com.base.engine.core.CoreEngine] INFO: Max Uniform Block Size: 35376 bytes
-[July 26, 2019 8:54 PM] [com.base.engine.core.CoreEngine] INFO: Max SSBO Block Size: 37086 bytes
-[July 26, 2019 8:54 PM] [com.base.engine.core.CoreEngine] INFO: Starting Engine.
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Successfully Attached Shader: 1 Log: 
+[July 27, 2019 5:13 PM] [com.base.engine.core.CoreEngine] INFO: 4.5.13399 Compatibility Profile Context 15.200.1062.1004
+[July 27, 2019 5:13 PM] [com.base.engine.core.CoreEngine] INFO: OpenGL version: 4.5.13399 Compatibility Profile Context 15.200.1062.1004 bytes
+[July 27, 2019 5:13 PM] [com.base.engine.core.CoreEngine] INFO: Max Geometry Uniform Blocks: 35372 bytes
+[July 27, 2019 5:13 PM] [com.base.engine.core.CoreEngine] INFO: Max Geometry Shader Invocations: 36442 bytes
+[July 27, 2019 5:13 PM] [com.base.engine.core.CoreEngine] INFO: Max Uniform Buffer Bindings: 35375 bytes
+[July 27, 2019 5:13 PM] [com.base.engine.core.CoreEngine] INFO: Max Uniform Block Size: 35376 bytes
+[July 27, 2019 5:13 PM] [com.base.engine.core.CoreEngine] INFO: Max SSBO Block Size: 37086 bytes
+[July 27, 2019 5:13 PM] [com.base.engine.core.CoreEngine] INFO: Starting Engine.
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Successfully Attached Shader: 1 Log: 
 
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Successfully Attached Shader: 1 Log: 
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Successfully Attached Shader: 1 Log: 
 
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'model' At Location: 5
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'MVP' At Location: 0
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'eyePos' At Location: 4
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'specularIntensity' At Location: 6
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'specularPower' At Location: 7
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'diffuse' At Location: 8
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'directionalLight.base.color' At Location: 1
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'directionalLight.base.intensity' At Location: 2
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'directionalLight.direction' At Location: 3
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Successfully Attached Shader: 4 Log: 
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'model' At Location: 5
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'MVP' At Location: 0
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'eyePos' At Location: 4
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'specularIntensity' At Location: 6
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'specularPower' At Location: 7
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'diffuse' At Location: 8
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'directionalLight.base.color' At Location: 1
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'directionalLight.base.intensity' At Location: 2
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'directionalLight.direction' At Location: 3
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Successfully Attached Shader: 4 Log: 
 
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Successfully Attached Shader: 4 Log: 
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Successfully Attached Shader: 4 Log: 
 
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'model' At Location: 2
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'MVP' At Location: 0
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'eyePos' At Location: 1
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'specularIntensity' At Location: 10
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'specularPower' At Location: 11
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'diffuse' At Location: 12
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'pointLight.base.color' At Location: 3
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'pointLight.base.intensity' At Location: 4
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'pointLight.atten.constant' At Location: 5
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'pointLight.atten.linear' At Location: 6
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'pointLight.atten.exponent' At Location: 7
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'pointLight.position' At Location: 8
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'pointLight.range' At Location: 9
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Successfully Attached Shader: 7 Log: 
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'model' At Location: 2
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'MVP' At Location: 0
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'eyePos' At Location: 1
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'specularIntensity' At Location: 10
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'specularPower' At Location: 11
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'diffuse' At Location: 12
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'pointLight.base.color' At Location: 3
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'pointLight.base.intensity' At Location: 4
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'pointLight.atten.constant' At Location: 5
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'pointLight.atten.linear' At Location: 6
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'pointLight.atten.exponent' At Location: 7
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'pointLight.position' At Location: 8
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'pointLight.range' At Location: 9
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Successfully Attached Shader: 7 Log: 
 
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Successfully Attached Shader: 7 Log: 
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Successfully Attached Shader: 7 Log: 
 
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'model' At Location: 2
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'MVP' At Location: 0
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'eyePos' At Location: 1
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'specularIntensity' At Location: 3
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'specularPower' At Location: 4
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'diffuse' At Location: 14
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'spotLight.pointLight.base.color' At Location: 5
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'spotLight.pointLight.base.intensity' At Location: 6
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'spotLight.pointLight.atten.constant' At Location: 7
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'spotLight.pointLight.atten.linear' At Location: 8
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'spotLight.pointLight.atten.exponent' At Location: 9
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'spotLight.pointLight.position' At Location: 10
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'spotLight.pointLight.range' At Location: 11
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'spotLight.direction' At Location: 12
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'spotLight.cutoff' At Location: 13
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Successfully Attached Shader: 10 Log: 
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'model' At Location: 2
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'MVP' At Location: 0
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'eyePos' At Location: 1
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'specularIntensity' At Location: 3
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'specularPower' At Location: 4
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'diffuse' At Location: 14
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'spotLight.pointLight.base.color' At Location: 5
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'spotLight.pointLight.base.intensity' At Location: 6
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'spotLight.pointLight.atten.constant' At Location: 7
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'spotLight.pointLight.atten.linear' At Location: 8
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'spotLight.pointLight.atten.exponent' At Location: 9
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'spotLight.pointLight.position' At Location: 10
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'spotLight.pointLight.range' At Location: 11
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'spotLight.direction' At Location: 12
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'spotLight.cutoff' At Location: 13
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Successfully Attached Shader: 10 Log: 
 
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Successfully Attached Shader: 10 Log: 
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Successfully Attached Shader: 10 Log: 
 
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'T_MVP' At Location: 1
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'R_ambient' At Location: 0
-[July 26, 2019 8:54 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'R_diffuse' At Location: 2
-[July 26, 2019 8:54 PM] [com.base.engine.core.CoreEngine] FINEST: Frames: 237
-[July 26, 2019 8:54 PM] [com.base.engine.core.CoreEngine] FINEST: Frames: 217
-[July 26, 2019 8:54 PM] [com.base.engine.core.CoreEngine] FINEST: Frames: 202
-[July 26, 2019 8:54 PM] [com.base.engine.core.CoreEngine] FINEST: Frames: 215
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'T_MVP' At Location: 1
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'R_ambient' At Location: 0
+[July 27, 2019 5:13 PM] [com.base.engine.rendering.Shader] FINE: Uniform 'diffuse' At Location: 2
+[July 27, 2019 5:13 PM] [com.base.engine.core.CoreEngine] FINEST: Frames: 305
+[July 27, 2019 5:13 PM] [com.base.engine.core.CoreEngine] FINEST: Frames: 306
+[July 27, 2019 5:13 PM] [com.base.engine.core.CoreEngine] FINEST: Frames: 311
+[July 27, 2019 5:13 PM] [com.base.engine.core.CoreEngine] FINEST: Frames: 324
+[July 27, 2019 5:13 PM] [com.base.engine.core.CoreEngine] FINEST: Frames: 303
+[July 27, 2019 5:13 PM] [com.base.engine.core.CoreEngine] FINEST: Frames: 308
+[July 27, 2019 5:13 PM] [com.base.engine.core.CoreEngine] FINEST: Frames: 256
+[July 27, 2019 5:13 PM] [com.base.engine.core.CoreEngine] FINEST: Frames: 312
+[July 27, 2019 5:13 PM] [com.base.engine.core.CoreEngine] FINEST: Frames: 321
+[July 27, 2019 5:13 PM] [com.base.engine.core.CoreEngine] FINEST: Frames: 368
+[July 27, 2019 5:13 PM] [com.base.engine.core.CoreEngine] FINEST: Frames: 337
+[July 27, 2019 5:13 PM] [com.base.engine.core.CoreEngine] FINEST: Frames: 307
+[July 27, 2019 5:13 PM] [com.base.engine.core.CoreEngine] FINEST: Frames: 297
+[July 27, 2019 5:13 PM] [com.base.engine.core.CoreEngine] FINEST: Frames: 296
+[July 27, 2019 5:13 PM] [com.base.engine.core.CoreEngine] FINEST: Frames: 293
+[July 27, 2019 5:13 PM] [com.base.engine.core.CoreEngine] FINEST: Frames: 281
+[July 27, 2019 5:13 PM] [com.base.engine.core.CoreEngine] FINEST: Frames: 278
+[July 27, 2019 5:13 PM] [com.base.engine.core.CoreEngine] FINEST: Frames: 266

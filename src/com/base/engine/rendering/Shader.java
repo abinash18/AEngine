@@ -80,15 +80,39 @@ public class Shader {
 			if (uniformName.startsWith("T_")) {
 				if (uniformName.equals("T_MVP")) {
 					setUniformMatrix4f(uniformName, MVPMatrix);
+					// logger.finest("Added '" + uniformName + "' as MVP Matrix.");
 				} else if (uniformName.equals("T_world")) {
 					setUniformMatrix4f(uniformName, worldMatrix);
+					// logger.finest("Added '" + uniformName + "' as World Matrix.");
+				} else {
+					logger.error("'" + uniformName + "' is not a valid component of transform.",
+							new IllegalArgumentException(
+									"'" + uniformName + "' is not a valid component of transform."));
+					System.runFinalization();
+					System.exit(1);
+				}
+			} else if (uniformName.startsWith("R_")) {
+				if (uniformType.equals("sampler2D")) {
+					String unprefixedUniformName = uniformName.substring(2);
+					int samplerSlot = engine.getSamplerSlot(unprefixedUniformName);
+					mat.getTexture(unprefixedUniformName).bind(samplerSlot);
+					setUniformi(uniformName, samplerSlot);
+				} else if (uniformType.equals("vec3")) {
+					setUniform3f(uniformName, engine.getVector3f(uniformName.substring(2)));
+				} else if (uniformType.equals("float")) {
+					setUniformf(uniformName, engine.getFloat(uniformName.substring(2)));
+				}
+			} else {
+				if (uniformType.equals("vec3")) {
+					setUniform3f(uniformName, mat.getVector3f(uniformName));
+				} else if (uniformType.equals("float")) {
+					setUniformf(uniformName, mat.getFloat(uniformName));
 				}
 			}
 
 		}
 
 	}
-	
 
 	private class GLSLStruct {
 		public String name, type;

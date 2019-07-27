@@ -19,9 +19,10 @@ public class GameObject {
 		this.transform = new Transform();
 	}
 
-	public void addChild(GameObject child) {
+	public GameObject addChild(GameObject child) {
 		child.getTransform().setParent(transform);
 		children.add(child);
+		return this;
 	}
 
 	public GameObject addComponent(GameComponent gameComponent) {

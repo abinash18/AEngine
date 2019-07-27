@@ -1,6 +1,5 @@
 package com.base.engine.rendering.shaders;
 
-import com.base.engine.math.Matrix4f;
 import com.base.engine.math.Transform;
 import com.base.engine.rendering.Material;
 import com.base.engine.rendering.RenderingEngine;
@@ -22,12 +21,14 @@ public class ForwardAmbientShader extends Shader {
 	@Override
 	public void updateUniforms(Transform transform, Material mat, RenderingEngine engine) {
 
-		Matrix4f worldMatrix = transform.getTransformation(),
-				projectedMatrix = engine.getMainCamera().getViewProjection().mul(worldMatrix);
-		mat.getTexture("diffuse").bind();
+		super.updateUniforms(transform, mat, engine);
 
-		super.setUniformMatrix4f("T_MVP", projectedMatrix);
-		super.setUniform3f("R_ambient", engine.getAmbientLight());
+//		Matrix4f worldMatrix = transform.getTransformation(),
+//				projectedMatrix = engine.getMainCamera().getViewProjection().mul(worldMatrix);
+		// mat.getTexture("diffuse").bind();
+
+		// super.setUniformMatrix4f("T_MVP", projectedMatrix);
+		// super.setUniform3f("R_ambient", engine.getAmbientLight());
 
 	}
 

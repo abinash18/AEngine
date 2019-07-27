@@ -1,6 +1,7 @@
 package com.base.engine.rendering;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL32;
@@ -9,31 +10,35 @@ import com.base.engine.components.BaseLight;
 import com.base.engine.components.Camera;
 import com.base.engine.core.GameObject;
 import com.base.engine.math.Vector3f;
+import com.base.engine.rendering.resourceManagement.MappedValues;
 import com.base.engine.rendering.shaders.ForwardAmbientShader;
 
-public class RenderingEngine {
+public class RenderingEngine extends MappedValues {
 
 	public static Camera mainCamera;
-	private Vector3f ambientLight;
 
 	// More Permanent Structs
 	private ArrayList<BaseLight> lights;
 	private BaseLight activeLight;
 
+	private HashMap<String, Integer> samplerMap;
+
 	public RenderingEngine() {
+		super();
 		initGraphics();
 
 		lights = new ArrayList<BaseLight>();
 
+		samplerMap = new HashMap<String, Integer>();
+
+		samplerMap.put("diffuse", 0);
 		// mainCamera = new Camera((float) Math.toRadians(70f), (float)
 		// Window.getWidth() / (float) Window.getHeight(),
 		// 0.01f, 1000.0f);
-		ambientLight = new Vector3f(0.1f, 0.1f, 0.1f);
+		// ambientLight = new Vector3f(0.1f, 0.1f, 0.1f);
 
-	}
+		super.addVector3f("ambient", new Vector3f(0.1f, 0.1f, 0.1f));
 
-	public Vector3f getAmbientLight() {
-		return (ambientLight);
 	}
 
 	public static void clearScreen() {
@@ -142,8 +147,28 @@ public class RenderingEngine {
 		mainCamera.input(delta);
 	}
 
-	public void setAmbientLight(Vector3f ambientLight) {
-		this.ambientLight = ambientLight;
+	public ArrayList<BaseLight> getLights() {
+		return lights;
+	}
+
+	public void setLights(ArrayList<BaseLight> lights) {
+		this.lights = lights;
+	}
+
+	public HashMap<String, Integer> getSamplerMap() {
+		return samplerMap;
+	}
+
+	public void setSamplerMap(HashMap<String, Integer> samplerMap) {
+		this.samplerMap = samplerMap;
+	}
+
+	public int getSamplerSlot(String uniformKey) {
+		return this.samplerMap.get(uniformKey);
+	}
+
+	public void setActiveLight(BaseLight activeLight) {
+		this.activeLight = activeLight;
 	}
 
 }

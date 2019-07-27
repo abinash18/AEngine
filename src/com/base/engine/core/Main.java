@@ -30,7 +30,7 @@ public class Main {
 //		LogManager.addAllowedLevel(LogLevel.ERROR);
 //		LogManager.addAllowedLevel(LogLevel.FINEST);
 //		LogManager.addAllowedLevel(LogLevel.WARNING);
-		LogManager.fileHandler.setAppend(true);
+		LogManager.fileHandler.setAppend(false);
 
 		opts.addOption(new Option("t", "title", true, "The Title Of The Frame."));
 		opts.addOption(new Option("w", "width", true, "The Width Of The Frame."));
