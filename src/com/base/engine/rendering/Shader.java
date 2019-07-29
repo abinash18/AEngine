@@ -9,6 +9,10 @@ import java.util.List;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL32;
 
+import com.base.engine.components.BaseLight;
+import com.base.engine.components.DirectionalLight;
+import com.base.engine.components.PointLight;
+import com.base.engine.components.SpotLight;
 import com.base.engine.core.Util;
 import com.base.engine.handlers.logging.LogManager;
 import com.base.engine.handlers.logging.Logger;
@@ -77,41 +81,58 @@ public class Shader {
 			String uniformName = uniformNames.get(i);
 			String uniformType = uniformTypes.get(i);
 
-			if (uniformName.startsWith("T_")) {
+			if (uniformType.equals("sampler2D")) {
+				int samplerSlot = engine.getSamplerSlot(uniformName);
+				mat.getTexture(uniformName).bind(samplerSlot);
+				setUniformi(uniformName, samplerSlot);
+			} else if (uniformName.startsWith("T_")) {
 				if (uniformName.equals("T_MVP")) {
 					setUniformMatrix4f(uniformName, MVPMatrix);
 					// logger.finest("Added '" + uniformName + "' as MVP Matrix.");
-				} else if (uniformName.equals("T_world")) {
+				} else if (uniformName.equals("T_model")) {
 					setUniformMatrix4f(uniformName, worldMatrix);
 					// logger.finest("Added '" + uniformName + "' as World Matrix.");
 				} else {
-					logger.error("'" + uniformName + "' is not a valid component of transform.",
+					logger.error("'" + uniformName
+							+ "' is not a valid component of transform. Or is misspelled, please check shader program or change the prefix of the variable.",
 							new IllegalArgumentException(
 									"'" + uniformName + "' is not a valid component of transform."));
-					System.runFinalization();
-					System.exit(1);
+					// CoreEngine.exit(1);
 				}
 			} else if (uniformName.startsWith("R_")) {
-				if (uniformType.equals("sampler2D")) {
-					String unprefixedUniformName = uniformName.substring(2);
-					int samplerSlot = engine.getSamplerSlot(unprefixedUniformName);
-					mat.getTexture(unprefixedUniformName).bind(samplerSlot);
-					setUniformi(uniformName, samplerSlot);
-				} else if (uniformType.equals("vec3")) {
-					setUniform3f(uniformName, engine.getVector3f(uniformName.substring(2)));
+				String unprefixedUniformName = uniformName.substring(2);
+				if (uniformType.equals("vec3")) {
+					setUniform3f(uniformName, engine.getVector3f(unprefixedUniformName));
 				} else if (uniformType.equals("float")) {
-					setUniformf(uniformName, engine.getFloat(uniformName.substring(2)));
+					setUniformf(uniformName, engine.getFloat(unprefixedUniformName));
+				} else if (uniformType.equals("DirectionalLight")) {
+					setUniformDirectionalLight(uniformName, (DirectionalLight) engine.getActiveLight());
+				} else if (uniformType.equals("PointLight")) {
+					setUniformPointLight(uniformName, (PointLight) engine.getActiveLight());
+				} else if (uniformType.equals("SpotLight")) {
+					setUniformSpotLight(uniformName, (SpotLight) engine.getActiveLight());
+				} else {
+					logger.error("'" + uniformType
+							+ "' is not a valid Supported Type. Or is misspelled, please check shader program or change the prefix of the variable.",
+							new IllegalArgumentException("'" + uniformType + "' is not a valid Supported Type."));
+				}
+			} else if (uniformName.startsWith("C_")) {
+				if (uniformName.equals("C_eyePos")) {
+					setUniform3f(uniformName, engine.getMainCamera().getTransform().getTransformedPosition());
+				} else {
+					logger.error("'" + uniformName
+							+ "' is not a valid component of Camera. Or is misspelled, please check shader program or change the prefix of the variable.",
+							new IllegalArgumentException("'" + uniformName + "' is not a valid component of Camera."));
 				}
 			} else {
+
 				if (uniformType.equals("vec3")) {
 					setUniform3f(uniformName, mat.getVector3f(uniformName));
 				} else if (uniformType.equals("float")) {
 					setUniformf(uniformName, mat.getFloat(uniformName));
 				}
 			}
-
 		}
-
 	}
 
 	private class GLSLStruct {
@@ -284,6 +305,9 @@ public class Shader {
 			String uniformName = uniformLine.substring(whiteSpacePos + 1, uniformLine.length()).trim();
 			String uniformType = uniformLine.substring(0, whiteSpacePos).trim();
 
+			uniformNames.add(uniformName);
+			uniformTypes.add(uniformType);
+
 			this.addUniform(uniformName, uniformType, structs);
 
 			// this.addUniform(uniformName);
@@ -354,8 +378,6 @@ public class Shader {
 		}
 
 		uniforms.put(uniformName, uniformLocation);
-		uniformNames.add(uniformName);
-		uniformTypes.add(uniformType);
 
 	}
 
@@ -566,9 +588,7 @@ public class Shader {
 				} else {
 					shaderSource.append(line).append("\n");
 				}
-
 			}
-
 			shaderReader.close();
 		} catch (Exception e) {
 			// e.printStackTrace();
@@ -576,7 +596,6 @@ public class Shader {
 			logger.info("Exiting...");
 			System.exit(1);
 		}
-
 		return shaderSource.toString();
 	}
 
@@ -594,6 +613,31 @@ public class Shader {
 
 	public void setUniforms(HashMap<String, Integer> uniforms) {
 		this.uniforms = uniforms;
+	}
+
+	public void setUniformBaseLight(String uniformName, BaseLight baseLight) {
+		setUniform3f(uniformName + ".color", baseLight.getColor());
+		setUniformf(uniformName + ".intensity", baseLight.getIntensity());
+	}
+
+	public void setUniformDirectionalLight(String uniformName, DirectionalLight directionalLight) {
+		setUniformBaseLight(uniformName + ".base", (BaseLight) directionalLight);
+		setUniform3f(uniformName + ".direction", directionalLight.getDirection());
+	}
+
+	public void setUniformPointLight(String uniformName, PointLight pointLight) {
+		setUniformBaseLight(uniformName + ".base", pointLight);
+		setUniformf(uniformName + ".atten.constant", pointLight.getConstant());
+		setUniformf(uniformName + ".atten.linear", pointLight.getLinear());
+		setUniformf(uniformName + ".atten.exponent", pointLight.getExponent());
+		setUniform3f(uniformName + ".position", pointLight.getTransform().getPosition());
+		setUniformf(uniformName + ".range", pointLight.getRange());
+	}
+
+	public void setUniformSpotLight(String uniformName, SpotLight spotLight) {
+		setUniformPointLight(uniformName + ".pointLight", (PointLight) spotLight);
+		setUniform3f(uniformName + ".direction", spotLight.getDirection());
+		setUniformf(uniformName + ".cutoff", spotLight.getCutoff());
 	}
 
 }

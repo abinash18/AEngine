@@ -24,21 +24,23 @@ public class ForwardPointShader extends Shader {
 	@Override
 	public void updateUniforms(Transform transform, Material mat, RenderingEngine engine) {
 
-		Matrix4f worldMatrix = transform.getTransformation(),
-				projectedMatrix = engine.getMainCamera().getViewProjection().mul(worldMatrix);
-		mat.getTexture("diffuse").bind();
+		super.updateUniforms(transform, mat, engine);
 
-		super.setUniformMatrix4f("model", worldMatrix);
-		super.setUniformMatrix4f("MVP", projectedMatrix);
-		super.setUniformf("specularIntensity", mat.getFloat("specularIntensity"));
-		super.setUniformf("specularPower", mat.getFloat("specularPower"));
-
-		super.setUniform3f("testuniforms", new Vector3f(0, 0, 0));
-
-		super.setUniform3f("eyePos", engine.getMainCamera().getTransform().getTransformedPosition());
-
-		setUniformPointLight("pointLight", (PointLight) engine.getActiveLight());
-
+		/*
+		 * Matrix4f worldMatrix = transform.getTransformation(), projectedMatrix =
+		 * engine.getMainCamera().getViewProjection().mul(worldMatrix);
+		 * mat.getTexture("diffuse").bind();
+		 * 
+		 * super.setUniformMatrix4f("model", worldMatrix);
+		 * super.setUniformMatrix4f("MVP", projectedMatrix);
+		 * super.setUniformf("specularIntensity", mat.getFloat("specularIntensity"));
+		 * super.setUniformf("specularPower", mat.getFloat("specularPower"));
+		 * 
+		 * super.setUniform3f("eyePos",
+		 * engine.getMainCamera().getTransform().getTransformedPosition());
+		 * 
+		 * setUniformPointLight("pointLight", (PointLight) engine.getActiveLight());
+		 */
 	}
 
 	public void setUniformBaseLight(String uniformName, BaseLight baseLight) {

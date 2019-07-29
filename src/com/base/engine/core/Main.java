@@ -24,12 +24,12 @@ public class Main {
 
 		Options opts = new Options();
 		LogManager.addFileHandler(1000);
-		LogManager.setCurrentLevel(LogLevel.ALL);
-//		LogManager.addAllowedLevel(LogLevel.DEBUG);
-//		LogManager.addAllowedLevel(LogLevel.INFO);
-//		LogManager.addAllowedLevel(LogLevel.ERROR);
-//		LogManager.addAllowedLevel(LogLevel.FINEST);
-//		LogManager.addAllowedLevel(LogLevel.WARNING);
+		// LogManager.setCurrentLevel(LogLevel.ALL);
+		LogManager.addAllowedLevel(LogLevel.DEBUG);
+		LogManager.addAllowedLevel(LogLevel.INFO);
+		LogManager.addAllowedLevel(LogLevel.ERROR);
+		LogManager.addAllowedLevel(LogLevel.FINE);
+		LogManager.addAllowedLevel(LogLevel.WARNING);
 		LogManager.fileHandler.setAppend(false);
 
 		opts.addOption(new Option("t", "title", true, "The Title Of The Frame."));

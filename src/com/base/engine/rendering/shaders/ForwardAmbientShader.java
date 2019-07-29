@@ -20,16 +20,7 @@ public class ForwardAmbientShader extends Shader {
 
 	@Override
 	public void updateUniforms(Transform transform, Material mat, RenderingEngine engine) {
-
 		super.updateUniforms(transform, mat, engine);
-
-//		Matrix4f worldMatrix = transform.getTransformation(),
-//				projectedMatrix = engine.getMainCamera().getViewProjection().mul(worldMatrix);
-		// mat.getTexture("diffuse").bind();
-
-		// super.setUniformMatrix4f("T_MVP", projectedMatrix);
-		// super.setUniform3f("R_ambient", engine.getAmbientLight());
-
 	}
 
 }

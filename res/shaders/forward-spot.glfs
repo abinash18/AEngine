@@ -7,8 +7,8 @@ varying vec3 worldPosition0;
 
 uniform sampler2D diffuse;
 
-uniform SpotLight spotLight;
+uniform SpotLight R_spotLight;
 
 void main() {
-  gl_FragColor = texture2D(diffuse, texCoord0.xy) * calcSpotLight(spotLight, normalize(normal0), worldPosition0);
+  gl_FragColor = texture2D(diffuse, texCoord0.xy) * calcSpotLight(R_spotLight, normalize(normal0), worldPosition0);
 }

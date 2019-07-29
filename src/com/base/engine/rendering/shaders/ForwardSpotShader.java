@@ -25,19 +25,23 @@ public class ForwardSpotShader extends Shader {
 	@Override
 	public void updateUniforms(Transform transform, Material mat, RenderingEngine engine) {
 
-		Matrix4f worldMatrix = transform.getTransformation(),
-				projectedMatrix = engine.getMainCamera().getViewProjection().mul(worldMatrix);
-		mat.getTexture("diffuse").bind();
+		super.updateUniforms(transform, mat, engine);
 
-		super.setUniformMatrix4f("model", worldMatrix);
-		super.setUniformMatrix4f("MVP", projectedMatrix);
-		super.setUniformf("specularIntensity", mat.getFloat("specularIntensity"));
-		super.setUniformf("specularPower", mat.getFloat("specularPower"));
-
-		super.setUniform3f("eyePos", engine.getMainCamera().getTransform().getTransformedPosition());
-
-		setUniformSpotLight("spotLight", (SpotLight) engine.getActiveLight());
-
+		/*
+		 * Matrix4f worldMatrix = transform.getTransformation(), projectedMatrix =
+		 * engine.getMainCamera().getViewProjection().mul(worldMatrix);
+		 * mat.getTexture("diffuse").bind();
+		 * 
+		 * super.setUniformMatrix4f("model", worldMatrix);
+		 * super.setUniformMatrix4f("MVP", projectedMatrix);
+		 * super.setUniformf("specularIntensity", mat.getFloat("specularIntensity"));
+		 * super.setUniformf("specularPower", mat.getFloat("specularPower"));
+		 * 
+		 * super.setUniform3f("C_eyePos",
+		 * engine.getMainCamera().getTransform().getTransformedPosition());
+		 * 
+		 * setUniformSpotLight("spotLight", (SpotLight) engine.getActiveLight());
+		 */
 	}
 
 	public void setUniformPointLight(String uniformName, PointLight pointLight) {

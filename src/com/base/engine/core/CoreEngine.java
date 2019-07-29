@@ -5,11 +5,13 @@ import org.lwjgl.opengl.GL31;
 import org.lwjgl.opengl.GL40;
 import org.lwjgl.opengl.GL43;
 
+import com.base.engine.handlers.logging.LogLevel;
 import com.base.engine.handlers.logging.LogManager;
 import com.base.engine.handlers.logging.Logger;
 import com.base.engine.internalGame.Game;
 import com.base.engine.rendering.RenderingEngine;
 import com.base.engine.rendering.Window;
+import com.sun.xml.internal.org.jvnet.mimepull.CleanUpExecutorFactory;
 
 public class CoreEngine {
 
@@ -68,6 +70,8 @@ public class CoreEngine {
 		double lastTime = Time.getTime();
 		double unprocessedTime = 0;
 
+		boolean finestLoglevel = LogManager.isLevelAllowed(LogLevel.FINEST);
+
 		while (isRunning) {
 			boolean render = false;
 
@@ -96,7 +100,11 @@ public class CoreEngine {
 
 				if (frameCounter >= 1.0) {
 					// System.out.println(frames);
-					logger.finest("Frames: " + frames);
+					if (!finestLoglevel) {
+						System.out.println("Frames: " + frames);
+					} else {
+						logger.finest("Frames: " + frames);
+					}
 					frames = 0;
 					frameCounter = 0;
 				}
@@ -119,8 +127,14 @@ public class CoreEngine {
 		cleanUp();
 	}
 
-	private void cleanUp() {
+	private static void cleanUp() {
 		Window.dispose();
+	}
+
+	public static void exit(int exitCode) {
+		cleanUp();
+		System.runFinalization();
+		System.exit(exitCode);
 	}
 
 	private void printDeviceProperties() {

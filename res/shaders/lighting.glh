@@ -1,7 +1,6 @@
 // Vars
 
-uniform vec3 eyePos;
-
+uniform vec3 C_eyePos;
 uniform float specularIntensity;
 uniform float specularPower;
 
@@ -9,7 +8,6 @@ uniform float specularPower;
 struct BaseLight {
   vec3 color;
   float intensity;
-
 };
 
 struct DirectionalLight {
@@ -46,7 +44,7 @@ vec4 calcLight(BaseLight base, vec3 direction, vec3 normal, vec3 worldPosition) 
   if (diffuseFactor > 0) {
     diffuseColor = vec4(base.color, 1.0) * base.intensity * diffuseFactor;
 
-    vec3 directionToEye = normalize(eyePos - worldPosition);
+    vec3 directionToEye = normalize(C_eyePos - worldPosition);
 
     // More Accurate I guess but ididnt like the way it looked
     //vec3 halfDirection = normalize(directionToEye - direction);

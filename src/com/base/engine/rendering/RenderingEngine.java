@@ -32,10 +32,6 @@ public class RenderingEngine extends MappedValues {
 		samplerMap = new HashMap<String, Integer>();
 
 		samplerMap.put("diffuse", 0);
-		// mainCamera = new Camera((float) Math.toRadians(70f), (float)
-		// Window.getWidth() / (float) Window.getHeight(),
-		// 0.01f, 1000.0f);
-		// ambientLight = new Vector3f(0.1f, 0.1f, 0.1f);
 
 		super.addVector3f("ambient", new Vector3f(0.1f, 0.1f, 0.1f));
 
