@@ -5,6 +5,7 @@ import com.base.engine.rendering.Shader;
 
 public class SpotLight extends PointLight {
 
+	
 	private float cutoff;
 
 	public SpotLight(Vector3f color, float intensity, Vector3f attenuation, float cutoff) {
