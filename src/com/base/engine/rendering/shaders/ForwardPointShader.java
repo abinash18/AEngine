@@ -2,13 +2,12 @@ package com.base.engine.rendering.shaders;
 
 import com.base.engine.components.BaseLight;
 import com.base.engine.components.PointLight;
-import com.base.engine.math.Matrix4f;
 import com.base.engine.math.Transform;
-import com.base.engine.math.Vector3f;
 import com.base.engine.rendering.Material;
 import com.base.engine.rendering.RenderingEngine;
 import com.base.engine.rendering.Shader;
 
+@Deprecated
 public class ForwardPointShader extends Shader {
 
 	private static final ForwardPointShader instance = new ForwardPointShader();

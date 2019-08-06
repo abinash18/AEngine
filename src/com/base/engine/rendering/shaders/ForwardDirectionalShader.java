@@ -1,10 +1,12 @@
 package com.base.engine.rendering.shaders;
 
 import com.base.engine.math.Transform;
+
 import com.base.engine.rendering.Material;
 import com.base.engine.rendering.RenderingEngine;
 import com.base.engine.rendering.Shader;
 
+@Deprecated
 public class ForwardDirectionalShader extends Shader {
 
 	private static final ForwardDirectionalShader instance = new ForwardDirectionalShader();

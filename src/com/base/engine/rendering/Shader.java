@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL32;
@@ -20,54 +19,56 @@ import com.base.engine.math.Matrix4f;
 import com.base.engine.math.Transform;
 import com.base.engine.math.Vector2f;
 import com.base.engine.math.Vector3f;
+import com.base.engine.rendering.resourceManagement.ShaderResource;
 
 public class Shader {
 
 	private static Logger logger = LogManager.getLogger(Shader.class.getName());
 
-	private int program;
-	private HashMap<String, Integer> uniforms;
+	private static HashMap<String, ShaderResource> loadedShaderPrograms = new HashMap<String, ShaderResource>();
+	private ShaderResource shaderProgram;
+
+	private String fileName;
 	/*
 	 * TODO: Make This Into A Private Wrapper Class Like GLSLStruct To Use With Out
 	 * Two ArrayLists.
 	 */
-	private List<String> uniformNames;
-	private List<String> uniformTypes;
 
 	public Shader(String fileName) {
-		program = GL20.glCreateProgram();
-		uniforms = new HashMap<String, Integer>();
+		this.fileName = fileName;
 
-		uniformNames = new ArrayList<>();
-		uniformTypes = new ArrayList<>();
+		// TODO: make this hashmap of resources into a HashSet and use compute if absent
+		// method to add shader to set
 
-		if (program == 0) {
-			// System.err.println("Shader creation failed: Could not find valid memory
-			// location in constructor");
-			logger.error("Shader creation failed: Could not find valid memory location in constructor",
-					new Exception());
-			logger.info("Exiting...");
-			System.exit(1);
+		ShaderResource oldResource = loadedShaderPrograms.get(fileName);
+
+		if (oldResource != null) {
+			this.shaderProgram = oldResource;
+			this.shaderProgram.addReference();
+		} else {
+			// this.shaderProgram = loadShader(fileName);
+			this.shaderProgram = new ShaderResource();
+
+			String vertexShaderText = loadShader(fileName + ".glvs");
+			String fragmentShaderText = loadShader(fileName + ".glfs");
+
+			this.addVertexShader(vertexShaderText);
+			this.addFragmentShader(fragmentShaderText);
+
+			this.addAllAttributes(vertexShaderText);
+
+			// After Setting Attributes And Loading Shaders
+			this.compileShader();
+
+			this.addAllUniforms(vertexShaderText);
+			this.addAllUniforms(fragmentShaderText);
+			loadedShaderPrograms.put(fileName, shaderProgram);
 		}
-
-		String vertexShaderText = loadShader(fileName + ".glvs");
-		String fragmentShaderText = loadShader(fileName + ".glfs");
-
-		this.addVertexShader(vertexShaderText);
-		this.addFragmentShader(fragmentShaderText);
-
-		this.addAllAttributes(vertexShaderText);
-
-		// After Setting Attributes And Loading Shaders
-		this.compileShader();
-
-		this.addAllUniforms(vertexShaderText);
-		this.addAllUniforms(fragmentShaderText);
 
 	}
 
 	public void bind() {
-		GL20.glUseProgram(program);
+		GL20.glUseProgram(shaderProgram.getProgram());
 	}
 
 	public void updateUniforms(Transform transform, Material mat, RenderingEngine engine) {
@@ -75,11 +76,11 @@ public class Shader {
 		Matrix4f worldMatrix = transform.getTransformation(),
 				MVPMatrix = engine.getMainCamera().getViewProjection().mul(worldMatrix);
 
-		for (int i = 0; i < uniformNames.size(); i++) {
+		for (int i = 0; i < shaderProgram.getUniformNames().size(); i++) {
 
 			/* These Were Added At The Same Time So They Should Have The Same Index. */
-			String uniformName = uniformNames.get(i);
-			String uniformType = uniformTypes.get(i);
+			String uniformName = shaderProgram.getUniformNames().get(i);
+			String uniformType = shaderProgram.getUniformTypes().get(i);
 
 			if (uniformType.equals("sampler2D")) {
 				int samplerSlot = engine.getSamplerSlot(uniformName);
@@ -112,9 +113,7 @@ public class Shader {
 				} else if (uniformType.equals("SpotLight")) {
 					setUniformSpotLight(uniformName, (SpotLight) engine.getActiveLight());
 				} else {
-					logger.error("'" + uniformType
-							+ "' is not a valid Supported Type. Or is misspelled, please check shader program or change the prefix of the variable.",
-							new IllegalArgumentException("'" + uniformType + "' is not a valid Supported Type."));
+					engine.updateUniformStruct(transform, mat, this, unprefixedUniformName, uniformType);
 				}
 			} else if (uniformName.startsWith("C_")) {
 				if (uniformName.equals("C_eyePos")) {
@@ -139,7 +138,7 @@ public class Shader {
 		public String name, type;
 	}
 
-	private HashMap<String, ArrayList<GLSLStruct>> findUniformStructs(String shaderText) {
+	public HashMap<String, ArrayList<GLSLStruct>> findUniformStructs(String shaderText) {
 
 		// System.out.println("Attempting To Add Uniforms Automatically...");
 
@@ -261,7 +260,7 @@ public class Shader {
 
 	}
 
-	private void addAllUniforms(String shaderText) {
+	public void addAllUniforms(String shaderText) {
 
 		HashMap<String, ArrayList<GLSLStruct>> structs = findUniformStructs(shaderText);
 
@@ -305,8 +304,8 @@ public class Shader {
 			String uniformName = uniformLine.substring(whiteSpacePos + 1, uniformLine.length()).trim();
 			String uniformType = uniformLine.substring(0, whiteSpacePos).trim();
 
-			uniformNames.add(uniformName);
-			uniformTypes.add(uniformType);
+			shaderProgram.getUniformNames().add(uniformName);
+			shaderProgram.getUniformTypes().add(uniformType);
 
 			this.addUniform(uniformName, uniformType, structs);
 
@@ -330,7 +329,7 @@ public class Shader {
 	 * @param uniformType
 	 * @param structs
 	 */
-	private void addUniform(String uniformName, String uniformType, HashMap<String, ArrayList<GLSLStruct>> structs) {
+	public void addUniform(String uniformName, String uniformType, HashMap<String, ArrayList<GLSLStruct>> structs) {
 
 		boolean addThis = true;
 		ArrayList<GLSLStruct> structComponents = structs.get(uniformType);
@@ -354,7 +353,7 @@ public class Shader {
 		}
 		// this.addUniform(uniformName);
 
-		int uniformLocation = GL20.glGetUniformLocation(program, uniformName);
+		int uniformLocation = GL20.glGetUniformLocation(shaderProgram.getProgram(), uniformName);
 		logger.fine("Uniform " + "'" + uniformName + "'" + " At Location: " + uniformLocation);
 
 		/*
@@ -377,11 +376,11 @@ public class Shader {
 			/* System.exit(1); */
 		}
 
-		uniforms.put(uniformName, uniformLocation);
+		shaderProgram.getUniforms().put(uniformName, uniformLocation);
 
 	}
 
-	private void addAllAttributes(String shaderText) {
+	public void addAllAttributes(String shaderText) {
 
 		// System.out.println("Attempting To Add Attributes Automatically...");
 		/*
@@ -438,8 +437,8 @@ public class Shader {
 	}
 
 	@Deprecated
-	private void addUniform(String uniform) {
-		int uniformLocation = GL20.glGetUniformLocation(program, uniform);
+	public void addUniform(String uniform) {
+		int uniformLocation = GL20.glGetUniformLocation(shaderProgram.getProgram(), uniform);
 		logger.fine("Uniform " + "'" + uniform + "'" + " At Location: " + uniformLocation);
 
 		/*
@@ -462,56 +461,56 @@ public class Shader {
 			/* System.exit(1); */
 		}
 
-		uniforms.put(uniform, uniformLocation);
-		uniformNames.add(uniform);
+		shaderProgram.getUniforms().put(uniform, uniformLocation);
+		shaderProgram.getUniformNames().add(uniform);
 	}
 
 	public void setAttribLocation(String attribName, int location) {
-		GL20.glBindAttribLocation(program, location, attribName);
+		GL20.glBindAttribLocation(shaderProgram.getProgram(), location, attribName);
 	}
 
-	private void addVertexShader(String text) {
+	public void addVertexShader(String text) {
 		addProgram(text, GL20.GL_VERTEX_SHADER);
 	}
 
-	private void addGeometryShader(String text) {
+	public void addGeometryShader(String text) {
 		addProgram(text, GL32.GL_GEOMETRY_SHADER);
 	}
 
-	private void addFragmentShader(String text) {
+	public void addFragmentShader(String text) {
 		addProgram(text, GL20.GL_FRAGMENT_SHADER);
 	}
 
-	private void addVertexShaderFromFile(String fileName) {
+	public void addVertexShaderFromFile(String fileName) {
 		addProgram(loadShader(fileName), GL20.GL_VERTEX_SHADER);
 	}
 
-	private void addGeometryShaderFromFile(String fileName) {
+	public void addGeometryShaderFromFile(String fileName) {
 		addProgram(loadShader(fileName), GL32.GL_GEOMETRY_SHADER);
 	}
 
-	private void addFragmentShaderFromFile(String fileName) {
+	public void addFragmentShaderFromFile(String fileName) {
 		addProgram(loadShader(fileName), GL20.GL_FRAGMENT_SHADER);
 	}
 
-	private void compileShader() {
-		GL20.glLinkProgram(program);
+	public void compileShader() {
+		GL20.glLinkProgram(shaderProgram.getProgram());
 
-		if (GL20.glGetProgrami(program, GL20.GL_LINK_STATUS) == 0) {
+		if (GL20.glGetProgrami(shaderProgram.getProgram(), GL20.GL_LINK_STATUS) == 0) {
 
-			System.err.println(GL20.glGetProgramInfoLog(program, 1024));
+			System.err.println(GL20.glGetProgramInfoLog(shaderProgram.getProgram(), 1024));
 			System.exit(1);
 		}
 
-		GL20.glValidateProgram(program);
+		GL20.glValidateProgram(shaderProgram.getProgram());
 
-		if (GL20.glGetProgrami(program, GL20.GL_VALIDATE_STATUS) == 0) {
-			System.err.println(GL20.glGetProgramInfoLog(program, 1024));
+		if (GL20.glGetProgrami(shaderProgram.getProgram(), GL20.GL_VALIDATE_STATUS) == 0) {
+			System.err.println(GL20.glGetProgramInfoLog(shaderProgram.getProgram(), 1024));
 			System.exit(1);
 		}
 	}
 
-	private void addProgram(String text, int type) {
+	public void addProgram(String text, int type) {
 		int shader = GL20.glCreateShader(type);
 
 		if (shader == 0) {
@@ -535,32 +534,32 @@ public class Shader {
 			System.exit(1);
 		}
 
-		GL20.glAttachShader(program, shader);
-		logger.fine(
-				"Successfully Attached Shader: " + program + " Log: " + "\n" + GL20.glGetShaderInfoLog(shader, 1024));
+		GL20.glAttachShader(shaderProgram.getProgram(), shader);
+		logger.fine("Successfully Attached Shader: " + shaderProgram.getProgram() + " Log: " + "\n"
+				+ GL20.glGetShaderInfoLog(shader, 1024));
 	}
 
 	public void setUniformi(String uniformName, int value) {
-		GL20.glUniform1i(uniforms.get(uniformName), value);
+		GL20.glUniform1i(shaderProgram.getUniforms().get(uniformName), value);
 	}
 
 	public void setUniformf(String uniformName, float value) {
-		GL20.glUniform1f(uniforms.get(uniformName), value);
+		GL20.glUniform1f(shaderProgram.getUniforms().get(uniformName), value);
 	}
 
 	public void setUniform2f(String uniformName, Vector2f value) {
-		GL20.glUniform3f(uniforms.get(uniformName), value.getX(), value.getY(), 0);
+		GL20.glUniform3f(shaderProgram.getUniforms().get(uniformName), value.getX(), value.getY(), 0);
 	}
 
 	public void setUniform3f(String uniformName, Vector3f value) {
-		GL20.glUniform3f(uniforms.get(uniformName), value.getX(), value.getY(), value.getZ());
+		GL20.glUniform3f(shaderProgram.getUniforms().get(uniformName), value.getX(), value.getY(), value.getZ());
 	}
 
 	public void setUniformMatrix4f(String uniformName, Matrix4f value) {
-		GL20.glUniformMatrix4(uniforms.get(uniformName), true, Util.createFlippedBuffer(value));
+		GL20.glUniformMatrix4(shaderProgram.getUniforms().get(uniformName), true, Util.createFlippedBuffer(value));
 	}
 
-	private static String loadShader(String fileName) {
+	public static String loadShader(String fileName) {
 		StringBuilder shaderSource = new StringBuilder();
 		BufferedReader shaderReader = null;
 
@@ -600,19 +599,19 @@ public class Shader {
 	}
 
 	public int getProgram() {
-		return program;
+		return shaderProgram.getProgram();
 	}
 
 	public void setProgram(int program) {
-		this.program = program;
+		this.shaderProgram.setProgram(program);
 	}
 
 	public HashMap<String, Integer> getUniforms() {
-		return uniforms;
+		return shaderProgram.getUniforms();
 	}
 
 	public void setUniforms(HashMap<String, Integer> uniforms) {
-		this.uniforms = uniforms;
+		this.shaderProgram.setUniforms(uniforms);
 	}
 
 	public void setUniformBaseLight(String uniformName, BaseLight baseLight) {

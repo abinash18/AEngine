@@ -9,12 +9,15 @@ import org.lwjgl.opengl.GL32;
 import com.base.engine.components.BaseLight;
 import com.base.engine.components.Camera;
 import com.base.engine.core.GameObject;
+import com.base.engine.handlers.logging.LogManager;
+import com.base.engine.handlers.logging.Logger;
+import com.base.engine.math.Transform;
 import com.base.engine.math.Vector3f;
 import com.base.engine.rendering.resourceManagement.MappedValues;
-import com.base.engine.rendering.shaders.ForwardAmbientShader;
 
 public class RenderingEngine extends MappedValues {
 
+	private static final Logger logger = LogManager.getLogger(RenderingEngine.class.getName());
 	public static Camera mainCamera;
 
 	// More Permanent Structs
@@ -23,9 +26,10 @@ public class RenderingEngine extends MappedValues {
 
 	private HashMap<String, Integer> samplerMap;
 
+	private Shader forwardAmbientShader;
+
 	public RenderingEngine() {
 		super();
-		initGraphics();
 
 		lights = new ArrayList<BaseLight>();
 
@@ -35,6 +39,16 @@ public class RenderingEngine extends MappedValues {
 
 		super.addVector3f("ambient", new Vector3f(0.1f, 0.1f, 0.1f));
 
+		forwardAmbientShader = new Shader("forward-ambient");
+
+		initGraphics();
+	}
+
+	public void updateUniformStruct(Transform transform, Material mat, Shader shader, String uniformName,
+			String uniformType) {
+		logger.error("'" + uniformType
+				+ "' is not a valid Supported Type. Or is misspelled, please check shader program or change the prefix of the variable.",
+				new IllegalArgumentException("'" + uniformType + "' is not a valid Supported Type."));
 	}
 
 	public static void clearScreen() {
@@ -88,7 +102,7 @@ public class RenderingEngine extends MappedValues {
 
 		gameObject.addToRenderingEngine(this);
 
-		Shader forwardAmbientShader = ForwardAmbientShader.getInstance();
+		// Shader forwardAmbientShader = ForwardAmbientShader.getInstance();
 		// forwardAmbientShader.setRenderingEngine(this);
 
 		gameObject.render(forwardAmbientShader, this);

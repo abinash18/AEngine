@@ -5,6 +5,7 @@ import com.base.engine.rendering.Material;
 import com.base.engine.rendering.RenderingEngine;
 import com.base.engine.rendering.Shader;
 
+@Deprecated
 public class ForwardAmbientShader extends Shader {
 
 	private static final ForwardAmbientShader instance = new ForwardAmbientShader();

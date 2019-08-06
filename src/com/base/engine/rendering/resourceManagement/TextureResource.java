@@ -1,5 +1,6 @@
 package com.base.engine.rendering.resourceManagement;
 
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 
 import com.base.engine.handlers.logging.LogManager;
@@ -10,8 +11,8 @@ public class TextureResource {
 
 	private static Logger logger = LogManager.getLogger(TextureResource.class.getName());
 
-	public TextureResource(int id) {
-		this.id = id;
+	public TextureResource() {
+		this.id = GL11.glGenTextures();
 		this.refCount = 1;
 	}
 

@@ -23,17 +23,15 @@ public class Texture {
 	private String fileName;
 
 	public Texture(String fileName) {
-		this.resource = new TextureResource(loadTexture(fileName));
+		this.fileName = fileName;
 
 		TextureResource oldResource = loadedTextures.get(fileName);
-
-		this.fileName = fileName;
 
 		if (oldResource != null) {
 			this.resource = oldResource;
 			this.resource.addReference();
 		} else {
-			loadTexture(fileName);
+			this.resource = loadTexture(fileName);
 			loadedTextures.put(fileName, resource);
 		}
 
@@ -58,7 +56,7 @@ public class Texture {
 	public void bind() {
 		this.bind(0);
 	}
-	
+
 	public void bind(int samplerSlot) {
 		assert (samplerSlot >= 0 && samplerSlot <= 31);
 		GL13.glActiveTexture(GL13.GL_TEXTURE0 + samplerSlot);
@@ -77,7 +75,7 @@ public class Texture {
 		this.resource = resource;
 	}
 
-	private static int loadTexture(String fileName) {
+	private static TextureResource loadTexture(String fileName) {
 
 		String[] splitArray = fileName.split("\\.");
 
@@ -119,8 +117,9 @@ public class Texture {
 			// Flips the buffer making it possible to read.
 			pixelByteBuffer.flip();
 
-			int id = GL11.glGenTextures();
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, id);
+			TextureResource resource = new TextureResource();
+
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, resource.getId());
 
 			// System.out.println(id);
 
@@ -137,16 +136,16 @@ public class Texture {
 			GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, image.getWidth(), image.getHeight(), 0,
 					GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, pixelByteBuffer);
 
-			return id;
+			return resource;
 
 		} catch (Exception e) {
 			// e.printStackTrace();
-			logger.error("Unable to load texture.", e);
-			logger.info("Exiting...");
-			System.exit(1);
+			logger.error("Unable to load texture." + fileName, e);
+			// logger.info("Exiting...");
+			// System.exit(1);
 		}
 
-		return 0;
+		return null;
 
 	}
 
