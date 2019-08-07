@@ -75,9 +75,7 @@ public class Vector3f {
 	}
 
 	public Vector3f lerp(Vector3f dest, float lerpFactor) {
-
 		return (dest.sub(this).mul(lerpFactor).add(this));
-
 	}
 
 	public boolean equals(Vector3f r) {

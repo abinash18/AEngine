@@ -77,9 +77,9 @@ public class Texture {
 
 	private static TextureResource loadTexture(String fileName) {
 
-		String[] splitArray = fileName.split("\\.");
+		// String[] splitArray = fileName.split("\\.");
 
-		String extenstion = splitArray[splitArray.length - 1];
+		// String extenstion = splitArray[splitArray.length - 1];
 
 		try {
 

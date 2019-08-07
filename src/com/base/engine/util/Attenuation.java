@@ -4,37 +4,32 @@ import com.base.engine.math.Vector3f;
 
 public class Attenuation extends Vector3f {
 
-	private float constant, linear, exponent;
-
 	public Attenuation(float constant, float linear, float exponent) {
 		super(constant, linear, exponent);
-		this.constant = constant;
-		this.linear = linear;
-		this.exponent = exponent;
 	}
 
 	public float getConstant() {
-		return constant;
+		return super.getX();
 	}
 
 	public void setConstant(float constant) {
-		this.constant = constant;
+		super.setX(constant);
 	}
 
 	public float getLinear() {
-		return linear;
+		return super.getY();
 	}
 
 	public void setLinear(float linear) {
-		this.linear = linear;
+		super.setY(linear);
 	}
 
 	public float getExponent() {
-		return exponent;
+		return super.getZ();
 	}
 
 	public void setExponent(float exponent) {
-		this.exponent = exponent;
+		super.setZ(exponent);
 	}
 
 }

@@ -34,6 +34,14 @@ public class Transform {
 		return this.getParentMatrix().mul(translationMatrix.mul(rotationMatrix.mul(scaleMatrix)));
 	}
 
+	public void lookAt(Vector3f point, Vector3f up) {
+		rotation = getLookAtDirection(point, up);
+	}
+
+	public Quaternion getLookAtDirection(Vector3f point, Vector3f up) {
+		return new Quaternion(new Matrix4f().initRotation(point.sub(position).normalize(), up));
+	}
+
 	public void update() {
 		if (oldPosition != null) {
 			oldPosition.set(position);
@@ -50,13 +58,10 @@ public class Transform {
 	}
 
 	public void rotate(Vector3f axis, float anglerad) {
-
 		this.rotation = new Quaternion(axis, anglerad).mul(rotation).normalize();
-
 	}
 
 	public boolean hasChanged() {
-
 		/*
 		 * This crawls up the hierarchy until the top one that has changed and is not
 		 * null and uses that ones value.
@@ -74,9 +79,7 @@ public class Transform {
 		if (!scale.equals(oldScale)) {
 			return true;
 		}
-
 		return false;
-
 	}
 
 	private Matrix4f getParentMatrix() {
@@ -89,7 +92,6 @@ public class Transform {
 		}
 
 		return parentMatrix;
-
 	}
 
 	public Quaternion getTransformedRotation() {
@@ -107,9 +109,7 @@ public class Transform {
 	}
 
 	public Vector3f getTransformedPosition() {
-
 		return getParentMatrix().transform(position);
-
 	}
 
 	public void setParent(Transform parent) {

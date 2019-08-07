@@ -9,8 +9,6 @@ import com.base.engine.core.Util;
 import com.base.engine.math.Vector2f;
 import com.base.engine.math.Vector3f;
 
-import sun.util.resources.cldr.de.CurrencyNames_de_LU;
-
 public class OBJModel {
 
 	private ArrayList<Vector3f> positions, normals;

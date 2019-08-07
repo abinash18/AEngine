@@ -6,8 +6,6 @@ import com.base.engine.components.MeshRenderer;
 import com.base.engine.components.PointLight;
 import com.base.engine.components.SpotLight;
 import com.base.engine.internalGame.Game;
-import com.base.engine.math.Quaternion;
-import com.base.engine.math.Transform;
 import com.base.engine.math.Vector2f;
 import com.base.engine.math.Vector3f;
 import com.base.engine.rendering.Material;
@@ -15,6 +13,7 @@ import com.base.engine.rendering.Mesh;
 import com.base.engine.rendering.Texture;
 import com.base.engine.rendering.Vertex;
 import com.base.engine.rendering.Window;
+import com.base.engine.util.Attenuation;
 
 public class TestGame extends Game {
 
@@ -71,9 +70,9 @@ public class TestGame extends Game {
 		directionalLightObject.addComponent(directionalLight);
 
 		GameObject pointLightObject = new GameObject();
-		pointLightObject.addComponent(new PointLight(new Vector3f(0, 1, 0), 0.4f, new Vector3f(0, 0, 1)));
+		pointLightObject.addComponent(new PointLight(new Vector3f(0, 1, 0), 0.4f, new Attenuation(0, 0, 1)));
 
-		SpotLight spotLight = new SpotLight(new Vector3f(1, 1, 1), 0.4f, new Vector3f(0, 0, 0.8f), 0.7f);
+		SpotLight spotLight = new SpotLight(new Vector3f(1, 1, 1), 0.4f, new Attenuation(0, 0, 0.8f), 0.7f);
 
 		GameObject spotLightObject = new GameObject();
 
@@ -116,8 +115,8 @@ public class TestGame extends Game {
 	public void update(float delta) {
 		super.update(delta);
 		temp = temp + delta;
-		float angle = (float) Math.toRadians(temp * 180 * 2);
-		monkey.getTransform().setRotation(new Quaternion(Transform.X_AXIS, angle));
+		// float angle = (float) Math.toRadians(temp * 180 * 2);
+		// monkey.getTransform().setRotation(new Quaternion(Transform.X_AXIS, angle));
 	}
 
 }

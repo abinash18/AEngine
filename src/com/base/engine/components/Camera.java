@@ -2,12 +2,12 @@ package com.base.engine.components;
 
 import org.lwjgl.input.Mouse;
 
+import com.base.engine.core.CoreEngine;
 import com.base.engine.core.Input;
 import com.base.engine.math.Matrix4f;
 import com.base.engine.math.Transform;
 import com.base.engine.math.Vector2f;
 import com.base.engine.math.Vector3f;
-import com.base.engine.rendering.RenderingEngine;
 import com.base.engine.rendering.Window;
 
 public class Camera extends GameComponent {
@@ -57,8 +57,8 @@ public class Camera extends GameComponent {
 	Vector2f mouseOrigin = Input.getMousePosition(), centerWindow = Window.getCenter();
 
 	@Override
-	public void addToRenderingEngine(RenderingEngine engine) {
-		engine.addCamera(this);
+	public void addToEngine(CoreEngine engine) {
+		engine.getRenderEngine().addCamera(this);
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package com.base.engine.internalGame;
 
 import com.base.engine.components.GameComponent;
+import com.base.engine.core.CoreEngine;
 import com.base.engine.core.GameObject;
 import com.base.engine.rendering.RenderingEngine;
 
@@ -35,8 +36,21 @@ public abstract class Game {
 	private GameObject getRootObject() {
 		if (root == null) {
 			root = new GameObject();
+			// root.setCoreEngine(coreEngine);
 		}
 		return root;
 
+	}
+
+	public GameObject getRoot() {
+		return root;
+	}
+
+	public void setRoot(GameObject root) {
+		this.root = root;
+	}
+
+	public void setCoreEngine(CoreEngine coreEngine) {
+		this.getRootObject().setCoreEngine(coreEngine);
 	}
 }

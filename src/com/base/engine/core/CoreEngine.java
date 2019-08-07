@@ -11,7 +11,6 @@ import com.base.engine.handlers.logging.Logger;
 import com.base.engine.internalGame.Game;
 import com.base.engine.rendering.RenderingEngine;
 import com.base.engine.rendering.Window;
-import com.sun.xml.internal.org.jvnet.mimepull.CleanUpExecutorFactory;
 
 public class CoreEngine {
 
@@ -26,7 +25,7 @@ public class CoreEngine {
 		this.game = game;
 		this.frameRate = framerate;
 		this.frameTime = 1.0 / framerate;
-
+		this.game.setCoreEngine(this);
 	}
 
 	public void createWindow(int width, int height, String windowTitle, boolean fullscreen, boolean vSync) {
@@ -152,6 +151,14 @@ public class CoreEngine {
 		logger.info("Max Uniform Block Size: " + GL31.GL_MAX_UNIFORM_BLOCK_SIZE + " bytes");
 		logger.info("Max SSBO Block Size: " + GL43.GL_MAX_SHADER_STORAGE_BLOCK_SIZE + " bytes");
 
+	}
+
+	public RenderingEngine getRenderEngine() {
+		return renderEngine;
+	}
+
+	public void setRenderEngine(RenderingEngine renderEngine) {
+		this.renderEngine = renderEngine;
 	}
 
 }

@@ -98,9 +98,11 @@ public class RenderingEngine extends MappedValues {
 		// Clear Screen Before Rendering
 		clearScreen();
 
-		lights.clear();
-
-		gameObject.addToRenderingEngine(this);
+		/*
+		 * lights.clear();
+		 * 
+		 * gameObject.addToRenderingEngine(this);
+		 */
 
 		// Shader forwardAmbientShader = ForwardAmbientShader.getInstance();
 		// forwardAmbientShader.setRenderingEngine(this);

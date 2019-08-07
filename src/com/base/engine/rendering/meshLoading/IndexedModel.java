@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.base.engine.math.Vector2f;
 import com.base.engine.math.Vector3f;
-import com.base.engine.rendering.Vertex;
 
 public class IndexedModel {
 

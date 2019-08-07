@@ -28,14 +28,10 @@ public class Shader {
 	private static HashMap<String, ShaderResource> loadedShaderPrograms = new HashMap<String, ShaderResource>();
 	private ShaderResource shaderProgram;
 
-	private String fileName;
-	/*
-	 * TODO: Make This Into A Private Wrapper Class Like GLSLStruct To Use With Out
-	 * Two ArrayLists.
-	 */
+	// private String fileName;
 
 	public Shader(String fileName) {
-		this.fileName = fileName;
+		// this.fileName = fileName;
 
 		// TODO: make this hashmap of resources into a HashSet and use compute if absent
 		// method to add shader to set
@@ -626,9 +622,9 @@ public class Shader {
 
 	public void setUniformPointLight(String uniformName, PointLight pointLight) {
 		setUniformBaseLight(uniformName + ".base", pointLight);
-		setUniformf(uniformName + ".atten.constant", pointLight.getConstant());
-		setUniformf(uniformName + ".atten.linear", pointLight.getLinear());
-		setUniformf(uniformName + ".atten.exponent", pointLight.getExponent());
+		setUniformf(uniformName + ".atten.constant", pointLight.getAttenuation().getConstant());
+		setUniformf(uniformName + ".atten.linear", pointLight.getAttenuation().getLinear());
+		setUniformf(uniformName + ".atten.exponent", pointLight.getAttenuation().getExponent());
 		setUniform3f(uniformName + ".position", pointLight.getTransform().getPosition());
 		setUniformf(uniformName + ".range", pointLight.getRange());
 	}
