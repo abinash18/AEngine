@@ -14,11 +14,11 @@ public abstract class Game {
 	}
 
 	public void update(float delta) {
-		getRootObject().update(delta);
+		getRootObject().updateAll(delta);
 	}
 
 	public void input(float delta) {
-		getRootObject().input(delta);
+		getRootObject().inputAll(delta);
 	}
 
 	public void render(RenderingEngine engine) {

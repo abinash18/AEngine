@@ -107,7 +107,7 @@ public class RenderingEngine extends MappedValues {
 		// Shader forwardAmbientShader = ForwardAmbientShader.getInstance();
 		// forwardAmbientShader.setRenderingEngine(this);
 
-		gameObject.render(forwardAmbientShader, this);
+		gameObject.renderAll(forwardAmbientShader, this);
 
 		GL11.glEnable(GL11.GL_BLEND);
 
@@ -122,7 +122,7 @@ public class RenderingEngine extends MappedValues {
 
 			activeLight = light;
 
-			gameObject.render(light.getShader(), this);
+			gameObject.renderAll(light.getShader(), this);
 
 		}
 

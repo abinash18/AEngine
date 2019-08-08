@@ -21,6 +21,15 @@ public class GameObject {
 		this.coreEngine = null;
 	}
 
+	public ArrayList<GameObject> getAllAttached() {
+		ArrayList<GameObject> result = new ArrayList<GameObject>();
+		for (GameObject child : children) {
+			result.addAll(child.getAllAttached());
+		}
+		result.add(this);
+		return result;
+	}
+
 	public GameObject addChild(GameObject child) {
 		child.getTransform().setParent(transform);
 		child.setCoreEngine(coreEngine);
@@ -53,6 +62,9 @@ public class GameObject {
 		}
 	}
 
+	/**
+	 * Initialize All Game Objects And Components Attached.
+	 */
 	public void init() {
 		for (GameComponent component : components) {
 			component.init();
@@ -62,34 +74,68 @@ public class GameObject {
 		}
 	}
 
-	public void input(float delta) {
+	/**
+	 * Update Inputs For All Game Objects And Components Attached.
+	 * 
+	 * @param delta
+	 */
+	public void inputAll(float delta) {
+		this.input(delta);
 
+		for (GameObject child : children) {
+			child.inputAll(delta);
+		}
+	}
+
+	/**
+	 * Update This And All Game Objects And Components Attached.
+	 * 
+	 * @param delta
+	 */
+	public void updateAll(float delta) {
+		this.update(delta);
+		for (GameObject child : children) {
+			child.updateAll(delta);
+		}
+	}
+
+	/**
+	 * Only Update The Inputs For This Object.
+	 */
+	public void input(float delta) {
+		/*
+		 * This Has To Be Done To Allow For The Children To Have Correct Parent
+		 * Transformations.
+		 */
 		transform.update();
 
 		for (GameComponent component : components) {
 			component.input(delta);
 		}
-
-		for (GameObject child : children) {
-			child.input(delta);
-		}
 	}
 
+	/**
+	 * Only Update This Game Object.
+	 */
 	public void update(float delta) {
 		for (GameComponent component : components) {
 			component.update(delta);
 		}
-		for (GameObject child : children) {
-			child.update(delta);
-		}
 	}
 
+	/**
+	 * Only Render This Game Object.
+	 */
 	public void render(Shader shader, RenderingEngine engine) {
 		for (GameComponent component : components) {
 			component.render(shader, engine);
 		}
+	}
+
+	public void renderAll(Shader shader, RenderingEngine engine) {
+		this.render(shader, engine);
 		for (GameObject child : children) {
-			child.render(shader, engine);
+			child.renderAll(shader, engine);
 		}
 	}
 

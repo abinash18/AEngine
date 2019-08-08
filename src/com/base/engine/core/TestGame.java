@@ -2,6 +2,8 @@ package com.base.engine.core;
 
 import com.base.engine.components.Camera;
 import com.base.engine.components.DirectionalLight;
+import com.base.engine.components.FreeLook;
+import com.base.engine.components.FreeMove;
 import com.base.engine.components.MeshRenderer;
 import com.base.engine.components.PointLight;
 import com.base.engine.components.SpotLight;
@@ -80,7 +82,7 @@ public class TestGame extends Game {
 		cam = new Camera((float) Math.toRadians(70.0f), (float) Window.getWidth() / (float) Window.getHeight(), 0.01f,
 				1000.0f);
 		cameraObject.addComponent(cam);
-		cameraObject.addComponent(spotLight);
+		cameraObject.addComponent(spotLight).addComponent(new FreeLook(0.35f)).addComponent(new FreeMove(10f));
 
 		// super.addChild(testMesh1);
 
@@ -117,6 +119,16 @@ public class TestGame extends Game {
 		temp = temp + delta;
 		// float angle = (float) Math.toRadians(temp * 180 * 2);
 		// monkey.getTransform().setRotation(new Quaternion(Transform.X_AXIS, angle));
+	}
+
+	@Override
+	public void input(float delta) {
+		super.input(delta);
+		if (Input.getKey(Input.KEY_ESCAPE)) {
+			Input.setCursor(true);
+			System.out.println(this);
+			System.exit(1);
+		}
 	}
 
 }
