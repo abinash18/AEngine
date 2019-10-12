@@ -5,7 +5,7 @@ import org.lwjgl.input.Mouse;
 import com.base.engine.core.Input;
 import com.base.engine.math.Transform;
 import com.base.engine.math.Vector2f;
-import com.base.engine.rendering.Window;
+import com.base.engine.rendering.windowManagement.Window;
 
 public class FreeLook extends GameComponent {
 
@@ -28,17 +28,17 @@ public class FreeLook extends GameComponent {
 
 		if (Input.getKey(unlockMouseKey)) {
 			Input.setMousePosition(Window.getCenter());
-			Input.setCursor(true);
-			mouseGrabbed = false;
+			// Input.setCursor(true);
+			Input.setMouseGrabbed(false);
 		}
 
 		if (Mouse.isButtonDown(0)) {
 			Input.setMousePosition(Window.getCenter());
-			Input.setCursor(false);
-			mouseGrabbed = true;
+			// Input.setCursor(false);
+			Input.setMouseGrabbed(true);
 		}
 
-		if (mouseGrabbed) {
+		if (Input.isMouseGrabbed()) {
 
 			Vector2f deltaPos = Input.getMousePosition().sub(Window.getCenter());
 

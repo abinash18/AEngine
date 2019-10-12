@@ -14,6 +14,8 @@ import com.base.engine.handlers.logging.Logger;
 import com.base.engine.math.Transform;
 import com.base.engine.math.Vector3f;
 import com.base.engine.rendering.resourceManagement.MappedValues;
+import com.base.engine.rendering.resourceManagement.Material;
+import com.base.engine.rendering.shaders.Shader;
 
 public class RenderingEngine extends MappedValues {
 
@@ -78,9 +80,7 @@ public class RenderingEngine extends MappedValues {
 		GL11.glCullFace(GL11.GL_BACK);
 		GL11.glEnable(GL11.GL_CULL_FACE);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
-
 		GL11.glEnable(GL32.GL_DEPTH_CLAMP);
-
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		// GL11.glEnable(GL32.GL_FRAMEBUFFER_SRGB);
 	}
@@ -134,8 +134,15 @@ public class RenderingEngine extends MappedValues {
 
 	}
 
+	public void clearLights() {
+		activeLight = null;
+		lights.clear();
+	}
+
 	public void addCamera(Camera camera) {
-		mainCamera = camera;
+		// lights.clear();
+		mainCamera = Camera.getInstance();
+
 	}
 
 	public BaseLight getActiveLight() {

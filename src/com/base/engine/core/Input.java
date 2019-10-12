@@ -161,6 +161,8 @@ public class Input {
 	private static boolean[] lastKeys = new boolean[NUM_KEYCODES];
 	private static boolean[] lastMouse = new boolean[NUM_MOUSEBUTTONS];
 
+	private static boolean mouseGrabbed = false;
+
 	public static void update() {
 		for (int i = 0; i < NUM_KEYCODES; i++)
 			lastKeys[i] = getKey(i);
@@ -203,6 +205,15 @@ public class Input {
 
 	public static void setCursor(boolean enabled) {
 		Mouse.setGrabbed(!enabled);
+	}
+
+	public static boolean isMouseGrabbed() {
+		return mouseGrabbed;
+	}
+
+	public static void setMouseGrabbed(boolean grabbed) {
+		Input.mouseGrabbed = grabbed;
+		setCursor(!mouseGrabbed);
 	}
 
 }

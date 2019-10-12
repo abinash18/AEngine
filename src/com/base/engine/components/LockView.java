@@ -3,7 +3,7 @@ package com.base.engine.components;
 import com.base.engine.math.Quaternion;
 import com.base.engine.math.Transform;
 import com.base.engine.rendering.RenderingEngine;
-import com.base.engine.rendering.Shader;
+import com.base.engine.rendering.shaders.Shader;
 
 public class LockView extends GameComponent {
 

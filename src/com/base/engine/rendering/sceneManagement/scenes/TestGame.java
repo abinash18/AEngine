@@ -1,4 +1,4 @@
-package com.base.engine.core;
+package com.base.engine.rendering.sceneManagement.scenes;
 
 import com.base.engine.components.Camera;
 import com.base.engine.components.DirectionalLight;
@@ -7,20 +7,23 @@ import com.base.engine.components.FreeMove;
 import com.base.engine.components.MeshRenderer;
 import com.base.engine.components.PointLight;
 import com.base.engine.components.SpotLight;
-import com.base.engine.internalGame.Game;
+import com.base.engine.core.GameObject;
+import com.base.engine.core.Input;
 import com.base.engine.math.Vector2f;
 import com.base.engine.math.Vector3f;
-import com.base.engine.rendering.Material;
-import com.base.engine.rendering.Mesh;
-import com.base.engine.rendering.Texture;
-import com.base.engine.rendering.Vertex;
-import com.base.engine.rendering.Window;
+import com.base.engine.rendering.meshLoading.Mesh;
+import com.base.engine.rendering.meshLoading.Vertex;
+import com.base.engine.rendering.resourceManagement.Material;
+import com.base.engine.rendering.resourceManagement.Texture;
+import com.base.engine.rendering.sceneManagement.Scene;
+import com.base.engine.rendering.sceneManagement.SceneManager;
+import com.base.engine.rendering.windowManagement.Window;
 import com.base.engine.util.Attenuation;
 
-public class TestGame extends Game {
+public class TestGame extends Scene {
 
 	public TestGame() {
-		// init();
+		super("TestGame");
 	}
 
 	private GameObject monkey, monkey2, cameraObject;
@@ -79,8 +82,8 @@ public class TestGame extends Game {
 		GameObject spotLightObject = new GameObject();
 
 		cameraObject = new GameObject();
-		cam = new Camera((float) Math.toRadians(70.0f), (float) Window.getWidth() / (float) Window.getHeight(), 0.01f,
-				1000.0f);
+		cam = Camera.getInstance();
+
 		cameraObject.addComponent(cam);
 		cameraObject.addComponent(spotLight).addComponent(new FreeLook(0.35f)).addComponent(new FreeMove(10f));
 
@@ -117,7 +120,11 @@ public class TestGame extends Game {
 	public void update(float delta) {
 		super.update(delta);
 		temp = temp + delta;
-		// float angle = (float) Math.toRadians(temp * 180 * 2);
+		System.out.println(temp);
+		if (temp >= 10) {
+			
+			SceneManager.setCurrentScene("MainMenu");
+		}
 		// monkey.getTransform().setRotation(new Quaternion(Transform.X_AXIS, angle));
 	}
 
@@ -125,9 +132,14 @@ public class TestGame extends Game {
 	public void input(float delta) {
 		super.input(delta);
 		if (Input.getKey(Input.KEY_ESCAPE)) {
-			Input.setCursor(true);
-			System.out.println(this);
+			// Input.setCursor(true);
+			// System.out.println(this);
 			System.exit(1);
+
+		}
+		if (Input.getKey(Input.KEY_C)) {
+			SceneManager.setCurrentScene("MainMenu");
+			
 		}
 	}
 

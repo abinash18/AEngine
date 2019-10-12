@@ -1,4 +1,4 @@
-package com.base.engine.rendering;
+package com.base.engine.rendering.resourceManagement;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -13,7 +13,6 @@ import org.lwjgl.opengl.GL13;
 import com.base.engine.core.Util;
 import com.base.engine.handlers.logging.LogManager;
 import com.base.engine.handlers.logging.Logger;
-import com.base.engine.rendering.resourceManagement.TextureResource;
 
 public class Texture {
 

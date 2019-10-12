@@ -4,9 +4,8 @@ import com.base.engine.components.BaseLight;
 import com.base.engine.components.PointLight;
 import com.base.engine.components.SpotLight;
 import com.base.engine.math.Transform;
-import com.base.engine.rendering.Material;
 import com.base.engine.rendering.RenderingEngine;
-import com.base.engine.rendering.Shader;
+import com.base.engine.rendering.resourceManagement.Material;
 
 @Deprecated
 public class ForwardSpotShader extends Shader {

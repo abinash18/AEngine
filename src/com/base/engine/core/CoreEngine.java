@@ -8,24 +8,21 @@ import org.lwjgl.opengl.GL43;
 import com.base.engine.handlers.logging.LogLevel;
 import com.base.engine.handlers.logging.LogManager;
 import com.base.engine.handlers.logging.Logger;
-import com.base.engine.internalGame.Game;
 import com.base.engine.rendering.RenderingEngine;
-import com.base.engine.rendering.Window;
+import com.base.engine.rendering.sceneManagement.SceneManager;
+import com.base.engine.rendering.windowManagement.Window;
 
 public class CoreEngine {
 
 	private static Logger logger = LogManager.getLogger(CoreEngine.class.getName());
 	private double frameTime, frameRate;
 	private boolean isRunning;
-	private Game game;
 	private RenderingEngine renderEngine;
 
-	public CoreEngine(double framerate, Game game) {
+	public CoreEngine(double framerate) {
 		this.isRunning = false;
-		this.game = game;
 		this.frameRate = framerate;
 		this.frameTime = 1.0 / framerate;
-		this.game.setCoreEngine(this);
 	}
 
 	public void createWindow(int width, int height, String windowTitle, boolean fullscreen, boolean vSync) {
@@ -37,7 +34,6 @@ public class CoreEngine {
 	}
 
 	public void init() {
-		game.init();
 	}
 
 	public void start() {
@@ -58,7 +54,7 @@ public class CoreEngine {
 	private void run() {
 
 		logger.info("Starting Engine.");
-		game.init();
+		SceneManager.init(this);
 		isRunning = true;
 
 		int frames = 0;
@@ -92,10 +88,10 @@ public class CoreEngine {
 
 				// Time.setDelta(frameTime);
 
-				game.input((float) frameTime);
+				SceneManager.input((float) frameTime);
 				Input.update();
 				// renderEngine.input((float) frameTime);
-				game.update((float) frameTime);
+				SceneManager.update((float) frameTime);
 
 				if (frameCounter >= 1.0) {
 					// System.out.println(frames);
@@ -109,7 +105,7 @@ public class CoreEngine {
 				}
 			}
 			if (render) {
-				game.render(renderEngine);
+				SceneManager.render(renderEngine);
 				// renderEngine.render(game.getRootObject());
 				Window.render(frameRate);
 				frames++;

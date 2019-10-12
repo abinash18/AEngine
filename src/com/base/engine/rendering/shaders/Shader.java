@@ -1,4 +1,4 @@
-package com.base.engine.rendering;
+package com.base.engine.rendering.shaders;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -19,6 +19,8 @@ import com.base.engine.math.Matrix4f;
 import com.base.engine.math.Transform;
 import com.base.engine.math.Vector2f;
 import com.base.engine.math.Vector3f;
+import com.base.engine.rendering.RenderingEngine;
+import com.base.engine.rendering.resourceManagement.Material;
 import com.base.engine.rendering.resourceManagement.ShaderResource;
 
 public class Shader {

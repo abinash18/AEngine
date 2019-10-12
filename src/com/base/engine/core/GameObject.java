@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.base.engine.components.GameComponent;
 import com.base.engine.math.Transform;
 import com.base.engine.rendering.RenderingEngine;
-import com.base.engine.rendering.Shader;
+import com.base.engine.rendering.shaders.Shader;
 
 public class GameObject {
 
@@ -63,7 +63,7 @@ public class GameObject {
 	}
 
 	/**
-	 * Initialize All Game Objects And Components Attached.
+	 * Initialize All Scene Objects And Components Attached.
 	 */
 	public void init() {
 		for (GameComponent component : components) {
@@ -75,7 +75,7 @@ public class GameObject {
 	}
 
 	/**
-	 * Update Inputs For All Game Objects And Components Attached.
+	 * Update Inputs For All Scene Objects And Components Attached.
 	 * 
 	 * @param delta
 	 */
@@ -88,7 +88,7 @@ public class GameObject {
 	}
 
 	/**
-	 * Update This And All Game Objects And Components Attached.
+	 * Update This And All Scene Objects And Components Attached.
 	 * 
 	 * @param delta
 	 */
@@ -115,7 +115,7 @@ public class GameObject {
 	}
 
 	/**
-	 * Only Update This Game Object.
+	 * Only Update This Scene Object.
 	 */
 	public void update(float delta) {
 		for (GameComponent component : components) {
@@ -124,7 +124,7 @@ public class GameObject {
 	}
 
 	/**
-	 * Only Render This Game Object.
+	 * Only Render This Scene Object.
 	 */
 	public void render(Shader shader, RenderingEngine engine) {
 		for (GameComponent component : components) {

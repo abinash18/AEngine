@@ -1,4 +1,4 @@
-package com.base.engine.rendering;
+package com.base.engine.rendering.meshLoading;
 
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
@@ -20,8 +20,6 @@ import com.base.engine.core.Util;
 import com.base.engine.handlers.logging.LogManager;
 import com.base.engine.handlers.logging.Logger;
 import com.base.engine.math.Vector3f;
-import com.base.engine.rendering.meshLoading.IndexedModel;
-import com.base.engine.rendering.meshLoading.OBJModel;
 import com.base.engine.rendering.resourceManagement.MeshResource;
 
 public class Mesh {

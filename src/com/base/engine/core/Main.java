@@ -10,6 +10,9 @@ import org.apache.commons.cli.ParseException;
 import com.base.engine.handlers.logging.LogLevel;
 import com.base.engine.handlers.logging.LogManager;
 import com.base.engine.handlers.logging.Logger;
+import com.base.engine.rendering.sceneManagement.SceneManager;
+import com.base.engine.rendering.sceneManagement.scenes.MainMenu;
+import com.base.engine.rendering.sceneManagement.scenes.TestGame;
 
 public class Main {
 
@@ -39,8 +42,8 @@ public class Main {
 		// opts.addOption(new Option("r", "refresh rate", true, "The Maximum RefreshRate
 		// Of The Engine."));
 		opts.addOption(
-				new Option("fs", "fullscreen", false, "Add This If The Game Is To Be Launched In Full Screen Mode."));
-		opts.addOption(new Option("vs", "VSync", false, "Add This If The Game Is To Be Launched With VSync Mode."));
+				new Option("fs", "fullscreen", false, "Add This If The Scene Is To Be Launched In Full Screen Mode."));
+		opts.addOption(new Option("vs", "VSync", false, "Add This If The Scene Is To Be Launched With VSync Mode."));
 
 		CommandLine cmd = null;
 
@@ -75,13 +78,16 @@ public class Main {
 			frameRate = Integer.parseInt(cmd.getOptionValue("fps"));
 		}
 
-		TestGame game = new TestGame();
-
 		// logger.debug("ad", new IOException());
 
-		CoreEngine engine = new CoreEngine(frameRate, game);
+		CoreEngine engine = new CoreEngine(frameRate);
 		engine.createWindow(width, height, windowTitle, fullScreen, vSync);
+		// SceneManager.setCurrentScene("MainMenu");
+		new TestGame();
+		new MainMenu();
+
 		engine.start();
+
 	}
 
 }
