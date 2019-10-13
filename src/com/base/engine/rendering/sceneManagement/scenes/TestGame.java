@@ -30,7 +30,7 @@ public class TestGame extends Scene {
 	private Camera cam;
 
 	public void init() {
-
+		super.init();
 		float fieldDepth = 10.0f;
 		float fieldWidth = 10.0f;
 
@@ -121,10 +121,10 @@ public class TestGame extends Scene {
 		super.update(delta);
 		temp = temp + delta;
 		System.out.println(temp);
-		if (temp >= 10) {
-			
-			SceneManager.setCurrentScene("MainMenu");
-		}
+//		if (temp >= 10) {
+//
+//			SceneManager.setCurrentScene("MainMenu");
+//		}
 		// monkey.getTransform().setRotation(new Quaternion(Transform.X_AXIS, angle));
 	}
 
@@ -137,9 +137,8 @@ public class TestGame extends Scene {
 			System.exit(1);
 
 		}
-		if (Input.getKey(Input.KEY_C)) {
+		if (Input.getKeyDown(Input.KEY_C)) {
 			SceneManager.setCurrentScene("MainMenu");
-			
 		}
 	}
 

@@ -46,7 +46,7 @@ public class SceneManager {
 		// scene.init();
 		scenes.put(scene.getName(), scene);
 		if (currentScene == null) {
-			currentScene = scene;
+			setCurrentScene(scene.getName());
 		}
 		logger.debug("Current Scene: " + currentScene);
 	}
@@ -55,7 +55,6 @@ public class SceneManager {
 		SceneManager.coreEngine = coreEngine;
 		setCoreEngine();
 		// scenes.forEach((k, v) -> v.init());
-		currentScene.init();
 	}
 
 	public static void update(float delta) {
@@ -86,10 +85,11 @@ public class SceneManager {
 	}
 
 	public static void setCurrentScene(String sceneName) {
-		
 		currentScene = scenes.get(sceneName);
-		currentScene.init();
 		logger.debug("Setting Scene: " + sceneName);
+		if (!currentScene.isInitialized()) {
+			currentScene.init();
+		}
 		// setCoreEngine();
 	}
 

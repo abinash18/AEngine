@@ -30,7 +30,7 @@ public class MainMenu extends Scene {
 	private Camera cam;
 
 	public void init() {
-
+		super.init();
 		float fieldDepth = 10.0f;
 		float fieldWidth = 10.0f;
 
@@ -132,9 +132,8 @@ public class MainMenu extends Scene {
 			System.exit(1);
 
 		}
-		if (Input.getKey(Input.KEY_C)) {
-			// System.out.println(this);
-			//SceneManager.setCurrentScene("TestGame");
+		if (Input.getKeyDown(Input.KEY_C)) {
+			SceneManager.setCurrentScene("TestGame");
 		}
 	}
 }

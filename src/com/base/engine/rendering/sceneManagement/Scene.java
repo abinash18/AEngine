@@ -13,6 +13,7 @@ public abstract class Scene {
 
 	private UUID id = UUID.randomUUID();
 	private String name;
+	private boolean initialized = false;
 
 	public Scene(String name) {
 		this.name = name;
@@ -45,7 +46,19 @@ public abstract class Scene {
 	}
 
 	public void init() {
-		getRootObject().init();
+		if (!initialized) {
+			getRootObject().init();
+			this.initialized = true;
+			return;
+		}
+	}
+
+	public boolean isInitialized() {
+		return initialized;
+	}
+
+	public void setInitialized(boolean initialized) {
+		this.initialized = initialized;
 	}
 
 	public void update(float delta) {
