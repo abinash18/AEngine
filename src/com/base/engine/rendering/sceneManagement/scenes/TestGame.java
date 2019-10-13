@@ -121,6 +121,7 @@ public class TestGame extends Scene {
 		super.update(delta);
 		temp = temp + delta;
 		System.out.println(temp);
+		
 //		if (temp >= 10) {
 //
 //			SceneManager.setCurrentScene("MainMenu");
