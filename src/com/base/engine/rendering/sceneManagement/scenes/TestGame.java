@@ -17,7 +17,6 @@ import com.base.engine.rendering.resourceManagement.Material;
 import com.base.engine.rendering.resourceManagement.Texture;
 import com.base.engine.rendering.sceneManagement.Scene;
 import com.base.engine.rendering.sceneManagement.SceneManager;
-import com.base.engine.rendering.windowManagement.Window;
 import com.base.engine.util.Attenuation;
 
 public class TestGame extends Scene {
