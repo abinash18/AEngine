@@ -3,6 +3,7 @@ package com.base.engine.components;
 import com.base.engine.core.GameObject;
 import com.base.engine.math.Transform;
 import com.base.engine.rendering.RenderingEngine;
+import com.base.engine.rendering.sceneManagement.Scene;
 import com.base.engine.rendering.shaders.Shader;
 
 public abstract class GameComponent {
@@ -11,6 +12,10 @@ public abstract class GameComponent {
 
 	public Transform getTransform() {
 		return parent.getTransform();
+	}
+
+	public Scene getParentScene() {
+		return parent.getParentScene();
 	}
 
 	public GameObject getParent() {
@@ -33,7 +38,7 @@ public abstract class GameComponent {
 	public void render(Shader shader, RenderingEngine engine) {
 	}
 
-	public void addToEngine(RenderingEngine engine) {
+	public void addToScene() {
 
 	}
 

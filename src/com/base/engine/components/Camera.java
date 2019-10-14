@@ -2,7 +2,6 @@ package com.base.engine.components;
 
 import com.base.engine.math.Matrix4f;
 import com.base.engine.math.Vector3f;
-import com.base.engine.rendering.RenderingEngine;
 
 public class Camera extends GameComponent {
 
@@ -37,7 +36,8 @@ public class Camera extends GameComponent {
 	public Matrix4f getViewProjection() {
 		Matrix4f cameraRotationMatrix = super.getTransform().getTransformedRotation().conjugate().toRotationMatrix();
 		/*
-		 * Doing Negative multiplication here to eradicate the use of it in the return
+		 * Doing Negative multiplication here to eradicate the use of it
+		 *  in the return
 		 * statement.
 		 */
 		Vector3f cameraPosition = super.getTransform().getTransformedPosition().mul(-1);
@@ -64,8 +64,8 @@ public class Camera extends GameComponent {
 	}
 
 	@Override
-	public void addToEngine(RenderingEngine engine) {
-		engine.addCamera(this);
+	public void addToScene() {
+		super.getParentScene().setMainCamera(this);
 	}
 
 	public void setProjection(Matrix4f projection) {

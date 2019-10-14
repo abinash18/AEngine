@@ -1,32 +1,27 @@
 package com.base.engine.rendering.sceneManagement;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
+import com.base.engine.components.BaseLight;
+import com.base.engine.components.Camera;
 import com.base.engine.components.GameComponent;
 import com.base.engine.core.GameObject;
 import com.base.engine.rendering.RenderingEngine;
 
 public abstract class Scene {
 
-	private RenderingEngine renderEngine;
-
 	private GameObject root;
-
+	private ArrayList<BaseLight> lights;
+	private Camera mainCamera;
 	private UUID id = UUID.randomUUID();
 	private String name;
 	private boolean initialized = false;
 
 	public Scene(String name) {
 		this.name = name;
-		getRenderEngine();
-		setRenderingEngine();
-		this.addToSceneManager();
-	}
-
-	public Scene(String name, RenderingEngine rendEng) {
-		this.name = name;
-		renderEngine = rendEng;
-		setRenderingEngine();
+		this.lights = new ArrayList<BaseLight>();
+		this.setAsParentScene();
 		this.addToSceneManager();
 	}
 
@@ -57,7 +52,7 @@ public abstract class Scene {
 
 	public void init() {
 		if (!initialized) {
-			getRootObject().init();
+			this.getRootObject().init();
 			this.initialized = true;
 			return;
 		}
@@ -72,39 +67,33 @@ public abstract class Scene {
 	}
 
 	public void update(float delta) {
-		getRootObject().updateAll(delta);
+		this.getRootObject().updateAll(delta);
 	}
 
 	public void input(float delta) {
-		getRootObject().inputAll(delta);
+		this.getRootObject().inputAll(delta);
 	}
 
-	public void render(RenderingEngine engine) {
-		engine.render(getRootObject());
+	@Deprecated
+	public void render(RenderingEngine rndEng) {
+		rndEng.render(this);
 	}
 
 	public void addChild(GameObject child) {
-		getRootObject().addChild(child);
+		this.getRootObject().addChild(child);
 	}
 
 	public void addComponent(GameComponent component) {
-		getRootObject().addComponent(component);
+		this.getRootObject().addComponent(component);
 	}
 
-	private GameObject getRootObject() {
+	public GameObject getRootObject() {
 		if (root == null) {
 			root = new GameObject();
 			// root.setCoreEngine(coreEngine);
 		}
 		return root;
 
-	}
-
-	public RenderingEngine getRenderEngine() {
-		if (renderEngine == null) {
-			renderEngine = new RenderingEngine();
-		}
-		return renderEngine;
 	}
 
 	public GameObject getRoot() {
@@ -115,12 +104,32 @@ public abstract class Scene {
 		this.root = root;
 	}
 
-	public void setRenderingEngine() {
-		this.getRootObject().setRenderingEngine(renderEngine);
+	public void setAsParentScene() {
+		this.getRootObject().setParentScene(this);
 	}
 
 	@Override
 	public void finalize() throws Throwable {
 		super.finalize();
+	}
+
+	public ArrayList<BaseLight> getLights() {
+		return lights;
+	}
+
+	public void setLights(ArrayList<BaseLight> lights) {
+		this.lights = lights;
+	}
+
+	public Camera getMainCamera() {
+		return mainCamera;
+	}
+
+	public void setMainCamera(Camera mainCamera) {
+		this.mainCamera = mainCamera;
+	}
+
+	public void addLight(BaseLight light) {
+		this.lights.add(light);
 	}
 }

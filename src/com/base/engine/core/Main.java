@@ -10,7 +10,6 @@ import org.apache.commons.cli.ParseException;
 import com.base.engine.handlers.logging.LogLevel;
 import com.base.engine.handlers.logging.LogManager;
 import com.base.engine.handlers.logging.Logger;
-import com.base.engine.rendering.sceneManagement.SceneManager;
 import com.base.engine.rendering.sceneManagement.scenes.MainMenu;
 import com.base.engine.rendering.sceneManagement.scenes.TestGame;
 
@@ -55,6 +54,7 @@ public class Main {
 			// e.printStackTrace();
 			logger.error("Unable to parse given arguments.", e);
 			System.exit(1);
+			
 		}
 
 		if (cmd.hasOption("t")) {

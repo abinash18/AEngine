@@ -13,7 +13,7 @@ public class LockView extends GameComponent {
 	public void update(float delta) {
 		if (engine != null) {
 			Quaternion newRotation = super.getTransform().getLookAtDirection(
-					engine.getMainCamera().getTransform().getTransformedPosition(), Transform.Y_AXIS);
+					super.getParentScene().getMainCamera().getTransform().getTransformedPosition(), Transform.Y_AXIS);
 			// super.getTransform().setRotation(super.getTransform().getRotation().nlerp(newRotation,
 			// delta * 2, true));
 

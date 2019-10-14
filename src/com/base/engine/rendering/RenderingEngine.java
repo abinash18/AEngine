@@ -1,6 +1,5 @@
 package com.base.engine.rendering;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.lwjgl.opengl.GL11;
@@ -8,32 +7,28 @@ import org.lwjgl.opengl.GL32;
 
 import com.base.engine.components.BaseLight;
 import com.base.engine.components.Camera;
-import com.base.engine.core.GameObject;
 import com.base.engine.handlers.logging.LogManager;
 import com.base.engine.handlers.logging.Logger;
 import com.base.engine.math.Transform;
 import com.base.engine.math.Vector3f;
 import com.base.engine.rendering.resourceManagement.MappedValues;
 import com.base.engine.rendering.resourceManagement.Material;
+import com.base.engine.rendering.sceneManagement.Scene;
 import com.base.engine.rendering.shaders.Shader;
 
 public class RenderingEngine extends MappedValues {
 
 	private static final Logger logger = LogManager.getLogger(RenderingEngine.class.getName());
-	private Camera mainCamera;
-
-	// More Permanent Structs
-	private ArrayList<BaseLight> lights;
-	private BaseLight activeLight;
 
 	private HashMap<String, Integer> samplerMap;
 
 	private Shader forwardAmbientShader;
 
+	private BaseLight activeLight;
+	private Camera mainCamera;
+
 	public RenderingEngine() {
 		super();
-
-		lights = new ArrayList<BaseLight>();
 
 		samplerMap = new HashMap<String, Integer>();
 
@@ -94,7 +89,12 @@ public class RenderingEngine extends MappedValues {
 		return GL11.glGetString(GL11.GL_VERSION);
 	}
 
-	public void render(GameObject gameObject) {
+	public void render(Scene scene) {
+
+		if (this.mainCamera != scene.getMainCamera()) {
+			this.mainCamera = scene.getMainCamera();
+		}
+
 		// Clear Screen Before Rendering
 		clearScreen();
 
@@ -107,7 +107,7 @@ public class RenderingEngine extends MappedValues {
 		// Shader forwardAmbientShader = ForwardAmbientShader.getInstance();
 		// forwardAmbientShader.setRenderingEngine(this);
 
-		gameObject.renderAll(forwardAmbientShader, this);
+		scene.getRootObject().renderAll(forwardAmbientShader, this);
 
 		GL11.glEnable(GL11.GL_BLEND);
 
@@ -117,13 +117,9 @@ public class RenderingEngine extends MappedValues {
 
 		GL11.glDepthFunc(GL11.GL_EQUAL);
 
-		for (BaseLight light : lights) {
-			// light.getShader().setRenderingEngine(this); // CHECK THIS AFTER
-
-			activeLight = light;
-
-			gameObject.renderAll(light.getShader(), this);
-
+		for (BaseLight light : scene.getLights()) {
+			this.activeLight = light;
+			scene.getRootObject().renderAll(light.getShader(), this);
 		}
 
 		GL11.glDepthFunc(GL11.GL_LESS);
@@ -134,39 +130,8 @@ public class RenderingEngine extends MappedValues {
 
 	}
 
-	public void clearLights() {
-		activeLight = null;
-		lights.clear();
-	}
-
 	public void addCamera(Camera camera) {
-		mainCamera = camera;
 		logger.debug("Adding Camera" + camera);
-	}
-
-	public BaseLight getActiveLight() {
-		return activeLight;
-	}
-
-	public void addLight(BaseLight light) {
-		lights.add(light);
-	}
-
-	public Camera getMainCamera() {
-		return mainCamera;
-	}
-
-	@Deprecated
-	public void input(float delta) {
-		mainCamera.input(delta);
-	}
-
-	public ArrayList<BaseLight> getLights() {
-		return lights;
-	}
-
-	public void setLights(ArrayList<BaseLight> lights) {
-		this.lights = lights;
 	}
 
 	public HashMap<String, Integer> getSamplerMap() {
@@ -181,8 +146,20 @@ public class RenderingEngine extends MappedValues {
 		return this.samplerMap.get(uniformKey);
 	}
 
+	public BaseLight getActiveLight() {
+		return activeLight;
+	}
+
 	public void setActiveLight(BaseLight activeLight) {
 		this.activeLight = activeLight;
+	}
+
+	public Camera getMainCamera() {
+		return mainCamera;
+	}
+
+	public void setMainCamera(Camera mainCamera) {
+		this.mainCamera = mainCamera;
 	}
 
 }

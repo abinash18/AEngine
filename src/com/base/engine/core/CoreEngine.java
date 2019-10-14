@@ -17,7 +17,7 @@ public class CoreEngine {
 	private static Logger logger = LogManager.getLogger(CoreEngine.class.getName());
 	private double frameTime, frameRate;
 	private boolean isRunning;
-	// private RenderingEngine renderEngine;
+	private RenderingEngine renderEngine;
 
 	public CoreEngine(double framerate) {
 		this.isRunning = false;
@@ -27,7 +27,7 @@ public class CoreEngine {
 
 	public void createWindow(int width, int height, String windowTitle, boolean fullscreen, boolean vSync) {
 		Window.createWindow(width, height, windowTitle, fullscreen, vSync);
-		// this.renderEngine = new RenderingEngine();
+		this.renderEngine = new RenderingEngine();
 		// System.out.println(RenderingEngine.getOpenGLVersion());
 		logger.info(RenderingEngine.getOpenGLVersion());
 		this.printDeviceProperties();
@@ -147,6 +147,10 @@ public class CoreEngine {
 		logger.info("Max Uniform Block Size: " + GL31.GL_MAX_UNIFORM_BLOCK_SIZE + " bytes");
 		logger.info("Max SSBO Block Size: " + GL43.GL_MAX_SHADER_STORAGE_BLOCK_SIZE + " bytes");
 
+	}
+
+	public RenderingEngine getRenderEngine() {
+		return renderEngine;
 	}
 
 //	public RenderingEngine getRenderEngine() {

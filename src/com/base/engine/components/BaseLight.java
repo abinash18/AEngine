@@ -1,7 +1,6 @@
 package com.base.engine.components;
 
 import com.base.engine.math.Vector3f;
-import com.base.engine.rendering.RenderingEngine;
 import com.base.engine.rendering.shaders.Shader;
 
 public class BaseLight extends GameComponent {
@@ -13,6 +12,7 @@ public class BaseLight extends GameComponent {
 	public BaseLight(Vector3f color, float intensity) {
 		this.color = color;
 		this.intensity = intensity;
+		
 	}
 
 	public Shader getShader() {
@@ -20,8 +20,8 @@ public class BaseLight extends GameComponent {
 	}
 
 	@Override
-	public void addToEngine(RenderingEngine engine) {
-		engine.addLight(this);
+	public void addToScene() {
+		super.getParentScene().addLight(this);
 	}
 
 	public void setShader(Shader shader) {

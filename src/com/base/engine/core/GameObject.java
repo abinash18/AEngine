@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.base.engine.components.GameComponent;
 import com.base.engine.math.Transform;
 import com.base.engine.rendering.RenderingEngine;
+import com.base.engine.rendering.sceneManagement.Scene;
 import com.base.engine.rendering.shaders.Shader;
 
 public class GameObject {
@@ -12,13 +13,13 @@ public class GameObject {
 	private ArrayList<GameObject> children;
 	private ArrayList<GameComponent> components;
 	private Transform transform;
-	private RenderingEngine renderEngine;
+	private Scene parentScene;
 
 	public GameObject() {
 		this.children = new ArrayList<GameObject>();
 		this.components = new ArrayList<GameComponent>();
 		this.transform = new Transform();
-		this.renderEngine = null;
+		this.parentScene = null;
 	}
 
 	public ArrayList<GameObject> getAllAttached() {
@@ -32,7 +33,7 @@ public class GameObject {
 
 	public GameObject addChild(GameObject child) {
 		child.getTransform().setParent(transform);
-		child.setRenderingEngine(renderEngine);
+		child.setParentScene(parentScene);
 		children.add(child);
 		return this;
 	}
@@ -52,13 +53,13 @@ public class GameObject {
 		this.children = children;
 	}
 
-	public void addToEngine(RenderingEngine engine) {
+	public void addToScene() {
 		for (GameComponent component : components) {
-			component.addToEngine(engine);
+			component.addToScene();
 		}
 
 		for (GameObject child : children) {
-			child.addToEngine(engine);
+			child.addToScene();
 		}
 	}
 
@@ -155,20 +156,20 @@ public class GameObject {
 		this.transform = transform;
 	}
 
-	public RenderingEngine getRenderingEngine() {
-		return renderEngine;
-	}
-
-	public void setRenderingEngine(RenderingEngine rendEng) {
-		if (this.renderEngine != rendEng) {
-			this.renderEngine = rendEng;
+	public void setParentScene(Scene prntScene) {
+		if (this.parentScene != prntScene) {
+			this.parentScene = prntScene;
 			for (GameComponent component : components) {
-				component.addToEngine(rendEng);
+				component.addToScene();
 			}
 			for (GameObject child : children) {
-				child.setRenderingEngine(rendEng);
+				child.setParentScene(prntScene);
 			}
 		}
+	}
+
+	public Scene getParentScene() {
+		return parentScene;
 	}
 
 }

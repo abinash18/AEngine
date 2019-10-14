@@ -25,7 +25,7 @@ public class SceneManager {
 		SceneManager.coreEngine = coreEng;
 		// currentScene.getRenderEngine().clearLights();
 		// currentScene.setRenderingEngine();
-		scenes.forEach((k, v) -> v.setRenderingEngine());
+		// scenes.forEach((k, v) -> v.setRenderingEngine());
 	}
 
 	public static boolean isCurrentScene(Scene scene) {
@@ -64,7 +64,7 @@ public class SceneManager {
 		if (currentScene == null) {
 			new Exception("No Current Scene!").printStackTrace();
 		}
-		currentScene.render(currentScene.getRenderEngine());
+		coreEngine.getRenderEngine().render(currentScene);
 	}
 
 	public static Map<String, Scene> getScenes() {
