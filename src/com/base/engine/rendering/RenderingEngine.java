@@ -20,7 +20,7 @@ import com.base.engine.rendering.shaders.Shader;
 public class RenderingEngine extends MappedValues {
 
 	private static final Logger logger = LogManager.getLogger(RenderingEngine.class.getName());
-	public static Camera mainCamera;
+	private Camera mainCamera;
 
 	// More Permanent Structs
 	private ArrayList<BaseLight> lights;
@@ -43,7 +43,7 @@ public class RenderingEngine extends MappedValues {
 
 		forwardAmbientShader = new Shader("forward-ambient");
 
-		initGraphics();
+		RenderingEngine.initGraphics();
 	}
 
 	public void updateUniformStruct(Transform transform, Material mat, Shader shader, String uniformName,
@@ -73,7 +73,7 @@ public class RenderingEngine extends MappedValues {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 	}
 
-	private void initGraphics() {
+	private static void initGraphics() {
 		GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 		GL11.glFrontFace(GL11.GL_CW);
@@ -140,9 +140,8 @@ public class RenderingEngine extends MappedValues {
 	}
 
 	public void addCamera(Camera camera) {
-		// lights.clear();
-		mainCamera = Camera.getInstance();
-
+		mainCamera = camera;
+		logger.debug("Adding Camera" + camera);
 	}
 
 	public BaseLight getActiveLight() {
@@ -155,10 +154,6 @@ public class RenderingEngine extends MappedValues {
 
 	public Camera getMainCamera() {
 		return mainCamera;
-	}
-
-	public static void setMainCamera(Camera cam) {
-		RenderingEngine.mainCamera = cam;
 	}
 
 	@Deprecated

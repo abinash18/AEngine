@@ -3,11 +3,12 @@ package com.base.engine.rendering.sceneManagement;
 import java.util.UUID;
 
 import com.base.engine.components.GameComponent;
-import com.base.engine.core.CoreEngine;
 import com.base.engine.core.GameObject;
 import com.base.engine.rendering.RenderingEngine;
 
 public abstract class Scene {
+
+	private RenderingEngine renderEngine;
 
 	private GameObject root;
 
@@ -17,6 +18,15 @@ public abstract class Scene {
 
 	public Scene(String name) {
 		this.name = name;
+		getRenderEngine();
+		setRenderingEngine();
+		this.addToSceneManager();
+	}
+
+	public Scene(String name, RenderingEngine rendEng) {
+		this.name = name;
+		renderEngine = rendEng;
+		setRenderingEngine();
 		this.addToSceneManager();
 	}
 
@@ -90,6 +100,13 @@ public abstract class Scene {
 
 	}
 
+	public RenderingEngine getRenderEngine() {
+		if (renderEngine == null) {
+			renderEngine = new RenderingEngine();
+		}
+		return renderEngine;
+	}
+
 	public GameObject getRoot() {
 		return root;
 	}
@@ -98,8 +115,8 @@ public abstract class Scene {
 		this.root = root;
 	}
 
-	public void setCoreEngine(CoreEngine coreEngine) {
-		this.getRootObject().setCoreEngine(coreEngine);
+	public void setRenderingEngine() {
+		this.getRootObject().setRenderingEngine(renderEngine);
 	}
 
 	@Override

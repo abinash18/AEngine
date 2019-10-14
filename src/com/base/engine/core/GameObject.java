@@ -12,13 +12,13 @@ public class GameObject {
 	private ArrayList<GameObject> children;
 	private ArrayList<GameComponent> components;
 	private Transform transform;
-	private CoreEngine coreEngine;
+	private RenderingEngine renderEngine;
 
 	public GameObject() {
 		this.children = new ArrayList<GameObject>();
 		this.components = new ArrayList<GameComponent>();
 		this.transform = new Transform();
-		this.coreEngine = null;
+		this.renderEngine = null;
 	}
 
 	public ArrayList<GameObject> getAllAttached() {
@@ -32,7 +32,7 @@ public class GameObject {
 
 	public GameObject addChild(GameObject child) {
 		child.getTransform().setParent(transform);
-		child.setCoreEngine(coreEngine);
+		child.setRenderingEngine(renderEngine);
 		children.add(child);
 		return this;
 	}
@@ -52,7 +52,7 @@ public class GameObject {
 		this.children = children;
 	}
 
-	public void addToEngine(CoreEngine engine) {
+	public void addToEngine(RenderingEngine engine) {
 		for (GameComponent component : components) {
 			component.addToEngine(engine);
 		}
@@ -155,18 +155,18 @@ public class GameObject {
 		this.transform = transform;
 	}
 
-	public CoreEngine getCoreEngine() {
-		return coreEngine;
+	public RenderingEngine getRenderingEngine() {
+		return renderEngine;
 	}
 
-	public void setCoreEngine(CoreEngine coreEngine) {
-		if (this.coreEngine != coreEngine) {
-			this.coreEngine = coreEngine;
+	public void setRenderingEngine(RenderingEngine rendEng) {
+		if (this.renderEngine != rendEng) {
+			this.renderEngine = rendEng;
 			for (GameComponent component : components) {
-				component.addToEngine(coreEngine);
+				component.addToEngine(rendEng);
 			}
 			for (GameObject child : children) {
-				child.setCoreEngine(coreEngine);
+				child.setRenderingEngine(rendEng);
 			}
 		}
 	}

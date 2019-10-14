@@ -82,7 +82,8 @@ public class MainMenu extends Scene {
 		GameObject spotLightObject = new GameObject();
 
 		cameraObject = new GameObject();
-		cam = Camera.getInstance();
+		cam = new Camera((float) Math.toRadians(70.0f), (float) Window.getWidth() / (float) Window.getHeight(), 0.01f,
+				1000.0f);
 		cameraObject.addComponent(cam);
 		cameraObject.addComponent(spotLight).addComponent(new FreeLook(0.35f)).addComponent(new FreeMove(10f));
 

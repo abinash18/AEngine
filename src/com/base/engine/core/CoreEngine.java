@@ -17,7 +17,7 @@ public class CoreEngine {
 	private static Logger logger = LogManager.getLogger(CoreEngine.class.getName());
 	private double frameTime, frameRate;
 	private boolean isRunning;
-	private RenderingEngine renderEngine;
+	// private RenderingEngine renderEngine;
 
 	public CoreEngine(double framerate) {
 		this.isRunning = false;
@@ -27,7 +27,7 @@ public class CoreEngine {
 
 	public void createWindow(int width, int height, String windowTitle, boolean fullscreen, boolean vSync) {
 		Window.createWindow(width, height, windowTitle, fullscreen, vSync);
-		this.renderEngine = new RenderingEngine();
+		// this.renderEngine = new RenderingEngine();
 		// System.out.println(RenderingEngine.getOpenGLVersion());
 		logger.info(RenderingEngine.getOpenGLVersion());
 		this.printDeviceProperties();
@@ -105,7 +105,7 @@ public class CoreEngine {
 				}
 			}
 			if (render) {
-				SceneManager.render(renderEngine);
+				SceneManager.render();
 				// renderEngine.render(game.getRootObject());
 				Window.render(frameRate);
 				frames++;
@@ -149,12 +149,12 @@ public class CoreEngine {
 
 	}
 
-	public RenderingEngine getRenderEngine() {
-		return renderEngine;
-	}
-
-	public void setRenderEngine(RenderingEngine renderEngine) {
-		this.renderEngine = renderEngine;
-	}
+//	public RenderingEngine getRenderEngine() {
+//		return renderEngine;
+//	}
+//
+//	public void setRenderEngine(RenderingEngine renderEngine) {
+//		this.renderEngine = renderEngine;
+//	}
 
 }

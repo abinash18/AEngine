@@ -17,6 +17,7 @@ import com.base.engine.rendering.resourceManagement.Material;
 import com.base.engine.rendering.resourceManagement.Texture;
 import com.base.engine.rendering.sceneManagement.Scene;
 import com.base.engine.rendering.sceneManagement.SceneManager;
+import com.base.engine.rendering.windowManagement.Window;
 import com.base.engine.util.Attenuation;
 
 public class TestGame extends Scene {
@@ -81,7 +82,8 @@ public class TestGame extends Scene {
 		GameObject spotLightObject = new GameObject();
 
 		cameraObject = new GameObject();
-		cam = Camera.getInstance();
+		cam = new Camera((float) Math.toRadians(70.0f), (float) Window.getWidth() / (float) Window.getHeight(), 0.01f,
+				1000.0f);
 
 		cameraObject.addComponent(cam);
 		cameraObject.addComponent(spotLight).addComponent(new FreeLook(0.35f)).addComponent(new FreeMove(10f));
@@ -119,13 +121,6 @@ public class TestGame extends Scene {
 	public void update(float delta) {
 		super.update(delta);
 		temp = temp + delta;
-		System.out.println(temp);
-		
-//		if (temp >= 10) {
-//
-//			SceneManager.setCurrentScene("MainMenu");
-//		}
-		// monkey.getTransform().setRotation(new Quaternion(Transform.X_AXIS, angle));
 	}
 
 	@Override

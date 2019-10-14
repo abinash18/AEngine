@@ -6,7 +6,6 @@ import java.util.Map;
 import com.base.engine.core.CoreEngine;
 import com.base.engine.handlers.logging.LogManager;
 import com.base.engine.handlers.logging.Logger;
-import com.base.engine.rendering.RenderingEngine;
 
 public class SceneManager {
 
@@ -15,9 +14,6 @@ public class SceneManager {
 	private static Scene currentScene = null;
 	private static CoreEngine coreEngine;
 
-	public SceneManager() {
-	}
-
 	public Scene getScene(String sceneName) {
 		if (!scenes.containsKey(sceneName)) {
 			new Exception("Scene Not Found!").printStackTrace();
@@ -25,10 +21,11 @@ public class SceneManager {
 		return scenes.get(sceneName);
 	}
 
-	private static void setCoreEngine() {
-		coreEngine.getRenderEngine().clearLights();
-		currentScene.setCoreEngine(coreEngine);
-		// scenes.forEach((k, v) -> v.setCoreEngine(SceneManager.coreEngine));
+	public static void setCoreEngine(CoreEngine coreEng) {
+		SceneManager.coreEngine = coreEng;
+		// currentScene.getRenderEngine().clearLights();
+		// currentScene.setRenderingEngine();
+		scenes.forEach((k, v) -> v.setRenderingEngine());
 	}
 
 	public static boolean isCurrentScene(Scene scene) {
@@ -42,7 +39,6 @@ public class SceneManager {
 			new Exception("Scene Already Exists With The Same Name!").printStackTrace();
 			return;
 		}
-		scene.setCoreEngine(coreEngine);
 		// scene.init();
 		scenes.put(scene.getName(), scene);
 		if (currentScene == null) {
@@ -52,9 +48,8 @@ public class SceneManager {
 	}
 
 	public static void init(CoreEngine coreEngine) {
-		SceneManager.coreEngine = coreEngine;
-		setCoreEngine();
-		// scenes.forEach((k, v) -> v.init());
+		setCoreEngine(coreEngine);
+
 	}
 
 	public static void update(float delta) {
@@ -65,11 +60,11 @@ public class SceneManager {
 		currentScene.input(delta);
 	}
 
-	public static void render(RenderingEngine engine) {
+	public static void render() {
 		if (currentScene == null) {
 			new Exception("No Current Scene!").printStackTrace();
 		}
-		currentScene.render(engine);
+		currentScene.render(currentScene.getRenderEngine());
 	}
 
 	public static Map<String, Scene> getScenes() {
@@ -90,7 +85,14 @@ public class SceneManager {
 		if (!currentScene.isInitialized()) {
 			currentScene.init();
 		}
-		// setCoreEngine();
+	}
+
+	public static CoreEngine getCoreEngine() {
+		return coreEngine;
+	}
+
+	public static void setCurrentScene(Scene currentScene) {
+		SceneManager.currentScene = currentScene;
 	}
 
 }

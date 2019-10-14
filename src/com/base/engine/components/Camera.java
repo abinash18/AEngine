@@ -1,23 +1,22 @@
 package com.base.engine.components;
 
-import com.base.engine.core.CoreEngine;
 import com.base.engine.math.Matrix4f;
 import com.base.engine.math.Vector3f;
-import com.base.engine.rendering.windowManagement.Window;
+import com.base.engine.rendering.RenderingEngine;
 
 public class Camera extends GameComponent {
 
 	// private Vector3f position, forward, up;
 
-	private static Camera camera;
-
-	public static Camera getInstance() {
-		if (camera == null) {
-			camera = new Camera((float) Math.toRadians(70.0f), (float) Window.getWidth() / (float) Window.getHeight(),
-					0.01f, 1000.0f);
-		}
-		return camera;
-	}
+//	private static Camera camera;
+//
+//	public static Camera getInstance() {
+//		if (camera == null) {
+//			camera = new Camera((float) Math.toRadians(70.0f), (float) Window.getWidth() / (float) Window.getHeight(),
+//					0.01f, 1000.0f);
+//		}
+//		return camera;
+//	}
 
 	private Matrix4f projection;
 
@@ -30,10 +29,10 @@ public class Camera extends GameComponent {
 		forward.normalize();
 	}
 
-	public Camera resetCamera(float fov, float aspectRatio, float zNear, float zFar) {
-		Camera.camera = new Camera(fov, aspectRatio, zNear, zFar);
-		return getInstance();
-	}
+//	public Camera resetCamera(float fov, float aspectRatio, float zNear, float zFar) {
+//		Camera.camera = new Camera(fov, aspectRatio, zNear, zFar);
+//		return getInstance();
+//	}
 
 	public Matrix4f getViewProjection() {
 		Matrix4f cameraRotationMatrix = super.getTransform().getTransformedRotation().conjugate().toRotationMatrix();
@@ -65,8 +64,8 @@ public class Camera extends GameComponent {
 	}
 
 	@Override
-	public void addToEngine(CoreEngine engine) {
-		engine.getRenderEngine().addCamera(this);
+	public void addToEngine(RenderingEngine engine) {
+		engine.addCamera(this);
 	}
 
 	public void setProjection(Matrix4f projection) {
