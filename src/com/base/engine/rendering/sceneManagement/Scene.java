@@ -1,6 +1,8 @@
 package com.base.engine.rendering.sceneManagement;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import com.base.engine.components.BaseLight;
@@ -13,6 +15,7 @@ public abstract class Scene {
 
 	private GameObject root;
 	private ArrayList<BaseLight> lights;
+	private Map<String, Camera> cameras;
 	private Camera mainCamera;
 	private UUID id = UUID.randomUUID();
 	private String name;
@@ -21,6 +24,7 @@ public abstract class Scene {
 	public Scene(String name) {
 		this.name = name;
 		this.lights = new ArrayList<BaseLight>();
+		this.cameras = new HashMap<String, Camera>();
 		this.setAsParentScene();
 		this.addToSceneManager();
 	}
@@ -88,8 +92,8 @@ public abstract class Scene {
 	}
 
 	public GameObject getRootObject() {
-		if (root == null) {
-			root = new GameObject();
+		if (this.root == null) {
+			this.root = new GameObject();
 			// root.setCoreEngine(coreEngine);
 		}
 		return root;
@@ -125,11 +129,30 @@ public abstract class Scene {
 		return mainCamera;
 	}
 
-	public void setMainCamera(Camera mainCamera) {
-		this.mainCamera = mainCamera;
+	public Camera getCamera(String name) {
+		return cameras.get(name);
+	}
+
+	public void addCamera(Camera cam) {
+		this.cameras.put(cam.getName(), cam);
+		if (this.mainCamera == null) {
+			this.mainCamera = cam;
+		}
 	}
 
 	public void addLight(BaseLight light) {
 		this.lights.add(light);
+	}
+
+	public Map<String, Camera> getCameras() {
+		return cameras;
+	}
+
+	public void setCameras(Map<String, Camera> cameras) {
+		this.cameras = cameras;
+	}
+
+	public void setMainCamera(String name) {
+		this.mainCamera = cameras.get(name);
 	}
 }

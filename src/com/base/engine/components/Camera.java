@@ -5,39 +5,23 @@ import com.base.engine.math.Vector3f;
 
 public class Camera extends GameComponent {
 
-	// private Vector3f position, forward, up;
-
-//	private static Camera camera;
-//
-//	public static Camera getInstance() {
-//		if (camera == null) {
-//			camera = new Camera((float) Math.toRadians(70.0f), (float) Window.getWidth() / (float) Window.getHeight(),
-//					0.01f, 1000.0f);
-//		}
-//		return camera;
-//	}
-
 	private Matrix4f projection;
 
-	public Camera(float fov, float aspectRatio, float zNear, float zFar) {
+	public Camera(float fov, float aspectRatio, float zNear, float zFar, String name) {
 		this.projection = new Matrix4f().initProjection(fov, aspectRatio, zNear, zFar);
+		super.setName(name);
 	}
 
-	public Camera(Vector3f pos, Vector3f forward, Vector3f up) {
+	public Camera(Vector3f pos, Vector3f forward, Vector3f up, String name) {
 		up.normalize();
 		forward.normalize();
+		super.setName(name);
 	}
-
-//	public Camera resetCamera(float fov, float aspectRatio, float zNear, float zFar) {
-//		Camera.camera = new Camera(fov, aspectRatio, zNear, zFar);
-//		return getInstance();
-//	}
 
 	public Matrix4f getViewProjection() {
 		Matrix4f cameraRotationMatrix = super.getTransform().getTransformedRotation().conjugate().toRotationMatrix();
 		/*
-		 * Doing Negative multiplication here to eradicate the use of it
-		 *  in the return
+		 * Doing Negative multiplication here to eradicate the use of it in the return
 		 * statement.
 		 */
 		Vector3f cameraPosition = super.getTransform().getTransformedPosition().mul(-1);
@@ -65,7 +49,7 @@ public class Camera extends GameComponent {
 
 	@Override
 	public void addToScene() {
-		super.getParentScene().setMainCamera(this);
+		super.getParentScene().addCamera(this);
 	}
 
 	public void setProjection(Matrix4f projection) {

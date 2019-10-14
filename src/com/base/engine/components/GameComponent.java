@@ -9,6 +9,7 @@ import com.base.engine.rendering.shaders.Shader;
 public abstract class GameComponent {
 
 	private GameObject parent;
+	private String Name;
 
 	public Transform getTransform() {
 		return parent.getTransform();
@@ -40,6 +41,14 @@ public abstract class GameComponent {
 
 	public void addToScene() {
 
+	}
+
+	public String getName() {
+		return Name;
+	}
+
+	public void setName(String name) {
+		Name = name;
 	}
 
 }

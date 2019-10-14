@@ -77,14 +77,14 @@ public class TestGame extends Scene {
 		GameObject pointLightObject = new GameObject();
 		pointLightObject.addComponent(new PointLight(new Vector3f(0, 1, 0), 0.4f, new Attenuation(0, 0, 1)));
 
-		SpotLight spotLight = new SpotLight(new Vector3f(1, 1, 1), 0.4f, new Attenuation(0, 0, 0.8f), 0.7f);
+		SpotLight spotLight = new SpotLight(new Vector3f(1, 0, 0), 0.4f, new Attenuation(0, 0, 0.8f), 0.7f);
 
 		GameObject spotLightObject = new GameObject();
 
 		cameraObject = new GameObject();
 		cam = new Camera((float) Math.toRadians(70.0f), (float) Window.getWidth() / (float) Window.getHeight(), 0.01f,
-				1000.0f);
-
+				1000.0f, "playerView");
+		
 		cameraObject.addComponent(cam);
 		cameraObject.addComponent(spotLight).addComponent(new FreeLook(0.35f)).addComponent(new FreeMove(10f));
 
@@ -107,6 +107,7 @@ public class TestGame extends Scene {
 		monkey2.addChild(cameraObject);
 		monkey2.setTransform(cameraObject.getTransform());
 		cam.getTransform().setTranslation(0, 0, -5);
+		super.setMainCamera("playerView");
 		super.addChild(spotLightObject);
 		super.addChild(planeObject);
 		super.addChild(directionalLightObject);

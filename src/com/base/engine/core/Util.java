@@ -31,6 +31,9 @@ public class Util {
 			buffer.put(vertices[i].getNormal().getX());
 			buffer.put(vertices[i].getNormal().getY());
 			buffer.put(vertices[i].getNormal().getZ());
+			buffer.put(vertices[i].getTangent().getX());
+			buffer.put(vertices[i].getTangent().getY());
+			buffer.put(vertices[i].getTangent().getZ());
 		}
 
 		buffer.flip();

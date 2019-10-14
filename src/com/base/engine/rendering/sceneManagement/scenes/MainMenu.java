@@ -83,7 +83,7 @@ public class MainMenu extends Scene {
 
 		cameraObject = new GameObject();
 		cam = new Camera((float) Math.toRadians(70.0f), (float) Window.getWidth() / (float) Window.getHeight(), 0.01f,
-				1000.0f);
+				1000.0f, "playerView");
 		cameraObject.addComponent(cam);
 		cameraObject.addComponent(spotLight).addComponent(new FreeLook(0.35f)).addComponent(new FreeMove(10f));
 
@@ -106,12 +106,21 @@ public class MainMenu extends Scene {
 		monkey2.addChild(cameraObject);
 		monkey2.setTransform(cameraObject.getTransform());
 		cam.getTransform().setTranslation(0, 0, -5);
+		super.setMainCamera("playerView");
 		super.addChild(spotLightObject);
 		super.addChild(planeObject);
 		super.addChild(directionalLightObject);
 		super.addChild(monkey);
 		// super.addChild(ironMan);
 		super.addChild(monkey2);
+
+//		GameObject t = new GameObject()
+//				.addComponent(new Camera((float) Math.toRadians(70.0f),
+//						(float) Window.getWidth() / (float) Window.getHeight(), 0.01f, 1000.0f, "playerView2"))
+//				.addComponent(new FreeLook(0.35f)).addComponent(new FreeMove(10f))
+//				.addComponent(new SpotLight(new Vector3f(0, 0, 1), 0.4f, new Attenuation(0, 0, 0.8f), 0.7f));
+//		super.addChild(t);
+
 	}
 
 	float temp = 0.0f;
@@ -136,5 +145,8 @@ public class MainMenu extends Scene {
 		if (Input.getKeyDown(Input.KEY_C)) {
 			SceneManager.setCurrentScene("TestGame");
 		}
+//		if (Input.getKeyDown(Input.KEY_B)) {
+//			super.setMainCamera("playerView");
+//		}
 	}
 }
