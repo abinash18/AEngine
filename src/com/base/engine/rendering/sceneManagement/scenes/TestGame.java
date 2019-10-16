@@ -31,38 +31,20 @@ public class TestGame extends Scene {
 
 	public void init() {
 		super.init();
-		float fieldDepth = 10.0f;
-		float fieldWidth = 10.0f;
 
-		Vertex[] vertices = new Vertex[] {
-				new Vertex(new Vector3f(-fieldWidth, 0.0f, -fieldDepth), new Vector2f(0.0f, 0.0f)),
-				new Vertex(new Vector3f(-fieldWidth, 0.0f, fieldDepth * 3), new Vector2f(0.0f, 1.0f)),
-				new Vertex(new Vector3f(fieldWidth * 3, 0.0f, -fieldDepth), new Vector2f(1.0f, 0.0f)),
-				new Vertex(new Vector3f(fieldWidth * 3, 0.0f, fieldDepth * 3), new Vector2f(1.0f, 1.0f)) };
-
-		int indices[] = { 0, 1, 2, 2, 1, 3 };
-
-//		Vertex[] vertices2 = new Vertex[] {
-//				new Vertex(new Vector3f(-fieldWidth / 10, 0.0f, -fieldDepth / 10), new Vector2f(0.0f, 0.0f)),
-//				new Vertex(new Vector3f(-fieldWidth / 10, 0.0f, fieldDepth / 10 * 3), new Vector2f(0.0f, 1.0f)),
-//				new Vertex(new Vector3f(fieldWidth / 10 * 3, 0.0f, -fieldDepth / 10), new Vector2f(1.0f, 0.0f)),
-//				new Vertex(new Vector3f(fieldWidth / 10 * 3, 0.0f, fieldDepth / 10 * 3), new Vector2f(1.0f, 1.0f)) };
-//
-//		int indices2[] = { 0, 1, 2, 2, 1, 3 };
-
-		// Mesh mesh2 = new Mesh(vertices2, indices2, true);
-
-		Mesh mesh = new Mesh(vertices, indices, true);
+		Mesh mesh = new Mesh("plane3.obj", true);
 		Material material = new Material();
-		material.addTexture("diffuse", new Texture("defaultTexture.png"));
+		material.addTexture("diffuse", new Texture("bricks.jpg"));
+		material.addTexture("normal_map", new Texture("bricks_normal.jpg"));
 		material.addFloat("specularIntensity", 1);
 		material.addFloat("specularPower", 8);
 		Material material2 = new Material();
-		material2.addTexture("diffuse", new Texture("defaultModelTexture.png"));
+		material2.addTexture("diffuse", new Texture("bricks2.jpg"));
+		material2.addTexture("normal_map", new Texture("bricks2_normal.jpg"));
 		material2.addFloat("specularIntensity", 1);
 		material2.addFloat("specularPower", 8);
 		MeshRenderer meshRenderer = new MeshRenderer(mesh, material);
-		MeshRenderer meshRenderer2 = new MeshRenderer(new Mesh("monkey.obj", true), material2);
+		MeshRenderer meshRenderer2 = new MeshRenderer(new Mesh("monkey.obj", false), material2);
 
 		GameObject planeObject = new GameObject();
 		planeObject.addComponent(meshRenderer);
@@ -84,7 +66,7 @@ public class TestGame extends Scene {
 		cameraObject = new GameObject();
 		cam = new Camera((float) Math.toRadians(70.0f), (float) Window.getWidth() / (float) Window.getHeight(), 0.01f,
 				1000.0f, "playerView");
-		
+
 		cameraObject.addComponent(cam);
 		cameraObject.addComponent(spotLight).addComponent(new FreeLook(0.35f)).addComponent(new FreeMove(10f));
 
@@ -107,6 +89,15 @@ public class TestGame extends Scene {
 		monkey2.addChild(cameraObject);
 		monkey2.setTransform(cameraObject.getTransform());
 		cam.getTransform().setTranslation(0, 0, -5);
+		Material anvilmat = new Material();
+		anvilmat.addTexture("diffuse", new Texture("defaultModelTexture.png"));
+		anvilmat.addTexture("normal_map", new Texture("Normal_Map_Anvil.png"));
+		anvilmat.addFloat("specularIntensity", 1);
+		anvilmat.addFloat("specularPower", 8);
+		GameObject anvil = new GameObject()
+				.addComponent(new MeshRenderer(new Mesh("Anvil_LowPoly.obj", true), anvilmat));
+
+		super.addChild(anvil);
 		super.setMainCamera("playerView");
 		super.addChild(spotLightObject);
 		super.addChild(planeObject);
@@ -128,9 +119,9 @@ public class TestGame extends Scene {
 	public void input(float delta) {
 		super.input(delta);
 		if (Input.getKey(Input.KEY_ESCAPE)) {
-			// Input.setCursor(true);
+			Input.setCursor(true);
 			// System.out.println(this);
-			System.exit(1);
+			//System.exit(1);
 
 		}
 		if (Input.getKeyDown(Input.KEY_C)) {

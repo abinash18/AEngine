@@ -561,7 +561,7 @@ public class Shader {
 		StringBuilder shaderSource = new StringBuilder();
 		BufferedReader shaderReader = null;
 
-		final String INCLUDE_DIRECTIVE = "#include";
+		final String INCLUDE_DIRECTIVE = "#include", COMMENT_PREFIX = "//";
 
 		// glsl include
 
@@ -573,17 +573,24 @@ public class Shader {
 
 				if (line.startsWith(INCLUDE_DIRECTIVE)) {
 
-					// #include 'file'
-					// INCLUDE_DIRECTIE length puts it at the end of the include and i add 2 to move
-					// it past the first quote to the file name.
-					// AND THEN IT ENDS AT THE END OF THE LINE NO WHITE SPACE AT THE END.
-					shaderSource.append( // This appends the loaded shader to the source of the file
-							loadShader( // Loads the shader specified in the #include
+					/*
+					 * #include 'file' INCLUDE_DIRECTIE length puts it at the end of the include and
+					 * i add 2 to move it past the first quote to the file name. AND THEN IT ENDS AT
+					 * THE END OF THE LINE NO WHITE SPACE AT THE END.
+					 */
+					shaderSource.append( /* This appends the loaded shader to the source of the file */
+							loadShader( /* Loads the shader specified in the #include */
 									line.substring(INCLUDE_DIRECTIVE.length() + 2, line.length() - 1)));
-					// Figures out the name of the file being included.
+					/* Figures out the name of the file being included. */
 
 				} else {
+					/*
+					 * Checks If The Line Dosn't Include A Comment If It Dose Then There Is No Point
+					 * In Sending It To The GPU
+					 */
+					// if (!line.startsWith(COMMENT_PREFIX)) {
 					shaderSource.append(line).append("\n");
+					// }
 				}
 			}
 			shaderReader.close();

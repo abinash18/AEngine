@@ -96,7 +96,8 @@ public class Mesh {
 		glVertexAttribPointer(0, 3, GL_FLOAT, false, Vertex.SIZE * 4, 0);
 		glVertexAttribPointer(1, 2, GL_FLOAT, false, Vertex.SIZE * 4, 12);
 		glVertexAttribPointer(2, 3, GL_FLOAT, false, Vertex.SIZE * 4, 20);
-		glVertexAttribPointer(2, 3, GL_FLOAT, false, Vertex.SIZE * 4, 32);
+		glVertexAttribPointer(3, 3, GL_FLOAT, false, Vertex.SIZE * 4, 32);
+		glVertexAttribPointer(3, 3, GL_FLOAT, false, Vertex.SIZE * 4, 44);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshBuffers.getIbo());
 
@@ -167,7 +168,7 @@ public class Mesh {
 
 		addVertices(vertexData, Util.toIntArray(indicesData), calcNormals);
 
-		return null;
+		return this;
 
 	}
 

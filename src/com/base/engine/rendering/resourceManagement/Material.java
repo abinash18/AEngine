@@ -11,6 +11,7 @@ public class Material extends MappedValues {
 	public Material() {
 		super();
 		textureBinds = new HashMap<String, Texture>();
+		textureBinds.put("normal_map", new Texture("default_normal.jpg"));
 	}
 
 	public void addTexture(String name, Texture texture) {

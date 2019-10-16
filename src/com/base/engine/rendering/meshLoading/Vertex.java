@@ -18,9 +18,7 @@ public class Vertex {
 	}
 
 	public Vertex(Vector3f pos, Vector2f texCoord, Vector3f normal) {
-		this.pos = pos;
-		this.texCoord = texCoord;
-		this.normal = normal;
+		this(pos, texCoord, normal, new Vector3f(0, 0, 0));
 	}
 
 	public Vertex(Vector3f pos, Vector2f texCoord, Vector3f normal, Vector3f tangent) {

@@ -1,0 +1,8 @@
+varying vec2 texCoord0;
+varying vec3 worldPosition0;
+varying mat3 tbnMatrix;
+
+uniform sampler2D diffuse;
+uniform sampler2D normal_map;
+
+#include "lighting.glh"

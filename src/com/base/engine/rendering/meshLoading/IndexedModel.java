@@ -16,6 +16,7 @@ public class IndexedModel {
 		normals = new ArrayList<Vector3f>();
 		texCoords = new ArrayList<Vector2f>();
 		indices = new ArrayList<Integer>();
+		tangents = new ArrayList<Vector3f>();
 	}
 
 	public void calcNormals() {
@@ -56,7 +57,9 @@ public class IndexedModel {
 			float deltaU2 = texCoords.get(i2).getX() - texCoords.get(i0).getX();
 			float deltaV2 = texCoords.get(i2).getY() - texCoords.get(i0).getY();
 
-			float f = 1.0f / (deltaU1 * deltaV2 - deltaU2 * deltaV1);
+			float dividend = (deltaU1 * deltaV2 - deltaU2 * deltaV1);
+
+			float f = dividend == 0 ? 0.0f : 1.0f / dividend;
 
 			Vector3f tangent = new Vector3f(0, 0, 0);
 
