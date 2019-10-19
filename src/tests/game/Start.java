@@ -13,11 +13,7 @@ public class Start extends Main {
 		s = new Start();
 		s.run(args);
 	}
-<<<<<<< HEAD
-
-=======
 	
->>>>>>> sad
 	@Override
 	public void run(String[] args) {
 		super.run(args);
