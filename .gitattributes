@@ -2,3 +2,5 @@
 *.obj filter=lfs diff=lfs merge=lfs -text
 *.png filter=lfs diff=lfs merge=lfs -text
 *.jpg filter=lfs diff=lfs merge=lfs -text
+res/models filter=lfs diff=lfs merge=lfs -text
+res/textures filter=lfs diff=lfs merge=lfs -text
