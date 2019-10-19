@@ -10,15 +10,17 @@ import org.apache.commons.cli.ParseException;
 import com.base.engine.handlers.logging.LogLevel;
 import com.base.engine.handlers.logging.LogManager;
 import com.base.engine.handlers.logging.Logger;
-import com.base.engine.rendering.sceneManagement.scenes.MainMenu;
-import com.base.engine.rendering.sceneManagement.scenes.TestGame;
 
-public class Main {
+import tests.game.scenes.MainMenu;
+import tests.game.scenes.TestGame;
+
+public abstract class Main {
 
 	private static Logger logger = LogManager.getLogger(Main.class.getName());
 
-	public static void main(String[] args) {
+	protected abstract void addScenes();
 
+	public void run(String[] args) {
 		int width = 800, height = 600, frameRate = 1000;
 		// int width = 1920, height = 1080, frameRate = 1000;
 		boolean fullScreen = false, vSync = false;
@@ -54,7 +56,7 @@ public class Main {
 			// e.printStackTrace();
 			logger.error("Unable to parse given arguments.", e);
 			System.exit(1);
-			
+
 		}
 
 		if (cmd.hasOption("t")) {
@@ -83,11 +85,13 @@ public class Main {
 		CoreEngine engine = new CoreEngine(frameRate);
 		engine.createWindow(width, height, windowTitle, fullScreen, vSync);
 		// SceneManager.setCurrentScene("MainMenu");
-		new TestGame();
-		new MainMenu();
-
+		addScenes();
 		engine.start();
+	};
 
-	}
+//	public static void main(String[] args) {
+//		Main m = new Main();
+//		m.run(args);
+//	}
 
 }

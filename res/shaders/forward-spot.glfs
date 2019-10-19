@@ -4,7 +4,7 @@
 uniform SpotLight R_spotLight;
 
 vec4 calcLighting(vec3 normal, vec3 worldPos) {
-  //gl_FragColor = texture2D(diffuse, texCoord0.xy) * calcSpotLight(R_spotLight, normalize(normal0), worldPosition0);
   return calcSpotLight(R_spotLight, normal, worldPos);
 }
+
 #include "lighting-main.glh"

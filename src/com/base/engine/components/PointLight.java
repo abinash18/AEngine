@@ -8,7 +8,7 @@ import com.base.engine.util.Attenuation;
  * @author abinash
  *
  */
-public class PointLight extends BaseLight {
+public class PointLight extends Light {
 
 	private static final int COLOR_DEPTH = 256;
 

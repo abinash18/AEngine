@@ -90,6 +90,7 @@ public class Mesh {
 		glEnableVertexAttribArray(1);
 		glEnableVertexAttribArray(2);
 		glEnableVertexAttribArray(3);
+		//glEnableVertexAttribArray(4);
 
 		glBindBuffer(GL_ARRAY_BUFFER, meshBuffers.getVbo());
 
@@ -97,7 +98,7 @@ public class Mesh {
 		glVertexAttribPointer(1, 2, GL_FLOAT, false, Vertex.SIZE * 4, 12);
 		glVertexAttribPointer(2, 3, GL_FLOAT, false, Vertex.SIZE * 4, 20);
 		glVertexAttribPointer(3, 3, GL_FLOAT, false, Vertex.SIZE * 4, 32);
-		glVertexAttribPointer(3, 3, GL_FLOAT, false, Vertex.SIZE * 4, 44);
+		//glVertexAttribPointer(3, 3, GL_FLOAT, false, Vertex.SIZE * 4, 44);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshBuffers.getIbo());
 
@@ -107,6 +108,7 @@ public class Mesh {
 		glDisableVertexAttribArray(1);
 		glDisableVertexAttribArray(2);
 		glDisableVertexAttribArray(3);
+		//glDisableVertexAttribArray(4);
 	}
 
 	private void calcNormals(Vertex[] vertices, int[] indices) {

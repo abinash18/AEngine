@@ -141,6 +141,10 @@ public class OBJModel {
 			result.getTangents().add(normalModel.getTangents().get(indexMap.get(i)));
 		}
 
+		for (int i = 0; i < result.getTexCoords().size(); i++) {
+			result.getTexCoords().get(i).setY(1.0f - result.getTexCoords().get(i).getY());
+		}
+
 		return result;
 	}
 

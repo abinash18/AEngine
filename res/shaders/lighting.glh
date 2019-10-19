@@ -1,4 +1,5 @@
 // Vars
+
 uniform vec3 C_eyePos;
 uniform float specularIntensity;
 uniform float specularPower;

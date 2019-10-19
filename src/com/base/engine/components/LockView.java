@@ -5,7 +5,7 @@ import com.base.engine.math.Transform;
 import com.base.engine.rendering.RenderingEngine;
 import com.base.engine.rendering.shaders.Shader;
 
-public class LockView extends GameComponent {
+public class LockView extends SceneComponent {
 
 	RenderingEngine engine;
 

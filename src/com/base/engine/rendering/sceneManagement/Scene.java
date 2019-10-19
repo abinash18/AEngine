@@ -5,16 +5,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import com.base.engine.components.BaseLight;
+import com.base.engine.components.Light;
 import com.base.engine.components.Camera;
-import com.base.engine.components.GameComponent;
+import com.base.engine.components.SceneComponent;
 import com.base.engine.core.GameObject;
 import com.base.engine.rendering.RenderingEngine;
 
 public abstract class Scene {
 
 	private GameObject root;
-	private ArrayList<BaseLight> lights;
+	private ArrayList<Light> lights;
 	private Map<String, Camera> cameras;
 	private Camera mainCamera;
 	private UUID id = UUID.randomUUID();
@@ -23,7 +23,7 @@ public abstract class Scene {
 
 	public Scene(String name) {
 		this.name = name;
-		this.lights = new ArrayList<BaseLight>();
+		this.lights = new ArrayList<Light>();
 		this.cameras = new HashMap<String, Camera>();
 		this.setAsParentScene();
 		this.addToSceneManager();
@@ -87,7 +87,7 @@ public abstract class Scene {
 		this.getRootObject().addChild(child);
 	}
 
-	public void addComponent(GameComponent component) {
+	public void addComponent(SceneComponent component) {
 		this.getRootObject().addComponent(component);
 	}
 
@@ -117,11 +117,11 @@ public abstract class Scene {
 		super.finalize();
 	}
 
-	public ArrayList<BaseLight> getLights() {
+	public ArrayList<Light> getLights() {
 		return lights;
 	}
 
-	public void setLights(ArrayList<BaseLight> lights) {
+	public void setLights(ArrayList<Light> lights) {
 		this.lights = lights;
 	}
 
@@ -140,7 +140,7 @@ public abstract class Scene {
 		}
 	}
 
-	public void addLight(BaseLight light) {
+	public void addLight(Light light) {
 		this.lights.add(light);
 	}
 

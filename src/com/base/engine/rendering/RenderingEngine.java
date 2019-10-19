@@ -5,7 +5,7 @@ import java.util.HashMap;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL32;
 
-import com.base.engine.components.BaseLight;
+import com.base.engine.components.Light;
 import com.base.engine.components.Camera;
 import com.base.engine.handlers.logging.LogManager;
 import com.base.engine.handlers.logging.Logger;
@@ -24,7 +24,7 @@ public class RenderingEngine extends MappedValues {
 
 	private Shader forwardAmbientShader;
 
-	private BaseLight activeLight;
+	private Light activeLight;
 	private Camera mainCamera;
 
 	public RenderingEngine() {
@@ -33,7 +33,7 @@ public class RenderingEngine extends MappedValues {
 		samplerMap = new HashMap<String, Integer>();
 
 		samplerMap.put("diffuse", 0);
-		samplerMap.put("normal_map", 1);
+		//samplerMap.put("normal_map", 1);
 
 		super.addVector3f("ambient", new Vector3f(0.1f, 0.1f, 0.1f));
 
@@ -118,7 +118,7 @@ public class RenderingEngine extends MappedValues {
 
 		GL11.glDepthFunc(GL11.GL_EQUAL);
 
-		for (BaseLight light : scene.getLights()) {
+		for (Light light : scene.getLights()) {
 			this.activeLight = light;
 			scene.getRootObject().renderAll(light.getShader(), this);
 		}
@@ -147,11 +147,11 @@ public class RenderingEngine extends MappedValues {
 		return this.samplerMap.get(uniformKey);
 	}
 
-	public BaseLight getActiveLight() {
+	public Light getActiveLight() {
 		return activeLight;
 	}
 
-	public void setActiveLight(BaseLight activeLight) {
+	public void setActiveLight(Light activeLight) {
 		this.activeLight = activeLight;
 	}
 

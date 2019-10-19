@@ -3,7 +3,7 @@ package com.base.engine.components;
 import static com.base.engine.core.Input.*;
 import com.base.engine.math.Vector3f;
 
-public class FreeMove extends GameComponent {
+public class FreeMove extends SceneComponent {
 
 	private int forwardKey, backKey, leftKey, rightKey;
 	private float speed;

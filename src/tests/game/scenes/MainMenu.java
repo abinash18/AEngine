@@ -1,4 +1,4 @@
-package com.base.engine.rendering.sceneManagement.scenes;
+package tests.game.scenes;
 
 import com.base.engine.components.Camera;
 import com.base.engine.components.DirectionalLight;
@@ -52,10 +52,10 @@ public class MainMenu extends Scene {
 
 		// Mesh mesh2 = new Mesh(vertices2, indices2, true);
 
-		Mesh mesh = new Mesh("plane3.obj", true);
+		Mesh mesh = new Mesh("plane3.obj", false);
 		Material material = new Material();
 		material.addTexture("diffuse", new Texture("bricks2.jpg"));
-		material.addTexture("normal_map", new Texture("bricks2_normal.jpg"));
+		//material.addTexture("normal_map", new Texture("bricks2_normal.jpg"));
 		material.addFloat("specularIntensity", 1);
 		material.addFloat("specularPower", 8);
 		Material material2 = new Material();

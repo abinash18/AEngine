@@ -1,6 +1,6 @@
 package com.base.engine.rendering.shaders;
 
-import com.base.engine.components.BaseLight;
+import com.base.engine.components.Light;
 import com.base.engine.components.PointLight;
 import com.base.engine.math.Transform;
 import com.base.engine.rendering.RenderingEngine;
@@ -41,7 +41,7 @@ public class ForwardPointShader extends Shader {
 		 */
 	}
 
-	public void setUniformBaseLight(String uniformName, BaseLight baseLight) {
+	public void setUniformBaseLight(String uniformName, Light baseLight) {
 
 		setUniform3f(uniformName + ".color", baseLight.getColor());
 		setUniformf(uniformName + ".intensity", baseLight.getIntensity());

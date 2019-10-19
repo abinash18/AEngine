@@ -3,13 +3,13 @@ package com.base.engine.components;
 import com.base.engine.math.Vector3f;
 import com.base.engine.rendering.shaders.Shader;
 
-public class BaseLight extends GameComponent {
+public class Light extends SceneComponent {
 
 	private Vector3f color;
 	private float intensity;
 	private Shader shader;
 
-	public BaseLight(Vector3f color, float intensity) {
+	public Light(Vector3f color, float intensity) {
 		this.color = color;
 		this.intensity = intensity;
 		

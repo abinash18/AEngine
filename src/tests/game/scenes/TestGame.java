@@ -1,4 +1,4 @@
-package com.base.engine.rendering.sceneManagement.scenes;
+package tests.game.scenes;
 
 import com.base.engine.components.Camera;
 import com.base.engine.components.DirectionalLight;
@@ -35,12 +35,12 @@ public class TestGame extends Scene {
 		Mesh mesh = new Mesh("plane3.obj", true);
 		Material material = new Material();
 		material.addTexture("diffuse", new Texture("bricks.jpg"));
-		material.addTexture("normal_map", new Texture("bricks_normal.jpg"));
+		//material.addTexture("normal_map", new Texture("bricks_normal.jpg"));
 		material.addFloat("specularIntensity", 1);
 		material.addFloat("specularPower", 8);
 		Material material2 = new Material();
 		material2.addTexture("diffuse", new Texture("bricks2.jpg"));
-		material2.addTexture("normal_map", new Texture("bricks2_normal.jpg"));
+		//material2.addTexture("normal_map", new Texture("bricks2_normal.jpg"));
 		material2.addFloat("specularIntensity", 1);
 		material2.addFloat("specularPower", 8);
 		MeshRenderer meshRenderer = new MeshRenderer(mesh, material);
@@ -64,11 +64,11 @@ public class TestGame extends Scene {
 		GameObject spotLightObject = new GameObject();
 
 		cameraObject = new GameObject();
-		cam = new Camera((float) Math.toRadians(70.0f), (float) Window.getWidth() / (float) Window.getHeight(), 0.01f,
+		cam = new Camera((float) Math.toRadians(100.0f), (float) Window.getWidth() / (float) Window.getHeight(), 0.01f,
 				1000.0f, "playerView");
 
 		cameraObject.addComponent(cam);
-		cameraObject.addComponent(spotLight).addComponent(new FreeLook(0.35f)).addComponent(new FreeMove(10f));
+		cameraObject.addComponent(new FreeLook(0.35f)).addComponent(new FreeMove(10f));
 
 		// super.addChild(testMesh1);
 
@@ -91,7 +91,7 @@ public class TestGame extends Scene {
 		cam.getTransform().setTranslation(0, 0, -5);
 		Material anvilmat = new Material();
 		anvilmat.addTexture("diffuse", new Texture("defaultModelTexture.png"));
-		anvilmat.addTexture("normal_map", new Texture("Normal_Map_Anvil.png"));
+		//anvilmat.addTexture("normal_map", new Texture("Normal_Map_Anvil.png"));
 		anvilmat.addFloat("specularIntensity", 1);
 		anvilmat.addFloat("specularPower", 8);
 		GameObject anvil = new GameObject()

@@ -7,7 +7,7 @@ import com.base.engine.math.Transform;
 import com.base.engine.math.Vector2f;
 import com.base.engine.rendering.windowManagement.Window;
 
-public class FreeLook extends GameComponent {
+public class FreeLook extends SceneComponent {
 
 	private float sensitivity;
 	private int unlockMouseKey;

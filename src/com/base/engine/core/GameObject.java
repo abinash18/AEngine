@@ -2,7 +2,7 @@ package com.base.engine.core;
 
 import java.util.ArrayList;
 
-import com.base.engine.components.GameComponent;
+import com.base.engine.components.SceneComponent;
 import com.base.engine.math.Transform;
 import com.base.engine.rendering.RenderingEngine;
 import com.base.engine.rendering.sceneManagement.Scene;
@@ -11,13 +11,13 @@ import com.base.engine.rendering.shaders.Shader;
 public class GameObject {
 
 	private ArrayList<GameObject> children;
-	private ArrayList<GameComponent> components;
+	private ArrayList<SceneComponent> components;
 	private Transform transform;
 	private Scene parentScene;
 
 	public GameObject() {
 		this.children = new ArrayList<GameObject>();
-		this.components = new ArrayList<GameComponent>();
+		this.components = new ArrayList<SceneComponent>();
 		this.transform = new Transform();
 		this.parentScene = null;
 	}
@@ -38,7 +38,7 @@ public class GameObject {
 		return this;
 	}
 
-	public GameObject addComponent(GameComponent gameComponent) {
+	public GameObject addComponent(SceneComponent gameComponent) {
 		gameComponent.setParent(this);
 		components.add(gameComponent);
 
@@ -54,7 +54,7 @@ public class GameObject {
 	}
 
 	public void addToScene() {
-		for (GameComponent component : components) {
+		for (SceneComponent component : components) {
 			component.addToScene();
 		}
 
@@ -67,7 +67,7 @@ public class GameObject {
 	 * Initialize All Scene Objects And Components Attached.
 	 */
 	public void init() {
-		for (GameComponent component : components) {
+		for (SceneComponent component : components) {
 			component.init();
 		}
 		for (GameObject child : children) {
@@ -110,7 +110,7 @@ public class GameObject {
 		 */
 		transform.update();
 
-		for (GameComponent component : components) {
+		for (SceneComponent component : components) {
 			component.input(delta);
 		}
 	}
@@ -119,7 +119,7 @@ public class GameObject {
 	 * Only Update This Scene Object.
 	 */
 	public void update(float delta) {
-		for (GameComponent component : components) {
+		for (SceneComponent component : components) {
 			component.update(delta);
 		}
 	}
@@ -128,7 +128,7 @@ public class GameObject {
 	 * Only Render This Scene Object.
 	 */
 	public void render(Shader shader, RenderingEngine engine) {
-		for (GameComponent component : components) {
+		for (SceneComponent component : components) {
 			component.render(shader, engine);
 		}
 	}
@@ -140,11 +140,11 @@ public class GameObject {
 		}
 	}
 
-	public ArrayList<GameComponent> getComponents() {
+	public ArrayList<SceneComponent> getComponents() {
 		return components;
 	}
 
-	public void setComponents(ArrayList<GameComponent> components) {
+	public void setComponents(ArrayList<SceneComponent> components) {
 		this.components = components;
 	}
 
@@ -159,7 +159,7 @@ public class GameObject {
 	public void setParentScene(Scene prntScene) {
 		if (this.parentScene != prntScene) {
 			this.parentScene = prntScene;
-			for (GameComponent component : components) {
+			for (SceneComponent component : components) {
 				component.addToScene();
 			}
 			for (GameObject child : children) {

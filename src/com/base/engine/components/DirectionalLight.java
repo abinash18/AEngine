@@ -3,7 +3,7 @@ package com.base.engine.components;
 import com.base.engine.math.Vector3f;
 import com.base.engine.rendering.shaders.Shader;
 
-public class DirectionalLight extends BaseLight {
+public class DirectionalLight extends Light {
 
 	// private Vector3f direction;
 

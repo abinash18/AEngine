@@ -6,7 +6,7 @@ import com.base.engine.rendering.RenderingEngine;
 import com.base.engine.rendering.sceneManagement.Scene;
 import com.base.engine.rendering.shaders.Shader;
 
-public abstract class GameComponent {
+public abstract class SceneComponent {
 
 	private GameObject parent;
 	private String Name;

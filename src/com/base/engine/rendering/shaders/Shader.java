@@ -8,7 +8,7 @@ import java.util.HashMap;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL32;
 
-import com.base.engine.components.BaseLight;
+import com.base.engine.components.Light;
 import com.base.engine.components.DirectionalLight;
 import com.base.engine.components.PointLight;
 import com.base.engine.components.SpotLight;
@@ -33,7 +33,6 @@ public class Shader {
 	// private String fileName;
 
 	public Shader(String fileName) {
-		// this.fileName = fileName;
 
 		// TODO: make this hashmap of resources into a HashSet and use compute if absent
 		// method to add shader to set
@@ -619,13 +618,13 @@ public class Shader {
 		this.shaderProgram.setUniforms(uniforms);
 	}
 
-	public void setUniformBaseLight(String uniformName, BaseLight baseLight) {
+	public void setUniformBaseLight(String uniformName, Light baseLight) {
 		setUniform3f(uniformName + ".color", baseLight.getColor());
 		setUniformf(uniformName + ".intensity", baseLight.getIntensity());
 	}
 
 	public void setUniformDirectionalLight(String uniformName, DirectionalLight directionalLight) {
-		setUniformBaseLight(uniformName + ".base", (BaseLight) directionalLight);
+		setUniformBaseLight(uniformName + ".base", (Light) directionalLight);
 		setUniform3f(uniformName + ".direction", directionalLight.getDirection());
 	}
 

@@ -3,7 +3,7 @@ package com.base.engine.components;
 import com.base.engine.math.Matrix4f;
 import com.base.engine.math.Vector3f;
 
-public class Camera extends GameComponent {
+public class Camera extends SceneComponent {
 
 	private Matrix4f projection;
 

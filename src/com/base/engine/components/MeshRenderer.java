@@ -5,7 +5,7 @@ import com.base.engine.rendering.meshLoading.Mesh;
 import com.base.engine.rendering.resourceManagement.Material;
 import com.base.engine.rendering.shaders.Shader;
 
-public class MeshRenderer extends GameComponent {
+public class MeshRenderer extends SceneComponent {
 
 	private Mesh mesh;
 	private Material mat;
