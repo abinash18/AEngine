@@ -108,7 +108,8 @@ public class OBJModel {
 				if (hasNormals) {
 					result.getNormals().add(currentNormal);
 				}
-				result.getTangents().add(new Vector3f(0, 0, 0));
+				// Well... Um... Shit.
+				//result.getTangents().add(new Vector3f(0, 0, 0));
 			}
 
 			Integer normalModelIndex = normalIndexMap.get(currentIndex.vertexIndex);

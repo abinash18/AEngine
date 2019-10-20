@@ -55,7 +55,7 @@ public class MainMenu extends Scene {
 		Mesh mesh = new Mesh("plane3.obj", false);
 		Material material = new Material();
 		material.addTexture("diffuse", new Texture("bricks2.jpg"));
-		//material.addTexture("normal_map", new Texture("bricks2_normal.jpg"));
+		material.addTexture("normal_map", new Texture("bricks2_normal.jpg"));
 		material.addFloat("specularIntensity", 1);
 		material.addFloat("specularPower", 8);
 		Material material2 = new Material();

@@ -33,7 +33,7 @@ public class RenderingEngine extends MappedValues {
 		samplerMap = new HashMap<String, Integer>();
 
 		samplerMap.put("diffuse", 0);
-		//samplerMap.put("normal_map", 1);
+		samplerMap.put("normal_map", 1);
 
 		super.addVector3f("ambient", new Vector3f(0.1f, 0.1f, 0.1f));
 
@@ -76,7 +76,7 @@ public class RenderingEngine extends MappedValues {
 		GL11.glCullFace(GL11.GL_BACK);
 		GL11.glEnable(GL11.GL_CULL_FACE);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
-		GL11.glEnable(GL32.GL_DEPTH_CLAMP);
+		//GL11.glEnable(GL32.GL_DEPTH_CLAMP);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		// GL11.glEnable(GL32.GL_FRAMEBUFFER_SRGB);
 	}

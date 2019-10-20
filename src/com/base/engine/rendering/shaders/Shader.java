@@ -8,8 +8,8 @@ import java.util.HashMap;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL32;
 
-import com.base.engine.components.Light;
 import com.base.engine.components.DirectionalLight;
+import com.base.engine.components.Light;
 import com.base.engine.components.PointLight;
 import com.base.engine.components.SpotLight;
 import com.base.engine.handlers.logging.LogManager;
@@ -33,6 +33,7 @@ public class Shader {
 	// private String fileName;
 
 	public Shader(String fileName) {
+		// this.fileName = fileName;
 
 		// TODO: make this hashmap of resources into a HashSet and use compute if absent
 		// method to add shader to set
@@ -44,7 +45,7 @@ public class Shader {
 			this.shaderProgram.addReference();
 		} else {
 			// this.shaderProgram = loadShader(fileName);
-			this.shaderProgram = new ShaderResource();
+			this.shaderProgram = new ShaderResource(fileName);
 
 			String vertexShaderText = loadShader(fileName + ".glvs");
 			String fragmentShaderText = loadShader(fileName + ".glfs");
@@ -494,15 +495,16 @@ public class Shader {
 		GL20.glLinkProgram(shaderProgram.getProgram());
 
 		if (GL20.glGetProgrami(shaderProgram.getProgram(), GL20.GL_LINK_STATUS) == 0) {
-
-			System.err.println(GL20.glGetProgramInfoLog(shaderProgram.getProgram(), 1024));
+			logger.debug("Error From Shader Program: '" + shaderProgram.getName() + "'");
+			logger.error(GL20.glGetProgramInfoLog(shaderProgram.getProgram(), 1024));
 			System.exit(1);
 		}
 
 		GL20.glValidateProgram(shaderProgram.getProgram());
 
 		if (GL20.glGetProgrami(shaderProgram.getProgram(), GL20.GL_VALIDATE_STATUS) == 0) {
-			System.err.println(GL20.glGetProgramInfoLog(shaderProgram.getProgram(), 1024));
+			logger.debug("Error From Shader Program: '" + shaderProgram.getName() + "'");
+			logger.error(GL20.glGetProgramInfoLog(shaderProgram.getProgram(), 1024));
 			System.exit(1);
 		}
 	}
@@ -511,13 +513,9 @@ public class Shader {
 		int shader = GL20.glCreateShader(type);
 
 		if (shader == 0) {
+			logger.debug("Error From Shader Program: '" + shaderProgram.getName() + "'");
 			logger.error("Shader creation failed: Could not find valid memory location when adding shader");
 			logger.info("Exiting...");
-			/*
-			 * System.err.
-			 * println("Shader creation failed: Could not find valid memory location when adding shader"
-			 * );
-			 */
 			System.exit(1);
 		}
 
@@ -525,6 +523,7 @@ public class Shader {
 		GL20.glCompileShader(shader);
 
 		if (GL20.glGetShaderi(shader, GL20.GL_COMPILE_STATUS) == 0) {
+			logger.debug("Error From Shader Program: '" + shaderProgram.getName() + "'");
 			logger.error(GL20.glGetShaderInfoLog(shader, 1024));
 			logger.info("Exiting...");
 			// System.err.println(GL20.glGetShaderInfoLog(shader, 1024));
@@ -618,18 +617,18 @@ public class Shader {
 		this.shaderProgram.setUniforms(uniforms);
 	}
 
-	public void setUniformBaseLight(String uniformName, Light baseLight) {
+	public void setUniformLight(String uniformName, Light baseLight) {
 		setUniform3f(uniformName + ".color", baseLight.getColor());
 		setUniformf(uniformName + ".intensity", baseLight.getIntensity());
 	}
 
 	public void setUniformDirectionalLight(String uniformName, DirectionalLight directionalLight) {
-		setUniformBaseLight(uniformName + ".base", (Light) directionalLight);
+		setUniformLight(uniformName + ".base", (Light) directionalLight);
 		setUniform3f(uniformName + ".direction", directionalLight.getDirection());
 	}
 
 	public void setUniformPointLight(String uniformName, PointLight pointLight) {
-		setUniformBaseLight(uniformName + ".base", pointLight);
+		setUniformLight(uniformName + ".base", pointLight);
 		setUniformf(uniformName + ".atten.constant", pointLight.getAttenuation().getConstant());
 		setUniformf(uniformName + ".atten.linear", pointLight.getAttenuation().getLinear());
 		setUniformf(uniformName + ".atten.exponent", pointLight.getAttenuation().getExponent());

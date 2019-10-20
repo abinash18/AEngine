@@ -13,6 +13,7 @@ import com.base.engine.handlers.logging.Logger;
 
 public class ShaderResource {
 	private int program, refCount;
+	private String name;
 
 	private static Logger logger = LogManager.getLogger(ShaderResource.class.getName());
 
@@ -20,7 +21,7 @@ public class ShaderResource {
 	private List<String> uniformNames;
 	private List<String> uniformTypes;
 
-	public ShaderResource() {
+	public ShaderResource(String name) {
 		this.program = GL20.glCreateProgram();
 
 		if (program == 0) {
@@ -37,6 +38,11 @@ public class ShaderResource {
 		uniformTypes = new ArrayList<>();
 
 		this.refCount = 1;
+		this.name = name;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	@Override

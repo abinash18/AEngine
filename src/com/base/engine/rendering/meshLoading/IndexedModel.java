@@ -15,8 +15,8 @@ public class IndexedModel {
 		positions = new ArrayList<Vector3f>();
 		normals = new ArrayList<Vector3f>();
 		texCoords = new ArrayList<Vector2f>();
-		indices = new ArrayList<Integer>();
 		tangents = new ArrayList<Vector3f>();
+		indices = new ArrayList<Integer>();
 	}
 
 	public void calcNormals() {

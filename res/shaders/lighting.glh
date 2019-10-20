@@ -1,10 +1,9 @@
 // Vars
-
 uniform vec3 C_eyePos;
 uniform float specularIntensity;
 uniform float specularPower;
 
-//Structures
+// Structures
 struct BaseLight {
   vec3 color;
   float intensity;

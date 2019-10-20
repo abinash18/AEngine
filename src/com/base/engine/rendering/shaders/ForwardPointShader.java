@@ -41,7 +41,7 @@ public class ForwardPointShader extends Shader {
 		 */
 	}
 
-	public void setUniformBaseLight(String uniformName, Light baseLight) {
+	public void setUniformLight(String uniformName, Light baseLight) {
 
 		setUniform3f(uniformName + ".color", baseLight.getColor());
 		setUniformf(uniformName + ".intensity", baseLight.getIntensity());
@@ -50,7 +50,7 @@ public class ForwardPointShader extends Shader {
 
 	public void setUniformPointLight(String uniformName, PointLight pointLight) {
 
-		setUniformBaseLight(uniformName + ".base", pointLight);
+		setUniformLight(uniformName + ".base", pointLight);
 		setUniformf(uniformName + ".atten.constant", pointLight.getAttenuation().getConstant());
 		setUniformf(uniformName + ".atten.linear", pointLight.getAttenuation().getLinear());
 		setUniformf(uniformName + ".atten.exponent", pointLight.getAttenuation().getExponent());
