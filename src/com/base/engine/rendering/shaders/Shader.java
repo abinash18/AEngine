@@ -535,6 +535,7 @@ public class Shader {
 				+ GL20.glGetShaderInfoLog(shader, 1024));
 	}
 
+	
 	public void setUniformi(String uniformName, int value) {
 		GL20.glUniform1i(shaderProgram.getUniforms().get(uniformName), value);
 	}
