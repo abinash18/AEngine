@@ -25,6 +25,15 @@ public class CoreEngine {
 		this.frameTime = 1.0 / framerate;
 	}
 
+	public void createWindow(int width, int height, String windowTitle, boolean fullscreen, boolean vSync,
+			RenderingEngine rndrEng) {
+		Window.createWindow(width, height, windowTitle, fullscreen, vSync);
+		this.renderEngine = rndrEng;
+		// System.out.println(RenderingEngine.getOpenGLVersion());
+		logger.info(RenderingEngine.getOpenGLVersion());
+		this.printDeviceProperties();
+	}
+
 	public void createWindow(int width, int height, String windowTitle, boolean fullscreen, boolean vSync) {
 		Window.createWindow(width, height, windowTitle, fullscreen, vSync);
 		this.renderEngine = new RenderingEngine();
@@ -44,10 +53,10 @@ public class CoreEngine {
 	}
 
 	public void stop() {
-		logger.info("Terminating Engine.");
 		if (!isRunning) {
 			return;
 		}
+		logger.info("Terminating Engine.");
 		isRunning = false;
 	}
 
@@ -90,23 +99,24 @@ public class CoreEngine {
 
 				SceneManager.input((float) frameTime);
 				Input.update();
-				// renderEngine.input((float) frameTime);
 				SceneManager.update((float) frameTime);
 
 				if (frameCounter >= 1.0) {
-					// System.out.println(frames);
+					//////////////////////////////////////////////
+					//////////// -Just For Debugging-/////////////
 					if (!finestLoglevel) {
 						System.out.println("Frames: " + frames);
 					} else {
 						logger.finest("Frames: " + frames);
 					}
+					//////////// -Just For Debugging-/////////////
+					//////////////////////////////////////////////
 					frames = 0;
 					frameCounter = 0;
 				}
 			}
 			if (render) {
 				SceneManager.render();
-				// renderEngine.render(game.getRootObject());
 				Window.render(frameRate);
 				frames++;
 			} else {
@@ -114,7 +124,6 @@ public class CoreEngine {
 					Thread.sleep(1);
 				} catch (InterruptedException e) {
 					logger.error(e.getMessage(), e);
-					// e.printStackTrace();
 				}
 			}
 		}
@@ -133,13 +142,6 @@ public class CoreEngine {
 	}
 
 	private void printDeviceProperties() {
-//		System.out.println("OpenGL version: " + GL11.glGetString(GL11.GL_VERSION) + " bytes");
-//		System.out.println("Max Geometry Uniform Blocks: " + GL31.GL_MAX_GEOMETRY_UNIFORM_BLOCKS + " bytes");
-//		System.out.println("Max Geometry Shader Invocations: " + GL40.GL_MAX_GEOMETRY_SHADER_INVOCATIONS + " bytes");
-//		System.out.println("Max Uniform Buffer Bindings: " + GL31.GL_MAX_UNIFORM_BUFFER_BINDINGS + " bytes");
-//		System.out.println("Max Uniform Block Size: " + GL31.GL_MAX_UNIFORM_BLOCK_SIZE + " bytes");
-//		System.out.println("Max SSBO Block Size: " + GL43.GL_MAX_SHADER_STORAGE_BLOCK_SIZE + " bytes");
-
 		logger.info("OpenGL version: " + GL11.glGetString(GL11.GL_VERSION) + " bytes");
 		logger.info("Max Geometry Uniform Blocks: " + GL31.GL_MAX_GEOMETRY_UNIFORM_BLOCKS + " bytes");
 		logger.info("Max Geometry Shader Invocations: " + GL40.GL_MAX_GEOMETRY_SHADER_INVOCATIONS + " bytes");
@@ -152,13 +154,5 @@ public class CoreEngine {
 	public RenderingEngine getRenderEngine() {
 		return renderEngine;
 	}
-
-//	public RenderingEngine getRenderEngine() {
-//		return renderEngine;
-//	}
-//
-//	public void setRenderEngine(RenderingEngine renderEngine) {
-//		this.renderEngine = renderEngine;
-//	}
 
 }

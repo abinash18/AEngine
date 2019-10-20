@@ -8,48 +8,48 @@ import com.base.engine.rendering.RenderingEngine;
 import com.base.engine.rendering.sceneManagement.Scene;
 import com.base.engine.rendering.shaders.Shader;
 
-public class GameObject {
+public class Entity implements IEntity {
 
-	private ArrayList<GameObject> children;
+	private ArrayList<Entity> children;
 	private ArrayList<SceneComponent> components;
 	private Transform transform;
 	private Scene parentScene;
 
-	public GameObject() {
-		this.children = new ArrayList<GameObject>();
+	public Entity() {
+		this.children = new ArrayList<Entity>();
 		this.components = new ArrayList<SceneComponent>();
 		this.transform = new Transform();
 		this.parentScene = null;
 	}
 
-	public ArrayList<GameObject> getAllAttached() {
-		ArrayList<GameObject> result = new ArrayList<GameObject>();
-		for (GameObject child : children) {
+	public ArrayList<Entity> getAllAttached() {
+		ArrayList<Entity> result = new ArrayList<Entity>();
+		for (Entity child : children) {
 			result.addAll(child.getAllAttached());
 		}
 		result.add(this);
 		return result;
 	}
 
-	public GameObject addChild(GameObject child) {
+	public Entity addChild(Entity child) {
 		child.getTransform().setParent(transform);
 		child.setParentScene(parentScene);
 		children.add(child);
 		return this;
 	}
 
-	public GameObject addComponent(SceneComponent gameComponent) {
+	public Entity addComponent(SceneComponent gameComponent) {
 		gameComponent.setParent(this);
 		components.add(gameComponent);
 
 		return this;
 	}
 
-	public ArrayList<GameObject> getChildren() {
+	public ArrayList<Entity> getChildren() {
 		return children;
 	}
 
-	public void setChildren(ArrayList<GameObject> children) {
+	public void setChildren(ArrayList<Entity> children) {
 		this.children = children;
 	}
 
@@ -58,7 +58,7 @@ public class GameObject {
 			component.addToScene();
 		}
 
-		for (GameObject child : children) {
+		for (Entity child : children) {
 			child.addToScene();
 		}
 	}
@@ -70,7 +70,7 @@ public class GameObject {
 		for (SceneComponent component : components) {
 			component.init();
 		}
-		for (GameObject child : children) {
+		for (Entity child : children) {
 			child.init();
 		}
 	}
@@ -83,7 +83,7 @@ public class GameObject {
 	public void inputAll(float delta) {
 		this.input(delta);
 
-		for (GameObject child : children) {
+		for (Entity child : children) {
 			child.inputAll(delta);
 		}
 	}
@@ -95,7 +95,7 @@ public class GameObject {
 	 */
 	public void updateAll(float delta) {
 		this.update(delta);
-		for (GameObject child : children) {
+		for (Entity child : children) {
 			child.updateAll(delta);
 		}
 	}
@@ -135,7 +135,7 @@ public class GameObject {
 
 	public void renderAll(Shader shader, RenderingEngine engine) {
 		this.render(shader, engine);
-		for (GameObject child : children) {
+		for (Entity child : children) {
 			child.renderAll(shader, engine);
 		}
 	}
@@ -162,7 +162,7 @@ public class GameObject {
 			for (SceneComponent component : components) {
 				component.addToScene();
 			}
-			for (GameObject child : children) {
+			for (Entity child : children) {
 				child.setParentScene(prntScene);
 			}
 		}

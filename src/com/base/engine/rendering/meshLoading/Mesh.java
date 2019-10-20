@@ -16,11 +16,11 @@ import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.base.engine.core.Util;
 import com.base.engine.handlers.logging.LogManager;
 import com.base.engine.handlers.logging.Logger;
 import com.base.engine.math.Vector3f;
 import com.base.engine.rendering.resourceManagement.MeshResource;
+import com.base.engine.util.Util;
 
 public class Mesh {
 

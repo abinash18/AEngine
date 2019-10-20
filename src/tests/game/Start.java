@@ -14,7 +14,6 @@ public class Start extends Main {
 		s.run(args);
 	}
 	
-	
 	@Override
 	public void run(String[] args) {
 		super.run(args);

@@ -1,6 +1,6 @@
 package com.base.engine.components;
 
-import com.base.engine.core.GameObject;
+import com.base.engine.core.Entity;
 import com.base.engine.math.Transform;
 import com.base.engine.rendering.RenderingEngine;
 import com.base.engine.rendering.sceneManagement.Scene;
@@ -8,7 +8,7 @@ import com.base.engine.rendering.shaders.Shader;
 
 public abstract class SceneComponent {
 
-	private GameObject parent;
+	private Entity parent;
 	private String Name;
 
 	public Transform getTransform() {
@@ -19,11 +19,11 @@ public abstract class SceneComponent {
 		return parent.getParentScene();
 	}
 
-	public GameObject getParent() {
+	public Entity getParent() {
 		return parent;
 	}
 
-	public void setParent(GameObject parent) {
+	public void setParent(Entity parent) {
 		this.parent = parent;
 	}
 

@@ -7,7 +7,7 @@ import com.base.engine.components.FreeMove;
 import com.base.engine.components.MeshRenderer;
 import com.base.engine.components.PointLight;
 import com.base.engine.components.SpotLight;
-import com.base.engine.core.GameObject;
+import com.base.engine.core.Entity;
 import com.base.engine.core.Input;
 import com.base.engine.math.Vector2f;
 import com.base.engine.math.Vector3f;
@@ -26,7 +26,7 @@ public class MainMenu extends Scene {
 		super("MainMenu");
 	}
 
-	private GameObject monkey, monkey2, cameraObject;
+	private Entity monkey, monkey2, cameraObject;
 	private Camera cam;
 
 	public void init() {
@@ -65,24 +65,24 @@ public class MainMenu extends Scene {
 		MeshRenderer meshRenderer = new MeshRenderer(mesh, material);
 		MeshRenderer meshRenderer2 = new MeshRenderer(new Mesh("monkey.obj", true), material2);
 
-		GameObject planeObject = new GameObject();
+		Entity planeObject = new Entity();
 		planeObject.addComponent(meshRenderer);
 		planeObject.getTransform().setTranslation(0, -5, 0);
 		// planeObject.getTransform().getPosition().set(0, -1, 5);
 
-		GameObject directionalLightObject = new GameObject();
+		Entity directionalLightObject = new Entity();
 		DirectionalLight directionalLight = new DirectionalLight(new Vector3f(1, 1, 1), 0.2f);
 
 		directionalLightObject.addComponent(directionalLight);
 
-		GameObject pointLightObject = new GameObject();
+		Entity pointLightObject = new Entity();
 		pointLightObject.addComponent(new PointLight(new Vector3f(0, 1, 0), 0.4f, new Attenuation(0, 0, 1)));
 
 		SpotLight spotLight = new SpotLight(new Vector3f(1, 1, 1), 0.4f, new Attenuation(0, 0, 0.8f), 0.7f);
 
-		GameObject spotLightObject = new GameObject();
+		Entity spotLightObject = new Entity();
 
-		cameraObject = new GameObject();
+		cameraObject = new Entity();
 		cam = new Camera((float) Math.toRadians(70.0f), (float) Window.getWidth() / (float) Window.getHeight(), 0.01f,
 				1000.0f, "playerView");
 		cameraObject.addComponent(cam);
@@ -92,15 +92,15 @@ public class MainMenu extends Scene {
 
 		directionalLight.getTransform().rotate(new Vector3f(1, 0, 0), (float) Math.toRadians(-135));
 
-		GameObject ironMan = new GameObject();
+		Entity ironMan = new Entity();
 		ironMan.addComponent(new MeshRenderer(new Mesh("simpleCube.obj", false), material2));
 
 		ironMan.getTransform().setTranslation(10, 5, 0);
 
-		monkey = new GameObject();
+		monkey = new Entity();
 		monkey.addComponent(meshRenderer2);
 
-		monkey2 = new GameObject();
+		monkey2 = new Entity();
 		monkey2.addComponent(new MeshRenderer(new Mesh("monkey.obj", true), material));
 		monkey2.getTransform().setTranslation(0, 0, 5);
 
@@ -115,7 +115,7 @@ public class MainMenu extends Scene {
 		// super.addChild(ironMan);
 		super.addChild(monkey2);
 
-//		GameObject t = new GameObject()
+//		Entity t = new Entity()
 //				.addComponent(new Camera((float) Math.toRadians(70.0f),
 //						(float) Window.getWidth() / (float) Window.getHeight(), 0.01f, 1000.0f, "playerView2"))
 //				.addComponent(new FreeLook(0.35f)).addComponent(new FreeMove(10f))

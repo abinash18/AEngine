@@ -1,4 +1,4 @@
-package com.base.engine.core;
+package com.base.engine.util;
 
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;

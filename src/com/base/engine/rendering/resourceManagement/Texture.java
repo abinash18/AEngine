@@ -10,9 +10,9 @@ import javax.imageio.ImageIO;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
-import com.base.engine.core.Util;
 import com.base.engine.handlers.logging.LogManager;
 import com.base.engine.handlers.logging.Logger;
+import com.base.engine.util.Util;
 
 public class Texture {
 

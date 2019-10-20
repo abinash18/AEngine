@@ -5,9 +5,9 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.base.engine.core.Util;
 import com.base.engine.math.Vector2f;
 import com.base.engine.math.Vector3f;
+import com.base.engine.util.Util;
 
 public class OBJModel {
 

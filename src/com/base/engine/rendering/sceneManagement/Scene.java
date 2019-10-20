@@ -8,12 +8,12 @@ import java.util.UUID;
 import com.base.engine.components.Light;
 import com.base.engine.components.Camera;
 import com.base.engine.components.SceneComponent;
-import com.base.engine.core.GameObject;
+import com.base.engine.core.Entity;
 import com.base.engine.rendering.RenderingEngine;
 
 public abstract class Scene {
 
-	private GameObject root;
+	private Entity root;
 	private ArrayList<Light> lights;
 	private Map<String, Camera> cameras;
 	private Camera mainCamera;
@@ -83,7 +83,7 @@ public abstract class Scene {
 		rndEng.render(this);
 	}
 
-	public void addChild(GameObject child) {
+	public void addChild(Entity child) {
 		this.getRootObject().addChild(child);
 	}
 
@@ -91,20 +91,20 @@ public abstract class Scene {
 		this.getRootObject().addComponent(component);
 	}
 
-	public GameObject getRootObject() {
+	public Entity getRootObject() {
 		if (this.root == null) {
-			this.root = new GameObject();
+			this.root = new Entity();
 			// root.setCoreEngine(coreEngine);
 		}
 		return root;
 
 	}
 
-	public GameObject getRoot() {
+	public Entity getRoot() {
 		return root;
 	}
 
-	public void setRoot(GameObject root) {
+	public void setRoot(Entity root) {
 		this.root = root;
 	}
 
