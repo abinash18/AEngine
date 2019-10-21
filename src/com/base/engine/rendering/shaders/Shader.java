@@ -535,7 +535,6 @@ public class Shader {
 				+ GL20.glGetShaderInfoLog(shader, 1024));
 	}
 
-	
 	public void setUniformi(String uniformName, int value) {
 		GL20.glUniform1i(shaderProgram.getUniforms().get(uniformName), value);
 	}
@@ -553,7 +552,7 @@ public class Shader {
 	}
 
 	public void setUniformMatrix4f(String uniformName, Matrix4f value) {
-		GL20.glUniformMatrix4(shaderProgram.getUniforms().get(uniformName), true, Util.createFlippedBuffer(value));
+		GL20.glUniformMatrix4fv(shaderProgram.getUniforms().get(uniformName), true, Util.createFlippedBuffer(value));
 	}
 
 	public static String loadShader(String fileName) {

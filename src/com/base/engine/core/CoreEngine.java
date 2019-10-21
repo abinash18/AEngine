@@ -1,15 +1,30 @@
 package com.base.engine.core;
 
+import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL31;
 import org.lwjgl.opengl.GL40;
 import org.lwjgl.opengl.GL43;
+import org.lwjgl.*;
+import org.lwjgl.glfw.*;
+import org.lwjgl.opengl.*;
+import org.lwjgl.system.*;
+
+import java.nio.*;
+
+import static org.lwjgl.glfw.Callbacks.*;
+import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.system.MemoryStack.*;
+import static org.lwjgl.system.MemoryUtil.*;
 
 import com.base.engine.handlers.logging.LogLevel;
 import com.base.engine.handlers.logging.LogManager;
 import com.base.engine.handlers.logging.Logger;
 import com.base.engine.rendering.RenderingEngine;
 import com.base.engine.rendering.sceneManagement.SceneManager;
+import com.base.engine.rendering.windowManagement.GLFWWindow;
+import com.base.engine.rendering.windowManagement.GLFWWindowManager;
 import com.base.engine.rendering.windowManagement.Window;
 
 public class CoreEngine {
@@ -18,31 +33,59 @@ public class CoreEngine {
 	private double frameTime, frameRate;
 	private boolean isRunning;
 	private RenderingEngine renderEngine;
+	// Have A Better Way Of Doing This Rather Than Just Make It Static.
+	// I.e. Maybe Pass It As A Parameter Through Each Scene.
+	public static GLFWWindow currentWindow;
 
 	public CoreEngine(double framerate) {
 		this.isRunning = false;
 		this.frameRate = framerate;
 		this.frameTime = 1.0 / framerate;
+		initGLFW();
 	}
 
 	public void createWindow(int width, int height, String windowTitle, boolean fullscreen, boolean vSync,
 			RenderingEngine rndrEng) {
-		Window.createWindow(width, height, windowTitle, fullscreen, vSync);
+		// Window.createWindow(width, height, windowTitle, fullscreen, vSync);
+		// In The Future We Can Make Multiple Windows Such As Ones Showing Loading Icons
+		// And Bars Or Some Other Info And Even Have Multiple Running At The Same Time.
+		currentWindow = GLFWWindowManager.getGLFWWindowHandle(width, height, "mainEngineWindow", windowTitle,
+				fullscreen, vSync);
+		currentWindow.create();
 		this.renderEngine = rndrEng;
-		// System.out.println(RenderingEngine.getOpenGLVersion());
 		logger.info(RenderingEngine.getOpenGLVersion());
 		this.printDeviceProperties();
 	}
 
 	public void createWindow(int width, int height, String windowTitle, boolean fullscreen, boolean vSync) {
-		Window.createWindow(width, height, windowTitle, fullscreen, vSync);
+		// Window.createWindow(width, height, windowTitle, fullscreen, vSync);
+		currentWindow = GLFWWindowManager.getGLFWWindowHandle(width, height, "mainEngineWindow", windowTitle,
+				fullscreen, vSync);
+		currentWindow.create();
+
 		this.renderEngine = new RenderingEngine();
-		// System.out.println(RenderingEngine.getOpenGLVersion());
 		logger.info(RenderingEngine.getOpenGLVersion());
 		this.printDeviceProperties();
 	}
 
-	public void init() {
+	public void initGLFW() {
+		// Setup an error callback. The default implementation
+		// will print the error message in System.err.
+		GLFWErrorCallback.createPrint(System.err).set();
+
+		// Initialize GLFW. Most GLFW functions will not work before doing this.
+		if (!glfwInit()) {
+			logger.error("Unable to initialize GLFW");
+			throw new IllegalStateException("Unable to initialize GLFW");
+		}
+
+		// This line is critical for LWJGL's inter-operation with GLFW's
+		// OpenGL context, or any context that is managed externally.
+		// LWJGL detects the context that is current in the current thread,
+		// creates the GLCapabilities instance and makes the OpenGL
+		// bindings available for use.
+		GL.createCapabilities();
+
 	}
 
 	public void start() {
@@ -61,7 +104,6 @@ public class CoreEngine {
 	}
 
 	private void run() {
-
 		logger.info("Starting Engine.");
 		SceneManager.init(this);
 		isRunning = true;
@@ -91,14 +133,14 @@ public class CoreEngine {
 
 				unprocessedTime -= frameTime;
 
-				if (Window.isCloseRequested()) {
+				if (currentWindow.isCloseRequested()) {
 					stop();
 				}
 
 				// Time.setDelta(frameTime);
 
 				SceneManager.input((float) frameTime);
-				Input.update();
+				currentWindow.update();
 				SceneManager.update((float) frameTime);
 
 				if (frameCounter >= 1.0) {
@@ -114,10 +156,12 @@ public class CoreEngine {
 					frames = 0;
 					frameCounter = 0;
 				}
+
 			}
 			if (render) {
 				SceneManager.render();
-				Window.render(frameRate);
+				currentWindow.swapBuffers();
+				// Window.render(frameRate);
 				frames++;
 			} else {
 				try {
@@ -132,7 +176,10 @@ public class CoreEngine {
 	}
 
 	private static void cleanUp() {
-		Window.dispose();
+		GLFWWindowManager.destroyAll();
+		// Window.dispose();
+		glfwTerminate();
+		glfwSetErrorCallback(null).free();
 	}
 
 	public static void exit(int exitCode) {

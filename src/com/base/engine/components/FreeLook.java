@@ -1,6 +1,6 @@
 package com.base.engine.components;
 
-import org.lwjgl.input.Mouse;
+import org.lwjgl.system.windows.
 
 import com.base.engine.core.Input;
 import com.base.engine.math.Transform;

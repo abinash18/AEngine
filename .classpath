@@ -2,13 +2,38 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/jar/lwjgl_util.jar"/>
-	<classpathentry kind="lib" path="lib/jar/lwjgl.jar">
+	<classpathentry kind="lib" path="lib/jar/lwjgl3/lwjgl-assimp.jar" sourcepath="lib/jar/lwjgl3/sources/lwjgl-assimp-sources.jar">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Abi&apos;s3DGameEngine/lib/native"/>
+			<attribute name="javadoc_location" value="jar:platform:/resource/Abi&apos;s3DGameEngine/lib/jar/lwjgl3/javadoc/lwjgl-assimp-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/jar/slick-util.jar"/>
-	<classpathentry kind="lib" path="commons-cli-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/jar/lwjgl3/lwjgl-glfw.jar" sourcepath="lib/jar/lwjgl3/sources/lwjgl-glfw-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/Abi&apos;s3DGameEngine/lib/jar/lwjgl3/javadoc/lwjgl-glfw-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/jar/lwjgl3/lwjgl-opengl.jar" sourcepath="lib/jar/lwjgl3/sources/lwjgl-opengl-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/Abi&apos;s3DGameEngine/lib/jar/lwjgl3/javadoc/lwjgl-opengl-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/jar/lwjgl3/lwjgl-shaderc.jar"/>
+	<classpathentry kind="lib" path="lib/jar/lwjgl3/lwjgl.jar" sourcepath="lib/jar/lwjgl3/sources/lwjgl-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/Abi&apos;s3DGameEngine/lib/jar/lwjgl3/javadoc/lwjgl-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/jar/lwjgl3/natives-windows/lwjgl-assimp-natives-windows.jar"/>
+	<classpathentry kind="lib" path="lib/jar/lwjgl3/natives-windows/lwjgl-glfw-natives-windows.jar"/>
+	<classpathentry kind="lib" path="lib/jar/lwjgl3/natives-windows/lwjgl-opengl-natives-windows.jar"/>
+	<classpathentry kind="lib" path="lib/jar/lwjgl3/natives-windows/lwjgl-shaderc-natives-windows.jar"/>
+	<classpathentry kind="lib" path="lib/jar/lwjgl3/natives-windows/lwjgl-natives-windows.jar"/>
+	<classpathentry kind="lib" path="lib/jar/commons-cli-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/jar/lwjgl3/lwjgl-stb.jar" sourcepath="lib/jar/lwjgl3/sources/lwjgl-stb-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/Abi&apos;s3DGameEngine/lib/jar/lwjgl3/javadoc/lwjgl-stb-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/jar/lwjgl3/natives-windows/lwjgl-stb-natives-windows.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
