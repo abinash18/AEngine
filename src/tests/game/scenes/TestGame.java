@@ -1,5 +1,7 @@
 package tests.game.scenes;
 
+import org.lwjgl.glfw.GLFW;
+
 import com.base.engine.components.Camera;
 import com.base.engine.components.DirectionalLight;
 import com.base.engine.components.FreeLook;
@@ -8,7 +10,7 @@ import com.base.engine.components.MeshRenderer;
 import com.base.engine.components.PointLight;
 import com.base.engine.components.SpotLight;
 import com.base.engine.core.Entity;
-import com.base.engine.core.Input;
+import com.base.engine.core.GLFWInput;
 import com.base.engine.math.Vector3f;
 import com.base.engine.rendering.meshLoading.Mesh;
 import com.base.engine.rendering.resourceManagement.Material;
@@ -92,8 +94,7 @@ public class TestGame extends Scene {
 		anvilmat.addTexture("normal_map", new Texture("Normal_Map_Anvil.png"));
 		anvilmat.addFloat("specularIntensity", 1);
 		anvilmat.addFloat("specularPower", 8);
-		Entity anvil = new Entity()
-				.addComponent(new MeshRenderer(new Mesh("Anvil_LowPoly.obj", true), anvilmat));
+		Entity anvil = new Entity().addComponent(new MeshRenderer(new Mesh("Anvil_LowPoly.obj", true), anvilmat));
 
 		super.addChild(anvil);
 		super.setMainCamera("playerView");
@@ -116,13 +117,13 @@ public class TestGame extends Scene {
 	@Override
 	public void input(float delta) {
 		super.input(delta);
-		if (Input.getKey(Input.KEY_ESCAPE)) {
-			Input.setCursor(true);
+		if (super.getInputController().isKeyDown(GLFWInput.GLFW_KEY_ESCAPE)) {
+			super.getInputController().setCursorMode(GLFW.GLFW_CURSOR_NORMAL);
 			// System.out.println(this);
-			//System.exit(1);
+			// System.exit(1);
 
 		}
-		if (Input.getKeyDown(Input.KEY_C)) {
+		if (super.getInputController().isKeyDown(GLFWInput.GLFW_KEY_C)) {
 			SceneManager.setCurrentScene("MainMenu");
 		}
 	}

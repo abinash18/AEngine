@@ -3,10 +3,9 @@ package com.base.engine.rendering;
 import java.util.HashMap;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL32;
 
-import com.base.engine.components.Light;
 import com.base.engine.components.Camera;
+import com.base.engine.components.Light;
 import com.base.engine.handlers.logging.LogManager;
 import com.base.engine.handlers.logging.Logger;
 import com.base.engine.math.Transform;

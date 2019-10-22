@@ -8,7 +8,7 @@ import com.base.engine.components.MeshRenderer;
 import com.base.engine.components.PointLight;
 import com.base.engine.components.SpotLight;
 import com.base.engine.core.Entity;
-import com.base.engine.core.Input;
+import com.base.engine.core.GLFWInput;
 import com.base.engine.math.Vector2f;
 import com.base.engine.math.Vector3f;
 import com.base.engine.rendering.meshLoading.Mesh;
@@ -137,13 +137,13 @@ public class MainMenu extends Scene {
 	@Override
 	public void input(float delta) {
 		super.input(delta);
-		if (Input.getKey(Input.KEY_ESCAPE)) {
+		if (super.getInputController().isKeyDown(GLFWInput.GLFW_KEY_ESCAPE)) {
 			// Input.setCursor(true);
 			System.out.println(this);
 			System.exit(1);
 
 		}
-		if (Input.getKeyDown(Input.KEY_C)) {
+		if (super.getInputController().isKeyDown(GLFWInput.GLFW_KEY_ESCAPE)) {
 			SceneManager.setCurrentScene("TestGame");
 		}
 //		if (Input.getKeyDown(Input.KEY_B)) {

@@ -39,6 +39,7 @@ public class SceneManager {
 			new Exception("Scene Already Exists With The Same Name!").printStackTrace();
 			return;
 		}
+		scene.setParentWindow(CoreEngine.currentWindow);
 		// scene.init();
 		scenes.put(scene.getName(), scene);
 		if (currentScene == null) {

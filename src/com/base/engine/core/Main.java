@@ -11,9 +11,6 @@ import com.base.engine.handlers.logging.LogLevel;
 import com.base.engine.handlers.logging.LogManager;
 import com.base.engine.handlers.logging.Logger;
 
-import tests.game.scenes.MainMenu;
-import tests.game.scenes.TestGame;
-
 public abstract class Main {
 
 	private static Logger logger = LogManager.getLogger(Main.class.getName());

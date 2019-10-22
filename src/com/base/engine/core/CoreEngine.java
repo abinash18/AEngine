@@ -1,22 +1,15 @@
 package com.base.engine.core;
 
+import static org.lwjgl.glfw.GLFW.glfwInit;
+import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
+import static org.lwjgl.glfw.GLFW.glfwTerminate;
+
 import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL31;
 import org.lwjgl.opengl.GL40;
 import org.lwjgl.opengl.GL43;
-import org.lwjgl.*;
-import org.lwjgl.glfw.*;
-import org.lwjgl.opengl.*;
-import org.lwjgl.system.*;
-
-import java.nio.*;
-
-import static org.lwjgl.glfw.Callbacks.*;
-import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.system.MemoryStack.*;
-import static org.lwjgl.system.MemoryUtil.*;
 
 import com.base.engine.handlers.logging.LogLevel;
 import com.base.engine.handlers.logging.LogManager;
@@ -25,7 +18,6 @@ import com.base.engine.rendering.RenderingEngine;
 import com.base.engine.rendering.sceneManagement.SceneManager;
 import com.base.engine.rendering.windowManagement.GLFWWindow;
 import com.base.engine.rendering.windowManagement.GLFWWindowManager;
-import com.base.engine.rendering.windowManagement.Window;
 
 public class CoreEngine {
 
@@ -62,7 +54,6 @@ public class CoreEngine {
 		currentWindow = GLFWWindowManager.getGLFWWindowHandle(width, height, "mainEngineWindow", windowTitle,
 				fullscreen, vSync);
 		currentWindow.create();
-
 		this.renderEngine = new RenderingEngine();
 		logger.info(RenderingEngine.getOpenGLVersion());
 		this.printDeviceProperties();
@@ -78,13 +69,6 @@ public class CoreEngine {
 			logger.error("Unable to initialize GLFW");
 			throw new IllegalStateException("Unable to initialize GLFW");
 		}
-
-		// This line is critical for LWJGL's inter-operation with GLFW's
-		// OpenGL context, or any context that is managed externally.
-		// LWJGL detects the context that is current in the current thread,
-		// creates the GLCapabilities instance and makes the OpenGL
-		// bindings available for use.
-		GL.createCapabilities();
 
 	}
 
@@ -105,6 +89,14 @@ public class CoreEngine {
 
 	private void run() {
 		logger.info("Starting Engine.");
+
+		// This line is critical for LWJGL's inter-operation with GLFW's
+		// OpenGL context, or any context that is managed externally.
+		// LWJGL detects the context that is current in the current thread,
+		// creates the GLCapabilities instance and makes the OpenGL
+		// bindings available for use.
+		GL.createCapabilities();
+
 		SceneManager.init(this);
 		isRunning = true;
 

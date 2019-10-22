@@ -1,8 +1,11 @@
 package com.base.engine.components;
 
-import static org.lwjgl.glfw.GLFW.*;
+import static com.base.engine.core.GLFWInput.GLFW_KEY_A;
+import static com.base.engine.core.GLFWInput.GLFW_KEY_D;
+import static com.base.engine.core.GLFWInput.GLFW_KEY_S;
+import static com.base.engine.core.GLFWInput.GLFW_KEY_W;
 
-import com.base.engine.core.CoreEngine;
+import com.base.engine.core.GLFWInput;
 import com.base.engine.math.Vector3f;
 
 public class FreeMove extends SceneComponent {
@@ -33,20 +36,20 @@ public class FreeMove extends SceneComponent {
 		 * Do Not Need To Use Input.getKeyDown Because It Automatically Returns The Key
 		 * If It Is Down.
 		 */
-		if (CoreEngine.currentWindow.getInput().isKeyDown((GLFW_KEY_LEFT_SHIFT))) {
+		if (super.getParentScene().getInputController().isKeyDown((GLFWInput.GLFW_KEY_LEFT_SHIFT))) {
 			moveAmount = (float) (5 * delta);
 		}
 
-		if (CoreEngine.currentWindow.getInput().isKeyDown(((forwardKey)))) {
+		if (super.getParentScene().getInputController().isKeyDown(((forwardKey)))) {
 			move(super.getTransform().getRotation().getForward(), moveAmount);
 		}
-		if (CoreEngine.currentWindow.getInput().isKeyDown(((leftKey)))) {
+		if (super.getParentScene().getInputController().isKeyDown(((leftKey)))) {
 			move(super.getTransform().getRotation().getLeft(), moveAmount);
 		}
-		if (CoreEngine.currentWindow.getInput().isKeyDown(((rightKey)))) {
+		if (super.getParentScene().getInputController().isKeyDown(((rightKey)))) {
 			move(super.getTransform().getRotation().getRight(), moveAmount);
 		}
-		if (CoreEngine.currentWindow.getInput().isKeyDown(((backKey)))) {
+		if (super.getParentScene().getInputController().isKeyDown(((backKey)))) {
 			move(super.getTransform().getRotation().getForward(), -moveAmount);
 		}
 

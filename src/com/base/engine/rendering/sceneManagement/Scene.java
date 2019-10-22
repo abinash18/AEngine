@@ -5,11 +5,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import com.base.engine.components.Light;
 import com.base.engine.components.Camera;
+import com.base.engine.components.Light;
 import com.base.engine.components.SceneComponent;
 import com.base.engine.core.Entity;
+import com.base.engine.core.GLFWInput;
 import com.base.engine.rendering.RenderingEngine;
+import com.base.engine.rendering.windowManagement.GLFWWindow;
 
 public abstract class Scene {
 
@@ -20,6 +22,7 @@ public abstract class Scene {
 	private UUID id = UUID.randomUUID();
 	private String name;
 	private boolean initialized = false;
+	private GLFWWindow parentWindow;
 
 	public Scene(String name) {
 		this.name = name;
@@ -27,6 +30,10 @@ public abstract class Scene {
 		this.cameras = new HashMap<String, Camera>();
 		this.setAsParentScene();
 		this.addToSceneManager();
+	}
+
+	public GLFWInput getInputController() {
+		return parentWindow.getInput();
 	}
 
 	public UUID getId() {
@@ -154,5 +161,17 @@ public abstract class Scene {
 
 	public void setMainCamera(String name) {
 		this.mainCamera = cameras.get(name);
+	}
+
+	public GLFWWindow getParentWindow() {
+		return parentWindow;
+	}
+
+	public void setParentWindow(GLFWWindow parentWindow) {
+		this.parentWindow = parentWindow;
+	}
+
+	public void setMainCamera(Camera mainCamera) {
+		this.mainCamera = mainCamera;
 	}
 }

@@ -2,6 +2,7 @@ package com.base.engine.components;
 
 import org.lwjgl.system.windows.
 
+import com.base.engine.core.GLFWInput;
 import com.base.engine.core.Input;
 import com.base.engine.math.Transform;
 import com.base.engine.math.Vector2f;
@@ -14,7 +15,7 @@ public class FreeLook extends SceneComponent {
 	private boolean mouseGrabbed;
 
 	public FreeLook(float sensitivity) {
-		this(sensitivity, Input.KEY_ESCAPE);
+		this(sensitivity, GLFWInput.GLFW_KEY_ESCAPE);
 		this.sensitivity = sensitivity;
 	}
 
@@ -26,21 +27,21 @@ public class FreeLook extends SceneComponent {
 	@Override
 	public void input(float delta) {
 
-		if (Input.getKey(unlockMouseKey)) {
-			Input.setMousePosition(Window.getCenter());
+		if (super.getParentScene().getInputController().isKeyDown(unlockMouseKey)) {
+			super.getParentScene().getInputController().setMousePosition(Window.getCenter());
 			// Input.setCursor(true);
-			Input.setMouseGrabbed(false);
+			super.getParentScene().getInputController().setCursorMode(GLFWInput.GLFW_CURSOR_NORMAL);
 		}
 
-		if (Mouse.isButtonDown(0)) {
-			Input.setMousePosition(Window.getCenter());
+		if (super.getParentScene().getInputController().isMouseButtonDown(GLFWInput.GLFW_MOUSE_BUTTON_LEFT)) {
+			super.getParentScene().getInputController().setMousePosition(Window.getCenter());
 			// Input.setCursor(false);
-			Input.setMouseGrabbed(true);
+			super.getParentScene().getInputController().setCursorMode(GLFWInput.GLFW_CURSOR_DISABLED);
 		}
 
-		if (Input.isMouseGrabbed()) {
+		if (super.getParentScene().getInputController().isMouseHiddenAndGrabbed()) {
 
-			Vector2f deltaPos = Input.getMousePosition().sub(Window.getCenter());
+			Vector2f deltaPos = super.getParentScene().getInputController().getMousePosition().sub(Window.getCenter());
 
 			boolean rotY = deltaPos.getX() != 0, rotX = deltaPos.getY() != 0;
 
@@ -58,7 +59,7 @@ public class FreeLook extends SceneComponent {
 			}
 
 			if (rotY || rotX) {
-				Input.setMousePosition(Window.getCenter());
+				super.getParentScene().getInputController().setMousePosition(Window.getCenter());
 			}
 		}
 	}
