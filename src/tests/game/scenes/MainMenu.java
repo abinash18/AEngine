@@ -8,7 +8,7 @@ import com.base.engine.components.MeshRenderer;
 import com.base.engine.components.PointLight;
 import com.base.engine.components.SpotLight;
 import com.base.engine.core.Entity;
-import com.base.engine.core.GLFWInput;
+import com.base.engine.core.input.GLFWInput;
 import com.base.engine.math.Vector2f;
 import com.base.engine.math.Vector3f;
 import com.base.engine.rendering.meshLoading.Mesh;
@@ -16,8 +16,6 @@ import com.base.engine.rendering.meshLoading.Vertex;
 import com.base.engine.rendering.resourceManagement.Material;
 import com.base.engine.rendering.resourceManagement.Texture;
 import com.base.engine.rendering.sceneManagement.Scene;
-import com.base.engine.rendering.sceneManagement.SceneManager;
-import com.base.engine.rendering.windowManagement.Window;
 import com.base.engine.util.Attenuation;
 
 public class MainMenu extends Scene {
@@ -83,7 +81,7 @@ public class MainMenu extends Scene {
 		Entity spotLightObject = new Entity();
 
 		cameraObject = new Entity();
-		cam = new Camera((float) Math.toRadians(70.0f), (float) Window.getWidth() / (float) Window.getHeight(), 0.01f,
+		cam = new Camera((float) Math.toRadians(70.0f), (float) super.getParentWindow().getWidth() / (float) super.getParentWindow().getHeight(), 0.01f,
 				1000.0f, "playerView");
 		cameraObject.addComponent(cam);
 		cameraObject.addComponent(spotLight).addComponent(new FreeLook(0.35f)).addComponent(new FreeMove(10f));
@@ -144,7 +142,7 @@ public class MainMenu extends Scene {
 
 		}
 		if (super.getInputController().isKeyDown(GLFWInput.GLFW_KEY_ESCAPE)) {
-			SceneManager.setCurrentScene("TestGame");
+			super.getParentWindow().getSceneManager().setCurrentScene("TestGame");
 		}
 //		if (Input.getKeyDown(Input.KEY_B)) {
 //			super.setMainCamera("playerView");

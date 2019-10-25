@@ -10,14 +10,12 @@ import com.base.engine.components.MeshRenderer;
 import com.base.engine.components.PointLight;
 import com.base.engine.components.SpotLight;
 import com.base.engine.core.Entity;
-import com.base.engine.core.GLFWInput;
+import com.base.engine.core.input.GLFWInput;
 import com.base.engine.math.Vector3f;
 import com.base.engine.rendering.meshLoading.Mesh;
 import com.base.engine.rendering.resourceManagement.Material;
 import com.base.engine.rendering.resourceManagement.Texture;
 import com.base.engine.rendering.sceneManagement.Scene;
-import com.base.engine.rendering.sceneManagement.SceneManager;
-import com.base.engine.rendering.windowManagement.Window;
 import com.base.engine.util.Attenuation;
 
 public class TestGame extends Scene {
@@ -64,7 +62,8 @@ public class TestGame extends Scene {
 		Entity spotLightObject = new Entity();
 
 		cameraObject = new Entity();
-		cam = new Camera((float) Math.toRadians(60.0f), (float) Window.getWidth() / (float) Window.getHeight(), 0.01f,
+		cam = new Camera((float) Math.toRadians(60.0f),
+				(float) super.getParentWindow().getWidth() / (float) super.getParentWindow().getHeight(), 0.01f,
 				1000.0f, "playerView");
 
 		cameraObject.addComponent(cam);
@@ -124,7 +123,7 @@ public class TestGame extends Scene {
 
 		}
 		if (super.getInputController().isKeyDown(GLFWInput.GLFW_KEY_C)) {
-			SceneManager.setCurrentScene("MainMenu");
+			super.getParentWindow().getSceneManager().setCurrentScene("MainMenu");
 		}
 	}
 }

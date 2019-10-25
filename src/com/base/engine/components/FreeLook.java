@@ -1,18 +1,14 @@
 package com.base.engine.components;
 
-import org.lwjgl.system.windows.
-
-import com.base.engine.core.GLFWInput;
-import com.base.engine.core.Input;
+import com.base.engine.core.input.GLFWInput;
 import com.base.engine.math.Transform;
 import com.base.engine.math.Vector2f;
-import com.base.engine.rendering.windowManagement.Window;
 
 public class FreeLook extends SceneComponent {
 
 	private float sensitivity;
 	private int unlockMouseKey;
-	private boolean mouseGrabbed;
+	// private boolean mouseGrabbed;
 
 	public FreeLook(float sensitivity) {
 		this(sensitivity, GLFWInput.GLFW_KEY_ESCAPE);
@@ -28,20 +24,23 @@ public class FreeLook extends SceneComponent {
 	public void input(float delta) {
 
 		if (super.getParentScene().getInputController().isKeyDown(unlockMouseKey)) {
-			super.getParentScene().getInputController().setMousePosition(Window.getCenter());
+			super.getParentScene().getInputController()
+					.setCursorPos(super.getParentScene().getParentWindow().getCenter());
 			// Input.setCursor(true);
 			super.getParentScene().getInputController().setCursorMode(GLFWInput.GLFW_CURSOR_NORMAL);
 		}
 
 		if (super.getParentScene().getInputController().isMouseButtonDown(GLFWInput.GLFW_MOUSE_BUTTON_LEFT)) {
-			super.getParentScene().getInputController().setMousePosition(Window.getCenter());
+			super.getParentScene().getInputController()
+					.setCursorPos(super.getParentScene().getParentWindow().getCenter());
 			// Input.setCursor(false);
 			super.getParentScene().getInputController().setCursorMode(GLFWInput.GLFW_CURSOR_DISABLED);
 		}
 
 		if (super.getParentScene().getInputController().isMouseHiddenAndGrabbed()) {
 
-			Vector2f deltaPos = super.getParentScene().getInputController().getMousePosition().sub(Window.getCenter());
+			Vector2f deltaPos = super.getParentScene().getInputController().getCursorPos()
+					.sub(super.getParentScene().getParentWindow().getCenter());
 
 			boolean rotY = deltaPos.getX() != 0, rotX = deltaPos.getY() != 0;
 
@@ -59,7 +58,8 @@ public class FreeLook extends SceneComponent {
 			}
 
 			if (rotY || rotX) {
-				super.getParentScene().getInputController().setMousePosition(Window.getCenter());
+				super.getParentScene().getInputController()
+						.setCursorPos(super.getParentScene().getParentWindow().getCenter());
 			}
 		}
 	}

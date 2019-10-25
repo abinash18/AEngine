@@ -10,12 +10,13 @@ import org.apache.commons.cli.ParseException;
 import com.base.engine.handlers.logging.LogLevel;
 import com.base.engine.handlers.logging.LogManager;
 import com.base.engine.handlers.logging.Logger;
+import com.base.engine.rendering.windowManagement.models.EngineLoader;
 
 public abstract class Main {
 
 	private static Logger logger = LogManager.getLogger(Main.class.getName());
 
-	protected abstract void addScenes();
+	protected abstract void addWindows();
 
 	public void run(String[] args) {
 		int width = 800, height = 600, frameRate = 1000;
@@ -80,15 +81,12 @@ public abstract class Main {
 		// logger.debug("ad", new IOException());
 
 		CoreEngine engine = new CoreEngine(frameRate);
-		engine.createWindow(width, height, windowTitle, fullScreen, vSync);
-		// SceneManager.setCurrentScene("MainMenu");
-		addScenes();
+		addWindows();
+		engine.createWindow();
+		// new EngineLoader(width, height, "EngineLoader", windowTitle, fullScreen,
+		// vSync);
+
 		engine.start();
 	};
-
-//	public static void main(String[] args) {
-//		Main m = new Main();
-//		m.run(args);
-//	}
 
 }

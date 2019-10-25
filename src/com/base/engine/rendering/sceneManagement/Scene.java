@@ -9,7 +9,7 @@ import com.base.engine.components.Camera;
 import com.base.engine.components.Light;
 import com.base.engine.components.SceneComponent;
 import com.base.engine.core.Entity;
-import com.base.engine.core.GLFWInput;
+import com.base.engine.core.input.GLFWInput;
 import com.base.engine.rendering.RenderingEngine;
 import com.base.engine.rendering.windowManagement.GLFWWindow;
 
@@ -41,7 +41,7 @@ public abstract class Scene {
 	}
 
 	public void addToSceneManager() {
-		SceneManager.addScene(this);
+		parentWindow.getSceneManager().addScene(this);
 	}
 
 	public void setId(UUID id) {

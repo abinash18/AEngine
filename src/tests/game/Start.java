@@ -1,9 +1,7 @@
 package tests.game;
 
 import com.base.engine.core.Main;
-
-import tests.game.scenes.MainMenu;
-import tests.game.scenes.TestGame;
+import com.base.engine.rendering.windowManagement.models.EngineLoader;
 
 public class Start extends Main {
 
@@ -13,16 +11,15 @@ public class Start extends Main {
 		s = new Start();
 		s.run(args);
 	}
-	
+
 	@Override
 	public void run(String[] args) {
 		super.run(args);
 	}
 
 	@Override
-	protected void addScenes() {
-		new TestGame();
-		new MainMenu();
+	protected void addWindows() {
+		new EngineLoader(800, 600, "test", "s", false, false);
 	}
 
 }

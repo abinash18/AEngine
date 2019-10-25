@@ -1,4 +1,4 @@
-package com.base.engine.core;
+package com.base.engine.core.input;
 
 import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 import static org.lwjgl.glfw.GLFW.glfwSetCursorPos;
@@ -9,6 +9,7 @@ import static org.lwjgl.glfw.GLFW.glfwSetMouseButtonCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetScrollCallback;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
@@ -148,10 +149,10 @@ public class GLFWInput {
 	private GLFWCursorPosCallback mousePosCalbk;
 	private GLFWScrollCallback scrlClbk;
 
-	private ArrayList<Integer> keysDown = new ArrayList<Integer>();
-	private ArrayList<Integer> keysUp = new ArrayList<Integer>();
-	private ArrayList<Integer> mouseBtnsDown = new ArrayList<Integer>();
-	private ArrayList<Integer> mouseBtnsUp = new ArrayList<Integer>();
+	private List<Integer> keysDown = new ArrayList<Integer>();
+	private List<Integer> keysUp = new ArrayList<Integer>();
+	private List<Integer> mouseBtnsDown = new ArrayList<Integer>();
+	private List<Integer> mouseBtnsUp = new ArrayList<Integer>();
 
 	private Vector2f mousePos;
 	private float scrlOffset;
@@ -171,7 +172,7 @@ public class GLFWInput {
 				if (action == GLFW_PRESS) {
 					if (!keysDown.contains(Integer.valueOf(key))) {
 						keysDown.add(key);
-						keysUp.remove(Integer.valueOf(key));
+						keysUp.remove(Integer.valueOf(key)); // Check This After For Null Pointer Exception.
 						return;
 					}
 				}
@@ -179,7 +180,7 @@ public class GLFWInput {
 				if (action == GLFW_RELEASE) {
 					if (!keysUp.contains(Integer.valueOf(key))) {
 						keysUp.add(key);
-						keysDown.remove(Integer.valueOf(key));
+						keysDown.remove(Integer.valueOf(key)); // Check This After For Null Pointer Exception.
 						return;
 					}
 				}
@@ -193,14 +194,14 @@ public class GLFWInput {
 				if (action == GLFW_PRESS) {
 					if (!mouseBtnsDown.contains(Integer.valueOf(button))) {
 						mouseBtnsDown.add(button);
-						mouseBtnsUp.remove(Integer.valueOf(button));
+						mouseBtnsUp.remove(Integer.valueOf(button)); // Check This After For Null Pointer Exception.
 					}
 				}
 
 				if (action == GLFW_RELEASE) {
 					if (!mouseBtnsUp.contains(Integer.valueOf(button))) {
 						mouseBtnsUp.add(button);
-						mouseBtnsDown.remove(Integer.valueOf(button));
+						mouseBtnsDown.remove(Integer.valueOf(button)); // Check This After For Null Pointer Exception.
 					}
 				}
 			}
@@ -270,18 +271,18 @@ public class GLFWInput {
 		scrlOffset = offset;
 	}
 
-	public void setMousePosition(Vector2f newPos) {
+	public void setCursorPos(Vector2f newPos) {
 		mousePos = newPos;
 		glfwSetCursorPos(glfw_Handle, newPos.getX(), newPos.getY());
 	}
 
-	public void setMousePosition(float x, float y) {
+	public void setCursorPos(float x, float y) {
 		mousePos.setX(x);
 		mousePos.setY(y);
 		glfwSetCursorPos(glfw_Handle, x, y);
 	}
 
-	public Vector2f getMousePosition() {
+	public Vector2f getCursorPos() {
 		return mousePos;
 	}
 

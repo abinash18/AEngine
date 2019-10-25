@@ -1,11 +1,11 @@
 package com.base.engine.components;
 
-import static com.base.engine.core.GLFWInput.GLFW_KEY_A;
-import static com.base.engine.core.GLFWInput.GLFW_KEY_D;
-import static com.base.engine.core.GLFWInput.GLFW_KEY_S;
-import static com.base.engine.core.GLFWInput.GLFW_KEY_W;
+import static com.base.engine.core.input.GLFWInput.GLFW_KEY_A;
+import static com.base.engine.core.input.GLFWInput.GLFW_KEY_D;
+import static com.base.engine.core.input.GLFWInput.GLFW_KEY_S;
+import static com.base.engine.core.input.GLFWInput.GLFW_KEY_W;
 
-import com.base.engine.core.GLFWInput;
+import com.base.engine.core.input.GLFWInput;
 import com.base.engine.math.Vector3f;
 
 public class FreeMove extends SceneComponent {

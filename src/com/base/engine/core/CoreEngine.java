@@ -5,7 +5,6 @@ import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
 import static org.lwjgl.glfw.GLFW.glfwTerminate;
 
 import org.lwjgl.glfw.GLFWErrorCallback;
-import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL31;
 import org.lwjgl.opengl.GL40;
@@ -15,8 +14,6 @@ import com.base.engine.handlers.logging.LogLevel;
 import com.base.engine.handlers.logging.LogManager;
 import com.base.engine.handlers.logging.Logger;
 import com.base.engine.rendering.RenderingEngine;
-import com.base.engine.rendering.sceneManagement.SceneManager;
-import com.base.engine.rendering.windowManagement.GLFWWindow;
 import com.base.engine.rendering.windowManagement.GLFWWindowManager;
 
 public class CoreEngine {
@@ -27,7 +24,9 @@ public class CoreEngine {
 	private RenderingEngine renderEngine;
 	// Have A Better Way Of Doing This Rather Than Just Make It Static.
 	// I.e. Maybe Pass It As A Parameter Through Each Scene.
-	public static GLFWWindow currentWindow;
+	// private GLFWWindow currentWindow;
+
+	private GLFWErrorCallback errClbk;
 
 	public CoreEngine(double framerate) {
 		this.isRunning = false;
@@ -36,25 +35,22 @@ public class CoreEngine {
 		initGLFW();
 	}
 
-	public void createWindow(int width, int height, String windowTitle, boolean fullscreen, boolean vSync,
-			RenderingEngine rndrEng) {
-		// Window.createWindow(width, height, windowTitle, fullscreen, vSync);
-		// In The Future We Can Make Multiple Windows Such As Ones Showing Loading Icons
-		// And Bars Or Some Other Info And Even Have Multiple Running At The Same Time.
-		currentWindow = GLFWWindowManager.getGLFWWindowHandle(width, height, "mainEngineWindow", windowTitle,
-				fullscreen, vSync);
-		currentWindow.create();
-		this.renderEngine = rndrEng;
+	public void createWindow() {
+		GLFWWindowManager.getCurrentWindow().create();
+		this.renderEngine = new RenderingEngine();
 		logger.info(RenderingEngine.getOpenGLVersion());
 		this.printDeviceProperties();
 	}
 
-	public void createWindow(int width, int height, String windowTitle, boolean fullscreen, boolean vSync) {
+	public void createWindow(RenderingEngine rndrEng) {
 		// Window.createWindow(width, height, windowTitle, fullscreen, vSync);
-		currentWindow = GLFWWindowManager.getGLFWWindowHandle(width, height, "mainEngineWindow", windowTitle,
-				fullscreen, vSync);
-		currentWindow.create();
-		this.renderEngine = new RenderingEngine();
+		// In The Future We Can Make Multiple Windows Such As Ones Showing Loading Icons
+		// And Bars Or Some Other Info And Even Have Multiple Running At The Same Time.
+		// currentWindow = GLFWWindowManager.getGLFWWindowHandle(width, height,
+		// "mainEngineWindow", windowTitle,
+		// fullscreen, vSync);
+		GLFWWindowManager.getCurrentWindow().create();
+		this.renderEngine = rndrEng;
 		logger.info(RenderingEngine.getOpenGLVersion());
 		this.printDeviceProperties();
 	}
@@ -62,7 +58,7 @@ public class CoreEngine {
 	public void initGLFW() {
 		// Setup an error callback. The default implementation
 		// will print the error message in System.err.
-		GLFWErrorCallback.createPrint(System.err).set();
+		glfwSetErrorCallback(errClbk = GLFWErrorCallback.createPrint(System.err));
 
 		// Initialize GLFW. Most GLFW functions will not work before doing this.
 		if (!glfwInit()) {
@@ -90,14 +86,7 @@ public class CoreEngine {
 	private void run() {
 		logger.info("Starting Engine.");
 
-		// This line is critical for LWJGL's inter-operation with GLFW's
-		// OpenGL context, or any context that is managed externally.
-		// LWJGL detects the context that is current in the current thread,
-		// creates the GLCapabilities instance and makes the OpenGL
-		// bindings available for use.
-		GL.createCapabilities();
-
-		SceneManager.init(this);
+		GLFWWindowManager.init(this);
 		isRunning = true;
 
 		int frames = 0;
@@ -125,15 +114,14 @@ public class CoreEngine {
 
 				unprocessedTime -= frameTime;
 
-				if (currentWindow.isCloseRequested()) {
+				if (GLFWWindowManager.isCloseRequested()) {
 					stop();
 				}
 
 				// Time.setDelta(frameTime);
 
-				SceneManager.input((float) frameTime);
-				currentWindow.update();
-				SceneManager.update((float) frameTime);
+				GLFWWindowManager.input((float) frameTime);
+				GLFWWindowManager.update((float) frameTime);
 
 				if (frameCounter >= 1.0) {
 					//////////////////////////////////////////////
@@ -151,8 +139,7 @@ public class CoreEngine {
 
 			}
 			if (render) {
-				SceneManager.render();
-				currentWindow.swapBuffers();
+				GLFWWindowManager.render();
 				// Window.render(frameRate);
 				frames++;
 			} else {
@@ -167,14 +154,14 @@ public class CoreEngine {
 		cleanUp();
 	}
 
-	private static void cleanUp() {
+	private void cleanUp() {
 		GLFWWindowManager.destroyAll();
+		errClbk.free();
 		// Window.dispose();
 		glfwTerminate();
-		glfwSetErrorCallback(null).free();
 	}
 
-	public static void exit(int exitCode) {
+	public void exit(int exitCode) {
 		cleanUp();
 		System.runFinalization();
 		System.exit(exitCode);
@@ -187,11 +174,27 @@ public class CoreEngine {
 		logger.info("Max Uniform Buffer Bindings: " + GL31.GL_MAX_UNIFORM_BUFFER_BINDINGS + " bytes");
 		logger.info("Max Uniform Block Size: " + GL31.GL_MAX_UNIFORM_BLOCK_SIZE + " bytes");
 		logger.info("Max SSBO Block Size: " + GL43.GL_MAX_SHADER_STORAGE_BLOCK_SIZE + " bytes");
-
 	}
 
 	public RenderingEngine getRenderEngine() {
 		return renderEngine;
+	}
+
+	public double getFrameRate() {
+		return frameRate;
+	}
+
+	public void setFrameRate(double frameRate) {
+		this.frameRate = frameRate;
+		this.frameTime = 1.0 / frameRate;
+	}
+
+	public double getFrameTime() {
+		return frameTime;
+	}
+
+	public boolean isRunning() {
+		return isRunning;
 	}
 
 }

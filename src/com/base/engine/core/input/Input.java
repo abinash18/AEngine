@@ -1,4 +1,4 @@
-package com.base.engine.core;
+package com.base.engine.core.input;
 
 @Deprecated
 public class Input {

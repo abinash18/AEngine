@@ -1,19 +1,19 @@
 package com.base.engine.rendering.windowManagement;
 
-import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
+import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
-import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
-import java.nio.IntBuffer;
-
 import org.lwjgl.glfw.*;
-import org.lwjgl.system.MemoryStack;
+import org.lwjgl.opengl.GL;
 
-import com.base.engine.core.GLFWInput;
+import com.base.engine.core.CoreEngine;
+import com.base.engine.core.input.GLFWInput;
 import com.base.engine.handlers.logging.LogManager;
 import com.base.engine.handlers.logging.Logger;
+import com.base.engine.math.Vector2f;
+import com.base.engine.rendering.sceneManagement.Scene;
+import com.base.engine.rendering.sceneManagement.SceneManager;
 
 /**
  * Window Model For The GLFW Context Handle.
@@ -21,8 +21,11 @@ import com.base.engine.handlers.logging.Logger;
  * @author abinash
  *
  */
-public class GLFWWindow {
-
+public abstract class GLFWWindow {
+	public static final int GLFW_FOCUSED = 0x20001, GLFW_ICONIFIED = 0x20002, GLFW_RESIZABLE = 0x20003,
+			GLFW_VISIBLE = 0x20004, GLFW_DECORATED = 0x20005, GLFW_AUTO_ICONIFY = 0x20006, GLFW_FLOATING = 0x20007,
+			GLFW_MAXIMIZED = 0x20008, GLFW_CENTER_CURSOR = 0x20009, GLFW_TRANSPARENT_FRAMEBUFFER = 0x2000A,
+			GLFW_HOVERED = 0x2000B, GLFW_FOCUS_ON_SHOW = 0x2000C;
 	private static Logger logger = LogManager.getLogger(GLFWWindow.class.getName());
 
 	private long glfw_Handle;
@@ -30,7 +33,21 @@ public class GLFWWindow {
 	private String name, title;
 	private boolean fullscreen, vSync;
 	private GLFWInput input;
+
+	private SceneManager sceneManager;
+	private CoreEngine coreEngine;
 	// private GLFWVidMode vidMode;
+	private GLFWFramebufferSizeCallback frmBffrClbk;
+	private GLFWWindowCloseCallback wndCloseClbk;
+	private GLFWWindowContentScaleCallback wndCntSclClbk;
+	private GLFWWindowFocusCallback wndFcsClbk;
+	private GLFWWindowIconifyCallback wndIconifyClbk;
+	private GLFWWindowMaximizeCallback wndMxmzClbk;
+	private GLFWWindowPosCallback wndPosClbk;
+	private GLFWWindowSizeCallback wndSizeClbk;
+	private GLFWWindowRefreshCallback wndRfrshClbk;
+
+	protected abstract void addScenes();
 
 	public GLFWWindow(int width, int height, String name, String title, boolean fullscreen, boolean vSync) {
 		this.width = width;
@@ -39,7 +56,80 @@ public class GLFWWindow {
 		this.title = title;
 		this.fullscreen = fullscreen;
 		this.vSync = vSync;
+		this.sceneManager = new SceneManager(this);
 		this.input = new GLFWInput();
+		this.addToWindowManager();
+	}
+
+	private void initCallBacks() {
+
+		glfwSetFramebufferSizeCallback(glfw_Handle, frmBffrClbk = new GLFWFramebufferSizeCallback() {
+			@Override
+			public void invoke(long window, int width, int height) {
+
+			}
+		});
+
+		glfwSetWindowCloseCallback(glfw_Handle, wndCloseClbk = new GLFWWindowCloseCallback() {
+			@Override
+			public void invoke(long window) {
+				glfwSetWindowShouldClose(window, true);
+			}
+		});
+
+		glfwSetWindowContentScaleCallback(glfw_Handle, wndCntSclClbk = new GLFWWindowContentScaleCallback() {
+			@Override
+			public void invoke(long window, float xscale, float yscale) {
+
+			}
+		});
+
+		glfwSetWindowFocusCallback(glfw_Handle, wndFcsClbk = new GLFWWindowFocusCallback() {
+			@Override
+			public void invoke(long window, boolean focused) {
+
+			}
+		});
+
+		glfwSetWindowIconifyCallback(glfw_Handle, wndIconifyClbk = new GLFWWindowIconifyCallback() {
+			@Override
+			public void invoke(long window, boolean iconified) {
+
+			}
+		});
+
+		glfwSetWindowMaximizeCallback(glfw_Handle, wndMxmzClbk = new GLFWWindowMaximizeCallback() {
+			@Override
+			public void invoke(long window, boolean maximized) {
+
+			}
+		});
+
+		glfwSetWindowPosCallback(glfw_Handle, wndPosClbk = new GLFWWindowPosCallback() {
+			@Override
+			public void invoke(long window, int xpos, int ypos) {
+
+			}
+		});
+
+		glfwSetWindowRefreshCallback(glfw_Handle, wndRfrshClbk = new GLFWWindowRefreshCallback() {
+			@Override
+			public void invoke(long window) {
+
+			}
+		});
+
+		glfwSetWindowSizeCallback(glfw_Handle, wndSizeClbk = new GLFWWindowSizeCallback() {
+			@Override
+			public void invoke(long window, int width, int height) {
+
+			}
+		});
+
+	}
+
+	private void addToWindowManager() {
+		GLFWWindowManager.addWindow(this);
 	}
 
 	public void addHints(int hint, int value) {
@@ -54,28 +144,12 @@ public class GLFWWindow {
 		glfwSwapBuffers(glfw_Handle); // swap the color buffers
 	}
 
-	public long create() {
+	public GLFWWindow create() {
 		glfw_Handle = glfwCreateWindow(width, height, title, NULL, NULL);
 		if (glfw_Handle == NULL) {
 			logger.error("Failed to create the GLFW window: name: '" + name + "' title: '" + title + "'");
 			throw new RuntimeException("Failed to create the GLFW window");
 		}
-
-		// Get the thread stack and push a new frame
-		try (MemoryStack stack = stackPush()) {
-			IntBuffer pWidth = stack.mallocInt(1); // int*
-			IntBuffer pHeight = stack.mallocInt(1); // int*
-
-			// Get the window size passed to glfwCreateWindow
-			glfwGetWindowSize(glfw_Handle, pWidth, pHeight);
-
-			// Get the resolution of the primary monitor
-			GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-
-			// Center the window
-			glfwSetWindowPos(glfw_Handle, (vidmode.width() - pWidth.get(0)) / 2,
-					(vidmode.height() - pHeight.get(0)) / 2);
-		} // the stack frame is popped automatically
 
 		if (vSync) {
 			glfwSwapInterval(1); // Enables V Sync.
@@ -84,12 +158,28 @@ public class GLFWWindow {
 		// Make the OpenGL context current
 		glfwMakeContextCurrent(glfw_Handle);
 		showWindow();
+		// This line is critical for LWJGL's inter-operation with GLFW's
+		// OpenGL context, or any context that is managed externally.
+		// LWJGL detects the context that is current in the current thread,
+		// creates the GLCapabilities instance and makes the OpenGL
+		// bindings available for use.
+		GL.createCapabilities();
 
-		return glfw_Handle;
+		this.initCallBacks();
+		return this;
 	}
 
-	public void update() {
+	public void input(float delta) {
 		input.update();
+		sceneManager.input(delta);
+	}
+
+	public void update(float delta) {
+		sceneManager.update(delta);
+	}
+
+	public void render() {
+		sceneManager.render();
 	}
 
 	public void showWindow() {
@@ -112,8 +202,13 @@ public class GLFWWindow {
 
 	public void dispose() {
 		// Free the window callbacks and destroy the window
+		input.destroy();
 		glfwFreeCallbacks(glfw_Handle);
 		glfwDestroyWindow(glfw_Handle);
+	}
+
+	public void addScene(Scene scene) {
+		sceneManager.addScene(scene);
 	}
 
 	public boolean isCloseRequested() {
@@ -136,6 +231,10 @@ public class GLFWWindow {
 		this.height = hight;
 	}
 
+	public Vector2f getCenter() {
+		return (new Vector2f(getWidth() / 2, getHeight() / 2));
+	}
+
 	public String getTitle() {
 		return title;
 	}
@@ -154,6 +253,22 @@ public class GLFWWindow {
 
 	public boolean isvSync() {
 		return vSync;
+	}
+
+	public SceneManager getSceneManager() {
+		return sceneManager;
+	}
+
+	public void setSceneManager(SceneManager sceneManager) {
+		this.sceneManager = sceneManager;
+	}
+
+	public CoreEngine getCoreEngine() {
+		return coreEngine;
+	}
+
+	public void setCoreEngine(CoreEngine coreEngine) {
+		this.coreEngine = coreEngine;
 	}
 
 	public void setvSync(boolean vSync) {
