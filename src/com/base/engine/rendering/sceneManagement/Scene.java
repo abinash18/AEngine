@@ -24,10 +24,11 @@ public abstract class Scene {
 	private boolean initialized = false;
 	private GLFWWindow parentWindow;
 
-	public Scene(String name) {
+	public Scene(String name, GLFWWindow prnt) {
 		this.name = name;
 		this.lights = new ArrayList<Light>();
 		this.cameras = new HashMap<String, Camera>();
+		this.setParentWindow(prnt);
 		this.setAsParentScene();
 		this.addToSceneManager();
 	}

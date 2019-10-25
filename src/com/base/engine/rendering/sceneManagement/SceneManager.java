@@ -53,7 +53,7 @@ public class SceneManager {
 		scene.setParentWindow(this.parentWindow);
 		// scene.init();
 		scenes.put(scene.getName(), scene);
-		if (getCurrentScene() == null) {
+		if (currentScene == null) {
 			setCurrentScene(scene.getName());
 		}
 		logger.debug("Current Scene: " + currentScene);
@@ -93,7 +93,8 @@ public class SceneManager {
 		currentScene = scenes.get(sceneName);
 		logger.debug("Setting Scene: " + sceneName);
 		if (!currentScene.isInitialized()) {
-			currentScene.init();
+			currentScene.init(); // Maybe Change this to have the user initialize the scene instead of doing it
+									// Automatically.
 		}
 	}
 

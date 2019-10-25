@@ -59,6 +59,7 @@ public abstract class GLFWWindow {
 		this.sceneManager = new SceneManager(this);
 		this.input = new GLFWInput();
 		this.addToWindowManager();
+
 	}
 
 	private void initCallBacks() {
@@ -166,6 +167,7 @@ public abstract class GLFWWindow {
 		GL.createCapabilities();
 
 		this.initCallBacks();
+		this.addScenes();
 		return this;
 	}
 

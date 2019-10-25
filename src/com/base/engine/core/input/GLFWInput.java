@@ -144,6 +144,9 @@ public class GLFWInput {
 	public static final int GLFW_ARROW_CURSOR = 0x36001, GLFW_IBEAM_CURSOR = 0x36002, GLFW_CROSSHAIR_CURSOR = 0x36003,
 			GLFW_HAND_CURSOR = 0x36004, GLFW_HRESIZE_CURSOR = 0x36005, GLFW_VRESIZE_CURSOR = 0x36006;
 
+	/** Boolean values. */
+	public static final int GLFW_TRUE = 1, GLFW_FALSE = 0;
+
 	private GLFWKeyCallback keyClbk;
 	private GLFWMouseButtonCallback mouseCalbk;
 	private GLFWCursorPosCallback mousePosCalbk;

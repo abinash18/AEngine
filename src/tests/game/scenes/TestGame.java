@@ -16,12 +16,13 @@ import com.base.engine.rendering.meshLoading.Mesh;
 import com.base.engine.rendering.resourceManagement.Material;
 import com.base.engine.rendering.resourceManagement.Texture;
 import com.base.engine.rendering.sceneManagement.Scene;
+import com.base.engine.rendering.windowManagement.GLFWWindow;
 import com.base.engine.util.Attenuation;
 
 public class TestGame extends Scene {
 
-	public TestGame() {
-		super("TestGame");
+	public TestGame(GLFWWindow prnt) {
+		super("TestGame", prnt);
 	}
 
 	private Entity monkey, monkey2, cameraObject;

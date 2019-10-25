@@ -16,12 +16,13 @@ import com.base.engine.rendering.meshLoading.Vertex;
 import com.base.engine.rendering.resourceManagement.Material;
 import com.base.engine.rendering.resourceManagement.Texture;
 import com.base.engine.rendering.sceneManagement.Scene;
+import com.base.engine.rendering.windowManagement.GLFWWindow;
 import com.base.engine.util.Attenuation;
 
 public class MainMenu extends Scene {
 
-	public MainMenu() {
-		super("MainMenu");
+	public MainMenu(GLFWWindow prnt) {
+		super("MainMenu", prnt);
 	}
 
 	private Entity monkey, monkey2, cameraObject;
@@ -81,7 +82,8 @@ public class MainMenu extends Scene {
 		Entity spotLightObject = new Entity();
 
 		cameraObject = new Entity();
-		cam = new Camera((float) Math.toRadians(70.0f), (float) super.getParentWindow().getWidth() / (float) super.getParentWindow().getHeight(), 0.01f,
+		cam = new Camera((float) Math.toRadians(70.0f),
+				(float) super.getParentWindow().getWidth() / (float) super.getParentWindow().getHeight(), 0.01f,
 				1000.0f, "playerView");
 		cameraObject.addComponent(cam);
 		cameraObject.addComponent(spotLight).addComponent(new FreeLook(0.35f)).addComponent(new FreeMove(10f));
