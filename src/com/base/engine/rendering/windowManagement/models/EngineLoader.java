@@ -19,4 +19,14 @@ public class EngineLoader extends GLFWWindow {
 		new MainMenu(this);
 	}
 
+	@Override
+	protected void init() {
+		
+	}
+
+	@Override
+	protected void close() {
+		
+	}
+
 }

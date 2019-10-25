@@ -163,12 +163,12 @@ public class GLFWInput {
 	private boolean mouseGrabbedAndHidden = false, mouseHidden = false;
 
 	public GLFWInput() {
-		mousePos = new Vector2f(0, 0);
+		this.mousePos = new Vector2f(0, 0);
 	}
 
 	// TODO: Implement Scan Code Instead Of Key Code
-	public void initInput(long glfw_Handle) {
-		this.glfw_Handle = glfw_Handle;
+	public void initInput(long hndl) {
+		this.glfw_Handle = hndl;
 		glfwSetKeyCallback(glfw_Handle, keyClbk = new GLFWKeyCallback() {
 			@Override
 			public void invoke(long window, int key, int scancode, int action, int mods) {

@@ -38,20 +38,12 @@ public class CoreEngine {
 	public void createWindow() {
 		GLFWWindowManager.getCurrentWindow().create();
 		this.renderEngine = new RenderingEngine();
-		logger.info(RenderingEngine.getOpenGLVersion());
 		this.printDeviceProperties();
 	}
 
 	public void createWindow(RenderingEngine rndrEng) {
-		// Window.createWindow(width, height, windowTitle, fullscreen, vSync);
-		// In The Future We Can Make Multiple Windows Such As Ones Showing Loading Icons
-		// And Bars Or Some Other Info And Even Have Multiple Running At The Same Time.
-		// currentWindow = GLFWWindowManager.getGLFWWindowHandle(width, height,
-		// "mainEngineWindow", windowTitle,
-		// fullscreen, vSync);
 		GLFWWindowManager.getCurrentWindow().create();
 		this.renderEngine = rndrEng;
-		logger.info(RenderingEngine.getOpenGLVersion());
 		this.printDeviceProperties();
 	}
 
@@ -114,7 +106,7 @@ public class CoreEngine {
 
 				unprocessedTime -= frameTime;
 
-				if (GLFWWindowManager.isCloseRequested()) {
+				if (GLFWWindowManager.isStopRequested()) {
 					stop();
 				}
 
@@ -168,6 +160,7 @@ public class CoreEngine {
 	}
 
 	private void printDeviceProperties() {
+		logger.info(RenderingEngine.getOpenGLVersion());
 		logger.info("OpenGL version: " + GL11.glGetString(GL11.GL_VERSION) + " bytes");
 		logger.info("Max Geometry Uniform Blocks: " + GL31.GL_MAX_GEOMETRY_UNIFORM_BLOCKS + " bytes");
 		logger.info("Max Geometry Shader Invocations: " + GL40.GL_MAX_GEOMETRY_SHADER_INVOCATIONS + " bytes");

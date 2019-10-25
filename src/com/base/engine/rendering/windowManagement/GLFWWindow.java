@@ -31,7 +31,7 @@ public abstract class GLFWWindow {
 	private long glfw_Handle;
 	private int width, height;
 	private String name, title;
-	private boolean fullscreen, vSync;
+	private boolean fullscreen, vSync, closeRequested;
 	private GLFWInput input;
 
 	private SceneManager sceneManager;
@@ -49,6 +49,10 @@ public abstract class GLFWWindow {
 
 	protected abstract void addScenes();
 
+	protected abstract void init();
+
+	protected abstract void close();
+
 	public GLFWWindow(int width, int height, String name, String title, boolean fullscreen, boolean vSync) {
 		this.width = width;
 		this.height = height;
@@ -56,10 +60,10 @@ public abstract class GLFWWindow {
 		this.title = title;
 		this.fullscreen = fullscreen;
 		this.vSync = vSync;
+		this.closeRequested = false;
 		this.sceneManager = new SceneManager(this);
 		this.input = new GLFWInput();
 		this.addToWindowManager();
-
 	}
 
 	private void initCallBacks() {
@@ -74,7 +78,7 @@ public abstract class GLFWWindow {
 		glfwSetWindowCloseCallback(glfw_Handle, wndCloseClbk = new GLFWWindowCloseCallback() {
 			@Override
 			public void invoke(long window) {
-				glfwSetWindowShouldClose(window, true);
+				closeRequested = true;
 			}
 		});
 
@@ -167,6 +171,8 @@ public abstract class GLFWWindow {
 		GL.createCapabilities();
 
 		this.initCallBacks();
+		this.input.initInput(glfw_Handle);
+		this.init();
 		this.addScenes();
 		return this;
 	}
@@ -188,22 +194,9 @@ public abstract class GLFWWindow {
 		glfwShowWindow(glfw_Handle);
 	}
 
-//	public void setIcon(String path) {
-//
-//		ByteBuffer bufferedImage = ResourceLoader.loadImageToByteBuffer(path);
-//
-//		GLFWImage image = GLFWImage.malloc();
-//
-//		image.set(32, 32, bufferedImage);
-//
-//		GLFWImage.Buffer images = GLFWImage.malloc(1);
-//		images.put(0, image);
-//
-//		glfwSetWindowIcon(getId(), images);
-//	}
-
 	public void dispose() {
 		// Free the window callbacks and destroy the window
+		this.close();
 		input.destroy();
 		glfwFreeCallbacks(glfw_Handle);
 		glfwDestroyWindow(glfw_Handle);
@@ -214,7 +207,7 @@ public abstract class GLFWWindow {
 	}
 
 	public boolean isCloseRequested() {
-		return glfwWindowShouldClose(glfw_Handle);
+		return closeRequested;
 	};
 
 	public int getWidth() {

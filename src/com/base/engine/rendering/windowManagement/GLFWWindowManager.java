@@ -17,6 +17,8 @@ public class GLFWWindowManager {
 
 	private static CoreEngine coreEngine;
 
+	private static boolean engineStopFlag = false;
+
 //	@Deprecated
 //	public static GLFWWindow getGLFWWindowHandle(int width, int height, String name, String title, boolean fullscreen,
 //			boolean vSync) {
@@ -79,8 +81,11 @@ public class GLFWWindowManager {
 		models.put(model.getName(), model);
 	}
 
-	public static boolean isCloseRequested() {
-		return getCurrentWindow().isCloseRequested();
+	public static boolean isStopRequested() {
+		if (models.size() == 1) {
+			return currentWindow.isCloseRequested();
+		}
+		return engineStopFlag;
 	}
 
 	public static void input(float delta) {
