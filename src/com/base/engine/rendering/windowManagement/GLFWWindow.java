@@ -177,6 +177,31 @@ public abstract class GLFWWindow {
 		return this;
 	}
 
+	public void dispose() {
+		// Free the window callbacks and destroy the window
+		this.close();
+		input.destroy();
+		frmBffrClbk.free();
+		wndCloseClbk.free();
+		wndCntSclClbk.free();
+		wndFcsClbk.free();
+		wndIconifyClbk.free();
+		wndMxmzClbk.free();
+		wndPosClbk.free();
+		wndRfrshClbk.free();
+		wndSizeClbk.free();
+		//glfwFreeCallbacks(glfw_Handle);
+		glfwDestroyWindow(glfw_Handle);
+	}
+
+	public void addScene(Scene scene) {
+		sceneManager.addScene(scene);
+	}
+
+	public boolean isCloseRequested() {
+		return closeRequested;
+	};
+
 	public void input(float delta) {
 		input.update();
 		sceneManager.input(delta);
@@ -193,22 +218,6 @@ public abstract class GLFWWindow {
 	public void showWindow() {
 		glfwShowWindow(glfw_Handle);
 	}
-
-	public void dispose() {
-		// Free the window callbacks and destroy the window
-		this.close();
-		input.destroy();
-		glfwFreeCallbacks(glfw_Handle);
-		glfwDestroyWindow(glfw_Handle);
-	}
-
-	public void addScene(Scene scene) {
-		sceneManager.addScene(scene);
-	}
-
-	public boolean isCloseRequested() {
-		return closeRequested;
-	};
 
 	public int getWidth() {
 		return width;
