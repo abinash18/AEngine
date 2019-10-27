@@ -54,7 +54,7 @@ public class FreeLook extends SceneComponent {
 				 * when calling the conjugate in the getViewProjection() Method.
 				 */
 				super.getTransform().rotate(super.getTransform().getRotation().getRight(),
-						(float) Math.toRadians(-deltaPos.getY() * sensitivity));
+						(float) Math.toRadians(deltaPos.getY() * sensitivity));
 			}
 
 			if (rotY || rotX) {

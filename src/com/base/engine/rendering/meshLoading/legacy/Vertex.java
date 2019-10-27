@@ -1,4 +1,4 @@
-package com.base.engine.rendering.meshLoading;
+package com.base.engine.rendering.meshLoading.legacy;
 
 import com.base.engine.math.Vector2f;
 import com.base.engine.math.Vector3f;

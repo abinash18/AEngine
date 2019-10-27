@@ -1,32 +1,33 @@
 package com.base.engine.rendering.windowManagement.models;
 
-import com.base.engine.core.input.GLFWInput;
+import com.base.engine.rendering.sceneManagement.scenes.EngineSplashScreen;
 import com.base.engine.rendering.windowManagement.GLFWWindow;
-
-import tests.game.scenes.MainMenu;
-import tests.game.scenes.TestGame;
 
 public class EngineLoader extends GLFWWindow {
 
-	public EngineLoader(int width, int height, String name, String title, boolean fullscreen, boolean vSync) {
-		super(width, height, name, title, fullscreen, vSync);
-		super.addHints(GLFW_TRANSPARENT_FRAMEBUFFER, GLFWInput.GLFW_TRUE);
+	public EngineLoader() {
+		super(827, 196, "EngineSplash", "", false, false);
 	}
 
 	@Override
 	protected void addScenes() {
-		new TestGame(this);
-		new MainMenu(this);
+		new EngineSplashScreen(this);
 	}
 
 	@Override
 	protected void init() {
-		
+
+	}
+
+	@Override
+	public void update(float delta) {
+		super.update(delta);
+
 	}
 
 	@Override
 	protected void close() {
-		
+		// GLFWWindowManager.setCurrentWindow("EngineSplash");
 	}
 
 }

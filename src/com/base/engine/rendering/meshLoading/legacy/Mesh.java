@@ -1,4 +1,4 @@
-package com.base.engine.rendering.meshLoading;
+package com.base.engine.rendering.meshLoading.legacy;
 
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;

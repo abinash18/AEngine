@@ -40,16 +40,16 @@ public class FreeMove extends SceneComponent {
 			moveAmount = (float) (5 * delta);
 		}
 
-		if (super.getParentScene().getInputController().isKeyDown(((forwardKey)))) {
+		if (super.getParentScene().getInputController().isKeyHeldDown(((forwardKey)))) {
 			move(super.getTransform().getRotation().getForward(), moveAmount);
 		}
-		if (super.getParentScene().getInputController().isKeyDown(((leftKey)))) {
+		if (super.getParentScene().getInputController().isKeyHeldDown(((leftKey)))) {
 			move(super.getTransform().getRotation().getLeft(), moveAmount);
 		}
-		if (super.getParentScene().getInputController().isKeyDown(((rightKey)))) {
+		if (super.getParentScene().getInputController().isKeyHeldDown(((rightKey)))) {
 			move(super.getTransform().getRotation().getRight(), moveAmount);
 		}
-		if (super.getParentScene().getInputController().isKeyDown(((backKey)))) {
+		if (super.getParentScene().getInputController().isKeyHeldDown(((backKey)))) {
 			move(super.getTransform().getRotation().getForward(), -moveAmount);
 		}
 

@@ -3,6 +3,8 @@ package com.base.engine.rendering.windowManagement;
 import java.util.HashMap;
 
 import com.base.engine.core.CoreEngine;
+import com.base.engine.handlers.logging.LogManager;
+import com.base.engine.handlers.logging.Logger;
 
 /**
  * GLFW Implementation Of Window.
@@ -18,6 +20,8 @@ public class GLFWWindowManager {
 	private static CoreEngine coreEngine;
 
 	private static boolean engineStopFlag = false;
+
+	private static Logger logger = LogManager.getLogger(GLFWWindowManager.class.getName());
 
 //	@Deprecated
 //	public static GLFWWindow getGLFWWindowHandle(int width, int height, String name, String title, boolean fullscreen,
@@ -64,10 +68,12 @@ public class GLFWWindowManager {
 	 * @param name
 	 */
 	public static GLFWWindow setCurrentWindow(String name) {
-		if (currentWindow != null) {
-			currentWindow.dispose();
-		}
-		return (currentWindow = models.get(name)); // Check This After For null Errors.
+//		if (currentWindow != null) {
+//			// currentWindow.dispose();
+//		}
+		currentWindow = models.get(name);
+		// GL.setCapabilities(currentWindow.getCapabilities()); TODO
+		return currentWindow;
 	}
 
 	public static void destroyAll() {
@@ -75,10 +81,12 @@ public class GLFWWindowManager {
 	}
 
 	public static void addWindow(GLFWWindow model) {
+		models.put(model.getName(), model);
+		model.setCoreEngine(coreEngine);
 		if (currentWindow == null) {
 			currentWindow = model;
 		}
-		models.put(model.getName(), model);
+		logger.debug("New Window: " + model.getName());
 	}
 
 	public static boolean isStopRequested() {
@@ -86,6 +94,10 @@ public class GLFWWindowManager {
 			return currentWindow.isCloseRequested();
 		}
 		return engineStopFlag;
+	}
+
+	public static void setStopRequested() {
+		engineStopFlag = true;
 	}
 
 	public static void input(float delta) {
@@ -98,6 +110,14 @@ public class GLFWWindowManager {
 
 	private static void swapBuffers() {
 		getCurrentWindow().swapBuffers();
+	}
+
+	public static CoreEngine getCoreEngine() {
+		return coreEngine;
+	}
+
+	public static void setCoreEngine(CoreEngine coreEngine) {
+		GLFWWindowManager.coreEngine = coreEngine;
 	}
 
 }

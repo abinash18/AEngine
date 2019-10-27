@@ -1,7 +1,8 @@
 package tests.game;
 
 import com.base.engine.core.Main;
-import com.base.engine.rendering.windowManagement.models.EngineLoader;
+
+import tests.game.windows.MainGame;
 
 public class Start extends Main {
 
@@ -19,7 +20,7 @@ public class Start extends Main {
 
 	@Override
 	protected void addWindows() {
-		new EngineLoader(800, 600, "test", "s", false, false);
+		new MainGame();
 	}
 
 }

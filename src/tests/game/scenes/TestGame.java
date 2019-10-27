@@ -11,8 +11,10 @@ import com.base.engine.components.PointLight;
 import com.base.engine.components.SpotLight;
 import com.base.engine.core.Entity;
 import com.base.engine.core.input.GLFWInput;
+import com.base.engine.math.Quaternion;
+import com.base.engine.math.Transform;
 import com.base.engine.math.Vector3f;
-import com.base.engine.rendering.meshLoading.Mesh;
+import com.base.engine.rendering.meshLoading.legacy.Mesh;
 import com.base.engine.rendering.resourceManagement.Material;
 import com.base.engine.rendering.resourceManagement.Texture;
 import com.base.engine.rendering.sceneManagement.Scene;
@@ -33,7 +35,7 @@ public class TestGame extends Scene {
 
 		Mesh mesh = new Mesh("plane3.obj", true);
 		Material material = new Material();
-		material.addTexture("diffuse", new Texture("bricks.jpg"));
+		material.addTexture("diffuse", new Texture("Abi's Engine Splash Screen.png"));
 		material.addTexture("normal_map", new Texture("bricks_normal.jpg"));
 		material.addFloat("specularIntensity", 1);
 		material.addFloat("specularPower", 8);
@@ -48,6 +50,9 @@ public class TestGame extends Scene {
 		Entity planeObject = new Entity();
 		planeObject.addComponent(meshRenderer);
 		planeObject.getTransform().setTranslation(0, -5, 0);
+		planeObject.getTransform().getRotation()
+				.set(new Quaternion(Transform.X_AXIS, (float) Math.toRadians(90)));
+
 		// planeObject.getTransform().getPosition().set(0, -1, 5);
 
 		Entity directionalLightObject = new Entity();

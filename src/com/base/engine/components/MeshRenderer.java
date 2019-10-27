@@ -1,7 +1,7 @@
 package com.base.engine.components;
 
 import com.base.engine.rendering.RenderingEngine;
-import com.base.engine.rendering.meshLoading.Mesh;
+import com.base.engine.rendering.meshLoading.legacy.Mesh;
 import com.base.engine.rendering.resourceManagement.Material;
 import com.base.engine.rendering.shaders.Shader;
 

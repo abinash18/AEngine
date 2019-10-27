@@ -10,7 +10,6 @@ import org.apache.commons.cli.ParseException;
 import com.base.engine.handlers.logging.LogLevel;
 import com.base.engine.handlers.logging.LogManager;
 import com.base.engine.handlers.logging.Logger;
-import com.base.engine.rendering.windowManagement.models.EngineLoader;
 
 public abstract class Main {
 
@@ -82,7 +81,7 @@ public abstract class Main {
 
 		CoreEngine engine = new CoreEngine(frameRate);
 		addWindows();
-		engine.createWindow();
+		engine.initialize();
 		// new EngineLoader(width, height, "EngineLoader", windowTitle, fullScreen,
 		// vSync);
 

@@ -8,8 +8,8 @@ import static org.lwjgl.glfw.GLFW.glfwSetKeyCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetMouseButtonCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetScrollCallback;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
@@ -152,10 +152,16 @@ public class GLFWInput {
 	private GLFWCursorPosCallback mousePosCalbk;
 	private GLFWScrollCallback scrlClbk;
 
-	private List<Integer> keysDown = new ArrayList<Integer>();
-	private List<Integer> keysUp = new ArrayList<Integer>();
-	private List<Integer> mouseBtnsDown = new ArrayList<Integer>();
-	private List<Integer> mouseBtnsUp = new ArrayList<Integer>();
+	/**
+	 * We are using sets here because they cannot contain duplicates so it is more
+	 * efficient than using lists.
+	 */
+	private Set<Integer> keysDown = new HashSet<Integer>();
+	private Set<Integer> keysHeldDown = new HashSet<Integer>();
+	private Set<Integer> keysUp = new HashSet<Integer>();
+	private Set<Integer> mouseBtnsDown = new HashSet<Integer>();
+	private Set<Integer> mouseBtnsHeldDown = new HashSet<Integer>();
+	private Set<Integer> mouseBtnsUp = new HashSet<Integer>();
 
 	private Vector2f mousePos;
 	private float scrlOffset;
@@ -169,13 +175,14 @@ public class GLFWInput {
 	// TODO: Implement Scan Code Instead Of Key Code
 	public void initInput(long hndl) {
 		this.glfw_Handle = hndl;
-		glfwSetKeyCallback(glfw_Handle, keyClbk = new GLFWKeyCallback() {
+		glfwSetKeyCallback(glfw_Handle, (keyClbk = new GLFWKeyCallback() {
 			@Override
 			public void invoke(long window, int key, int scancode, int action, int mods) {
 				if (action == GLFW_PRESS) {
 					if (!keysDown.contains(Integer.valueOf(key))) {
 						keysDown.add(key);
-						keysUp.remove(Integer.valueOf(key)); // Check This After For Null Pointer Exception.
+						keysHeldDown.add(key);
+						// keysUp.remove(key);
 						return;
 					}
 				}
@@ -183,47 +190,55 @@ public class GLFWInput {
 				if (action == GLFW_RELEASE) {
 					if (!keysUp.contains(Integer.valueOf(key))) {
 						keysUp.add(key);
-						keysDown.remove(Integer.valueOf(key)); // Check This After For Null Pointer Exception.
+						keysHeldDown.remove(Integer.valueOf(key));
+						// keysDown.remove(Integer.valueOf(key));
 						return;
 					}
 				}
 			}
-		});
+		}));
 
-		glfwSetMouseButtonCallback(glfw_Handle, mouseCalbk = new GLFWMouseButtonCallback() {
+		glfwSetMouseButtonCallback(glfw_Handle, (mouseCalbk = new GLFWMouseButtonCallback() {
 			@Override
 			public void invoke(long window, int button, int action, int mods) {
 
 				if (action == GLFW_PRESS) {
 					if (!mouseBtnsDown.contains(Integer.valueOf(button))) {
 						mouseBtnsDown.add(button);
-						mouseBtnsUp.remove(Integer.valueOf(button)); // Check This After For Null Pointer Exception.
+						mouseBtnsHeldDown.add(button);
+						// mouseBtnsUp.remove(Integer.valueOf(button)); // Check This After For Null
+						// Pointer Exception.
+						return;
 					}
 				}
 
 				if (action == GLFW_RELEASE) {
 					if (!mouseBtnsUp.contains(Integer.valueOf(button))) {
 						mouseBtnsUp.add(button);
-						mouseBtnsDown.remove(Integer.valueOf(button)); // Check This After For Null Pointer Exception.
+						mouseBtnsHeldDown.remove(Integer.valueOf(button));
+						// mouseBtnsDown.remove(Integer.valueOf(button)); // Check This After For Null
+						// Pointer Exception.
+						return;
 					}
 				}
 			}
-		});
+		}));
 
-		glfwSetCursorPosCallback(glfw_Handle, mousePosCalbk = new GLFWCursorPosCallback() {
+		glfwSetCursorPosCallback(glfw_Handle, (mousePosCalbk = new GLFWCursorPosCallback() {
 			@Override
 			public void invoke(long window, double xpos, double ypos) {
 				mousePos.setX((float) xpos);
 				mousePos.setY((float) ypos);
+				mousePos.mul(-1f);
 			}
-		});
+		}));
 
-		glfwSetScrollCallback(glfw_Handle, scrlClbk = new GLFWScrollCallback() {
+		glfwSetScrollCallback(glfw_Handle, (scrlClbk = new GLFWScrollCallback() {
 			@Override
 			public void invoke(long window, double xoffset, double yoffset) {
 				setScrollOffset((float) yoffset);
 			}
-		});
+		}));
 	}
 
 	public void update() {
@@ -234,6 +249,13 @@ public class GLFWInput {
 		glfwPollEvents();
 	}
 
+	/**
+	 * Destroys The Call Backs Created.
+	 * 
+	 * Note: -Will Cause Crash If Called Right Before Calling glfwFreeCallbacks(Use
+	 * destroySafe();).
+	 */
+	@Deprecated
 	public void destroy() {
 		keyClbk.free();
 		mouseCalbk.free();
@@ -241,8 +263,23 @@ public class GLFWInput {
 		mousePosCalbk.free();
 	}
 
+	/**
+	 * Safely destroys the callbacks created. This function is safe to use before
+	 * calling glfwDestroyCallbacks.
+	 */
+	public void destroySafe() {
+		glfwSetKeyCallback(glfw_Handle, null).free();
+		glfwSetMouseButtonCallback(glfw_Handle, null).free();
+		glfwSetScrollCallback(glfw_Handle, null).free();
+		glfwSetCursorPosCallback(glfw_Handle, null).free();
+	}
+
 	public boolean isKeyDown(int key) {
 		return keysDown.contains(Integer.valueOf(key));
+	}
+
+	public boolean isKeyHeldDown(int key) {
+		return keysHeldDown.contains(Integer.valueOf(key));
 	}
 
 	public boolean isKeyUp(int key) {
@@ -251,6 +288,10 @@ public class GLFWInput {
 
 	public boolean isMouseButtonDown(int btn) {
 		return mouseBtnsDown.contains(btn);
+	}
+
+	public boolean isMouseButtonHeldDown(int btn) {
+		return mouseBtnsHeldDown.contains(btn);
 	}
 
 	public boolean isMouseButtonUp(int btn) {

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import org.lwjgl.BufferUtils;
 
 import com.base.engine.math.Matrix4f;
-import com.base.engine.rendering.meshLoading.Vertex;
+import com.base.engine.rendering.meshLoading.legacy.Vertex;
 public class Util {
 	public static FloatBuffer createFloatBuffer(int size) {
 		return BufferUtils.createFloatBuffer(size);

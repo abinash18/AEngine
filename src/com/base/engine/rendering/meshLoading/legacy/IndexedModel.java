@@ -1,4 +1,4 @@
-package com.base.engine.rendering.meshLoading;
+package com.base.engine.rendering.meshLoading.legacy;
 
 import java.util.ArrayList;
 

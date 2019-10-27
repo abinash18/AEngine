@@ -33,9 +33,10 @@ public class CoreEngine {
 		this.frameRate = framerate;
 		this.frameTime = 1.0 / framerate;
 		initGLFW();
+		GLFWWindowManager.setCoreEngine(this);
 	}
 
-	public void createWindow() {
+	public void initialize() {
 		GLFWWindowManager.getCurrentWindow().create();
 		this.renderEngine = new RenderingEngine();
 		this.printDeviceProperties();

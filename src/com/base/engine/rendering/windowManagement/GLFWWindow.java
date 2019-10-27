@@ -6,6 +6,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GLCapabilities;
 
 import com.base.engine.core.CoreEngine;
 import com.base.engine.core.input.GLFWInput;
@@ -26,6 +27,17 @@ public abstract class GLFWWindow {
 			GLFW_VISIBLE = 0x20004, GLFW_DECORATED = 0x20005, GLFW_AUTO_ICONIFY = 0x20006, GLFW_FLOATING = 0x20007,
 			GLFW_MAXIMIZED = 0x20008, GLFW_CENTER_CURSOR = 0x20009, GLFW_TRANSPARENT_FRAMEBUFFER = 0x2000A,
 			GLFW_HOVERED = 0x2000B, GLFW_FOCUS_ON_SHOW = 0x2000C;
+	public static final int GLFW_CLIENT_API = 0x22001, GLFW_CONTEXT_VERSION_MAJOR = 0x22002,
+			GLFW_CONTEXT_VERSION_MINOR = 0x22003, GLFW_CONTEXT_REVISION = 0x22004, GLFW_CONTEXT_ROBUSTNESS = 0x22005,
+			GLFW_OPENGL_FORWARD_COMPAT = 0x22006, GLFW_OPENGL_DEBUG_CONTEXT = 0x22007, GLFW_OPENGL_PROFILE = 0x22008,
+			GLFW_CONTEXT_RELEASE_BEHAVIOR = 0x22009, GLFW_CONTEXT_NO_ERROR = 0x2200A,
+			GLFW_CONTEXT_CREATION_API = 0x2200B, GLFW_SCALE_TO_MONITOR = 0x2200C;
+	/** PixelFormat hints. */
+	public static final int GLFW_RED_BITS = 0x21001, GLFW_GREEN_BITS = 0x21002, GLFW_BLUE_BITS = 0x21003,
+			GLFW_ALPHA_BITS = 0x21004, GLFW_DEPTH_BITS = 0x21005, GLFW_STENCIL_BITS = 0x21006,
+			GLFW_ACCUM_RED_BITS = 0x21007, GLFW_ACCUM_GREEN_BITS = 0x21008, GLFW_ACCUM_BLUE_BITS = 0x21009,
+			GLFW_ACCUM_ALPHA_BITS = 0x2100A, GLFW_AUX_BUFFERS = 0x2100B, GLFW_STEREO = 0x2100C, GLFW_SAMPLES = 0x2100D,
+			GLFW_SRGB_CAPABLE = 0x2100E, GLFW_REFRESH_RATE = 0x2100F, GLFW_DOUBLEBUFFER = 0x21010;
 	private static Logger logger = LogManager.getLogger(GLFWWindow.class.getName());
 
 	private long glfw_Handle;
@@ -36,6 +48,9 @@ public abstract class GLFWWindow {
 
 	private SceneManager sceneManager;
 	private CoreEngine coreEngine;
+
+	private GLCapabilities capabilities;
+
 	// private GLFWVidMode vidMode;
 	private GLFWFramebufferSizeCallback frmBffrClbk;
 	private GLFWWindowCloseCallback wndCloseClbk;
@@ -68,68 +83,68 @@ public abstract class GLFWWindow {
 
 	private void initCallBacks() {
 
-		glfwSetFramebufferSizeCallback(glfw_Handle, frmBffrClbk = new GLFWFramebufferSizeCallback() {
+		glfwSetFramebufferSizeCallback(glfw_Handle, (frmBffrClbk = new GLFWFramebufferSizeCallback() {
 			@Override
 			public void invoke(long window, int width, int height) {
 
 			}
-		});
+		}));
 
-		glfwSetWindowCloseCallback(glfw_Handle, wndCloseClbk = new GLFWWindowCloseCallback() {
+		glfwSetWindowCloseCallback(glfw_Handle, (wndCloseClbk = new GLFWWindowCloseCallback() {
 			@Override
 			public void invoke(long window) {
 				closeRequested = true;
 			}
-		});
+		}));
 
-		glfwSetWindowContentScaleCallback(glfw_Handle, wndCntSclClbk = new GLFWWindowContentScaleCallback() {
+		glfwSetWindowContentScaleCallback(glfw_Handle, (wndCntSclClbk = new GLFWWindowContentScaleCallback() {
 			@Override
 			public void invoke(long window, float xscale, float yscale) {
 
 			}
-		});
+		}));
 
-		glfwSetWindowFocusCallback(glfw_Handle, wndFcsClbk = new GLFWWindowFocusCallback() {
+		glfwSetWindowFocusCallback(glfw_Handle, (wndFcsClbk = new GLFWWindowFocusCallback() {
 			@Override
 			public void invoke(long window, boolean focused) {
 
 			}
-		});
+		}));
 
-		glfwSetWindowIconifyCallback(glfw_Handle, wndIconifyClbk = new GLFWWindowIconifyCallback() {
+		glfwSetWindowIconifyCallback(glfw_Handle, (wndIconifyClbk = new GLFWWindowIconifyCallback() {
 			@Override
 			public void invoke(long window, boolean iconified) {
 
 			}
-		});
+		}));
 
-		glfwSetWindowMaximizeCallback(glfw_Handle, wndMxmzClbk = new GLFWWindowMaximizeCallback() {
+		glfwSetWindowMaximizeCallback(glfw_Handle, (wndMxmzClbk = new GLFWWindowMaximizeCallback() {
 			@Override
 			public void invoke(long window, boolean maximized) {
 
 			}
-		});
+		}));
 
-		glfwSetWindowPosCallback(glfw_Handle, wndPosClbk = new GLFWWindowPosCallback() {
+		glfwSetWindowPosCallback(glfw_Handle, (wndPosClbk = new GLFWWindowPosCallback() {
 			@Override
 			public void invoke(long window, int xpos, int ypos) {
 
 			}
-		});
+		}));
 
-		glfwSetWindowRefreshCallback(glfw_Handle, wndRfrshClbk = new GLFWWindowRefreshCallback() {
+		glfwSetWindowRefreshCallback(glfw_Handle, (wndRfrshClbk = new GLFWWindowRefreshCallback() {
 			@Override
 			public void invoke(long window) {
 
 			}
-		});
+		}));
 
-		glfwSetWindowSizeCallback(glfw_Handle, wndSizeClbk = new GLFWWindowSizeCallback() {
+		glfwSetWindowSizeCallback(glfw_Handle, (wndSizeClbk = new GLFWWindowSizeCallback() {
 			@Override
 			public void invoke(long window, int width, int height) {
 
 			}
-		});
+		}));
 
 	}
 
@@ -162,36 +177,37 @@ public abstract class GLFWWindow {
 
 		// Make the OpenGL context current
 		glfwMakeContextCurrent(glfw_Handle);
-		showWindow();
+		glfwShowWindow(glfw_Handle);
 		// This line is critical for LWJGL's inter-operation with GLFW's
 		// OpenGL context, or any context that is managed externally.
 		// LWJGL detects the context that is current in the current thread,
 		// creates the GLCapabilities instance and makes the OpenGL
 		// bindings available for use.
-		GL.createCapabilities();
-
+		capabilities = GL.createCapabilities();
 		this.initCallBacks();
 		this.input.initInput(glfw_Handle);
-		this.init();
 		this.addScenes();
+		this.init();
 		return this;
 	}
 
+	/**
+	 * Frees callbacks and destroys the window. Also before termination calls the
+	 * abstract function close to let specified actions be performed before
+	 * terminating.
+	 */
 	public void dispose() {
+		// input.destroy(); // This Will Cause Crashes Because glfw Thinks there still
+		// is a call back there even if there isnt and will cause a an access violation.
 		// Free the window callbacks and destroy the window
 		this.close();
-		input.destroy();
-		frmBffrClbk.free();
-		wndCloseClbk.free();
-		wndCntSclClbk.free();
-		wndFcsClbk.free();
-		wndIconifyClbk.free();
-		wndMxmzClbk.free();
-		wndPosClbk.free();
-		wndRfrshClbk.free();
-		wndSizeClbk.free();
-		//glfwFreeCallbacks(glfw_Handle);
+		input.destroySafe();
+		glfwFreeCallbacks(glfw_Handle);
 		glfwDestroyWindow(glfw_Handle);
+	}
+
+	public void setAttribute(int attrib, int value) {
+		glfwSetWindowAttrib(glfw_Handle, attrib, value);
 	}
 
 	public void addScene(Scene scene) {
@@ -289,6 +305,10 @@ public abstract class GLFWWindow {
 
 	public GLFWInput getInput() {
 		return input;
+	}
+
+	public GLCapabilities getCapabilities() {
+		return capabilities;
 	}
 
 }
