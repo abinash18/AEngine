@@ -1,75 +1,58 @@
 
--------------------------------------October 27, 2019 5:19 PM-------------------------------------
+-------------------------------------November 2, 2019 7:11 PM-------------------------------------
 
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.windowManagement.GLFWWindowManager] DEBUG: New Window: MainGame
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.sceneManagement.SceneManager] DEBUG: Setting Scene: TestGame
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Successfully Attached Shader: 1 Log: 
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.core.CoreEngine] INFO: Starting Engine.
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.sceneManagement.SceneManager] DEBUG: Setting Scene: EngineSplash
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Successfully Attached Shader: 1 Log: 
 
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Successfully Attached Shader: 1 Log: 
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Successfully Attached Shader: 1 Log: 
 
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'T_model' At Location: 5
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'T_MVP' At Location: 4
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'diffuse' At Location: 8
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'normal_map' At Location: 9
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'C_eyePos' At Location: 0
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'specularIntensity' At Location: 6
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'specularPower' At Location: 7
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'R_directionalLight.base.color' At Location: 1
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'R_directionalLight.base.intensity' At Location: 2
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'R_directionalLight.direction' At Location: 3
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Successfully Attached Shader: 4 Log: 
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'T_model' At Location: 5
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'T_MVP' At Location: 4
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'diffuse' At Location: 8
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'normal_map' At Location: 9
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'C_eyePos' At Location: 0
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'specularIntensity' At Location: 6
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'specularPower' At Location: 7
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_directionalLight.base.color' At Location: 1
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_directionalLight.base.intensity' At Location: 2
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_directionalLight.direction' At Location: 3
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Successfully Attached Shader: 4 Log: 
 
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Successfully Attached Shader: 4 Log: 
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Successfully Attached Shader: 4 Log: 
 
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'T_model' At Location: 9
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'T_MVP' At Location: 8
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'diffuse' At Location: 12
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'normal_map' At Location: 13
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'C_eyePos' At Location: 0
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'specularIntensity' At Location: 10
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'specularPower' At Location: 11
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'R_pointLight.base.color' At Location: 1
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'R_pointLight.base.intensity' At Location: 2
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'R_pointLight.atten.constant' At Location: 3
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'R_pointLight.atten.linear' At Location: 4
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'R_pointLight.atten.exponent' At Location: 5
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'R_pointLight.position' At Location: 6
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'R_pointLight.range' At Location: 7
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Successfully Attached Shader: 7 Log: 
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'T_model' At Location: 9
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'T_MVP' At Location: 8
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'diffuse' At Location: 12
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'normal_map' At Location: 13
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'C_eyePos' At Location: 0
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'specularIntensity' At Location: 10
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'specularPower' At Location: 11
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_pointLight.base.color' At Location: 1
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_pointLight.base.intensity' At Location: 2
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_pointLight.atten.constant' At Location: 3
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_pointLight.atten.linear' At Location: 4
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_pointLight.atten.exponent' At Location: 5
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_pointLight.position' At Location: 6
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_pointLight.range' At Location: 7
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Successfully Attached Shader: 7 Log: 
 
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Successfully Attached Shader: 7 Log: 
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Successfully Attached Shader: 7 Log: 
 
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'T_model' At Location: 11
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'T_MVP' At Location: 10
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'diffuse' At Location: 14
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'normal_map' At Location: 15
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'C_eyePos' At Location: 0
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'specularIntensity' At Location: 12
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'specularPower' At Location: 13
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'R_spotLight.pointLight.base.color' At Location: 1
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'R_spotLight.pointLight.base.intensity' At Location: 2
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'R_spotLight.pointLight.atten.constant' At Location: 3
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'R_spotLight.pointLight.atten.linear' At Location: 4
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'R_spotLight.pointLight.atten.exponent' At Location: 5
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'R_spotLight.pointLight.position' At Location: 6
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'R_spotLight.pointLight.range' At Location: 7
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'R_spotLight.direction' At Location: 8
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'R_spotLight.cutoff' At Location: 9
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.sceneManagement.SceneManager] DEBUG: Current Scene: Scene [root=com.base.engine.core.Entity@5e3a8624, id=de6808d2-bd2e-4afd-bb43-8b81ea2804ec, name=TestGame]
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.sceneManagement.SceneManager] DEBUG: Current Scene: Scene [root=com.base.engine.core.Entity@5e3a8624, id=de6808d2-bd2e-4afd-bb43-8b81ea2804ec, name=TestGame]
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Successfully Attached Shader: 10 Log: 
-
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Successfully Attached Shader: 10 Log: 
-
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'T_MVP' At Location: 1
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'R_ambient' At Location: 0
-[October 27, 2019 5:19 PM] [com.base.engine.rendering.shaders.Shader] FINE: Uniform 'diffuse' At Location: 2
-[October 27, 2019 5:19 PM] [com.base.engine.core.CoreEngine] INFO: 4.5.13399 Compatibility Profile Context 15.200.1062.1004
-[October 27, 2019 5:19 PM] [com.base.engine.core.CoreEngine] INFO: OpenGL version: 4.5.13399 Compatibility Profile Context 15.200.1062.1004 bytes
-[October 27, 2019 5:19 PM] [com.base.engine.core.CoreEngine] INFO: Max Geometry Uniform Blocks: 35372 bytes
-[October 27, 2019 5:19 PM] [com.base.engine.core.CoreEngine] INFO: Max Geometry Shader Invocations: 36442 bytes
-[October 27, 2019 5:19 PM] [com.base.engine.core.CoreEngine] INFO: Max Uniform Buffer Bindings: 35375 bytes
-[October 27, 2019 5:19 PM] [com.base.engine.core.CoreEngine] INFO: Max Uniform Block Size: 35376 bytes
-[October 27, 2019 5:19 PM] [com.base.engine.core.CoreEngine] INFO: Max SSBO Block Size: 37086 bytes
-[October 27, 2019 5:19 PM] [com.base.engine.core.CoreEngine] INFO: Starting Engine.
-[October 27, 2019 5:20 PM] [com.base.engine.core.CoreEngine] INFO: Terminating Engine.
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'T_model' At Location: 11
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'T_MVP' At Location: 10
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'diffuse' At Location: 14
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'normal_map' At Location: 15
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'C_eyePos' At Location: 0
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'specularIntensity' At Location: 12
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'specularPower' At Location: 13
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_spotLight.pointLight.base.color' At Location: 1
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_spotLight.pointLight.base.intensity' At Location: 2
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_spotLight.pointLight.atten.constant' At Location: 3
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_spotLight.pointLight.atten.linear' At Location: 4
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_spotLight.pointLight.atten.exponent' At Location: 5
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_spotLight.pointLight.position' At Location: 6
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_spotLight.pointLight.range' At Location: 7
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_spotLight.direction' At Location: 8
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_spotLight.cutoff' At Location: 9
+[November 2, 2019 7:11 PM] [net.abi.abisEngine.rendering.sceneManagement.SceneManager] DEBUG: Current Scene: Scene [root=net.abi.abisEngine.core.Entity@7cd62f43, id=11b44b2c-a2ae-4b16-93d2-aecb33f094c5, name=EngineSplash]

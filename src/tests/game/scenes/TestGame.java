@@ -2,24 +2,25 @@ package tests.game.scenes;
 
 import org.lwjgl.glfw.GLFW;
 
-import com.base.engine.components.Camera;
-import com.base.engine.components.DirectionalLight;
-import com.base.engine.components.FreeLook;
-import com.base.engine.components.FreeMove;
-import com.base.engine.components.MeshRenderer;
-import com.base.engine.components.PointLight;
-import com.base.engine.components.SpotLight;
-import com.base.engine.core.Entity;
-import com.base.engine.core.input.GLFWInput;
-import com.base.engine.math.Quaternion;
-import com.base.engine.math.Transform;
-import com.base.engine.math.Vector3f;
-import com.base.engine.rendering.meshLoading.legacy.Mesh;
-import com.base.engine.rendering.resourceManagement.Material;
-import com.base.engine.rendering.resourceManagement.Texture;
-import com.base.engine.rendering.sceneManagement.Scene;
-import com.base.engine.rendering.windowManagement.GLFWWindow;
-import com.base.engine.util.Attenuation;
+import net.abi.abisEngine.components.Camera;
+import net.abi.abisEngine.components.DirectionalLight;
+import net.abi.abisEngine.components.FreeLook;
+import net.abi.abisEngine.components.FreeMove;
+import net.abi.abisEngine.components.MeshRenderer;
+import net.abi.abisEngine.components.PointLight;
+import net.abi.abisEngine.components.SpotLight;
+import net.abi.abisEngine.core.Entity;
+import net.abi.abisEngine.input.GLFWInput;
+import net.abi.abisEngine.math.Vector3f;
+import net.abi.abisEngine.rendering.meshLoading.legacy.Mesh;
+import net.abi.abisEngine.rendering.resourceManagement.Material;
+import net.abi.abisEngine.rendering.resourceManagement.Texture;
+import net.abi.abisEngine.rendering.sceneManagement.Scene;
+import net.abi.abisEngine.rendering.windowManagement.GLFWWindow;
+import net.abi.abisEngine.util.Attenuation;
+import tests.game.entitys.FlatPlane;
+import tests.game.materials.BricksOne;
+import tests.game.materials.BricksTwo;
 
 public class TestGame extends Scene {
 
@@ -33,25 +34,10 @@ public class TestGame extends Scene {
 	public void init() {
 		super.init();
 
-		Mesh mesh = new Mesh("plane3.obj", true);
-		Material material = new Material();
-		material.addTexture("diffuse", new Texture("Abi's Engine Splash Screen.png"));
-		material.addTexture("normal_map", new Texture("bricks_normal.jpg"));
-		material.addFloat("specularIntensity", 1);
-		material.addFloat("specularPower", 8);
-		Material material2 = new Material();
-		material2.addTexture("diffuse", new Texture("bricks2.jpg"));
-		material2.addTexture("normal_map", new Texture("bricks2_normal.jpg"));
-		material2.addFloat("specularIntensity", 1);
-		material2.addFloat("specularPower", 8);
-		MeshRenderer meshRenderer = new MeshRenderer(mesh, material);
-		MeshRenderer meshRenderer2 = new MeshRenderer(new Mesh("monkey.obj", false), material2);
+		BricksOne material = new BricksOne();
+		BricksTwo material2 = new BricksTwo();
 
-		Entity planeObject = new Entity();
-		planeObject.addComponent(meshRenderer);
-		planeObject.getTransform().setTranslation(0, -5, 0);
-		planeObject.getTransform().getRotation()
-				.set(new Quaternion(Transform.X_AXIS, (float) Math.toRadians(90)));
+		MeshRenderer meshRenderer2 = new MeshRenderer(new Mesh("monkey.obj", false), material2);
 
 		// planeObject.getTransform().getPosition().set(0, -1, 5);
 
@@ -104,7 +90,7 @@ public class TestGame extends Scene {
 		super.addChild(anvil);
 		super.setMainCamera("playerView");
 		super.addChild(spotLightObject);
-		super.addChild(planeObject);
+		super.addChild(new FlatPlane());
 		super.addChild(directionalLightObject);
 		super.addChild(monkey);
 		super.addChild(ironMan);
@@ -125,7 +111,7 @@ public class TestGame extends Scene {
 		if (super.getInputController().isKeyDown(GLFWInput.GLFW_KEY_ESCAPE)) {
 			super.getInputController().setCursorMode(GLFW.GLFW_CURSOR_NORMAL);
 			// System.out.println(this);
-			// System.exit(1);
+			super.getParentWindow().closeWindow();
 
 		}
 		if (super.getInputController().isKeyDown(GLFWInput.GLFW_KEY_C)) {

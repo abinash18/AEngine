@@ -1,7 +1,7 @@
 package tests.game;
 
-import com.base.engine.core.Main;
-
+import net.abi.abisEngine.core.Main;
+import net.abi.abisEngine.rendering.windowManagement.models.EngineLoader;
 import tests.game.windows.MainGame;
 
 public class Start extends Main {
@@ -20,6 +20,7 @@ public class Start extends Main {
 
 	@Override
 	protected void addWindows() {
+		new EngineLoader();
 		new MainGame();
 	}
 
