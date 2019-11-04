@@ -16,6 +16,7 @@ import net.abi.abisEngine.handlers.logging.LogLevel;
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
 import net.abi.abisEngine.rendering.RenderingEngine;
+import net.abi.abisEngine.rendering.windowManagement.GLFWWindow;
 import net.abi.abisEngine.rendering.windowManagement.GLFWWindowManager;
 import net.abi.abisEngine.rendering.windowManagement.models.EngineLoader;
 
@@ -29,6 +30,7 @@ public class CoreEngine {
 	// I.e. Maybe Pass It As A Parameter Through Each Scene.
 	// private GLFWWindow currentWindow;
 
+	@SuppressWarnings("unused")
 	private GLFWErrorCallback errClbk;
 
 	public CoreEngine(double framerate) {
@@ -81,7 +83,11 @@ public class CoreEngine {
 	 * Specifies the entry point to the engine.
 	 */
 	protected void openLoadingWindow() {
-		GLFWWindowManager.openWindow(new EngineLoader());
+		try {
+			GLFWWindowManager.openWindow(new EngineLoader(), GLFWWindow.NULL, new RenderingEngine());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void run() {

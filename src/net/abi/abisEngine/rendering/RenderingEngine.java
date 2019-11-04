@@ -36,9 +36,7 @@ public class RenderingEngine extends MappedValues {
 
 		super.addVector3f("ambient", new Vector3f(0.1f, 0.1f, 0.1f));
 
-		forwardAmbientShader = new Shader("forward-ambient");
-
-		RenderingEngine.initGraphics();
+		// RenderingEngine.initGraphics();
 	}
 
 	public void updateUniformStruct(Transform transform, Material mat, Shader shader, String uniformName,
@@ -68,7 +66,8 @@ public class RenderingEngine extends MappedValues {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 	}
 
-	private static void initGraphics() {
+	public void initGraphics() {
+		forwardAmbientShader = new Shader("forward-ambient");
 		GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 		GL11.glFrontFace(GL11.GL_CW);

@@ -67,12 +67,12 @@ public class SceneManager {
 			v.init();
 		});
 	}
-	
+
 	public void render() {
 		if (currentScene == null) {
 			new Exception("No Current Scene!").printStackTrace();
 		}
-		parentWindow.getCoreEngine().getRenderEngine().render(currentScene);
+		parentWindow.getRenderEngine().render(currentScene);
 	}
 
 	public Map<String, Scene> getScenes() {

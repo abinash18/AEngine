@@ -347,6 +347,10 @@ public class GLFWInput {
 		return mouseGrabbedAndHidden;
 	}
 
+	public GLFWCursorEnterCallback getCrsNtrClbk() {
+		return crsNtrClbk;
+	}
+
 	public boolean isMouseHidden() {
 		return mouseHidden;
 	}

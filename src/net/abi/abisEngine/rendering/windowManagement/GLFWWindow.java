@@ -37,11 +37,11 @@ import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GLCapabilities;
 
-import net.abi.abisEngine.core.CoreEngine;
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
 import net.abi.abisEngine.input.GLFWInput;
 import net.abi.abisEngine.math.Vector2f;
+import net.abi.abisEngine.rendering.RenderingEngine;
 import net.abi.abisEngine.rendering.sceneManagement.Scene;
 import net.abi.abisEngine.rendering.sceneManagement.SceneManager;
 
@@ -73,14 +73,13 @@ public abstract class GLFWWindow {
 
 	private static Logger logger = LogManager.getLogger(GLFWWindow.class.getName());
 
-	private long glfw_Handle;
+	private long glfw_Handle, monitor;
 	private int width, height;
 	private UUID id;
 	private String name, title;
 	private boolean fullscreen, vSync;
 	private GLFWInput input;
 	private SceneManager sceneManager;
-	private CoreEngine coreEngine;
 	private GLCapabilities capabilities;
 	private GLFWFramebufferSizeCallback frmBffrClbk;
 	private GLFWWindowCloseCallback wndCloseClbk;
@@ -91,6 +90,8 @@ public abstract class GLFWWindow {
 	private GLFWWindowPosCallback wndPosClbk;
 	private GLFWWindowSizeCallback wndSizeClbk;
 	private GLFWWindowRefreshCallback wndRfrshClbk;
+
+	private RenderingEngine renderEngine;
 
 	protected abstract void addScenes();
 
@@ -117,6 +118,18 @@ public abstract class GLFWWindow {
 	 */
 	public void genUniqueID() {
 		id = UUID.randomUUID();
+	}
+
+	public void setRenderEngine(RenderingEngine rndEng) {
+		this.renderEngine = rndEng;
+	}
+
+	public RenderingEngine getRenderEngine() {
+		if (renderEngine != null) {
+			return renderEngine;
+		}
+		logger.error("Render Engine Not Specified. ", new NullPointerException("Render Engine Not Specified."));
+		throw new NullPointerException();
 	}
 
 	public void addHints(int hint, int value) {
@@ -162,6 +175,23 @@ public abstract class GLFWWindow {
 	 *                make a new Context.
 	 * @return
 	 */
+	public GLFWWindow create(long monitor, long share, RenderingEngine rndEng) {
+		this.setRenderEngine(rndEng);
+		this.create(monitor, share);
+		rndEng.initGraphics(); // Since the capabilities are created and set, and the context is current we can
+								// initialize the graphics for this window.
+		return this;
+	}
+
+	/**
+	 * Creates the window. Must be called from main thread.
+	 * 
+	 * @param monitor The monitor to create the window on. NULL will create it on
+	 *                main monitor.
+	 * @param share   The handle of the window the new window will share. NULL will
+	 *                make a new Context.
+	 * @return
+	 */
 	public GLFWWindow create(long monitor, long share) {
 		this.genUniqueID();
 		glfw_Handle = glfwCreateWindow(width, height, title, monitor, share);
@@ -169,7 +199,7 @@ public abstract class GLFWWindow {
 			logger.error("Failed to create the GLFW window: name: '" + name + "' title: '" + title + "'");
 			throw new RuntimeException("Failed to create the GLFW window");
 		}
-
+		this.monitor = monitor;
 		// Make the OpenGL context current
 		glfwMakeContextCurrent(glfw_Handle);
 		glfwShowWindow(glfw_Handle);
@@ -185,7 +215,7 @@ public abstract class GLFWWindow {
 		// creates the GLCapabilities instance and makes the OpenGL
 		// bindings available for use.
 		capabilities = GL.createCapabilities();
-		this.coreEngine = GLFWWindowManager.getCoreEngine();
+		// this.coreEngine = GLFWWindowManager.getCoreEngine();
 		this.initCallBacks();
 		this.input.initInput(glfw_Handle);
 		this.addScenes();
@@ -229,6 +259,18 @@ public abstract class GLFWWindow {
 	public void input(float delta) {
 		input.update();
 		sceneManager.input(delta);
+	}
+
+	public GLFWFramebufferSizeCallback getFrmBffrClbk() {
+		return frmBffrClbk;
+	}
+
+	public void setFrmBffrClbk(GLFWFramebufferSizeCallback frmBffrClbk) {
+		this.frmBffrClbk = frmBffrClbk;
+	}
+
+	public long getMonitor() {
+		return monitor;
 	}
 
 	public void update(float delta) {
@@ -357,10 +399,6 @@ public abstract class GLFWWindow {
 
 	public void setSceneManager(SceneManager sceneManager) {
 		this.sceneManager = sceneManager;
-	}
-
-	public CoreEngine getCoreEngine() {
-		return coreEngine;
 	}
 
 	public void setvSync(boolean vSync) {
