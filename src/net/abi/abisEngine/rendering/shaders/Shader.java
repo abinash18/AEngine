@@ -572,9 +572,9 @@ public class Shader {
 				if (line.startsWith(INCLUDE_DIRECTIVE)) {
 
 					/*
-					 * #include 'file' INCLUDE_DIRECTIE length puts it at the end of the include and
-					 * i add 2 to move it past the first quote to the file name. AND THEN IT ENDS AT
-					 * THE END OF THE LINE NO WHITE SPACE AT THE END.
+					 * #include 'file' INCLUDE_DIRECTIVE length puts it at the end of the include
+					 * and i add 2 to move it past the first quote to the file name. AND THEN IT
+					 * ENDS AT THE END OF THE LINE NO WHITE SPACE AT THE END.
 					 */
 					shaderSource.append( /* This appends the loaded shader to the source of the file */
 							loadShader( /* Loads the shader specified in the #include */

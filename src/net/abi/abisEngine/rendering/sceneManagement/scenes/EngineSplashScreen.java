@@ -17,10 +17,12 @@ import net.abi.abisEngine.rendering.resourceManagement.Material;
 import net.abi.abisEngine.rendering.resourceManagement.Texture;
 import net.abi.abisEngine.rendering.sceneManagement.Scene;
 import net.abi.abisEngine.rendering.windowManagement.GLFWWindow;
+import net.abi.abisEngine.rendering.windowManagement.GLFWWindowManager;
 import net.abi.abisEngine.util.Attenuation;
 import tests.game.entitys.FlatPlane;
 import tests.game.materials.BricksOne;
 import tests.game.materials.BricksTwo;
+import tests.game.windows.MainGame;
 
 public class EngineSplashScreen extends Scene {
 
@@ -111,7 +113,11 @@ public class EngineSplashScreen extends Scene {
 		if (super.getInputController().isKeyDown(GLFWInput.GLFW_KEY_ESCAPE)) {
 			super.getInputController().setCursorMode(GLFW.GLFW_CURSOR_NORMAL);
 			// System.out.println(this);
-			super.getParentWindow().closeWindow();
+			try {
+				GLFWWindowManager.openWindow(new MainGame(), GLFWWindow.NULL, super.getParentWindow().getGlfw_Handle());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
 		}
 		if (super.getInputController().isKeyDown(GLFWInput.GLFW_KEY_C)) {

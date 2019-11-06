@@ -3,6 +3,7 @@ package net.abi.abisEngine.rendering;
 import java.util.HashMap;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL32;
 
 import net.abi.abisEngine.components.Camera;
 import net.abi.abisEngine.components.Light;
@@ -51,17 +52,6 @@ public class RenderingEngine extends MappedValues {
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
 	}
 
-	@Deprecated
-	public void setTextures(boolean enabled) {
-
-		if (enabled) {
-			GL11.glEnable(GL11.GL_TEXTURE_2D);
-		} else {
-			GL11.glDisable(GL11.GL_TEXTURE_2D);
-		}
-
-	}
-
 	public static void unBindTextures() {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 	}
@@ -75,9 +65,7 @@ public class RenderingEngine extends MappedValues {
 		GL11.glEnable(GL11.GL_CULL_FACE);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glEnable(GL11.GL_STENCIL_TEST);
-		// GL11.glEnable(GL32.GL_DEPTH_CLAMP);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
-		// GL11.glEnable(GL32.GL_FRAMEBUFFER_SRGB);
 	}
 
 	@Deprecated

@@ -4,9 +4,10 @@ import static net.abi.abisEngine.rendering.windowManagement.GLFWWindow.NULL;
 import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.lwjgl.opengl.GL;
 
@@ -35,7 +36,7 @@ public class GLFWWindowManager {
 	 * Bucket list of contexts and windows which share context. The name of the
 	 * context is the name of the window that shares its context
 	 */
-	private static Map<Context, ArrayList<GLFWWindow>> sharedContexts = new HashMap<Context, ArrayList<GLFWWindow>>();
+	private static Map<Context, CopyOnWriteArrayList<GLFWWindow>> sharedContexts = new ConcurrentHashMap<Context, CopyOnWriteArrayList<GLFWWindow>>();
 	/*
 	 * Core engine really has no use in this class for now since we have a seperate
 	 * rendering engine for each context.
@@ -68,16 +69,17 @@ public class GLFWWindowManager {
 	/**
 	 * Sets the current context to the one provided.
 	 * 
-	 * @param context
+	 * @param context the context to set to.
+	 * @return Returns true if the context has been set successfully. Otherwise
+	 *         false is returned if the context invalid.
 	 */
 	private static void setContext(Context context) {
 		glfwMakeContextCurrent(context.context);
 	}
 
-	/*
-	 * private static void setContext(long context) {
-	 * glfwMakeContextCurrent(context); }
-	 */
+	private static void setContext(long context) {
+		glfwMakeContextCurrent(context);
+	}
 
 	/**
 	 * Renders all windows stored in the bucket list, and the windows which inherit
@@ -90,13 +92,13 @@ public class GLFWWindowManager {
 		 * modification exception, we use the iterator which iterates over the entris in
 		 * the map.
 		 */
-		for (Iterator<Map.Entry<Context, ArrayList<GLFWWindow>>> entries = sharedContexts.entrySet().iterator(); entries
-				.hasNext();) {
+		for (Iterator<Map.Entry<Context, CopyOnWriteArrayList<GLFWWindow>>> entries = sharedContexts.entrySet()
+				.iterator(); entries.hasNext();) {
 			/*
 			 * Current Entry, we cannot call next() on the iterator every time we need the
 			 * entry because then it will skip to the next entry in line.
 			 */
-			Map.Entry<Context, ArrayList<GLFWWindow>> entry = entries.next();
+			Map.Entry<Context, CopyOnWriteArrayList<GLFWWindow>> entry = entries.next();
 
 			/*
 			 * Sets the current context to the one provided in the entry so we can render
@@ -116,6 +118,7 @@ public class GLFWWindowManager {
 			}
 
 		}
+		setContext(NULL);
 		/*
 		 * We must set the capabilities to null, because we dont want any operations
 		 * done any where else to affect the last window we just rendered.
@@ -135,44 +138,80 @@ public class GLFWWindowManager {
 	}
 
 	public static void input(float delta) {
-		for (Iterator<Map.Entry<Context, ArrayList<GLFWWindow>>> entries = sharedContexts.entrySet().iterator(); entries
-				.hasNext();) {
+		/* Iterates over everything contained in the hashmap to */
+		for (Iterator<Map.Entry<Context, CopyOnWriteArrayList<GLFWWindow>>> entries = sharedContexts.entrySet()
+				.iterator(); entries.hasNext();) {
 
-			Map.Entry<Context, ArrayList<GLFWWindow>> entry = entries.next();
+			Map.Entry<Context, CopyOnWriteArrayList<GLFWWindow>> entry = entries.next();
 
 			setContext(entry.getKey());
 
-			for (Iterator<GLFWWindow> subEntrys = entry.getValue().iterator(); subEntrys.hasNext();) {
-				GLFWWindow wnd = subEntrys.next();
+			/*
+			 * Temporary variable to keep track if the parent of the context is closed cause
+			 * a chain reaction and close all other windows. and delete the entry.
+			 */
+			boolean killAll = false;
+
+			for (Iterator<GLFWWindow> subEntry = entry.getValue().iterator(); subEntry.hasNext();) {
+				GLFWWindow wnd = subEntry.next();
 				GL.setCapabilities(wnd.getCapabilities());
+				/*
+				 * These operations are done in here because I call input first core engine. It
+				 * would not make sense and have terrible consequences if it was done in a
+				 * method called later.
+				 */
+				if (killAll) {
+					wnd.dispose();
+				}
+				if (checkClose(wnd)) {
+					if (wnd.getGlfw_Handle() == entry.getKey().context) {
+						printWindows();
+						// entries.remove();
+						wnd.dispose();
+						break;
+					}
+					printWindows();
+					wnd.dispose();
+					subEntry.remove();
+					break;
+				}
+				/* Updates the input for the window. */
 				wnd.input(delta);
 			}
 
+			if (killAll) {
+				entries.remove();
+			}
+
 		}
+		/*
+		 * Resets the context and capabilities to NULL so no action called on the
+		 * current thread after the loop will have effect.
+		 */
+		setContext(NULL);
 		GL.setCapabilities(null);
 	}
 
 	public static void update(float delta) {
-		for (Iterator<Map.Entry<Context, ArrayList<GLFWWindow>>> entries = sharedContexts.entrySet().iterator(); entries
-				.hasNext();) {
+		if (sharedContexts.size() == 0) {
+			raiseStopFlag();
+			return;
+		}
+		for (Iterator<Map.Entry<Context, CopyOnWriteArrayList<GLFWWindow>>> entries = sharedContexts.entrySet()
+				.iterator(); entries.hasNext();) {
 
-			Map.Entry<Context, ArrayList<GLFWWindow>> entry = entries.next();
+			Map.Entry<Context, CopyOnWriteArrayList<GLFWWindow>> entry = entries.next();
 
 			setContext(entry.getKey());
 
 			for (Iterator<GLFWWindow> subEntrys = entry.getValue().iterator(); subEntrys.hasNext();) {
 				GLFWWindow wnd = subEntrys.next();
-				if (checkClose(wnd)) {
-					wnd.dispose();
-					subEntrys.remove();
-					// entries.remove();
-					break;
-				}
 				GL.setCapabilities(wnd.getCapabilities());
 				wnd.update(delta);
 			}
 
 		}
+		setContext(NULL);
 		GL.setCapabilities(null);
 
 	}
@@ -188,9 +227,9 @@ public class GLFWWindowManager {
 	 * @return
 	 */
 	public static GLFWWindow getGLFWWindow(String name) {
-		for (Iterator<Map.Entry<Context, ArrayList<GLFWWindow>>> entries = sharedContexts.entrySet().iterator(); entries
-				.hasNext();) {
-			Map.Entry<Context, ArrayList<GLFWWindow>> entry = entries.next();
+		for (Iterator<Map.Entry<Context, CopyOnWriteArrayList<GLFWWindow>>> entries = sharedContexts.entrySet()
+				.iterator(); entries.hasNext();) {
+			Map.Entry<Context, CopyOnWriteArrayList<GLFWWindow>> entry = entries.next();
 			for (Iterator<GLFWWindow> subEntrys = entry.getValue().iterator(); subEntrys.hasNext();) {
 				GLFWWindow wnd = subEntrys.next();
 				if (name.equals(wnd.getWindowName())) {
@@ -215,15 +254,43 @@ public class GLFWWindowManager {
 	 */
 	public static void destroyAll() {
 		try {
-			for (Iterator<Map.Entry<Context, ArrayList<GLFWWindow>>> entries = sharedContexts.entrySet()
+			for (Iterator<Map.Entry<Context, CopyOnWriteArrayList<GLFWWindow>>> entries = sharedContexts.entrySet()
 					.iterator(); entries.hasNext();) {
-				Map.Entry<Context, ArrayList<GLFWWindow>> entry = entries.next();
+				Map.Entry<Context, CopyOnWriteArrayList<GLFWWindow>> entry = entries.next();
 				for (Iterator<GLFWWindow> subEntrys = entry.getValue().iterator(); subEntrys.hasNext();) {
 					GLFWWindow wnd = subEntrys.next();
 					wnd.dispose();
 					subEntrys.remove();
 					break;
 				}
+			}
+		} catch (Exception e) {
+			logger.error("Error While Destroying Windows. ", e);
+		}
+
+	}
+
+	/**
+	 * Destroys all windows in a active context.
+	 */
+	public static void destroyAll(Context context) {
+		try {
+			for (Iterator<Map.Entry<Context, CopyOnWriteArrayList<GLFWWindow>>> entries = sharedContexts.entrySet()
+					.iterator(); entries.hasNext();) {
+				Map.Entry<Context, CopyOnWriteArrayList<GLFWWindow>> entry = entries.next();
+				/*
+				 * If the context being iterated over is the same as the one provided then
+				 * execute.
+				 */
+				if (entry.getKey().context == context.context) {
+					for (Iterator<GLFWWindow> subEntrys = entry.getValue().iterator(); subEntrys.hasNext();) {
+						GLFWWindow wnd = subEntrys.next();
+						wnd.dispose();
+					}
+					/* Remove the row because the context related to that is destroyed. */
+					entries.remove();
+				}
+				break;
 			}
 		} catch (Exception e) {
 			logger.error("Error While Destroying Windows. ", e);
@@ -242,9 +309,9 @@ public class GLFWWindowManager {
 	 * @return
 	 */
 	public static Context findContext(long context) {
-		for (Iterator<Map.Entry<Context, ArrayList<GLFWWindow>>> entries = sharedContexts.entrySet().iterator(); entries
-				.hasNext();) {
-			Map.Entry<Context, ArrayList<GLFWWindow>> entry = entries.next();
+		for (Iterator<Map.Entry<Context, CopyOnWriteArrayList<GLFWWindow>>> entries = sharedContexts.entrySet()
+				.iterator(); entries.hasNext();) {
+			Map.Entry<Context, CopyOnWriteArrayList<GLFWWindow>> entry = entries.next();
 
 			if (entry.getKey().context == context) {
 				return entry.getKey();
@@ -309,7 +376,7 @@ public class GLFWWindowManager {
 
 		Context tempContext;
 		if ((tempContext = findContext(sharedContext)) != null) {
-			ArrayList<GLFWWindow> wnds = sharedContexts.get(tempContext);
+			CopyOnWriteArrayList<GLFWWindow> wnds = sharedContexts.get(tempContext);
 			wnd.setRenderEngine(tempContext.renderEngine);
 			wnds.add(wnd);
 			try {
@@ -340,7 +407,7 @@ public class GLFWWindowManager {
 
 		wnd.create(monitor, NULL, rndEng);
 		if (findContext(wnd.getGlfw_Handle()) == null) {
-			ArrayList<GLFWWindow> wnds = new ArrayList<GLFWWindow>();
+			CopyOnWriteArrayList<GLFWWindow> wnds = new CopyOnWriteArrayList<GLFWWindow>();
 			wnds.add(wnd);
 			sharedContexts.put(new Context(wnd.getWindowName(), wnd.getGlfw_Handle(), rndEng), wnds);
 			rndEng.initGraphics();
@@ -351,25 +418,23 @@ public class GLFWWindowManager {
 		}
 	}
 
-	// a
-//	public static void printWindows() {
-//
-//		logger.debug("Open Windows: ");
-//		for (entries = openWindows.entrySet().iterator(); entries.hasNext();) {
-//			Map.Entry<String, GLFWWindow> entry = entries.next();
-//			logger.debug("| Window Name: " + entry.getValue().getName() + " Title: " + entry.getValue().getTitle()
-//					+ " UUID: " + entry.getValue().getID() + " GLFW Handle: " + entry.getValue().getGlfw_Handle()
-//					+ " |");
-//		}
-//		logger.debug("Window Templates: ");
-//		for (Iterator<Map.Entry<String, GLFWWindow>> entries2 = models.entrySet().iterator(); entries2.hasNext();) {
-//			Map.Entry<String, GLFWWindow> entry = entries2.next();
-//			logger.debug("| Window Name: " + entry.getValue().getName() + " Title: " + entry.getValue().getTitle()
-//					+ " UUID: " + entry.getValue().getID() + " GLFW Handle: " + entry.getValue().getGlfw_Handle()
-//					+ " |");
-//		}
-//
-//	}
+	public static void printWindows() {
+
+		StringBuilder opnWnds = new StringBuilder();
+
+		logger.debug("Open Windows: ");
+		for (Iterator<Map.Entry<Context, CopyOnWriteArrayList<GLFWWindow>>> entries = sharedContexts.entrySet()
+				.iterator(); entries.hasNext();) {
+			Map.Entry<Context, CopyOnWriteArrayList<GLFWWindow>> entry = entries.next();
+
+			opnWnds.append("\n Context Name: " + entry.getKey().name + ": " + "\n");
+
+			for (GLFWWindow wnd : entry.getValue()) {
+				opnWnds.append("\t - " + wnd.getWindowName() + " " + wnd.getGlfw_Handle() + "\n");
+			}
+		}
+		logger.debug(opnWnds.toString());
+	}
 
 //	public static void openWindow(GLFWWindow wnd, long monitor, long sharedContext) {
 //

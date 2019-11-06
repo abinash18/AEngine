@@ -122,7 +122,6 @@ public class CoreEngine {
 				if (GLFWWindowManager.isStopRequested()) {
 					stop();
 					render = false;
-					System.out.println(isRunning);
 					continue;
 				} else {
 					render = true;

@@ -41,15 +41,17 @@ public class Mesh {
 
 		// If the mesh being loaded already exists in the loadedModels map than use the
 		// mesh there
-		if (oldResource != null) {
-			this.meshBuffers = oldResource;
-			this.meshBuffers.addReference(); // Increment the reference counter for garbage collection
-		} else { // Else if the mesh dose not exist create a new mesh by calling the load mesh
-					// method.
-			// initMeshData();
-			this.loadMesh(fileName, calcNormals);
-			Mesh.loadedModels.put(fileName, meshBuffers); // Then put the mesh in the loaded models map for future use.
-		}
+		// if (oldResource != null) {
+		// this.meshBuffers = oldResource;
+		// this.meshBuffers.addReference(); // Increment the reference counter for
+		// garbage collection
+		// } else { // Else if the mesh dose not exist create a new mesh by calling the
+		// load mesh
+		// method.
+		// initMeshData();
+		this.loadMesh(fileName, calcNormals);
+		Mesh.loadedModels.put(fileName, meshBuffers); // Then put the mesh in the loaded models map for future use.
+		// }
 
 	}
 
@@ -98,7 +100,7 @@ public class Mesh {
 		glVertexAttribPointer(1, 2, GL_FLOAT, false, Vertex.SIZE * 4, 12);
 		glVertexAttribPointer(2, 3, GL_FLOAT, false, Vertex.SIZE * 4, 20);
 		glVertexAttribPointer(3, 3, GL_FLOAT, false, Vertex.SIZE * 4, 32);
-		//glVertexAttribPointer(3, 3, GL_FLOAT, false, Vertex.SIZE * 4, 44);
+		// glVertexAttribPointer(3, 3, GL_FLOAT, false, Vertex.SIZE * 4, 44);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshBuffers.getIbo());
 

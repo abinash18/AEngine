@@ -10,6 +10,7 @@ import org.lwjgl.opengl.GL20;
 
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
+import net.abi.abisEngine.rendering.windowManagement.GLFWWindowManager;
 
 public class ShaderResource {
 	private int program, refCount;
@@ -30,7 +31,7 @@ public class ShaderResource {
 			logger.error("Shader creation failed: Could not find valid memory location in constructor",
 					new Exception());
 			logger.info("Exiting...");
-			System.exit(1);
+			GLFWWindowManager.raiseStopFlag();
 		}
 
 		uniforms = new HashMap<String, Integer>();
