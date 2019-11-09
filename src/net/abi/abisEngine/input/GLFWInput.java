@@ -1,7 +1,8 @@
 package net.abi.abisEngine.input;
 
 import static org.lwjgl.glfw.GLFW.glfwPollEvents;
-import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.glfw.GLFW.glfwSetCursorEnterCallback;
+import static org.lwjgl.glfw.GLFW.glfwSetCursorPos;
 import static org.lwjgl.glfw.GLFW.glfwSetCursorPosCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetInputMode;
 import static org.lwjgl.glfw.GLFW.glfwSetKeyCallback;

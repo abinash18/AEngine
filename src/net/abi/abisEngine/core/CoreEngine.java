@@ -122,7 +122,7 @@ public class CoreEngine {
 				if (GLFWWindowManager.isStopRequested()) {
 					stop();
 					render = false;
-					continue;
+					break;
 				} else {
 					render = true;
 					unprocessedTime -= frameTime;
@@ -160,7 +160,11 @@ public class CoreEngine {
 	}
 
 	private void cleanUp() {
-		GLFWWindowManager.destroyAll();
+		try {
+			GLFWWindowManager.destroyAll();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		glfwTerminate();
 		Objects.requireNonNull(glfwSetErrorCallback(null)).free();
 	}

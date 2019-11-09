@@ -3,7 +3,6 @@ package net.abi.abisEngine.rendering;
 import java.util.HashMap;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL32;
 
 import net.abi.abisEngine.components.Camera;
 import net.abi.abisEngine.components.Light;

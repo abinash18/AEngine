@@ -1,7 +1,6 @@
 package tests.game.windows;
 
 import net.abi.abisEngine.rendering.windowManagement.GLFWWindow;
-import net.abi.abisEngine.rendering.windowManagement.GLFWWindowManager;
 import tests.game.scenes.MainMenu;
 import tests.game.scenes.TestGame;
 
@@ -14,7 +13,6 @@ public class MainGame extends GLFWWindow {
 	@Override
 	protected void addScenes() {
 		new TestGame(this);
-		new MainMenu(this);
 	}
 
 	@Override
@@ -24,7 +22,6 @@ public class MainGame extends GLFWWindow {
 
 	@Override
 	protected void close() {
-		GLFWWindowManager.raiseStopFlag();
 	}
 
 }

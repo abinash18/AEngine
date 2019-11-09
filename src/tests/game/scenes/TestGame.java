@@ -11,6 +11,8 @@ import net.abi.abisEngine.components.PointLight;
 import net.abi.abisEngine.components.SpotLight;
 import net.abi.abisEngine.core.Entity;
 import net.abi.abisEngine.input.GLFWInput;
+import net.abi.abisEngine.math.Quaternion;
+import net.abi.abisEngine.math.Transform;
 import net.abi.abisEngine.math.Vector3f;
 import net.abi.abisEngine.rendering.meshLoading.legacy.Mesh;
 import net.abi.abisEngine.rendering.resourceManagement.Material;
@@ -103,11 +105,13 @@ public class TestGame extends Scene {
 	public void update(float delta) {
 		super.update(delta);
 		temp = temp + delta;
+		monkey.getTransform().setTranslation(0f, 0f, 0.5f * temp);
 	}
 
 	@Override
 	public void input(float delta) {
 		super.input(delta);
+
 		if (super.getInputController().isKeyDown(GLFWInput.GLFW_KEY_ESCAPE)) {
 			super.getInputController().setCursorMode(GLFW.GLFW_CURSOR_NORMAL);
 			// System.out.println(this);

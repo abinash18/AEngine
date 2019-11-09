@@ -105,6 +105,7 @@ public class EngineSplashScreen extends Scene {
 	public void update(float delta) {
 		super.update(delta);
 		temp = temp + delta;
+		monkey.getTransform().setTranslation(0f, 0f, 0.5f * temp);
 	}
 
 	@Override

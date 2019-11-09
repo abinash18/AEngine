@@ -183,6 +183,14 @@ public abstract class GLFWWindow {
 		return this;
 	}
 
+	public GLFWWindow create(long monitor, RenderingEngine rndEng) {
+		this.setRenderEngine(rndEng);
+		this.create(monitor, NULL);
+		rndEng.initGraphics(); // Since the capabilities are created and set, and the context is current we can
+								// initialize the graphics for this window.
+		return this;
+	}
+
 	/**
 	 * Creates the window. Must be called from main thread.
 	 * 
