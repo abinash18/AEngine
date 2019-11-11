@@ -1,6 +1,5 @@
 package net.abi.abisEngine.rendering.windowManagement.models;
 
-import net.abi.abisEngine.rendering.RenderingEngine;
 import net.abi.abisEngine.rendering.sceneManagement.scenes.EngineSplashScreen;
 import net.abi.abisEngine.rendering.windowManagement.GLFWWindow;
 import net.abi.abisEngine.rendering.windowManagement.GLFWWindowManager;
@@ -30,7 +29,7 @@ public class EngineLoader extends GLFWWindow {
 	@Override
 	protected void close() {
 		try {
-			GLFWWindowManager.openWindow(new MainGame(), NULL, new RenderingEngine());
+			GLFWWindowManager.openWindow(new MainGame(), NULL, this.getGlfw_Handle());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

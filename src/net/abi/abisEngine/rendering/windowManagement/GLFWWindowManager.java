@@ -173,8 +173,9 @@ public class GLFWWindowManager {
 
 			Map.Entry<Context, CopyOnWriteArrayList<GLFWWindow>> entry = entries.next();
 
-			for (Iterator<GLFWWindow> subEntry = entry.getValue().iterator(); subEntry.hasNext();) {
-				GLFWWindow wnd = subEntry.next();
+			for (int i = 0; i < entry.getValue().size(); i++) {
+				GLFWWindow wnd = entry.getValue().get(i);
+
 				/* Check if the window is destroyed already or not */
 				if (wnd.getGlfw_Handle() != NULL) {
 					if (entry.getKey().context == NULL) {
@@ -206,9 +207,47 @@ public class GLFWWindowManager {
 					wnd.input(delta);
 				} else { /* If so then delete the entry. */
 					/* Remove the window from the list. */
-					subEntry.remove();
+					entry.getValue().remove(i);
 				}
+
 			}
+
+//			for (Iterator<GLFWWindow> subEntry = entry.getValue().iterator(); subEntry.hasNext();) {
+//				GLFWWindow wnd = subEntry.next();
+//				/* Check if the window is destroyed already or not */
+//				if (wnd.getGlfw_Handle() != NULL) {
+//					if (entry.getKey().context == NULL) {
+//						entry.getKey().context = wnd.getGlfw_Handle();
+//					}
+//					/*
+//					 * Sets the current context to the one provided in the entry so we can render
+//					 * that context.
+//					 */
+//					setContext(wnd.getGlfw_Handle());
+//					GL.setCapabilities(wnd.getCapabilities());
+//					/*
+//					 * These operations are done in here because I call input first core engine. It
+//					 * would not make sense and have terrible consequences if it was done in a
+//					 * method called later.
+//					 */
+//					if (checkClose(wnd)) {
+//						/* Dispose the window destroying its context and capability's. */
+//						wnd.dispose();
+//						logger.debug("Window Destroyed. " + wnd.getWindowName());
+//
+//						/*
+//						 * Break, so we don't cause a null pointer exception if we try updating the
+//						 * input for a empty window and one we have removed from the array list.
+//						 */
+//						break;
+//					}
+//					/* Updates the input for the window. */
+//					wnd.input(delta);
+//				} else { /* If so then delete the entry. */
+//					/* Remove the window from the list. */
+//					subEntry.remove();
+//				}
+//			}
 
 		}
 		/*

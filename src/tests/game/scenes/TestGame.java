@@ -11,8 +11,6 @@ import net.abi.abisEngine.components.PointLight;
 import net.abi.abisEngine.components.SpotLight;
 import net.abi.abisEngine.core.Entity;
 import net.abi.abisEngine.input.GLFWInput;
-import net.abi.abisEngine.math.Quaternion;
-import net.abi.abisEngine.math.Transform;
 import net.abi.abisEngine.math.Vector3f;
 import net.abi.abisEngine.rendering.meshLoading.legacy.Mesh;
 import net.abi.abisEngine.rendering.resourceManagement.Material;
@@ -115,7 +113,6 @@ public class TestGame extends Scene {
 		if (super.getInputController().isKeyDown(GLFWInput.GLFW_KEY_ESCAPE)) {
 			super.getInputController().setCursorMode(GLFW.GLFW_CURSOR_NORMAL);
 			// System.out.println(this);
-			super.getParentWindow().closeWindow();
 
 		}
 		if (super.getInputController().isKeyDown(GLFWInput.GLFW_KEY_C)) {
