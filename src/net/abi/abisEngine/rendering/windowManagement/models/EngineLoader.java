@@ -8,7 +8,7 @@ import tests.game.windows.MainGame;
 public class EngineLoader extends GLFWWindow {
 
 	public EngineLoader() {
-		super(827, 196, "EngineSplash", "", false, false);
+		super(800, 600, "EngineSplash", "", true, true);
 	}
 
 	@Override
@@ -17,7 +17,7 @@ public class EngineLoader extends GLFWWindow {
 	}
 
 	@Override
-	protected void init() {
+	protected void pre_init() {
 
 	}
 
@@ -33,6 +33,12 @@ public class EngineLoader extends GLFWWindow {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	protected void post_init() {
+		super.centerWindow();
+		// super.setWindowOpacity(0.5f);
 	}
 
 }

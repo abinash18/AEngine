@@ -1,6 +1,6 @@
 package tests.game.models;
 
-import net.abi.abisEngine.rendering.meshLoading.legacy.Mesh;
+import net.abi.abisEngine.rendering.meshLoading.Mesh;
 
 public class FlatPlaneMesh extends Mesh {
 

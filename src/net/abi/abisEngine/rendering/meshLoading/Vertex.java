@@ -1,4 +1,4 @@
-package net.abi.abisEngine.rendering.meshLoading.legacy;
+package net.abi.abisEngine.rendering.meshLoading;
 
 import net.abi.abisEngine.math.Vector2f;
 import net.abi.abisEngine.math.Vector3f;

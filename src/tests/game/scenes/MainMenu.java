@@ -11,8 +11,8 @@ import net.abi.abisEngine.core.Entity;
 import net.abi.abisEngine.input.GLFWInput;
 import net.abi.abisEngine.math.Vector2f;
 import net.abi.abisEngine.math.Vector3f;
-import net.abi.abisEngine.rendering.meshLoading.legacy.Mesh;
-import net.abi.abisEngine.rendering.meshLoading.legacy.Vertex;
+import net.abi.abisEngine.rendering.meshLoading.Mesh;
+import net.abi.abisEngine.rendering.meshLoading.Vertex;
 import net.abi.abisEngine.rendering.resourceManagement.Material;
 import net.abi.abisEngine.rendering.resourceManagement.Texture;
 import net.abi.abisEngine.rendering.sceneManagement.Scene;
@@ -83,7 +83,7 @@ public class MainMenu extends Scene {
 
 		cameraObject = new Entity();
 		cam = new Camera((float) Math.toRadians(70.0f),
-				(float) super.getParentWindow().getWidth() / (float) super.getParentWindow().getHeight(), 0.01f,
+				(float) super.getParentWindow().getPWidth() / (float) super.getParentWindow().getPHeight(), 0.01f,
 				1000.0f, "playerView");
 		cameraObject.addComponent(cam);
 		cameraObject.addComponent(spotLight).addComponent(new FreeLook(0.35f)).addComponent(new FreeMove(10f));
@@ -140,7 +140,7 @@ public class MainMenu extends Scene {
 		if (super.getInputController().isKeyDown(GLFWInput.GLFW_KEY_ESCAPE)) {
 			// Input.setCursor(true);
 			System.out.println(this);
-			//System.exit(1);
+			// System.exit(1);
 
 		}
 		if (super.getInputController().isKeyDown(GLFWInput.GLFW_KEY_ESCAPE)) {

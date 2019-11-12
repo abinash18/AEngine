@@ -1,4 +1,4 @@
-package net.abi.abisEngine.rendering.meshLoading.legacy;
+package net.abi.abisEngine.rendering.meshLoading;
 
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
@@ -13,12 +13,19 @@ import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 
+import java.beans.AppletInitializer;
 import java.util.ArrayList;
 import java.util.HashMap;
+import static org.lwjgl.assimp.Assimp.*;
+import org.lwjgl.assimp.*;
+import org.lwjgl.assimp.AIVector3D;
+import org.lwjgl.opengl.GL15;
 
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
 import net.abi.abisEngine.math.Vector3f;
+import net.abi.abisEngine.rendering.meshLoading.legacy.IndexedModel;
+import net.abi.abisEngine.rendering.meshLoading.legacy.OBJModel;
 import net.abi.abisEngine.rendering.resourceManagement.MeshResource;
 import net.abi.abisEngine.util.Util;
 
@@ -33,41 +40,35 @@ public class Mesh {
 	private MeshResource meshBuffers; // The Mesh That Is Being Loaded.
 	private String fileName;
 
-	public Mesh(String fileName, boolean calcNormals) {
+	private AIMesh ai_mesh;
 
-		MeshResource oldResource = loadedModels.get(fileName);
+	/**
+	 * Mesh Resource ID's.
+	 */
+	private int vbo, ibo, size, refCount;
 
-		this.fileName = fileName;
+	public Mesh(AIMesh aiMesh) {
+		ArrayList<Vertex> vertices = new ArrayList<Vertex>();
 
-		// If the mesh being loaded already exists in the loadedModels map than use the
-		// mesh there
-		// if (oldResource != null) {
-		// this.meshBuffers = oldResource;
-		// this.meshBuffers.addReference(); // Increment the reference counter for
-		// garbage collection
-		// } else { // Else if the mesh dose not exist create a new mesh by calling the
-		// load mesh
-		// method.
-		// initMeshData();
-		this.loadMesh(fileName, calcNormals);
-		Mesh.loadedModels.put(fileName, meshBuffers); // Then put the mesh in the loaded models map for future use.
-		// }
+		for (int i = 0; i < model.getPositions().size(); i++) {
+			vertices.add(new Vertex(model.getPositions().get(i), model.getTexCoords().get(i), model.getNormals().get(i),
+					model.getTangents().get(i)));
+		}
 
+		Vertex[] vertexData = new Vertex[vertices.size()];
+		vertices.toArray(vertexData);
+
+		Integer[] indicesData = new Integer[model.getIndices().size()];
+		model.getIndices().toArray(indicesData);
+
+		addVertices(vertexData, Util.toIntArray(indicesData), calcNormals);
 	}
 
-	public Mesh(Vertex[] vertices, int[] indices) {
-		this(vertices, indices, false);
-	}
-
-	public Mesh(Vertex[] vertices, int[] indices, boolean calcNormals) {
-		initMeshData();
-		this.fileName = "";
-		this.addVertices(vertices, indices, calcNormals);
-	}
-
-	@Deprecated
-	private void initMeshData() {
-		meshBuffers = new MeshResource(0);
+	private void genBuffers(int size) {
+		this.vbo = GL15.glGenBuffers();
+		this.ibo = GL15.glGenBuffers();
+		this.size = size;
+		this.refCount = 1;
 	}
 
 	private void addVertices(Vertex[] vertices, int[] indices, boolean calcNormals) {
@@ -113,6 +114,47 @@ public class Mesh {
 		// glDisableVertexAttribArray(4);
 	}
 
+	@Deprecated
+	public Mesh(String fileName, boolean calcNormals) {
+
+		MeshResource oldResource = loadedModels.get(fileName);
+
+		this.fileName = fileName;
+
+		// If the mesh being loaded already exists in the loadedModels map than use the
+		// mesh there
+		// if (oldResource != null) {
+		// this.meshBuffers = oldResource;
+		// this.meshBuffers.addReference(); // Increment the reference counter for
+		// garbage collection
+		// } else { // Else if the mesh dose not exist create a new mesh by calling the
+		// load mesh
+		// method.
+		// initMeshData();
+		this.loadMesh(fileName, calcNormals);
+		Mesh.loadedModels.put(fileName, meshBuffers); // Then put the mesh in the loaded models map for future use.
+		// }
+
+	}
+
+	@Deprecated
+	public Mesh(Vertex[] vertices, int[] indices) {
+		this(vertices, indices, false);
+	}
+
+	@Deprecated
+	public Mesh(Vertex[] vertices, int[] indices, boolean calcNormals) {
+		initMeshData();
+		this.fileName = "";
+		this.addVertices(vertices, indices, calcNormals);
+	}
+
+	@Deprecated
+	private void initMeshData() {
+		meshBuffers = new MeshResource(0);
+	}
+
+	@Deprecated
 	private void calcNormals(Vertex[] vertices, int[] indices) {
 
 		for (int i = 0; i < indices.length; i += 3) {
@@ -137,6 +179,7 @@ public class Mesh {
 
 	}
 
+	@Deprecated
 	private Mesh loadMesh(String fileName, boolean calcNormals) {
 
 		String[] splitArray = fileName.split("\\.");
@@ -189,4 +232,40 @@ public class Mesh {
 		}
 	}
 
+	public void addReference() {
+		refCount++;
+	}
+
+	public boolean removeRefrence() {
+		refCount--;
+		return refCount == 0;
+	}
+
+	public int getVbo() {
+		return vbo;
+	}
+
+	public void setVbo(int vbo) {
+		this.vbo = vbo;
+	}
+
+	public int getIbo() {
+		return ibo;
+	}
+
+	public void setIbo(int ibo) {
+		this.ibo = ibo;
+	}
+
+	public int getSize() {
+		return size;
+	}
+
+	public int getRefCount() {
+		return refCount;
+	}
+
+	public void setRefCount(int refCount) {
+		this.refCount = refCount;
+	}
 }

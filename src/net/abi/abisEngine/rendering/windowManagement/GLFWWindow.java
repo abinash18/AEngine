@@ -1,11 +1,23 @@
 package net.abi.abisEngine.rendering.windowManagement;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
+import static org.lwjgl.glfw.GLFW.GLFW_TRUE;
 import static org.lwjgl.glfw.GLFW.glfwCreateWindow;
 import static org.lwjgl.glfw.GLFW.glfwDefaultWindowHints;
 import static org.lwjgl.glfw.GLFW.glfwDestroyWindow;
+import static org.lwjgl.glfw.GLFW.glfwFocusWindow;
+import static org.lwjgl.glfw.GLFW.glfwGetFramebufferSize;
 import static org.lwjgl.glfw.GLFW.glfwGetPrimaryMonitor;
+import static org.lwjgl.glfw.GLFW.glfwGetVideoMode;
+import static org.lwjgl.glfw.GLFW.glfwGetWindowAttrib;
+import static org.lwjgl.glfw.GLFW.glfwGetWindowFrameSize;
+import static org.lwjgl.glfw.GLFW.glfwGetWindowOpacity;
+import static org.lwjgl.glfw.GLFW.glfwGetWindowPos;
+import static org.lwjgl.glfw.GLFW.glfwGetWindowSize;
+import static org.lwjgl.glfw.GLFW.glfwIconifyWindow;
 import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
+import static org.lwjgl.glfw.GLFW.glfwRequestWindowAttention;
+import static org.lwjgl.glfw.GLFW.glfwRestoreWindow;
 import static org.lwjgl.glfw.GLFW.glfwSetFramebufferSizeCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowAttrib;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowCloseCallback;
@@ -13,19 +25,26 @@ import static org.lwjgl.glfw.GLFW.glfwSetWindowContentScaleCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowFocusCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowIconifyCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowMaximizeCallback;
+import static org.lwjgl.glfw.GLFW.glfwSetWindowOpacity;
+import static org.lwjgl.glfw.GLFW.glfwSetWindowPos;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowPosCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowRefreshCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowShouldClose;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowSizeCallback;
+import static org.lwjgl.glfw.GLFW.glfwSetWindowSizeLimits;
+import static org.lwjgl.glfw.GLFW.glfwSetWindowTitle;
 import static org.lwjgl.glfw.GLFW.glfwShowWindow;
 import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
 import static org.lwjgl.glfw.GLFW.glfwSwapInterval;
 import static org.lwjgl.glfw.GLFW.glfwWindowHint;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
+import static org.lwjgl.system.MemoryStack.stackPush;
 
+import java.nio.IntBuffer;
 import java.util.UUID;
 
 import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
+import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowCloseCallback;
 import org.lwjgl.glfw.GLFWWindowContentScaleCallback;
 import org.lwjgl.glfw.GLFWWindowFocusCallback;
@@ -36,6 +55,7 @@ import org.lwjgl.glfw.GLFWWindowRefreshCallback;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GLCapabilities;
+import org.lwjgl.system.MemoryStack;
 
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
@@ -46,7 +66,7 @@ import net.abi.abisEngine.rendering.sceneManagement.Scene;
 import net.abi.abisEngine.rendering.sceneManagement.SceneManager;
 
 /**
- * Window Model For The GLFW Context Handle.
+ * Window ModelScene For The GLFW Context Handle.
  * 
  * @author abinash
  *
@@ -73,11 +93,56 @@ public abstract class GLFWWindow {
 
 	private static Logger logger = LogManager.getLogger(GLFWWindow.class.getName());
 
-	private long glfw_Handle, monitor;
-	private int width, height;
+	private long glfw_handle, monitor;
+	/**
+	 * sc_ is the dimensions of the window in screen coordinates, This is different
+	 * than pixels since the positive of the y axis is inverted meaning it points
+	 * down instead of up so the 0, 0 of the window is in the top left of the
+	 * corner.
+	 */
+	private int sc_width, sc_height,
+			/**
+			 * The dimensions of the window in pixels this corresponds to the size of the
+			 * frame buffer and may not always be the size of the window, since some
+			 * displays can have a higher pixel density.
+			 */
+			p_width, p_height,
+			/**
+			 * Stores the size of each of the frame elements, if the window is not decorated
+			 * than the value is zero.
+			 */
+			f_top, f_left, f_right, f_bottom;
+	/**
+	 * Unique id given to the window, this is used if there are multiple windows
+	 * with the same names.
+	 */
 	private UUID id;
-	private String name, title;
-	private boolean fullscreen, vSync;
+	/** The name is what the engine recognizes and it is used to find the window. */
+	private String name,
+			/**
+			 * The title to show on the decorated frame and the general title where ever it
+			 * is showed.
+			 */
+			title;
+	private boolean fullscreen,
+			/**
+			 * This option Synchronizes the frames so they render more steadily instead of
+			 * dropping and causing lag.
+			 */
+			vSync,
+			/** If the window is currently focused on or not. */
+			focused,
+			/** If the window has been minimized to tray (iconified) */
+			minimized,
+			/** If the window is maximized or not */
+			maximized;
+	/**
+	 * GLFW Supports whole window transparency, but only if the system supports it
+	 * as well.
+	 */
+	private float opacity;
+	/** Position of the window in screen coordinates (the top left of the window) */
+	private Vector2f position;
 	private GLFWInput input;
 	private SceneManager sceneManager;
 	private GLCapabilities capabilities;
@@ -93,15 +158,47 @@ public abstract class GLFWWindow {
 
 	private RenderingEngine renderEngine;
 
+	/**
+	 * Scenes should only be added here, since it is systematically called during
+	 * the window making process.
+	 */
 	protected abstract void addScenes();
 
-	protected abstract void init();
+	/**
+	 * This is method where window hints can be set and attributes added. This
+	 * method is called before the creation of the window and should be the only
+	 * place to set hints and set other constraints. This method should not be
+	 * called externally since it can alter the state of the next window that is
+	 * created.
+	 */
+	protected abstract void pre_init();
 
+	/**
+	 * Same as pre_init except its called after window creation and only attributes
+	 * should be set here. This method is called after creating and before showing
+	 * the window.
+	 */
+	protected abstract void post_init();
+
+	/**
+	 * Called before the window is destroyed with the context, here the user can
+	 * call last minute methods which require window handles.
+	 */
 	protected abstract void close();
 
-	public GLFWWindow(int width, int height, String name, String title, boolean fullscreen, boolean vSync) {
-		this.width = width;
-		this.height = height;
+	/**
+	 * Initializes the window instance but dose not create the window.
+	 * 
+	 * @param sc_width   Width of the window.
+	 * @param sc_height  Height of the window.
+	 * @param name
+	 * @param title
+	 * @param fullscreen
+	 * @param vSync
+	 */
+	public GLFWWindow(int sc_width, int sc_height, String name, String title, boolean fullscreen, boolean vSync) {
+		this.sc_width = sc_width;
+		this.sc_height = sc_height;
 		this.name = name;
 		this.title = title;
 		this.fullscreen = fullscreen;
@@ -109,39 +206,6 @@ public abstract class GLFWWindow {
 		this.sceneManager = new SceneManager(this);
 		this.input = new GLFWInput();
 		// this.addToWindowManager();
-	}
-
-	/**
-	 * Do not call this method it is only called by GLFWWindowManager if there is a
-	 * conflict of duplicate id's. NOTE: - This will produce a null pointer
-	 * exception if called externally after creation of the window.
-	 */
-	public void genUniqueID() {
-		id = UUID.randomUUID();
-	}
-
-	public void setRenderEngine(RenderingEngine rndEng) {
-		this.renderEngine = rndEng;
-	}
-
-	public RenderingEngine getRenderEngine() {
-		if (renderEngine != null) {
-			return renderEngine;
-		}
-		logger.error("Render Engine Not Specified. ", new NullPointerException("Render Engine Not Specified."));
-		throw new NullPointerException();
-	}
-
-	public void addHints(int hint, int value) {
-		glfwWindowHint(hint, value);
-	}
-
-	public void resetToDefaults() {
-		glfwDefaultWindowHints();
-	}
-
-	public void swapBuffers() {
-		glfwSwapBuffers(glfw_Handle); // swap the color buffers
 	}
 
 	/**
@@ -202,15 +266,72 @@ public abstract class GLFWWindow {
 	 */
 	public GLFWWindow create(long monitor, long share) {
 		this.genUniqueID();
-		glfw_Handle = glfwCreateWindow(width, height, title, monitor, share);
-		if (glfw_Handle == NULL) {
+		/*
+		 * Pre initialization is for the user to set any window hints or any other
+		 * action which dose not require a window handle to be created.
+		 */
+		this.pre_init();
+		this.glfw_handle = glfwCreateWindow(sc_width, sc_height, title, monitor, share);
+		if (this.glfw_handle == NULL) {
 			logger.error("Failed to create the GLFW window: name: '" + name + "' title: '" + title + "'");
 			throw new RuntimeException("Failed to create the GLFW window");
 		}
+
 		this.monitor = monitor;
+
+		if (this.monitor == NULL) {
+			this.monitor = glfwGetPrimaryMonitor();
+		}
 		// Make the OpenGL context current
-		glfwMakeContextCurrent(glfw_Handle);
-		glfwShowWindow(glfw_Handle);
+		glfwMakeContextCurrent(glfw_handle);
+
+		// Get the thread stack and push a new frame
+		try (MemoryStack stack = stackPush()) {
+			IntBuffer pWidth = stack.mallocInt(1);
+			IntBuffer pHeight = stack.mallocInt(1);
+			IntBuffer scWidth = stack.mallocInt(1);
+			IntBuffer scHeight = stack.mallocInt(1);
+			IntBuffer fTop = stack.mallocInt(1);
+			IntBuffer fLeft = stack.mallocInt(1);
+			IntBuffer fRight = stack.mallocInt(1);
+			IntBuffer fBottom = stack.mallocInt(1);
+			IntBuffer xpos = stack.mallocInt(1);
+			IntBuffer ypos = stack.mallocInt(1);
+			/*
+			 * If the system forces us to use different size for the window then this will
+			 * be updated and we will know.
+			 */
+			glfwGetWindowSize(glfw_handle, scWidth, scHeight);
+			glfwGetFramebufferSize(glfw_handle, pWidth, pHeight);
+			/*
+			 * If the window has a decorated edge than the values will be stored here and we
+			 * can add them on to the sc_* size if the user requests.
+			 */
+			glfwGetWindowFrameSize(glfw_handle, fLeft, fTop, fRight, fBottom);
+
+			glfwGetWindowPos(glfw_handle, xpos, ypos);
+
+			sc_width = scWidth.get(0);
+			sc_height = scHeight.get(0);
+			p_width = pWidth.get(0);
+			p_height = pHeight.get(0);
+			f_top = fTop.get(0);
+			f_left = fLeft.get(0);
+			f_right = fRight.get(0);
+			f_bottom = fBottom.get(0);
+
+			position = new Vector2f(xpos.get(0), ypos.get(0));
+
+		}
+
+		/*
+		 * Post initialization is for the user to center the window set attributes and
+		 * change title or border or anything else they need to do before the window is
+		 * shown like actions which require window handles.
+		 */
+		this.post_init();
+
+		glfwShowWindow(glfw_handle);
 
 		if (vSync) {
 			glfwSwapInterval(1); // Enables V Sync.
@@ -225,10 +346,81 @@ public abstract class GLFWWindow {
 		capabilities = GL.createCapabilities();
 		// this.coreEngine = GLFWWindowManager.getCoreEngine();
 		this.initCallBacks();
-		this.input.initInput(glfw_Handle);
+		this.input.initInput(glfw_handle);
 		this.addScenes();
-		this.init();
+		this.resetToDefaults();
 		return this;
+	}
+
+	/**
+	 * This checks if the window has been created or not, if not it throws an
+	 * exception
+	 */
+	private void checkWindowPointer() {
+		if (glfw_handle == NULL) {
+			logger.error("Handle is invalid.");
+			throw new NullPointerException("Handle is invalid for the current call.");
+		}
+	}
+
+	/**
+	 * Do not call this method it is only called by GLFWWindowManager if there is a
+	 * conflict of duplicate id's. NOTE: - This will produce a null pointer
+	 * exception if called externally after creation of the window.
+	 */
+	public void genUniqueID() {
+		id = UUID.randomUUID();
+	}
+
+	public void setRenderEngine(RenderingEngine rndEng) {
+		this.renderEngine = rndEng;
+	}
+
+	public RenderingEngine getRenderEngine() {
+		if (renderEngine != null) {
+			return renderEngine;
+		}
+		logger.error("Render Engine Not Specified. ", new NullPointerException("Render Engine Not Specified."));
+		throw new NullPointerException();
+	}
+
+	/**
+	 * Sets the size limits of the current created window to ones provided.
+	 * 
+	 * @param minwidth
+	 * @param minheight
+	 * @param maxwidth
+	 * @param maxheight
+	 */
+	public void setSizeLimit(int minwidth, int minheight, int maxwidth, int maxheight) {
+		checkWindowPointer();
+		glfwSetWindowSizeLimits(glfw_handle, minwidth, minheight, maxwidth, maxheight);
+	}
+
+	/**
+	 * Centers the window on the monitor it was created on.
+	 */
+	public void centerWindow() {
+		checkWindowPointer();
+
+		GLFWVidMode vidmode = glfwGetVideoMode(this.monitor);
+
+		position.set((float) ((vidmode.width() - sc_width) / 2), (float) ((vidmode.height() - sc_height) / 2));
+		// Center the window using the sc_* values.
+		glfwSetWindowPos(glfw_handle, (int) position.getX(), (int) position.getY());
+	}
+
+	public void addHints(int hint, int value) {
+		glfwWindowHint(hint, value);
+	}
+
+	public void resetToDefaults() {
+		glfwDefaultWindowHints();
+	}
+
+	public void swapBuffers() {
+		checkWindowPointer();
+		glfwSwapBuffers(glfw_handle); // swap the color buffers
 	}
 
 	/**
@@ -237,18 +429,38 @@ public abstract class GLFWWindow {
 	 * terminating.
 	 */
 	public void dispose() {
-		// input.destroy(); // This Will Cause Crashes Because glfw Thinks there still
-		// is a call back there even if there isnt and will cause a an access violation.
-		// Free the window callbacks and destroy the window
+		/* Call user operations before disposal. */
 		this.close();
 		// input.destroySafe();
-		glfwFreeCallbacks(glfw_Handle);
-		glfwDestroyWindow(glfw_Handle);
-		glfw_Handle = NULL;
+		glfwFreeCallbacks(glfw_handle);
+		glfwDestroyWindow(glfw_handle);
+		glfw_handle = NULL;
 	}
 
+	/**
+	 * Sets the attribute and the value given to the current window.
+	 * 
+	 * @param attrib
+	 * @param value
+	 */
 	public void setAttribute(int attrib, int value) {
-		glfwSetWindowAttrib(glfw_Handle, attrib, value);
+		checkWindowPointer();
+		glfwSetWindowAttrib(glfw_handle, attrib, value);
+	}
+
+	/**
+	 * Returns a boolean for the attribute given to query.
+	 * 
+	 * @param attrib
+	 * @return
+	 */
+	public boolean getAttribute(int attrib) {
+		checkWindowPointer();
+		int temp = glfwGetWindowAttrib(glfw_handle, attrib);
+		if (temp == GLFW_TRUE) {
+			return true;
+		}
+		return false;
 	}
 
 	public void addScene(Scene scene) {
@@ -256,17 +468,146 @@ public abstract class GLFWWindow {
 	}
 
 	public boolean isCloseRequested() {
-		return glfwWindowShouldClose(glfw_Handle);
+		checkWindowPointer();
+		return glfwWindowShouldClose(glfw_handle);
 	};
 
 	public void closeWindow() {
 		// GLFWWindowManager.closeWindow(this);
-		glfwSetWindowShouldClose(glfw_Handle, true);
+		checkWindowPointer();
+		glfwSetWindowShouldClose(glfw_handle, true);
 	}
 
 	public void input(float delta) {
 		input.update();
 		sceneManager.input(delta);
+	}
+
+	public void update(float delta) {
+		sceneManager.update(delta);
+	}
+
+	public void render() {
+		sceneManager.render();
+		swapBuffers();
+	}
+
+	public void showWindow() {
+		glfwShowWindow(glfw_handle);
+	}
+
+	private void initCallBacks() {
+
+		glfwSetFramebufferSizeCallback(glfw_handle, (frmBffrClbk = new GLFWFramebufferSizeCallback() {
+			@Override
+			public void invoke(long window, int width, int height) {
+				p_width = width;
+				p_height = height;
+			}
+		}));
+
+		glfwSetWindowCloseCallback(glfw_handle, (wndCloseClbk = new GLFWWindowCloseCallback() {
+			@Override
+			public void invoke(long window) {
+				glfwSetWindowShouldClose(glfw_handle, true);
+			}
+		}));
+
+		glfwSetWindowContentScaleCallback(glfw_handle, (wndCntSclClbk = new GLFWWindowContentScaleCallback() {
+			@Override
+			public void invoke(long window, float xscale, float yscale) {
+
+			}
+		}));
+
+		glfwSetWindowFocusCallback(glfw_handle, (wndFcsClbk = new GLFWWindowFocusCallback() {
+			@Override
+			public void invoke(long window, boolean focus) {
+				focused = focus;
+			}
+		}));
+
+		glfwSetWindowIconifyCallback(glfw_handle, (wndIconifyClbk = new GLFWWindowIconifyCallback() {
+			@Override
+			public void invoke(long window, boolean iconified) {
+				minimized = iconified;
+			}
+		}));
+
+		glfwSetWindowMaximizeCallback(glfw_handle, (wndMxmzClbk = new GLFWWindowMaximizeCallback() {
+			@Override
+			public void invoke(long window, boolean maximize) {
+				maximized = maximize;
+			}
+		}));
+
+		glfwSetWindowPosCallback(glfw_handle, (wndPosClbk = new GLFWWindowPosCallback() {
+			@Override
+			public void invoke(long window, int xpos, int ypos) {
+				position.set(xpos, ypos);
+			}
+		}));
+
+		glfwSetWindowRefreshCallback(glfw_handle, (wndRfrshClbk = new GLFWWindowRefreshCallback() {
+			@Override
+			public void invoke(long window) {
+				swapBuffers();
+			}
+		}));
+
+		glfwSetWindowSizeCallback(glfw_handle, (wndSizeClbk = new GLFWWindowSizeCallback() {
+			@Override
+			public void invoke(long window, int width, int height) {
+				sc_width = width;
+				sc_height = height;
+			}
+		}));
+
+	}
+
+	public void setWindowTitle(String title) {
+		checkWindowPointer();
+		glfwSetWindowTitle(glfw_handle, title);
+		this.title = title;
+	}
+
+	public void setWindowOpacity(float opacity) {
+		checkWindowPointer();
+		glfwSetWindowOpacity(glfw_handle, opacity);
+		opacity = glfwGetWindowOpacity(glfw_handle);
+	}
+
+	public float getWindowOpacity() {
+		checkWindowPointer();
+		return (opacity = glfwGetWindowOpacity(glfw_handle));
+	}
+
+	public boolean isFocused() {
+		return this.getAttribute(GLFW_FOCUSED);
+	}
+
+	public void focusWindow() {
+		checkWindowPointer();
+		glfwFocusWindow(glfw_handle);
+	}
+
+	public void requestFocus() {
+		checkWindowPointer();
+		glfwRequestWindowAttention(glfw_handle);
+	}
+
+	public void restoreWindow() {
+		checkWindowPointer();
+		glfwRestoreWindow(glfw_handle);
+	}
+
+	public boolean isMinimized() {
+		return this.getAttribute(GLFW_ICONIFIED);
+	}
+
+	public void minimizeWindow() {
+		checkWindowPointer();
+		glfwIconifyWindow(glfw_handle);
 	}
 
 	public GLFWFramebufferSizeCallback getFrmBffrClbk() {
@@ -281,104 +622,21 @@ public abstract class GLFWWindow {
 		return monitor;
 	}
 
-	public void update(float delta) {
-		sceneManager.update(delta);
-	}
-
-	public void render() {
-		sceneManager.render();
-		swapBuffers();
-	}
-
-	public void showWindow() {
-		glfwShowWindow(glfw_Handle);
-	}
-
-	private void initCallBacks() {
-
-		glfwSetFramebufferSizeCallback(glfw_Handle, (frmBffrClbk = new GLFWFramebufferSizeCallback() {
-			@Override
-			public void invoke(long window, int width, int height) {
-
-			}
-		}));
-
-		glfwSetWindowCloseCallback(glfw_Handle, (wndCloseClbk = new GLFWWindowCloseCallback() {
-			@Override
-			public void invoke(long window) {
-				glfwSetWindowShouldClose(glfw_Handle, true);
-			}
-		}));
-
-		glfwSetWindowContentScaleCallback(glfw_Handle, (wndCntSclClbk = new GLFWWindowContentScaleCallback() {
-			@Override
-			public void invoke(long window, float xscale, float yscale) {
-
-			}
-		}));
-
-		glfwSetWindowFocusCallback(glfw_Handle, (wndFcsClbk = new GLFWWindowFocusCallback() {
-			@Override
-			public void invoke(long window, boolean focused) {
-
-			}
-		}));
-
-		glfwSetWindowIconifyCallback(glfw_Handle, (wndIconifyClbk = new GLFWWindowIconifyCallback() {
-			@Override
-			public void invoke(long window, boolean iconified) {
-
-			}
-		}));
-
-		glfwSetWindowMaximizeCallback(glfw_Handle, (wndMxmzClbk = new GLFWWindowMaximizeCallback() {
-			@Override
-			public void invoke(long window, boolean maximized) {
-
-			}
-		}));
-
-		glfwSetWindowPosCallback(glfw_Handle, (wndPosClbk = new GLFWWindowPosCallback() {
-			@Override
-			public void invoke(long window, int xpos, int ypos) {
-
-			}
-		}));
-
-		glfwSetWindowRefreshCallback(glfw_Handle, (wndRfrshClbk = new GLFWWindowRefreshCallback() {
-			@Override
-			public void invoke(long window) {
-
-			}
-		}));
-
-		glfwSetWindowSizeCallback(glfw_Handle, (wndSizeClbk = new GLFWWindowSizeCallback() {
-			@Override
-			public void invoke(long window, int width, int height) {
-
-			}
-		}));
-
-	}
-
-	public int getWidth() {
-		return width;
-	}
-
-	public void setWidth(int width) {
-		this.width = width;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public void setHeight(int hight) {
-		this.height = hight;
-	}
-
 	public Vector2f getCenter() {
-		return (new Vector2f(getWidth() / 2, getHeight() / 2));
+		return (new Vector2f(getPWidth() / 2, getPHeight() / 2));
+	}
+
+	/**
+	 * Returns width in pixels
+	 * 
+	 * @return
+	 */
+	public int getPWidth() {
+		return p_width;
+	}
+
+	public int getPHeight() {
+		return p_height;
 	}
 
 	public String getTitle() {
@@ -418,10 +676,10 @@ public abstract class GLFWWindow {
 	}
 
 	public long getGlfw_Handle() {
-		if (glfw_Handle == NULL) {
+		if (glfw_handle == NULL) {
 			return NULL;
 		}
-		return glfw_Handle;
+		return glfw_handle;
 	}
 
 	public String getWindowName() {

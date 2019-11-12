@@ -12,7 +12,7 @@ import net.abi.abisEngine.components.SpotLight;
 import net.abi.abisEngine.core.Entity;
 import net.abi.abisEngine.input.GLFWInput;
 import net.abi.abisEngine.math.Vector3f;
-import net.abi.abisEngine.rendering.meshLoading.legacy.Mesh;
+import net.abi.abisEngine.rendering.meshLoading.Mesh;
 import net.abi.abisEngine.rendering.resourceManagement.Material;
 import net.abi.abisEngine.rendering.resourceManagement.Texture;
 import net.abi.abisEngine.rendering.sceneManagement.Scene;
@@ -55,7 +55,7 @@ public class TestGame extends Scene {
 
 		cameraObject = new Entity();
 		cam = new Camera((float) Math.toRadians(60.0f),
-				(float) super.getParentWindow().getWidth() / (float) super.getParentWindow().getHeight(), 0.01f,
+				(float) super.getParentWindow().getPWidth() / (float) super.getParentWindow().getPHeight(), 0.01f,
 				1000.0f, "playerView");
 
 		cameraObject.addComponent(cam);
