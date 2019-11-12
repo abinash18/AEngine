@@ -16,6 +16,7 @@ import net.abi.abisEngine.handlers.logging.LogLevel;
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
 import net.abi.abisEngine.rendering.RenderingEngine;
+import net.abi.abisEngine.rendering.meshLoading.AIMeshLoader;
 import net.abi.abisEngine.rendering.windowManagement.GLFWWindow;
 import net.abi.abisEngine.rendering.windowManagement.GLFWWindowManager;
 import net.abi.abisEngine.rendering.windowManagement.models.EngineLoader;
@@ -38,12 +39,14 @@ public class CoreEngine {
 		this.frameRate = framerate;
 		this.frameTime = 1.0 / framerate;
 		initGLFW();
+		AIMeshLoader.printLibInfo();
 	}
 
 	public void initialize() {
 		// GLFWWindowManager.getCurrentWindow().create();
 		this.renderEngine = new RenderingEngine();
 		this.printDeviceProperties();
+		AIMeshLoader.printLibInfo();
 	}
 
 	public void initialize(RenderingEngine rndrEng) {

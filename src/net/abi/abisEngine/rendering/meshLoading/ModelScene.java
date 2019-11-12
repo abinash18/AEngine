@@ -37,7 +37,7 @@ public class ModelScene {
 
 		mats = new ArrayList<Material>();
 		for (int i = 0; i < matLength; i++) {
-			mats.add(new Material(AIMaterial.create(materialbuffer.get(i))));
+			// mats.add(new Material(AIMaterial.create(materialbuffer.get(i))));
 		}
 	}
 
@@ -48,9 +48,9 @@ public class ModelScene {
 		mats = null;
 	}
 
-	public Mesh getMesh(int index) {
-		Mesh meshResult = null;
-
+	public AIMesh getMesh(int index) {
+		AIMesh meshResult = null;
+		meshes.get(index);
 		return meshResult;
 	}
 
