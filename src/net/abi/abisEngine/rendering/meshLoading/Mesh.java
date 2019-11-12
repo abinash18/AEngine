@@ -13,31 +13,35 @@ import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 
-import java.beans.AppletInitializer;
 import java.util.ArrayList;
 import java.util.HashMap;
-import static org.lwjgl.assimp.Assimp.*;
-import org.lwjgl.assimp.*;
+import java.util.List;
+
+import org.lwjgl.assimp.AIFace;
+import org.lwjgl.assimp.AIMesh;
 import org.lwjgl.assimp.AIVector3D;
 import org.lwjgl.opengl.GL15;
 
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
+import net.abi.abisEngine.math.Vector2f;
 import net.abi.abisEngine.math.Vector3f;
 import net.abi.abisEngine.rendering.meshLoading.legacy.IndexedModel;
 import net.abi.abisEngine.rendering.meshLoading.legacy.OBJModel;
+import static net.abi.abisEngine.rendering.meshLoading.AIMeshLoader.*;
 import net.abi.abisEngine.rendering.resourceManagement.MeshResource;
 import net.abi.abisEngine.util.Util;
 
 public class Mesh {
 
+	private static final AIVector3D ZERO_VECTOR = AIVector3D.create().set(0.0f, 0.0f, 0.0f);
 	private static Logger logger = LogManager.getLogger(Mesh.class.getName());
 	/*
 	 * Saves An Unnecessary Allocation Of Resources If The Mesh Has Been Loaded In A
 	 * Different Call.
 	 */
 	private static HashMap<String, MeshResource> loadedModels = new HashMap<String, MeshResource>();
-	private MeshResource meshBuffers; // The Mesh That Is Being Loaded.
+	// private MeshResource meshBuffers; // The Mesh That Is Being Loaded.
 	private String fileName;
 
 	private AIMesh ai_mesh;
@@ -47,21 +51,44 @@ public class Mesh {
 	 */
 	private int vbo, ibo, size, refCount;
 
-	public Mesh(AIMesh aiMesh) {
-		ArrayList<Vertex> vertices = new ArrayList<Vertex>();
+	public Mesh(AIMesh model) {
+		this.ai_mesh = model;
+		List<Vertex> vertices = new ArrayList<Vertex>();
 
-		for (int i = 0; i < model.getPositions().size(); i++) {
-			vertices.add(new Vertex(model.getPositions().get(i), model.getTexCoords().get(i), model.getNormals().get(i),
-					model.getTangents().get(i)));
+		int _i = model.mNumVertices();
+
+		for (int i = 0; i < _i; i++) {
+			AIVector3D pos = model.mVertices().get(i);
+			AIVector3D normal = model.mNormals().get(i);
+			AIVector3D texCoord = model.mTextureCoords(0).get(i);
+			/*
+			 * if (model.mTextureCoords(0).sizeof() != 0) { texCoord =
+			 * model.mTextureCoords(0).get(i); } else { texCoord = ZERO_VECTOR; }
+			 */
+			AIVector3D tangent = model.mTangents().get(i);
+
+			vertices.add(new Vertex(new Vector3f(pos.x(), pos.y(), pos.z()), new Vector2f(texCoord.x(), texCoord.y()),
+					new Vector3f(normal.x(), normal.y(), normal.z()),
+					new Vector3f(tangent.x(), tangent.y(), tangent.z())));
 		}
 
 		Vertex[] vertexData = new Vertex[vertices.size()];
 		vertices.toArray(vertexData);
 
-		Integer[] indicesData = new Integer[model.getIndices().size()];
-		model.getIndices().toArray(indicesData);
+		List<Integer> indicies = new ArrayList<Integer>();
 
-		addVertices(vertexData, Util.toIntArray(indicesData), calcNormals);
+		for (int i = 0; i < model.mNumFaces(); i++) {
+			AIFace face = model.mFaces().get(i);
+			assert (face.mNumIndices() == 3);
+			indicies.add(face.mIndices().get(0));
+			indicies.add(face.mIndices().get(1));
+			indicies.add(face.mIndices().get(2));
+		}
+
+		Integer[] indicesData = new Integer[model.mNumFaces()];
+		int[] ind = Util.toIntArray(indicies.toArray(indicesData));
+
+		addVerticesSD(vertexData, ind);
 	}
 
 	private void genBuffers(int size) {
@@ -71,20 +98,31 @@ public class Mesh {
 		this.refCount = 1;
 	}
 
-	private void addVertices(Vertex[] vertices, int[] indices, boolean calcNormals) {
+	/**
+	 * Adds vertices and indices to the mesh buffer using STATIC DRAW.
+	 * 
+	 * @param vertices
+	 * @param indices
+	 */
+	private void addVerticesSD(Vertex[] vertices, int[] indices) {
+		addVertices(vertices, indices, GL_STATIC_DRAW);
+	}
 
-		if (calcNormals) {
-			calcNormals(vertices, indices);
-		}
-
+	/**
+	 * Adds vertices and indices using the draw_option.
+	 * 
+	 * @param vertices
+	 * @param indices
+	 */
+	private void addVertices(Vertex[] vertices, int[] indices, int draw_option) {
 		// meshBuffers.setSize(indices.length);
-		meshBuffers = new MeshResource(indices.length);
+		genBuffers(indices.length);
 
-		glBindBuffer(GL_ARRAY_BUFFER, meshBuffers.getVbo());
-		glBufferData(GL_ARRAY_BUFFER, Util.createFlippedBuffer(vertices), GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glBufferData(GL_ARRAY_BUFFER, Util.createFlippedBuffer(vertices), draw_option);
 
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshBuffers.getIbo());
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, Util.createFlippedBuffer(indices), GL_STATIC_DRAW);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, Util.createFlippedBuffer(indices), draw_option);
 
 	}
 
@@ -93,9 +131,8 @@ public class Mesh {
 		glEnableVertexAttribArray(1);
 		glEnableVertexAttribArray(2);
 		glEnableVertexAttribArray(3);
-		// glEnableVertexAttribArray(4);
 
-		glBindBuffer(GL_ARRAY_BUFFER, meshBuffers.getVbo());
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
 		glVertexAttribPointer(0, 3, GL_FLOAT, false, Vertex.SIZE * 4, 0);
 		glVertexAttribPointer(1, 2, GL_FLOAT, false, Vertex.SIZE * 4, 12);
@@ -103,55 +140,28 @@ public class Mesh {
 		glVertexAttribPointer(3, 3, GL_FLOAT, false, Vertex.SIZE * 4, 32);
 		// glVertexAttribPointer(3, 3, GL_FLOAT, false, Vertex.SIZE * 4, 44);
 
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshBuffers.getIbo());
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 
-		glDrawElements(GL_TRIANGLES, meshBuffers.getSize(), GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, 0);
 
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
 		glDisableVertexAttribArray(2);
 		glDisableVertexAttribArray(3);
-		// glDisableVertexAttribArray(4);
 	}
 
 	@Deprecated
 	public Mesh(String fileName, boolean calcNormals) {
 
-		MeshResource oldResource = loadedModels.get(fileName);
-
-		this.fileName = fileName;
-
-		// If the mesh being loaded already exists in the loadedModels map than use the
-		// mesh there
-		// if (oldResource != null) {
-		// this.meshBuffers = oldResource;
-		// this.meshBuffers.addReference(); // Increment the reference counter for
-		// garbage collection
-		// } else { // Else if the mesh dose not exist create a new mesh by calling the
-		// load mesh
-		// method.
-		// initMeshData();
-		this.loadMesh(fileName, calcNormals);
-		Mesh.loadedModels.put(fileName, meshBuffers); // Then put the mesh in the loaded models map for future use.
-		// }
+		this(AIMeshLoader.loadModel(fileName,
+				aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace)
+				.getMesh(0));
 
 	}
 
 	@Deprecated
 	public Mesh(Vertex[] vertices, int[] indices) {
-		this(vertices, indices, false);
-	}
-
-	@Deprecated
-	public Mesh(Vertex[] vertices, int[] indices, boolean calcNormals) {
-		initMeshData();
-		this.fileName = "";
-		this.addVertices(vertices, indices, calcNormals);
-	}
-
-	@Deprecated
-	private void initMeshData() {
-		meshBuffers = new MeshResource(0);
+		this.addVerticesSD(vertices, indices);
 	}
 
 	@Deprecated
@@ -213,7 +223,7 @@ public class Mesh {
 		Integer[] indicesData = new Integer[model.getIndices().size()];
 		model.getIndices().toArray(indicesData);
 
-		addVertices(vertexData, Util.toIntArray(indicesData), calcNormals);
+		addVerticesSD(vertexData, Util.toIntArray(indicesData));
 
 		return this;
 
@@ -227,7 +237,7 @@ public class Mesh {
 			// e.printStackTrace();
 			logger.error("Unable to finalize.", e);
 		}
-		if (meshBuffers.removeRefrence() && fileName.isEmpty()) {
+		if (removeRefrence() && fileName.isEmpty()) {
 			Mesh.loadedModels.remove(fileName);
 		}
 	}

@@ -1,6 +1,15 @@
 package net.abi.abisEngine.rendering.meshLoading;
 
+import static org.lwjgl.assimp.Assimp.aiGetCompileFlags;
 import static org.lwjgl.assimp.Assimp.aiGetErrorString;
+import static org.lwjgl.assimp.Assimp.aiGetExportFormatCount;
+import static org.lwjgl.assimp.Assimp.aiGetExportFormatDescription;
+import static org.lwjgl.assimp.Assimp.aiGetImportFormatCount;
+import static org.lwjgl.assimp.Assimp.aiGetImportFormatDescription;
+import static org.lwjgl.assimp.Assimp.aiGetLegalString;
+import static org.lwjgl.assimp.Assimp.aiGetVersionMajor;
+import static org.lwjgl.assimp.Assimp.aiGetVersionMinor;
+import static org.lwjgl.assimp.Assimp.aiGetVersionRevision;
 import static org.lwjgl.assimp.Assimp.aiImportFileEx;
 import static org.lwjgl.system.MemoryUtil.NULL;
 import static org.lwjgl.system.MemoryUtil.memAddress;
@@ -9,7 +18,9 @@ import static org.lwjgl.system.MemoryUtil.memUTF8;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.Objects;
 
+import org.lwjgl.assimp.AIExportFormatDesc;
 import org.lwjgl.assimp.AIFile;
 import org.lwjgl.assimp.AIFileCloseProc;
 import org.lwjgl.assimp.AIFileCloseProcI;
@@ -22,9 +33,12 @@ import org.lwjgl.assimp.AIFileSeek;
 import org.lwjgl.assimp.AIFileSeekI;
 import org.lwjgl.assimp.AIFileTellProc;
 import org.lwjgl.assimp.AIFileTellProcI;
+import org.lwjgl.assimp.AIImporterDesc;
 import org.lwjgl.assimp.AIScene;
 import org.lwjgl.assimp.Assimp;
 
+import net.abi.abisEngine.handlers.logging.LogManager;
+import net.abi.abisEngine.handlers.logging.Logger;
 import net.abi.abisEngine.util.IOUtil;
 
 public class AIMeshLoader {
@@ -214,14 +228,13 @@ public class AIMeshLoader {
 	/** Supported number of texture coord sets (UV(W) channels) per mesh. */
 	public static final int AI_MAX_NUMBER_OF_TEXTURECOORDS = 0x8;
 
-	private static boolean readerInitialized = false;
-
-	private static AIFileIO fileIO = null;
+	private static final AIFileIO fileIO = null;
+	private static Logger logger = LogManager.getLogger(AIMeshLoader.class.getName());
 
 	/**
 	 * Initializes the AI file reader.
 	 */
-	private static void initReader() {
+	private static AIFileIO initReader() {
 		AIFileIO fileIo = AIFileIO.create();
 		/* This just for preparing to read from the file. */
 		AIFileOpenProcI fileOpenProc = new AIFileOpenProc() {
@@ -270,7 +283,32 @@ public class AIMeshLoader {
 			}
 		};
 		fileIo.set(fileOpenProc, fileCloseProc, NULL);
-		readerInitialized = true;
+		return fileIo;
+	}
+
+	public static void printLibInfo() {
+		System.out.println(aiGetLegalString());
+		System.out.println("aiGetVersionMajor() = " + aiGetVersionMajor());
+		System.out.println("aiGetVersionMinor() = " + aiGetVersionMinor());
+		System.out.println("aiGetVersionRevision() = " + aiGetVersionRevision());
+		System.out.println("aiGetVersionRevision() = " + aiGetCompileFlags());
+
+		long c = aiGetImportFormatCount();
+		System.out.println("\nImport formats:");
+
+		for (int i = 0; i < c; i++) {
+			AIImporterDesc desc = Objects.requireNonNull(aiGetImportFormatDescription(i));
+			System.out.println("\t" + (i + 1) + ". " + desc.mNameString() + " (" + desc.mFileExtensionsString() + ")");
+		}
+
+		c = aiGetExportFormatCount();
+		System.out.println("\nExport formats:");
+
+		for (int i = 0; i < c; i++) {
+			AIExportFormatDesc desc = Objects.requireNonNull(aiGetExportFormatDescription(i));
+			System.out.println(
+					"\t" + (i + 1) + ". " + desc.descriptionString() + " (" + desc.fileExtensionString() + ")");
+		}
 	}
 
 	/**
@@ -281,13 +319,11 @@ public class AIMeshLoader {
 	 *         models.
 	 */
 	public static ModelScene loadModel(String modelFileName, int post_options) {
-
-		if (!readerInitialized) {
-			initReader();
-		}
 		// aiProcess_JoinIdenticalVertices | aiProcess_Triangulate
-		AIScene scene = aiImportFileEx(modelFileName, post_options, fileIO);
+		AIScene scene = aiImportFileEx("./res/models/" + modelFileName, post_options, fileIO);
 		if (scene == null) {
+			logger.error("Could'nt Load Mesh '" + modelFileName + "' With Options : " + post_options + " Error: "
+					+ aiGetErrorString());
 			throw new IllegalStateException(aiGetErrorString());
 		}
 		return new ModelScene(scene);
