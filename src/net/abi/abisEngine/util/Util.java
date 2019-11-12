@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import org.lwjgl.BufferUtils;
 
 import net.abi.abisEngine.math.Matrix4f;
-import net.abi.abisEngine.rendering.meshLoading.legacy.Vertex;
+import net.abi.abisEngine.rendering.meshLoading.Vertex;
 public class Util {
 	public static FloatBuffer createFloatBuffer(int size) {
 		return BufferUtils.createFloatBuffer(size);

@@ -16,12 +16,7 @@ import net.abi.abisEngine.handlers.logging.Logger;
 import net.abi.abisEngine.rendering.RenderingEngine;
 
 /**
- * GLFW Implementation Of Window. This Implementation supports shared contexts,
- * but only to a degree. The limitations are that if the main window (The one
- * sharing its context to its children, by children it means windows which
- * inherit context.) closes it will cause the chain of windows to close as well.
- * Another limitation is that you cannot have a tree of shared contexts. Windows
- * cannot share their context if they already have a inherited context.
+ * GLFW Implementation Of Window. This Implementation supports shared contexts.
  * 
  * @author abinash
  */
@@ -112,7 +107,7 @@ public class GLFWWindowManager {
 	public static void render() {
 
 		/*
-		 * Since useing a for loop iterating over the hash map will cause a concurrent
+		 * Since using a for loop iterating over the hash map will cause a concurrent
 		 * modification exception, we use the iterator which iterates over the entris in
 		 * the map.
 		 */
@@ -127,6 +122,18 @@ public class GLFWWindowManager {
 			/* Iterates over the windows which share the context. */
 			for (Iterator<GLFWWindow> subEntrys = entry.getValue().iterator(); subEntrys.hasNext();) {
 				GLFWWindow wnd = subEntrys.next();
+				if (wnd.getGlfw_Handle() == NULL) {
+					break;
+				}
+
+				/*
+				 * TODO: Add Background Render optimization by breaking out of the loop if the
+				 * window is not in focus or iconified.
+				 */
+				/*
+				 * if (!wnd.isFocused()) { break; }
+				 */
+
 				/*
 				 * Sets the current context to the one provided in the entry so we can render
 				 * that context.
