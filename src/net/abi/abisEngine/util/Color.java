@@ -11,6 +11,8 @@ import net.abi.abisEngine.math.Vector3f;
  */
 public class Color extends Vector3f {
 
+	public static final Color DEFAULT_COLOR = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+
 	private float alpha;
 
 	public Color(float red, float green, float blue) {

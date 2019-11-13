@@ -18,7 +18,9 @@ import static org.lwjgl.system.MemoryUtil.memUTF8;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.lwjgl.assimp.AIExportFormatDesc;
 import org.lwjgl.assimp.AIFile;
@@ -228,8 +230,71 @@ public class AIMeshLoader {
 	/** Supported number of texture coord sets (UV(W) channels) per mesh. */
 	public static final int AI_MAX_NUMBER_OF_TEXTURECOORDS = 0x8;
 
+	public static final int AI_DEFAULT_FLAGS = aiProcess_Triangulate | aiProcess_GenSmoothNormals
+			| aiProcess_CalcTangentSpace | aiProcess_JoinIdenticalVertices | aiProcess_OptimizeMeshes
+			| aiProcess_TransformUVCoords | aiProcess_FixInfacingNormals;
+
 	private static final AIFileIO fileIO = null;
+
+	public static final String MODELS_DIR = "./res/models/";
+
 	private static Logger logger = LogManager.getLogger(AIMeshLoader.class.getName());
+
+	/**
+	 * A map of fileNames to ModelScenes which contain all the meshes in the file.
+	 */
+	private static Map<String, ModelScene> loadedScenes = new ConcurrentHashMap<String, ModelScene>();
+
+	/**
+	 * Loads a mesh from a file using Asset Importer Library. If no post options are
+	 * provided (The value is 0) defaults will be used. Defaults are :
+	 * aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs |
+	 * aiProcess_CalcTangentSpace. NOTE: aiProcess_JoinIdenticalVertices is useful.
+	 * 
+	 * @return A Model Scene, since one model file can contain many individual
+	 *         models.
+	 */
+	public static Mesh loadModel(String modelFileName, String modelName, int post_options) {
+		// aiProcess_JoinIdenticalVertices | aiProcess_Triangulate
+
+		ModelScene tempScene = null;
+
+		// TODO: Optimize for code reuse.
+
+		if ((tempScene = loadedScenes.get(modelFileName)) != null) {
+			Mesh tempMesh = null;
+			if ((tempMesh = tempScene.getMesh(modelName)) != null) {
+				return tempMesh;
+			}
+			logger.error("Resource Not Found. Name : '" + modelName + "' File Name: '" + modelFileName);
+			throw new NullPointerException("Resource Not Found.");
+		}
+
+		AIScene scene = aiImportFileEx(MODELS_DIR + modelFileName, AI_DEFAULT_FLAGS, fileIO);
+		if (scene == null) {
+			logger.error("Could'nt Load AIScene '" + modelName + "' From File: '" + modelFileName + "' With Options : "
+					+ post_options + " Error: " + aiGetErrorString());
+			throw new IllegalStateException(aiGetErrorString());
+		}
+
+		loadedScenes.put(modelFileName, new ModelScene(scene));
+
+		Mesh tempMesh = null;
+		if ((tempMesh = loadedScenes.get(modelFileName).getMesh(modelName)) != null) {
+			return tempMesh;
+		}
+		logger.error("Resource Dose Not Exist In. File : '" + modelFileName + "' Model Name: '" + modelName);
+		throw new NullPointerException("Resource Not Found.");
+
+	}
+
+	public static void removeMesh(Mesh mesh) {
+		loadedScenes.forEach((k, v) -> {
+			if (v.getMesh(mesh.getMeshName()) != null) {
+				v.removeMesh(mesh.getMeshName());
+			}
+		});
+	}
 
 	/**
 	 * Initializes the AI file reader.
@@ -311,21 +376,4 @@ public class AIMeshLoader {
 		}
 	}
 
-	/**
-	 * Loads a mesh from a file using Asset Importer Library. NOTE:
-	 * aiProcess_JoinIdenticalVertices is useful.
-	 * 
-	 * @return A Model Scene, since one model file can contain many individual
-	 *         models.
-	 */
-	public static ModelScene loadModel(String modelFileName, int post_options) {
-		// aiProcess_JoinIdenticalVertices | aiProcess_Triangulate
-		AIScene scene = aiImportFileEx("./res/models/" + modelFileName, post_options, fileIO);
-		if (scene == null) {
-			logger.error("Could'nt Load Mesh '" + modelFileName + "' With Options : " + post_options + " Error: "
-					+ aiGetErrorString());
-			throw new IllegalStateException(aiGetErrorString());
-		}
-		return new ModelScene(scene);
-	}
 }

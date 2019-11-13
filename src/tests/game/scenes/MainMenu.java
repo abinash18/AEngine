@@ -11,6 +11,7 @@ import net.abi.abisEngine.core.Entity;
 import net.abi.abisEngine.input.GLFWInput;
 import net.abi.abisEngine.math.Vector2f;
 import net.abi.abisEngine.math.Vector3f;
+import net.abi.abisEngine.rendering.meshLoading.AIMeshLoader;
 import net.abi.abisEngine.rendering.meshLoading.Mesh;
 import net.abi.abisEngine.rendering.meshLoading.Vertex;
 import net.abi.abisEngine.rendering.resourceManagement.Material;
@@ -51,7 +52,7 @@ public class MainMenu extends Scene {
 
 		// Mesh mesh2 = new Mesh(vertices2, indices2, true);
 
-		Mesh mesh = new Mesh("plane3.obj", false);
+		Mesh mesh = AIMeshLoader.loadModel("monkey.obj", "Suzanne.001", 0);
 		Material material = new Material();
 		material.addTexture("diffuse", new Texture("bricks2.jpg"));
 		material.addTexture("normal_map", new Texture("bricks2_normal.jpg"));
@@ -62,7 +63,8 @@ public class MainMenu extends Scene {
 		material2.addFloat("specularIntensity", 1);
 		material2.addFloat("specularPower", 8);
 		MeshRenderer meshRenderer = new MeshRenderer(mesh, material);
-		MeshRenderer meshRenderer2 = new MeshRenderer(new Mesh("monkey.obj", true), material2);
+		MeshRenderer meshRenderer2 = new MeshRenderer(AIMeshLoader.loadModel("monkey.obj", "Suzanne.001", 0),
+				material2);
 
 		Entity planeObject = new Entity();
 		planeObject.addComponent(meshRenderer);
@@ -93,7 +95,7 @@ public class MainMenu extends Scene {
 		directionalLight.getTransform().rotate(new Vector3f(1, 0, 0), (float) Math.toRadians(-135));
 
 		Entity ironMan = new Entity();
-		ironMan.addComponent(new MeshRenderer(new Mesh("simpleCube.obj", false), material2));
+		ironMan.addComponent(new MeshRenderer(AIMeshLoader.loadModel("monkey.obj", "Suzanne.001", 0), material2));
 
 		ironMan.getTransform().setTranslation(10, 5, 0);
 
@@ -101,7 +103,7 @@ public class MainMenu extends Scene {
 		monkey.addComponent(meshRenderer2);
 
 		monkey2 = new Entity();
-		monkey2.addComponent(new MeshRenderer(new Mesh("monkey.obj", true), material));
+		monkey2.addComponent(new MeshRenderer(AIMeshLoader.loadModel("monkey.obj", "Suzanne.001", 0), material));
 		monkey2.getTransform().setTranslation(0, 0, 5);
 
 		monkey2.addChild(cameraObject);

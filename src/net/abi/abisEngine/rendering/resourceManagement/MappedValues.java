@@ -1,12 +1,13 @@
 package net.abi.abisEngine.rendering.resourceManagement;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import net.abi.abisEngine.math.Vector3f;
 
 public abstract class MappedValues {
-	private HashMap<String, Float> floatBinds;
-	private HashMap<String, Vector3f> vec3fBinds;
+	private Map<String, Float> floatBinds;
+	private Map<String, Vector3f> vec3fBinds;
 
 	public MappedValues() {
 		this.floatBinds = new HashMap<>();
@@ -28,7 +29,6 @@ public abstract class MappedValues {
 		}
 
 		return 0;
-
 	}
 
 	public Vector3f getVector3f(String name) {
@@ -38,6 +38,5 @@ public abstract class MappedValues {
 		}
 
 		return new Vector3f(0, 0, 0);
-
 	}
 }
