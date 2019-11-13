@@ -365,7 +365,7 @@ public class GLFWWindowManager {
 			 * If the context being iterated over is the same as the one provided then
 			 * execute.
 			 */
-			if (entry.getKey().name == context.name) {
+			if (entry.getKey().name.equals(context.name)) {
 				for (Iterator<GLFWWindow> subEntrys = entry.getValue().iterator(); subEntrys.hasNext();) {
 					GLFWWindow wnd = subEntrys.next();
 					wnd.dispose();

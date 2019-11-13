@@ -13,14 +13,12 @@ import net.abi.abisEngine.core.Entity;
 import net.abi.abisEngine.input.GLFWInput;
 import net.abi.abisEngine.math.Vector3f;
 import net.abi.abisEngine.rendering.meshLoading.AIMeshLoader;
-import net.abi.abisEngine.rendering.meshLoading.Mesh;
 import net.abi.abisEngine.rendering.resourceManagement.Material;
 import net.abi.abisEngine.rendering.resourceManagement.Texture;
 import net.abi.abisEngine.rendering.sceneManagement.Scene;
 import net.abi.abisEngine.rendering.windowManagement.GLFWWindow;
 import net.abi.abisEngine.rendering.windowManagement.GLFWWindowManager;
 import net.abi.abisEngine.util.Attenuation;
-import tests.game.entitys.FlatPlane;
 import tests.game.materials.BricksOne;
 import tests.game.materials.BricksTwo;
 import tests.game.windows.MainGame;
@@ -40,8 +38,9 @@ public class EngineSplashScreen extends Scene {
 		BricksOne material = new BricksOne();
 		BricksTwo material2 = new BricksTwo();
 
-		MeshRenderer meshRenderer2 = new MeshRenderer(AIMeshLoader.loadModel("Anvil_LowPoly.obj", "Cube.003", 0),
-				material2);
+		// MeshRenderer meshRenderer2 = new
+		// MeshRenderer(AIMeshLoader.loadModel("Anvil_LowPoly.obj", "Cube.003", 0),
+		// material2).toggleWireFrames();
 
 		// planeObject.getTransform().getPosition().set(0, -1, 5);
 
@@ -70,15 +69,18 @@ public class EngineSplashScreen extends Scene {
 		directionalLight.getTransform().rotate(new Vector3f(1, 0, 0), (float) Math.toRadians(-135));
 
 		Entity ironMan = new Entity();
-		ironMan.addComponent(new MeshRenderer(AIMeshLoader.loadModel("monkey.obj", "Suzanne.001", 0), material2));
+		// ironMan.addComponent(new MeshRenderer(AIMeshLoader.loadModel("monkey.obj",
+		// "Suzanne.001", 0), material2));
 
 		ironMan.getTransform().setTranslation(10, 5, 0);
 
 		monkey = new Entity();
-		monkey.addComponent(meshRenderer2);
+		// monkey.addComponent(meshRenderer2);
 
 		monkey2 = new Entity();
-		monkey2.addComponent(new MeshRenderer(AIMeshLoader.loadModel("monkey.obj", "Suzanne.001", 0), material));
+		// monkey2.addComponent(
+		// new MeshRenderer(AIMeshLoader.loadModel("monkey.obj", "Suzanne.001", 0),
+		// material).toggleWireFrames());
 		monkey2.getTransform().setTranslation(0, 0, 5);
 
 		monkey2.addChild(cameraObject);
@@ -89,16 +91,18 @@ public class EngineSplashScreen extends Scene {
 		anvilmat.addTexture("normal_map", new Texture("Normal_Map_Anvil.png"));
 		anvilmat.addFloat("specularIntensity", 1);
 		anvilmat.addFloat("specularPower", 8);
-		Entity anvil = new Entity()
-				.addComponent(new MeshRenderer(AIMeshLoader.loadModel("monkey.obj", "Suzanne.001", 0), anvilmat));
+		Entity anvil = new Entity().addComponent(
+				new MeshRenderer(AIMeshLoader.loadModel("monkey.obj", "Suzanne.001", 0), anvilmat).toggleWireFrames());
 
 		super.addChild(anvil);
 		super.setMainCamera("playerView");
 		super.addChild(spotLightObject);
-		super.addChild(new FlatPlane());
+		// super.addChild(new Entity()
+		// .addComponent(new MeshRenderer(AIMeshLoader.loadModel("plane3.obj", "Cube",
+		// 0), new BricksOne())));
 		super.addChild(directionalLightObject);
-		super.addChild(monkey);
-		super.addChild(ironMan);
+		// super.addChild(monkey);
+		// super.addChild(ironMan);
 		super.addChild(cameraObject);
 	}
 
@@ -108,7 +112,7 @@ public class EngineSplashScreen extends Scene {
 	public void update(float delta) {
 		super.update(delta);
 		temp = temp + delta;
-		monkey.getTransform().setTranslation(0f, 0f, 0.5f * temp);
+		// monkey.getTransform().setTranslation(0f, 0f, 0.5f * temp);
 	}
 
 	@Override
@@ -124,6 +128,15 @@ public class EngineSplashScreen extends Scene {
 			}
 
 		}
+
+		if (super.getInputController().isMouseButtonDown(GLFWInput.GLFW_MOUSE_BUTTON_RIGHT)) {
+			monkey.getComponents().forEach(v -> {
+				if (v instanceof MeshRenderer) {
+					((MeshRenderer) v).toggleWireFrames();
+				}
+			});
+		}
+
 		if (super.getInputController().isKeyDown(GLFWInput.GLFW_KEY_C)) {
 			super.getParentWindow().getSceneManager().setCurrentScene("MainMenu");
 		}

@@ -15,7 +15,6 @@ import org.lwjgl.assimp.AIMaterial;
 import org.lwjgl.assimp.AIMesh;
 import org.lwjgl.assimp.AIScene;
 import org.lwjgl.assimp.AIString;
-import org.lwjgl.assimp.AIVector2D;
 import org.lwjgl.assimp.AIVector3D;
 import org.lwjgl.assimp.Assimp;
 
@@ -25,7 +24,6 @@ import net.abi.abisEngine.rendering.meshLoading.legacy.IndexedModel;
 import net.abi.abisEngine.rendering.resourceManagement.Material;
 import net.abi.abisEngine.rendering.resourceManagement.Texture;
 import net.abi.abisEngine.util.Color;
-import net.abi.abisEngine.util.Util;
 
 /**
  * This class stores all meshes in the AIScene, and converts them to the
@@ -77,13 +75,19 @@ public class ModelScene {
 				tc = AIVector3D.create().set(0f, 0f, 0f);
 			}
 
-			AIVector3D tngt = _mesh.mTangents().get(i);
+			AIVector3D.Buffer tngt = _mesh.mTangents();
+
+			AIVector3D _tngt = AIVector3D.create().set(0f, 0f, 0f);
+
+			if (tngt != null) {
+				_tngt = tngt.get(i);
+			}
 
 			positions.add(new Vector3f(pos.x(), pos.y(), pos.z()));
 			normals.add(new Vector3f(nor.x(), nor.y(), nor.z()).normalize());
-			// texCoords.add(new Vector2f(tc.x(), (1 - tc.y())));
-			texCoords.add(new Vector2f(tc.x(), tc.y()).normalize());
-			tangents.add(new Vector3f(tngt.x(), tngt.y(), tngt.z()));
+			texCoords.add(new Vector2f(tc.x(), (1 - tc.y())));
+			// texCoords.add(new Vector2f(tc.x(), tc.y()).normalize());
+			tangents.add(new Vector3f(_tngt.x(), _tngt.y(), _tngt.z()));
 
 		}
 
@@ -97,95 +101,19 @@ public class ModelScene {
 
 		mesh = new Mesh(_mesh.mName().dataString(), new IndexedModel(positions, normals, texCoords, tangents, indices));
 
-		Material mat = null;
+//		Material mat = null;
+//
+//		int matIndex = _mesh.mMaterialIndex();
+//
+//		if (matIndex >= 0 && matIndex < mats.size()) {
+//			mat = mats.get(matIndex);
+//		} else {
+//			mat = new Material();
+//		}
 
-		int matIndex = _mesh.mMaterialIndex();
-
-		if (matIndex >= 0 && matIndex < mats.size()) {
-			mat = mats.get(matIndex);
-		} else {
-			mat = new Material();
-		}
-
-		mesh.setMat(mat);
+		// mesh.setMat(mat);
 
 		return mesh;
-	}
-
-	private ArrayList<Vector3f> processTangents(AIMesh _mesh) {
-		ArrayList<Vector3f> tans = new ArrayList<Vector3f>();
-
-		AIVector3D.Buffer _tans = _mesh.mTangents();
-
-		while (_tans != null && _tans.remaining() > 0) {
-			AIVector3D _tan = _tans.get();
-			tans.add(new Vector3f(_tan.x(), _tan.y(), _tan.z()));
-		}
-
-		return tans;
-	}
-
-	private ArrayList<Vector3f> processVerticies(AIMesh _mesh) {
-		ArrayList<Vector3f> verts = new ArrayList<Vector3f>();
-
-		AIVector3D.Buffer _verts = _mesh.mVertices();
-
-		while (_verts.remaining() > 0) {
-			AIVector3D _vert = _verts.get();
-			verts.add(new Vector3f(_vert.x(), _vert.y(), _vert.z()));
-		}
-
-		return verts;
-	}
-
-	private ArrayList<Vector3f> processNormals(AIMesh _mesh) {
-		ArrayList<Vector3f> norms = new ArrayList<Vector3f>();
-
-		AIVector3D.Buffer _norms = _mesh.mNormals();
-
-		while (_norms != null && _norms.remaining() > 0) {
-			AIVector3D _norm = _norms.get();
-			norms.add(new Vector3f(_norm.x(), _norm.y(), _norm.z()));
-		}
-
-		return norms;
-	}
-
-	private ArrayList<Vector2f> processTexCoords(AIMesh _mesh) {
-		ArrayList<Vector2f> texCoords = new ArrayList<Vector2f>();
-
-		AIVector3D.Buffer _texCoords = _mesh.mTextureCoords(0);
-
-		int numTexCoords = 0;
-
-		if (_texCoords != null) {
-			numTexCoords = _texCoords.remaining();
-		}
-
-		for (int i = 0; i < numTexCoords; i++) {
-			AIVector3D _texC = _texCoords.get();
-			texCoords.add(new Vector2f(_texC.x(), (1 - _texC.y())));
-		}
-
-		return texCoords;
-	}
-
-	private ArrayList<Integer> processIndicies(AIMesh _mesh) {
-		ArrayList<Integer> indicies = new ArrayList<Integer>();
-
-		AIFace.Buffer _faces = _mesh.mFaces();
-
-		int numFaces = _mesh.mNumFaces();
-
-		for (int i = 0; i < numFaces; i++) {
-			AIFace _face = _faces.get(i);
-			IntBuffer buffer = _face.mIndices();
-			while (buffer.remaining() > 0) {
-				indicies.add(buffer.get());
-			}
-		}
-
-		return indicies;
 	}
 
 	private Material processMaterial(AIMaterial _mat) {
@@ -210,14 +138,14 @@ public class ModelScene {
 
 	}
 
-	private Color processMaterialColor(AIMaterial _mat, String color_type, int texture_type, Material mat, int index) {
-		AIColor4D color = AIColor4D.create();
-		Color c = Color.DEFAULT_COLOR;
-		if (Assimp.aiGetMaterialColor(_mat, color_type, texture_type, index, color) != 0) {
-			c = new Color(color.r(), color.g(), color.b(), color.a());
-		}
-		return c;
-	}
+//	private Color processMaterialColor(AIMaterial _mat, String color_type, int texture_type, Material mat, int index) {
+//		AIColor4D color = AIColor4D.create();
+//		Color c = Color.DEFAULT_COLOR;
+//		if (Assimp.aiGetMaterialColor(_mat, color_type, texture_type, index, color) != 0) {
+//			c = new Color(color.r(), color.g(), color.b(), color.a());
+//		}
+//		return c;
+//	}
 
 	/**
 	 * Adds the textures of that type to the material specified from the _mat.
@@ -270,52 +198,6 @@ public class ModelScene {
 //						processMaterialColor(_mat, AIMeshLoader.AI_MATKEY_COLOR_TRANSPARENT, texture_type, mat, i));
 //			}
 //		}
-	}
-
-	private String typeToString(int type) {
-		String typeString = "Type Not Found.";
-
-		switch (type) {
-		case AIMeshLoader.aiTextureType_AMBIENT:
-			typeString = "ambient";
-			break;
-		case AIMeshLoader.aiTextureType_DISPLACEMENT:
-			typeString = "displacementmap";
-			break;
-		case AIMeshLoader.aiTextureType_EMISSIVE:
-			typeString = "emissive";
-			break;
-		case AIMeshLoader.aiTextureType_HEIGHT:
-			typeString = "heightmap";
-			break;
-		case AIMeshLoader.aiTextureType_LIGHTMAP:
-			typeString = "lightmap";
-			break;
-		case AIMeshLoader.aiTextureType_NORMALS:
-			typeString = "normals";
-			break;
-		case AIMeshLoader.aiTextureType_OPACITY:
-			typeString = "opacity";
-			break;
-		case AIMeshLoader.aiTextureType_REFLECTION:
-			typeString = "reflection";
-			break;
-		case AIMeshLoader.aiTextureType_SHININESS:
-			typeString = "shininess";
-			break;
-		case AIMeshLoader.aiTextureType_SPECULAR:
-			typeString = "specular";
-			break;
-		case AIMeshLoader.aiTextureType_DIFFUSE:
-			typeString = "diffuse";
-			break;
-
-		default:
-			break;
-		}
-
-		return typeString;
-
 	}
 
 	public void free() {

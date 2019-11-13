@@ -70,7 +70,7 @@ public class SceneManager {
 
 	public void render() {
 		if (currentScene == null) {
-			new Exception("No Current Scene!").printStackTrace();
+			new Exception("No Current Scene!");
 		}
 		parentWindow.getRenderEngine().render(currentScene);
 	}

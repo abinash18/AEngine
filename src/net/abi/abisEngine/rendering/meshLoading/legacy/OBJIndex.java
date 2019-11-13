@@ -6,6 +6,11 @@ public class OBJIndex {
 
 	@Override
 	public boolean equals(Object other) {
+
+		if (other == null) {
+			return false;
+		}
+
 		OBJIndex index = (OBJIndex) other;
 
 		return (vertexIndex == index.vertexIndex && texCoordIndex == index.texCoordIndex

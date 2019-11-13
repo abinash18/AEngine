@@ -13,7 +13,6 @@ import net.abi.abisEngine.core.Entity;
 import net.abi.abisEngine.input.GLFWInput;
 import net.abi.abisEngine.math.Vector3f;
 import net.abi.abisEngine.rendering.meshLoading.AIMeshLoader;
-import net.abi.abisEngine.rendering.meshLoading.Mesh;
 import net.abi.abisEngine.rendering.resourceManagement.Material;
 import net.abi.abisEngine.rendering.resourceManagement.Texture;
 import net.abi.abisEngine.rendering.sceneManagement.Scene;

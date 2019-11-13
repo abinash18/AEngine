@@ -574,7 +574,7 @@ public abstract class GLFWWindow {
 	public void setWindowOpacity(float opacity) {
 		checkWindowPointer();
 		glfwSetWindowOpacity(glfw_handle, opacity);
-		opacity = glfwGetWindowOpacity(glfw_handle);
+		this.opacity = glfwGetWindowOpacity(glfw_handle);
 	}
 
 	public float getWindowOpacity() {
