@@ -8,8 +8,6 @@ import java.util.List;
 
 import org.lwjgl.BufferUtils;
 
-import static org.lwjgl.system.MemoryUtil.*;
-
 import net.abi.abisEngine.math.Matrix4f;
 import net.abi.abisEngine.math.Vector2f;
 import net.abi.abisEngine.math.Vector3f;

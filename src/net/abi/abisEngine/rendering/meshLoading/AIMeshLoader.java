@@ -45,7 +45,7 @@ import net.abi.abisEngine.util.IOUtil;
 
 public class AIMeshLoader {
 
-	/* These Enums have been adopted from the original LWJGL AssImp class. */
+	/* These Constants have been adopted from the original LWJGL AssImp class. */
 
 	/** Default values for configuration properties. */
 	public static final int AI_SBBC_DEFAULT_MAX_BONES = 0x3C, AI_SLM_DEFAULT_MAX_TRIANGLES = 0xF4240,
@@ -231,8 +231,7 @@ public class AIMeshLoader {
 	public static final int AI_MAX_NUMBER_OF_TEXTURECOORDS = 0x8;
 
 	public static final int AI_DEFAULT_FLAGS = aiProcess_Triangulate | aiProcess_GenSmoothNormals
-			| aiProcess_CalcTangentSpace | aiProcess_JoinIdenticalVertices | aiProcess_OptimizeMeshes
-			| aiProcess_TransformUVCoords | aiProcess_FixInfacingNormals;
+			| aiProcess_CalcTangentSpace | aiProcess_JoinIdenticalVertices | aiProcess_OptimizeMeshes;
 
 	private static final AIFileIO fileIO = null;
 
@@ -260,10 +259,12 @@ public class AIMeshLoader {
 		ModelScene tempScene = null;
 
 		// TODO: Optimize for code reuse.
-
+		Mesh tempMesh = null;
 		if ((tempScene = loadedScenes.get(modelFileName)) != null) {
-			Mesh tempMesh = null;
+
 			if ((tempMesh = tempScene.getMesh(modelName)) != null) {
+				System.out.println(loadedScenes.size());
+				tempMesh.addReference();
 				return tempMesh;
 			}
 			logger.error("Resource Not Found. Name : '" + modelName + "' File Name: '" + modelFileName);
@@ -279,8 +280,8 @@ public class AIMeshLoader {
 
 		loadedScenes.put(modelFileName, new ModelScene(scene));
 
-		Mesh tempMesh = null;
 		if ((tempMesh = loadedScenes.get(modelFileName).getMesh(modelName)) != null) {
+			System.out.println(loadedScenes.size());
 			return tempMesh;
 		}
 		logger.error("Resource Dose Not Exist In. File : '" + modelFileName + "' Model Name: '" + modelName);

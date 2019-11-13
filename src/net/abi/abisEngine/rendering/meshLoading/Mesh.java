@@ -7,6 +7,9 @@ import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL30.glDeleteVertexArrays;
 
+import java.nio.Buffer;
+import java.nio.FloatBuffer;
+
 import org.lwjgl.assimp.AIVector3D;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
@@ -24,7 +27,7 @@ public class Mesh {
 	private static final AIVector3D ZERO_VECTOR = AIVector3D.create().set(0.0f, 0.0f, 0.0f);
 
 	private static final int VAO_POSITIONS_INDEX = 0, VAO_TEXTURE_COORDINATE_INDEX = 1, VAO_NORMAL_INDEX = 2,
-			VAO_TANGENT_INDEX = 3, VAO_INDICIES_INDEX = 4, NUM_BUFFERS = 5;
+			VAO_TANGENT_INDEX = 3, VAO_INDICES_INDEX = 4, NUM_BUFFERS = 5;
 
 	private static Logger logger = LogManager.getLogger(Mesh.class.getName());
 
@@ -64,92 +67,45 @@ public class Mesh {
 	 * @param vertices
 	 * @param indices
 	 */
-	private void bindModel(IndexedModel model, int draw_option) {
-		// meshBuffers.setSize(indices.length);
-
+	private void bindModel(IndexedModel model, int draw_usage) {
+		this.refCount = 1;
 		size = model.getIndices().size();
 
-		/* Generate VAO's */
+		/* Generate VAO */
 		VAO = GL45.glGenVertexArrays();
 
 		GL45.glBindVertexArray(VAO);
 
+		/* Generate VBOs */
 		GL45.glGenBuffers(VAOBuffers);
 
 		/* Positions */
-
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VAOBuffers[VAO_POSITIONS_INDEX]);
-		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, Util.createFlippedBuffer(model.getPositions()), draw_option);
-		GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 0, 0);
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+		bindBuffer(GL15.GL_ARRAY_BUFFER, VAO_POSITIONS_INDEX, 0, 3, Util.createFlippedBuffer(model.getPositions()),
+				draw_usage);
 
 		/* Normals */
-
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VAOBuffers[VAO_TEXTURE_COORDINATE_INDEX]);
-		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, Util.createFlippedBuffer(model.getTexCoords()), draw_option);
-		GL20.glVertexAttribPointer(1, 2, GL11.GL_FLOAT, false, 0, 0);
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+		bindBuffer(GL15.GL_ARRAY_BUFFER, VAO_TEXTURE_COORDINATE_INDEX, 1, 2,
+				Util.createFlippedBuffer(model.getTexCoords()), draw_usage);
 
 		/* Texture Coordinates */
-
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VAOBuffers[VAO_NORMAL_INDEX]);
-		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, Util.createFlippedBuffer(model.getNormals()), draw_option);
-		GL20.glVertexAttribPointer(2, 3, GL11.GL_FLOAT, false, 0, 0);
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+		bindBuffer(GL15.GL_ARRAY_BUFFER, VAO_NORMAL_INDEX, 2, 3, Util.createFlippedBuffer(model.getNormals()),
+				draw_usage);
 
 		/* Tangents */
+		bindBuffer(GL15.GL_ARRAY_BUFFER, VAO_TANGENT_INDEX, 3, 3, Util.createFlippedBuffer(model.getTangents()),
+				draw_usage);
 
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VAOBuffers[VAO_TANGENT_INDEX]);
-		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, Util.createFlippedBuffer(model.getTangents()), draw_option);
-		GL20.glVertexAttribPointer(3, 3, GL11.GL_FLOAT, false, 0, 0);
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+		/* Indices */
+		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, VAOBuffers[VAO_INDICES_INDEX]);
+		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, Util.createIntBuffer(model.getIndices()), draw_usage);
 
-		/*
-		 * Indicies
-		 */
-		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, VAOBuffers[VAO_INDICIES_INDEX]);
+	}
 
-		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, Util.createIntBuffer(model.getIndices()), draw_option);
-		// GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, buffer);
-
-//		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-//		glBufferData(GL_ARRAY_BUFFER, Util.createFlippedBuffer(Util.toVertexArray(model.getPositions(),
-//				model.getNormals(), model.getTexCoords(), model.getTangents())), draw_option);
-//
-//		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-//		glBufferData(GL_ELEMENT_ARRAY_BUFFER, Util.createFlippedBuffer(Util.listIntToArray(model.getIndices())),
-//				draw_option);
-
-//		glBindBuffer(GL_ARRAY_BUFFER, VAOBuffers[VAO_POSITIONS_INDEX]);
-//		glBufferData(GL_ARRAY_BUFFER, Util.createFlippedBuffer(model.getPositions()), draw_option);
-//
-//		glEnableVertexAttribArray(0);
-//		glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
-//
-//		glBindBuffer(GL_ARRAY_BUFFER, VAOBuffers[VAO_NORMAL_INDEX]);
-//		glBufferData(GL_ARRAY_BUFFER, Util.createFlippedBuffer(model.getNormals()), draw_option);
-//
-//		glEnableVertexAttribArray(1);
-//		glVertexAttribPointer(1, 2, GL_FLOAT, false, 0, 0);
-//
-//		glBindBuffer(GL_ARRAY_BUFFER, VAOBuffers[VAO_TEXTURE_COORDINATE_INDEX]);
-//		glBufferData(GL_ARRAY_BUFFER, Util.createFlippedBuffer(model.getTexCoords()), draw_option);
-//
-//		glEnableVertexAttribArray(2);
-//		glVertexAttribPointer(2, 3, GL_FLOAT, false, 0, 0);
-//
-//		glBindBuffer(GL_ARRAY_BUFFER, VAOBuffers[VAO_TANGENT_INDEX]);
-//		glBufferData(GL_ARRAY_BUFFER, Util.createFlippedBuffer(model.getTangents()), draw_option);
-//
-//		glEnableVertexAttribArray(3);
-//		glVertexAttribPointer(3, 3, GL_FLOAT, false, 0, 0);
-//
-//		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VAOBuffers[VAO_INDICIES_INDEX]);
-//		glBufferData(GL_ELEMENT_ARRAY_BUFFER, Util.listIntToArray(model.getIndices()), draw_option);
-
-		// glBindBuffer(GL_ARRAY_BUFFER, 0);
-		// glBindVertexArray(0);
-
+	private void bindBuffer(int type, int index, int pos, int numValues, FloatBuffer data, int draw_usage) {
+		GL15.glBindBuffer(type, VAOBuffers[index]);
+		GL15.glBufferData(type, data, draw_usage);
+		GL20.glVertexAttribPointer(pos, numValues, GL11.GL_FLOAT, false, 0, 0);
+		GL15.glBindBuffer(type, 0);
 	}
 
 	public void deleteMesh() {
@@ -160,41 +116,26 @@ public class Mesh {
 		}
 	}
 
-	public void draw() {
+	private void init() {
 		GL45.glBindVertexArray(VAO);
-
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
 		glEnableVertexAttribArray(2);
 		glEnableVertexAttribArray(3);
+	}
 
-//		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-//
-//		glVertexAttribPointer(0, 3, GL_FLOAT, false, Vertex.SIZE * 4, 0);
-//		glVertexAttribPointer(1, 2, GL_FLOAT, false, Vertex.SIZE * 4, 12);
-//		glVertexAttribPointer(2, 3, GL_FLOAT, false, Vertex.SIZE * 4, 20);
-//		glVertexAttribPointer(3, 3, GL_FLOAT, false, Vertex.SIZE * 4, 32);
-////		 glVertexAttribPointer(3, 3, GL_FLOAT, false, Vertex.SIZE * 4, 44);
-////
-//		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
+	public void draw(int draw_option) {
+		init();
+		glDrawElements(draw_option, size, GL_UNSIGNED_INT, 0);
+		deInit();
+	}
 
-		glDrawElements(GL15.GL_TRIANGLES, size, GL_UNSIGNED_INT, 0);
-
+	private void deInit() {
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
 		glDisableVertexAttribArray(2);
 		glDisableVertexAttribArray(3);
 		GL45.glBindVertexArray(0);
-	}
-
-	private void genBuffers(int size) {
-		// VAO = GL45.glGenVertexArrays();
-		// GL45.glBindVertexArray(VAO);
-		// GL45.glGenBuffers(VAOBuffers);
-		VBO = GL15.glGenBuffers();
-		IBO = GL15.glGenBuffers();
-		this.size = size;
-		this.refCount = 1;
 	}
 
 	public void addReference() {
