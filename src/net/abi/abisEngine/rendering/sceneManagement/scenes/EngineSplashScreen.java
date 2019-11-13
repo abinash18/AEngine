@@ -12,6 +12,7 @@ import net.abi.abisEngine.components.SpotLight;
 import net.abi.abisEngine.core.Entity;
 import net.abi.abisEngine.input.GLFWInput;
 import net.abi.abisEngine.math.Vector3f;
+import net.abi.abisEngine.rendering.meshLoading.AIMeshLoader;
 import net.abi.abisEngine.rendering.meshLoading.Mesh;
 import net.abi.abisEngine.rendering.resourceManagement.Material;
 import net.abi.abisEngine.rendering.resourceManagement.Texture;
@@ -39,7 +40,8 @@ public class EngineSplashScreen extends Scene {
 		BricksOne material = new BricksOne();
 		BricksTwo material2 = new BricksTwo();
 
-		MeshRenderer meshRenderer2 = new MeshRenderer(new Mesh("monkey.obj", false), material2);
+		MeshRenderer meshRenderer2 = new MeshRenderer(AIMeshLoader.loadModel("Anvil_LowPoly.obj", "Cube.003", 0),
+				material2);
 
 		// planeObject.getTransform().getPosition().set(0, -1, 5);
 
@@ -68,7 +70,7 @@ public class EngineSplashScreen extends Scene {
 		directionalLight.getTransform().rotate(new Vector3f(1, 0, 0), (float) Math.toRadians(-135));
 
 		Entity ironMan = new Entity();
-		ironMan.addComponent(new MeshRenderer(new Mesh("simpleCube.obj", false), material2));
+		ironMan.addComponent(new MeshRenderer(AIMeshLoader.loadModel("monkey.obj", "Suzanne.001", 0), material2));
 
 		ironMan.getTransform().setTranslation(10, 5, 0);
 
@@ -76,7 +78,7 @@ public class EngineSplashScreen extends Scene {
 		monkey.addComponent(meshRenderer2);
 
 		monkey2 = new Entity();
-		monkey2.addComponent(new MeshRenderer(new Mesh("monkey.obj", true), material));
+		monkey2.addComponent(new MeshRenderer(AIMeshLoader.loadModel("monkey.obj", "Suzanne.001", 0), material));
 		monkey2.getTransform().setTranslation(0, 0, 5);
 
 		monkey2.addChild(cameraObject);
@@ -87,7 +89,8 @@ public class EngineSplashScreen extends Scene {
 		anvilmat.addTexture("normal_map", new Texture("Normal_Map_Anvil.png"));
 		anvilmat.addFloat("specularIntensity", 1);
 		anvilmat.addFloat("specularPower", 8);
-		Entity anvil = new Entity().addComponent(new MeshRenderer(new Mesh("Anvil_LowPoly.obj", true), anvilmat));
+		Entity anvil = new Entity()
+				.addComponent(new MeshRenderer(AIMeshLoader.loadModel("monkey.obj", "Suzanne.001", 0), anvilmat));
 
 		super.addChild(anvil);
 		super.setMainCamera("playerView");
@@ -96,7 +99,7 @@ public class EngineSplashScreen extends Scene {
 		super.addChild(directionalLightObject);
 		super.addChild(monkey);
 		super.addChild(ironMan);
-		super.addChild(monkey2);
+		super.addChild(cameraObject);
 	}
 
 	float temp = 0.0f;

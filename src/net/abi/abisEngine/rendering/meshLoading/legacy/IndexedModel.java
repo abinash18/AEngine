@@ -12,11 +12,17 @@ public class IndexedModel {
 	private ArrayList<Integer> indices;
 
 	public IndexedModel() {
-		positions = new ArrayList<Vector3f>();
-		normals = new ArrayList<Vector3f>();
-		texCoords = new ArrayList<Vector2f>();
-		tangents = new ArrayList<Vector3f>();
-		indices = new ArrayList<Integer>();
+		this(new ArrayList<Vector3f>(), new ArrayList<Vector3f>(), new ArrayList<Vector2f>(), new ArrayList<Vector3f>(),
+				new ArrayList<Integer>());
+	}
+
+	public IndexedModel(ArrayList<Vector3f> pos, ArrayList<Vector3f> nor, ArrayList<Vector2f> tex,
+			ArrayList<Vector3f> tans, ArrayList<Integer> ind) {
+		positions = pos;
+		normals = nor;
+		texCoords = tex;
+		tangents = tans;
+		indices = ind;
 	}
 
 	public void calcNormals() {
@@ -74,6 +80,11 @@ public class IndexedModel {
 		for (int i = 0; i < tangents.size(); i++) {
 			tangents.get(i).set(tangents.get(i).normalize());
 		}
+	}
+
+	public boolean isValid() {
+		return (positions.size() == texCoords.size() && texCoords.size() == normals.size()
+				&& normals.size() == tangents.size());
 	}
 
 	public ArrayList<Vector3f> getPositions() {

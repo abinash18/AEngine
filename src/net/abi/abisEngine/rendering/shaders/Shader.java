@@ -21,6 +21,7 @@ import net.abi.abisEngine.math.Vector3f;
 import net.abi.abisEngine.rendering.RenderingEngine;
 import net.abi.abisEngine.rendering.resourceManagement.Material;
 import net.abi.abisEngine.rendering.resourceManagement.ShaderResource;
+import net.abi.abisEngine.rendering.resourceManagement.Texture;
 import net.abi.abisEngine.util.Util;
 
 public class Shader {
@@ -82,7 +83,10 @@ public class Shader {
 
 			if (uniformType.equals("sampler2D")) {
 				int samplerSlot = engine.getSamplerSlot(uniformName);
-				mat.getTexture(uniformName).bind(samplerSlot);
+				Texture tex = mat.getTexture(uniformName);
+				if (tex != null) {
+					tex.bind(samplerSlot);
+				}
 				setUniformi(uniformName, samplerSlot);
 			} else if (uniformName.startsWith("T_")) {
 				if (uniformName.equals("T_MVP")) {
