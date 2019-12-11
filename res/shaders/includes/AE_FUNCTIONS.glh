@@ -1,0 +1,22 @@
+
+// In future convert this to a meta file to get generic function file names which can be included in the shader loading process.
+// Like #include or #import AE_FUNCTIONS:LinearizeDepth
+// Then the loader will look through this meta file and determine the file name of the function and include only that instead of all fuctions in the file.
+// When loading multiple functions from the file it can be defined as so:
+// #include or #import AE_FUNCTIONS:{LinearizeDepth, DeLinearizeDepth, ...}
+// The AE_FUNCTIONS file would be in a format such as JSON or XML
+
+// The convetion will be that all files that contain native functions will have a prefix of AE_
+// There will be a big file like AE_FUNCTIONS which a compiler will run over and find the functions needed for import.
+// Those functions will have a import notation aswell like:
+
+// #import AE_FUNCTIONS:DeLinearize
+float LinearizeDepth(float depth) {
+    float z = depth * 2.0 - 1.0; // back to NDC 
+    return (2.0 * near * far) / (far + near - z * (far - near));	
+}
+
+// And if there is no notaion it will mean the function dose not have any dependecies.
+
+// The notation will be a line above so the compiler will have to send the line index one above from the function
+// to the processNativeImports(String shaderText) fuction.

@@ -3,14 +3,19 @@ package net.abi.abisEngine.rendering.resourceManagement;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter.DEFAULT;
+
+import net.abi.abisEngine.rendering.shaders.Shader;
 import net.abi.abisEngine.util.Color;
 
 public class Material extends MappedValues {
 
 	public static final String DEFAULT_TEXTURE = "defaultModelTexture.png";
-
+	public static final Material DEFAULT_MATERIAL = new Material().addTexture("default", new Texture(DEFAULT_TEXTURE));
 	private Map<String, Texture> textureBinds;
 	private Map<String, Color> colorBinds;
+
+	private Map<String, Shader> shaders;
 
 	public Material() {
 		super();
@@ -32,8 +37,9 @@ public class Material extends MappedValues {
 		return Color.DEFAULT_COLOR;
 	}
 
-	public void addTexture(String name, Texture texture) {
+	public Material addTexture(String name, Texture texture) {
 		textureBinds.put(name, texture);
+		return this;
 	}
 
 	/**
@@ -50,9 +56,22 @@ public class Material extends MappedValues {
 //		} else {
 //			this.addTexture(name, new Texture(DEFAULT_TEXTURE));
 //		}
-
 		return result;
+	}
 
+	public Shader getShader(String nameOrPassTag) {
+
+		Shader result = shaders.get(nameOrPassTag);
+
+		if (result == null) {
+			shaders.put(nameOrPassTag, Shader.DEFAULT_SHADER);
+		}
+
+		return shaders.get(nameOrPassTag);
+	}
+
+	public void addShader(String nameOrPassTag, String shaderSource) {
+		// shaders.put(nameOrPassTag, new Shader());
 	}
 
 }

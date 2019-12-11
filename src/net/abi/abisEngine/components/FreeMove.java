@@ -6,6 +6,7 @@ import static net.abi.abisEngine.input.GLFWInput.GLFW_KEY_S;
 import static net.abi.abisEngine.input.GLFWInput.GLFW_KEY_W;
 
 import net.abi.abisEngine.input.GLFWInput;
+import net.abi.abisEngine.input.GLFWMouseAndKeyboardInput;
 import net.abi.abisEngine.math.Vector3f;
 
 public class FreeMove extends SceneComponent {
@@ -36,20 +37,21 @@ public class FreeMove extends SceneComponent {
 		 * Do Not Need To Use Input.getKeyDown Because It Automatically Returns The Key
 		 * If It Is Down.
 		 */
-		if (super.getParentScene().getInputController().isKeyDown((GLFWInput.GLFW_KEY_LEFT_SHIFT))) {
+		if (((GLFWMouseAndKeyboardInput) super.getParentScene().getInputController())
+				.isKeyDown((GLFWInput.GLFW_KEY_LEFT_SHIFT))) {
 			moveAmount = (float) (5 * delta);
 		}
 
-		if (super.getParentScene().getInputController().isKeyHeldDown(((forwardKey)))) {
+		if (((GLFWMouseAndKeyboardInput) super.getParentScene().getInputController()).isKeyHeldDown(((forwardKey)))) {
 			move(super.getTransform().getRotation().getForward(), moveAmount);
 		}
-		if (super.getParentScene().getInputController().isKeyHeldDown(((leftKey)))) {
+		if (((GLFWMouseAndKeyboardInput) super.getParentScene().getInputController()).isKeyHeldDown(((leftKey)))) {
 			move(super.getTransform().getRotation().getLeft(), moveAmount);
 		}
-		if (super.getParentScene().getInputController().isKeyHeldDown(((rightKey)))) {
+		if (((GLFWMouseAndKeyboardInput) super.getParentScene().getInputController()).isKeyHeldDown(((rightKey)))) {
 			move(super.getTransform().getRotation().getRight(), moveAmount);
 		}
-		if (super.getParentScene().getInputController().isKeyHeldDown(((backKey)))) {
+		if (((GLFWMouseAndKeyboardInput) super.getParentScene().getInputController()).isKeyHeldDown(((backKey)))) {
 			move(super.getTransform().getRotation().getForward(), -moveAmount);
 		}
 

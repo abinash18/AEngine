@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL32;
+import org.lwjgl.opengl.GL40;
 
 import net.abi.abisEngine.components.DirectionalLight;
 import net.abi.abisEngine.components.Light;
@@ -18,6 +19,8 @@ import net.abi.abisEngine.math.Matrix4f;
 import net.abi.abisEngine.math.Transform;
 import net.abi.abisEngine.math.Vector2f;
 import net.abi.abisEngine.math.Vector3f;
+import net.abi.abisEngine.math.Vector3i;
+import net.abi.abisEngine.math.Vector4f;
 import net.abi.abisEngine.rendering.RenderingEngine;
 import net.abi.abisEngine.rendering.resourceManagement.Material;
 import net.abi.abisEngine.rendering.resourceManagement.ShaderResource;
@@ -26,15 +29,39 @@ import net.abi.abisEngine.util.Util;
 
 public class Shader {
 
+	public static final Shader DEFAULT_SHADER = null;
+
 	private static Logger logger = LogManager.getLogger(Shader.class.getName());
 
-	private static HashMap<String, ShaderResource> loadedShaderPrograms = new HashMap<String, ShaderResource>();
+	public static HashMap<String, ShaderResource> loadedShaderPrograms = new HashMap<String, ShaderResource>();
 	private ShaderResource shaderProgram;
 
 	// private String fileName;
 
+	class ShaderSource {
+		String name;
+		String source;
+	}
+
+	class ShaderData {
+		HashMap<String, ShaderSource> proccessedSources;
+
+		public ShaderData(String shaderName) {
+			this.proccessedSources = new HashMap<String, ShaderSource>();
+		}
+
+		public void addSource(String sourceTag, ShaderSource source) {
+			proccessedSources.put(sourceTag, source);
+		}
+
+		public ShaderSource getSource(String sourceTag) {
+			return proccessedSources.get(sourceTag);
+		}
+
+	}
+
 	public Shader(String fileName) {
-		// this.fileName = fileName;
+		//this.fileName = fileName;
 
 		// TODO: make this hashmap of resources into a HashSet and use compute if absent
 		// method to add shader to set
@@ -46,10 +73,12 @@ public class Shader {
 			this.shaderProgram.addReference();
 		} else {
 			// this.shaderProgram = loadShader(fileName);
-			this.shaderProgram = new ShaderResource(fileName);
 
 			String vertexShaderText = loadShader(fileName + ".glvs");
 			String fragmentShaderText = loadShader(fileName + ".glfs");
+
+			this.shaderProgram = new ShaderResource(fileName, fileName + ".glvs", fileName + ".glfs", vertexShaderText,
+					fragmentShaderText);
 
 			this.addVertexShader(vertexShaderText);
 			this.addFragmentShader(fragmentShaderText);
@@ -81,6 +110,10 @@ public class Shader {
 			String uniformName = shaderProgram.getUniformNames().get(i);
 			String uniformType = shaderProgram.getUniformTypes().get(i);
 
+			if (uniformName.equals("normal_mapping_enabled")) {
+				setUniformi(uniformName, 1);
+			}
+
 			if (uniformType.equals("sampler2D")) {
 				int samplerSlot = engine.getSamplerSlot(uniformName);
 				Texture tex = mat.getTexture(uniformName);
@@ -90,10 +123,10 @@ public class Shader {
 				setUniformi(uniformName, samplerSlot);
 			} else if (uniformName.startsWith("T_")) {
 				if (uniformName.equals("T_MVP")) {
-					setUniformMatrix4f(uniformName, MVPMatrix);
+					setUniformMatrix4fv(uniformName, MVPMatrix);
 					// logger.finest("Added '" + uniformName + "' as MVP Matrix.");
 				} else if (uniformName.equals("T_model")) {
-					setUniformMatrix4f(uniformName, worldMatrix);
+					setUniformMatrix4fv(uniformName, worldMatrix);
 					// logger.finest("Added '" + uniformName + "' as World Matrix.");
 				} else {
 					logger.error("'" + uniformName
@@ -472,27 +505,36 @@ public class Shader {
 	}
 
 	public void addVertexShader(String text) {
-		addProgram(text, GL20.GL_VERTEX_SHADER);
+		addProgram(text, GL20.GL_VERTEX_SHADER, "Vertex Shader");
 	}
 
 	public void addGeometryShader(String text) {
-		addProgram(text, GL32.GL_GEOMETRY_SHADER);
+		addProgram(text, GL32.GL_GEOMETRY_SHADER, "Geometry Shader");
 	}
 
 	public void addFragmentShader(String text) {
-		addProgram(text, GL20.GL_FRAGMENT_SHADER);
+		addProgram(text, GL20.GL_FRAGMENT_SHADER, "Fragment Shader");
+	}
+
+	/**
+	 * GL40 Shader Program.
+	 * 
+	 * @param text
+	 */
+	public void addTesselationControlShader(String text) {
+		addProgram(text, GL40.GL_TESS_CONTROL_SHADER, "Tesselation Control Shader");
 	}
 
 	public void addVertexShaderFromFile(String fileName) {
-		addProgram(loadShader(fileName), GL20.GL_VERTEX_SHADER);
+		addProgram(loadShader(fileName), GL20.GL_VERTEX_SHADER, "Vertex Shader");
 	}
 
 	public void addGeometryShaderFromFile(String fileName) {
-		addProgram(loadShader(fileName), GL32.GL_GEOMETRY_SHADER);
+		addProgram(loadShader(fileName), GL32.GL_GEOMETRY_SHADER, "Geometry Shader");
 	}
 
 	public void addFragmentShaderFromFile(String fileName) {
-		addProgram(loadShader(fileName), GL20.GL_FRAGMENT_SHADER);
+		addProgram(loadShader(fileName), GL20.GL_FRAGMENT_SHADER, "Fragment Shader");
 	}
 
 	public void compileShader() {
@@ -513,7 +555,7 @@ public class Shader {
 		}
 	}
 
-	public void addProgram(String text, int type) {
+	public void addProgram(String text, int type, String text_type) {
 		int shader = GL20.glCreateShader(type);
 
 		if (shader == 0) {
@@ -528,34 +570,101 @@ public class Shader {
 
 		if (GL20.glGetShaderi(shader, GL20.GL_COMPILE_STATUS) == 0) {
 			logger.debug("Error From Shader Program: '" + shaderProgram.getName() + "'");
-			logger.error(GL20.glGetShaderInfoLog(shader, 1024));
+			logger.error(GL20.glGetShaderInfoLog(shader, 2048));
 			logger.info("Exiting...");
 			// System.err.println(GL20.glGetShaderInfoLog(shader, 1024));
 			System.exit(1);
 		}
 
 		GL20.glAttachShader(shaderProgram.getProgram(), shader);
+
 		logger.fine("Successfully Attached Shader: " + shaderProgram.getProgram() + " Log: " + "\n"
 				+ GL20.glGetShaderInfoLog(shader, 1024));
+		logger.debug("Shader Text For '" + text_type + "': '" + shaderProgram.getName() + "'\n" + text);
+	}
+
+	/**
+	 * 0 - true, 1 - false;
+	 * 
+	 * @param uniformName
+	 * @param value
+	 */
+	public void setUniformBoolean(String uniformName, boolean value) {
+
+		int b_v = 1;
+
+		if (value) {
+			b_v = 0;
+		}
+
+		setUniformi(uniformName, b_v);
 	}
 
 	public void setUniformi(String uniformName, int value) {
-		GL20.glUniform1i(shaderProgram.getUniforms().get(uniformName), value);
+		GL40.glUniform1i(shaderProgram.getUniforms().get(uniformName), value);
+	}
+
+	public void setUniformiv(String uniformName, int[] value) {
+		GL20.glUniform1iv(shaderProgram.getUniforms().get(uniformName), value);
 	}
 
 	public void setUniformf(String uniformName, float value) {
 		GL20.glUniform1f(shaderProgram.getUniforms().get(uniformName), value);
 	}
 
+	public void setUniformfv(String uniformName, float[] value) {
+		GL20.glUniform1fv(shaderProgram.getUniforms().get(uniformName), value);
+	}
+
 	public void setUniform2f(String uniformName, Vector2f value) {
-		GL20.glUniform3f(shaderProgram.getUniforms().get(uniformName), value.getX(), value.getY(), 0);
+		/* This was used before updating to lwjgl 3 */
+		// GL20.glUniform3f(shaderProgram.getUniforms().get(uniformName), value.getX(),
+		// value.getY(), 0);
+		GL20.glUniform2f(shaderProgram.getUniforms().get(uniformName), value.x(), value.y());
+	}
+
+	public void setUniform2fv(String uniformName, float[] value) {
+		GL20.glUniform2fv(shaderProgram.getUniforms().get(uniformName), value);
+	}
+
+	public void setUniform2iv(String uniformName, int[] value) {
+		GL20.glUniform2iv(shaderProgram.getUniforms().get(uniformName), value);
 	}
 
 	public void setUniform3f(String uniformName, Vector3f value) {
-		GL20.glUniform3f(shaderProgram.getUniforms().get(uniformName), value.getX(), value.getY(), value.getZ());
+		GL20.glUniform3f(shaderProgram.getUniforms().get(uniformName), value.x(), value.y(), value.z());
 	}
 
-	public void setUniformMatrix4f(String uniformName, Matrix4f value) {
+	public void setUniform3fv(String uniformName, float[] value) {
+		GL20.glUniform3fv(shaderProgram.getUniforms().get(uniformName), value);
+	}
+
+	public void setUniform3i(String uniformName, Vector3i value) {
+		GL32.glUniform3i(shaderProgram.getUniforms().get(uniformName), value.getX(), value.getY(), value.getZ());
+	}
+
+	public void setUniform3iv(String uniformName, int[] value) {
+		GL32.glUniform3iv(shaderProgram.getUniforms().get(uniformName), value);
+	}
+
+	public void setUniform3ui(String uniformName, Vector3i value) {
+		GL32.glUniform3ui(shaderProgram.getUniforms().get(uniformName), value.getX(), value.getY(), value.getZ());
+	}
+
+	public void setUniform3uiv(String uniformName, int[] value) {
+		GL32.glUniform3uiv(shaderProgram.getUniforms().get(uniformName), value);
+	}
+
+	public void setUniform4f(String uniformName, Vector4f value) {
+		GL32.glUniform4f(shaderProgram.getUniforms().get(uniformName), value.x(), value.y(), value.z(), value.w());
+	}
+
+	/**
+	 * All Matrices by default are transposed while loading.
+	 */
+	// TODO: All Other types of matrices.
+
+	public void setUniformMatrix4fv(String uniformName, Matrix4f value) {
 		GL20.glUniformMatrix4fv(shaderProgram.getUniforms().get(uniformName), true, Util.createFlippedBuffer(value));
 	}
 
@@ -563,7 +672,7 @@ public class Shader {
 		StringBuilder shaderSource = new StringBuilder();
 		BufferedReader shaderReader = null;
 
-		final String INCLUDE_DIRECTIVE = "#include";// COMMENT_PREFIX = "//";
+		final String INCLUDE_DIRECTIVE = "#include", COMMENT_PREFIX = "//", NATIVE_IMPORT_DIRECTIVE = "#import";
 
 		// glsl include
 
@@ -573,7 +682,34 @@ public class Shader {
 
 			while ((line = shaderReader.readLine()) != null) {
 
-				if (line.startsWith(INCLUDE_DIRECTIVE)) {
+				line.replaceAll("[\\n\\t ]", "");
+				line = line.trim();
+
+				if (line.startsWith(COMMENT_PREFIX)) {
+					continue;
+				}
+
+				/*
+				 * Cleans the line of comments and such.
+				 */
+
+				int commentindex;
+
+				if (line.contains(COMMENT_PREFIX)) {
+					commentindex = line.indexOf(COMMENT_PREFIX);
+					line = line.substring(0, commentindex);
+
+				}
+
+				line = line.trim();
+
+				if (line.isEmpty()) {
+					continue;
+				}
+
+				if (line.startsWith(NATIVE_IMPORT_DIRECTIVE)) {
+					processNativeImports(line);
+				} else if (line.startsWith(INCLUDE_DIRECTIVE)) {
 
 					/*
 					 * #include 'file' INCLUDE_DIRECTIVE length puts it at the end of the include
@@ -586,13 +722,7 @@ public class Shader {
 					/* Figures out the name of the file being included. */
 
 				} else {
-					/*
-					 * Checks If The Line Dosn't Include A Comment If It Dose Then There Is No Point
-					 * In Sending It To The GPU
-					 */
-					// if (!line.startsWith(COMMENT_PREFIX)) {
 					shaderSource.append(line).append("\n");
-					// }
 				}
 			}
 			shaderReader.close();
@@ -603,6 +733,40 @@ public class Shader {
 			System.exit(1);
 		}
 		return shaderSource.toString();
+	}
+
+	/**
+	 * @param line
+	 */
+	private static void processNativeImports(String line) {
+		// TODO: Process Natives.
+		// In future convert this to a meta file to get generic function file names
+		// which can be included in the shader loading process.
+		// Like #include or #import AE_Functions:LinearizeDepth
+		// Then the loader will look through this meta file and determine the file name
+		// of the function and include only that instead of all functions in the file.
+		// When loading multiple functions from the file it can be defined as so:
+		// #include or #import AE_Functions:{LinearizeDepth, DeLinearizeDepth, ...}
+		// The AE_Functions file would be in a format such as JSON or XML
+
+		// The convention will be that all files that contain native functions will have
+		// a prefix of AE_
+		// There will be a big file like AE_Functions which a compiler will run over and
+		// find the functions needed for import.
+		// Those functions will have a import notation as well like:
+
+		// #import AE_Functions:DeLinearize
+		// float LinearizeDepth(float depth) {
+		// float z = depth * 2.0 - 1.0; // back to NDC
+		// return (2.0 * near * far) / (far + near - z * (far - near));
+		// }
+
+		// And if there is no notation it will mean the function dose not have any
+		// Dependencies.
+
+		// The notation will be a line above so the compiler will have to send the line
+		// index one above from the function
+		// to the processNativeImports(String shaderText) function.
 	}
 
 	public int getProgram() {

@@ -11,7 +11,7 @@ import org.lwjgl.BufferUtils;
 import net.abi.abisEngine.math.Matrix4f;
 import net.abi.abisEngine.math.Vector2f;
 import net.abi.abisEngine.math.Vector3f;
-import net.abi.abisEngine.rendering.meshLoading.Vertex;
+import net.abi.abisEngine.rendering.Vertex;
 
 public class Util {
 	public static FloatBuffer createFloatBuffer(int size) {
@@ -36,17 +36,17 @@ public class Util {
 		FloatBuffer buffer = createFloatBuffer(vertices.length * Vertex.SIZE);
 
 		for (int i = 0; i < vertices.length; i++) {
-			buffer.put(vertices[i].getPos().getX());
-			buffer.put(vertices[i].getPos().getY());
-			buffer.put(vertices[i].getPos().getZ());
-			buffer.put(vertices[i].getTexCoord().getX());
-			buffer.put(vertices[i].getTexCoord().getY());
-			buffer.put(vertices[i].getNormal().getX());
-			buffer.put(vertices[i].getNormal().getY());
-			buffer.put(vertices[i].getNormal().getZ());
-			buffer.put(vertices[i].getTangent().getX());
-			buffer.put(vertices[i].getTangent().getY());
-			buffer.put(vertices[i].getTangent().getZ());
+			buffer.put(vertices[i].getPos().x());
+			buffer.put(vertices[i].getPos().y());
+			buffer.put(vertices[i].getPos().z());
+			buffer.put(vertices[i].getTexCoord().x());
+			buffer.put(vertices[i].getTexCoord().y());
+			buffer.put(vertices[i].getNormal().x());
+			buffer.put(vertices[i].getNormal().y());
+			buffer.put(vertices[i].getNormal().z());
+			buffer.put(vertices[i].getTangent().x());
+			buffer.put(vertices[i].getTangent().y());
+			buffer.put(vertices[i].getTangent().z());
 		}
 
 		buffer.flip();
@@ -68,9 +68,9 @@ public class Util {
 		FloatBuffer buffer = createFloatBuffer(values.size() * Vertex.SIZE);
 
 		for (int i = 0; i < values.size(); i++) {
-			buffer.put(values.get(i).getX());
-			buffer.put(values.get(i).getY());
-			buffer.put(values.get(i).getZ());
+			buffer.put(values.get(i).x());
+			buffer.put(values.get(i).y());
+			buffer.put(values.get(i).z());
 		}
 
 		buffer.flip();
@@ -82,8 +82,8 @@ public class Util {
 		FloatBuffer buffer = createFloatBuffer(values.size() * Vertex.SIZE);
 
 		for (int i = 0; i < values.size(); i++) {
-			buffer.put(values.get(i).getX());
-			buffer.put(values.get(i).getY());
+			buffer.put(values.get(i).x());
+			buffer.put(values.get(i).y());
 		}
 
 		buffer.flip();

@@ -23,9 +23,9 @@ public class Quaternion {
 		float sinHalfAngle = (float) Math.sin(anglerad / 2);
 		float cosHalfAngle = (float) Math.cos(anglerad / 2);
 
-		this.x = axis.getX() * sinHalfAngle;
-		this.y = axis.getY() * sinHalfAngle;
-		this.z = axis.getZ() * sinHalfAngle;
+		this.x = axis.x() * sinHalfAngle;
+		this.y = axis.y() * sinHalfAngle;
+		this.z = axis.z() * sinHalfAngle;
 		this.w = cosHalfAngle;
 
 	}
@@ -36,9 +36,9 @@ public class Quaternion {
 		float sinHalfAngle = (float) Math.sin(angleInRadians / 2);
 		float cosHalfAngle = (float) Math.cos(angleInRadians / 2);
 
-		this.x = axis.getX() * sinHalfAngle;
-		this.y = axis.getY() * sinHalfAngle;
-		this.z = axis.getZ() * sinHalfAngle;
+		this.x = axis.x() * sinHalfAngle;
+		this.y = axis.y() * sinHalfAngle;
+		this.z = axis.z() * sinHalfAngle;
 		this.w = cosHalfAngle;
 
 		return (this);
@@ -85,9 +85,9 @@ public class Quaternion {
 		float sinHalfAngle = (float) Math.sin(Math.toRadians(angleInDegrees / 2));
 		float cosHalfAngle = (float) Math.cos(Math.toRadians(angleInDegrees / 2));
 
-		this.x = axis.getX() * sinHalfAngle;
-		this.y = axis.getY() * sinHalfAngle;
-		this.z = axis.getZ() * sinHalfAngle;
+		this.x = axis.x() * sinHalfAngle;
+		this.y = axis.y() * sinHalfAngle;
+		this.z = axis.z() * sinHalfAngle;
 		this.w = cosHalfAngle;
 
 		return (this);
@@ -159,6 +159,15 @@ public class Quaternion {
 	}
 
 	public Quaternion mul(Vector3f r) {
+		float w_ = -x * r.x() - y * r.y() - z * r.z();
+		float x_ = w * r.x() + y * r.z() - z * r.y();
+		float y_ = w * r.y() + z * r.x() - x * r.z();
+		float z_ = w * r.z() + x * r.y() - y * r.x();
+
+		return new Quaternion(x_, y_, z_, w_);
+	}
+
+	public Quaternion mul(Vector3i r) {
 		float w_ = -x * r.getX() - y * r.getY() - z * r.getZ();
 		float x_ = w * r.getX() + y * r.getZ() - z * r.getY();
 		float y_ = w * r.getY() + z * r.getX() - x * r.getZ();

@@ -9,7 +9,7 @@ public class Attenuation extends Vector3f {
 	}
 
 	public float getConstant() {
-		return super.getX();
+		return super.x();
 	}
 
 	public void setConstant(float constant) {
@@ -17,7 +17,7 @@ public class Attenuation extends Vector3f {
 	}
 
 	public float getLinear() {
-		return super.getY();
+		return super.y();
 	}
 
 	public void setLinear(float linear) {
@@ -25,7 +25,7 @@ public class Attenuation extends Vector3f {
 	}
 
 	public float getExponent() {
-		return super.getZ();
+		return super.z();
 	}
 
 	public void setExponent(float exponent) {

@@ -1,4 +1,5 @@
 varying vec2 texCoord0;
+varying vec3 normal0;
 varying vec3 worldPosition0;
 varying mat3 tbnMatrix;
 

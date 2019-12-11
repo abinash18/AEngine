@@ -26,17 +26,17 @@ public class Color extends Vector3f {
 	}
 
 	public Color(Vector3f colorInVector3f) {
-		super(colorInVector3f.getX(), colorInVector3f.getY(), colorInVector3f.getZ());
+		super(colorInVector3f.x(), colorInVector3f.y(), colorInVector3f.z());
 		this.alpha = 1;
 	}
 
 	public Color(Vector3f colorInVector3f, float alpha) {
-		super(colorInVector3f.getX(), colorInVector3f.getY(), colorInVector3f.getZ());
+		super(colorInVector3f.x(), colorInVector3f.y(), colorInVector3f.z());
 		this.alpha = alpha;
 	}
 
 	public float getRed() {
-		return super.getX();
+		return super.x();
 	}
 
 	public void setRed(float red) {
@@ -44,7 +44,7 @@ public class Color extends Vector3f {
 	}
 
 	public float getGreen() {
-		return super.getY();
+		return super.y();
 	}
 
 	public void setGreen(float green) {
@@ -52,7 +52,7 @@ public class Color extends Vector3f {
 	}
 
 	public float getBlue() {
-		return super.getZ();
+		return super.z();
 	}
 
 	public void setBlue(float blue) {

@@ -1,0 +1,151 @@
+#AE SHADER LANGUAGE
+
+Future design for shader files.
+File name for these files will probably be .ae-shader.
+Files that contain generics or native functions can be called .ae-cgimps
+
+##Syntax
+
+##Start of the file.
+All shader files should include this at the start of the file, if you need to add a copyright agreement at the start on the top you can but any comments after this line will be ignored.
+```
+BEGIN_AE_SHADER:{"TEST"}
+```
+This defines the shader's name, it should always be in this format.
+
+##Define defaults and properties.
+
+Defining properties can be done with:
+
+`BEGIN_PROPERTIES:`
+
+And at the end there should be 
+`END_PROPERTIES`
+
+The property name comes first such as `_diffuseColor`
+
+Then in round brackets the type such as `(vec3)` or `(float)`
+
+Arrays can be defined via 
+```
+_array (float[2]) = {1, 2};
+
+_array2 (float[]) = {1, 2};
+```
+
+The data should be exactly the amount of indexes defined or else the excess data will be ignored.
+
+Sampler textures can be defined via a file name or via a texture asset name, but you will have to make sure to load the asset before or after and it will have to be in the right GL context. The texture if it is a file name which is defined by adding `ff:` infront of the texture name in brackets as such:
+
+```_diffuseTexture (sampler2D) = ff:("diffuseTexture");```
+
+The asset manager for the current context will place it in that context but you will have to reload it if you want to use it in another context with this shader.
+
+If the texture is not avalible or is missing the fall back will be a default texture in the engine.
+
+```
+BEGIN_PROPERTIES:
+_diffuseColor (vec3) = (1,1,1,1);
+_diffuseTexture (sampler2D) = ("diffuseTexture"); // this can be a file name or asset name.
+END_PROPERTIES
+```
+
+##Shader passes
+
+Shader passes are executed in the shader wrapper class in the engine or in the rendering engine.
+
+These are tags to search for the glslProgram in the engine, you can chain as many as you want but you have to add those same tags in the `END_PASS:{}` line.
+```
+BEGIN_PASS:{"FORWARD_AMBIENT", ...}
+```
+in here between the start of the shader and start of the pass we can define properties such as blend mode and depth testing or masks:
+```
+ENABLE:BLEND
+BLEND_FUNC:{"GL_ONE_MINUS_SRC", "GL_ONE"}
+SET_PROPERTY:{"DEPTH_MASK", "FALSE"}
+DEPTH_FUNC:{"GL_EQUAL"}
+```
+And then at the end for good practice we disable these.
+```
+SET_PROPERTY:{"DEPTH_MASK", "TRUE"}
+DEPTH_FUNC:{"GL_LESS"}
+DISABLE:BLEND
+```
+Then we end the pass with the same tags as we started:
+```
+END_PASS:{"FORWARD_AMBIENT", ...}
+```
+
+#Definig GLSL programs
+
+We start by this line and defineing what type of shader it is.
+In this case we have a Vertex Shader.
+
+```
+BEGIN_GLSL_PROGRAM:VERT
+```
+The type of shaders definable are:
+_FRAG, VERT, TESS, TESSCONT, GEOM_
+
+And the name of that shader will be _default_
+
+Or you can have a specific name ascociated with that and it will find that in the shader and retrieve it:
+
+```
+BEGIN_GLSL_PROGRAM:{"VERT", "vertex_shader"}
+```
+Every thing past this will be part of the shader program of the type defined.
+
+__Exmaple:__
+```
+#version 120
+uniform vec3 _fragColor;
+void main() {
+gl_FragColor = fragColor;
+}
+```
+The version tag should be included in the program such as the above example.
+###Importing and Including
+
+####Imports
+
+The generic vertex shader can be imported through the __AE_GENERICS__ import.
+
+This can be achieved as a simple import call to __AE_GENERICS__:
+
+`#import AE_GENERICS:{"DEF_Vertex_Shader", "SNIP_Lighting_Uniforms"}`
+
+That should all be on one line just so it is easier for the engine to parse.
+
+You can also import multiple fuctions and code snippets through the __AE_FUNCTIONS__ Interface:
+
+`#import AE_FUNCTIONS:{"LinearizeDepth", "getNormalFromMap"}`
+
+These functions and generic imports can be used any where with in the GLSL Program they are imported into.
+
+__GENERICS WILL BE APPENDED TO THE BOTTOM OF THE FILE IF THEY ARE **DEF** AND **SNIP** TO THE LOCATION OF THE #IMPORT KEYWORD. THE AE FUNCTIONS WILL BE APPENDED TO THE LOCATION OF THE IMPORT KEYWORD__
+
+####Includes
+
+This is different from Import in that it appends the entire file which is defined to the location of the `#include` keyword.
+
+It can be used as such:
+
+```
+#include "lighting.glh"
+```
+
+The parser will then stich that entire header file to the location of the include keyword.
+
+##Ending the file and GLSL Program
+
+The GLSL Program can be ended by this line: 
+
+```END_GLSL_PROGRAM:{"VERT", "vertex_shader"}```
+
+You have to include the type of shader and name if defined.
+
+After this you can either define another program or end the file by:
+```
+END_AE_SHADER:{"TEST"}
+```
