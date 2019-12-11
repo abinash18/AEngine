@@ -3,17 +3,19 @@ package net.abi.abisEngine.rendering.windowManagement.models;
 import net.abi.abisEngine.rendering.sceneManagement.scenes.EngineSplashScreen;
 import net.abi.abisEngine.rendering.windowManagement.GLFWWindow;
 import net.abi.abisEngine.rendering.windowManagement.GLFWWindowManager;
+import tests.game.scenes.MainMenu;
 import tests.game.windows.MainGame;
 
 public class EngineLoader extends GLFWWindow {
 
 	public EngineLoader() {
-		super(800, 600, "EngineSplash", "", true, true);
+		super(800, 600, "EngineSplash", "", false, false);
 	}
 
 	@Override
 	protected void addScenes() {
 		new EngineSplashScreen(this);
+		new MainMenu(this);
 	}
 
 	@Override

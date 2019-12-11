@@ -8,12 +8,13 @@ import net.abi.abisEngine.components.MeshRenderer;
 import net.abi.abisEngine.components.PointLight;
 import net.abi.abisEngine.components.SpotLight;
 import net.abi.abisEngine.core.Entity;
+import net.abi.abisEngine.rendering.meshLoading.AIMeshLoader;
 import net.abi.abisEngine.input.GLFWInput;
+import net.abi.abisEngine.input.GLFWMouseAndKeyboardInput;
 import net.abi.abisEngine.math.Vector2f;
 import net.abi.abisEngine.math.Vector3f;
-import net.abi.abisEngine.rendering.meshLoading.AIMeshLoader;
-import net.abi.abisEngine.rendering.meshLoading.Mesh;
-import net.abi.abisEngine.rendering.meshLoading.Vertex;
+import net.abi.abisEngine.rendering.Mesh;
+import net.abi.abisEngine.rendering.Vertex;
 import net.abi.abisEngine.rendering.resourceManagement.Material;
 import net.abi.abisEngine.rendering.resourceManagement.Texture;
 import net.abi.abisEngine.rendering.sceneManagement.Scene;
@@ -139,14 +140,14 @@ public class MainMenu extends Scene {
 	@Override
 	public void input(float delta) {
 		super.input(delta);
-		if (super.getInputController().isKeyDown(GLFWInput.GLFW_KEY_ESCAPE)) {
+		if (((GLFWMouseAndKeyboardInput) super.getInputController()).isKeyDown(GLFWInput.GLFW_KEY_ESCAPE)) {
 			// Input.setCursor(true);
 			System.out.println(this);
 			// System.exit(1);
 
 		}
-		if (super.getInputController().isKeyDown(GLFWInput.GLFW_KEY_ESCAPE)) {
-			super.getParentWindow().getSceneManager().setCurrentScene("TestGame");
+		if (((GLFWMouseAndKeyboardInput) super.getInputController()).isKeyDown(GLFWInput.GLFW_KEY_ESCAPE)) {
+			super.getParentWindow().getSceneManager().setCurrentScene("EngineSplash");
 		}
 //		if (Input.getKeyDown(Input.KEY_B)) {
 //			super.setMainCamera("playerView");

@@ -11,8 +11,14 @@ import net.abi.abisEngine.components.PointLight;
 import net.abi.abisEngine.components.SpotLight;
 import net.abi.abisEngine.core.Entity;
 import net.abi.abisEngine.input.GLFWInput;
+import net.abi.abisEngine.input.GLFWMouseAndKeyboardInput;
 import net.abi.abisEngine.math.Vector3f;
-import net.abi.abisEngine.rendering.meshLoading.AIMeshLoader;
+import net.abi.abisEngine.rendering.Mesh;
+import net.abi.abisEngine.rendering.Model;
+import net.abi.abisEngine.rendering.RenderingEngine;
+import net.abi.abisEngine.rendering.asset.AssetManager;
+import net.abi.abisEngine.rendering.asset.loaders.ModelSceneLoader;
+import net.abi.abisEngine.rendering.meshLoading.ModelScene;
 import net.abi.abisEngine.rendering.resourceManagement.Material;
 import net.abi.abisEngine.rendering.resourceManagement.Texture;
 import net.abi.abisEngine.rendering.sceneManagement.Scene;
@@ -29,11 +35,16 @@ public class EngineSplashScreen extends Scene {
 		super("EngineSplash", prnt);
 	}
 
-	private Entity monkey, monkey2, cameraObject;
+	private Entity monkey, monkey2, cameraObject, anvil;
 	private Camera cam;
+
+	private AssetManager man;
 
 	public void init() {
 		super.init();
+		man = new AssetManager(super.getParentWindow().getGlfw_Handle());
+		// man = super.getParentWindow().getAssetManager();
+		man.setLoader(ModelScene.class, "", new ModelSceneLoader("./res/models/"));
 
 		BricksOne material = new BricksOne();
 		BricksTwo material2 = new BricksTwo();
@@ -86,15 +97,15 @@ public class EngineSplashScreen extends Scene {
 		monkey2.addChild(cameraObject);
 		monkey2.setTransform(cameraObject.getTransform());
 		cam.getTransform().setTranslation(0, 0, -5);
-		Material anvilmat = new Material();
-		anvilmat.addTexture("diffuse", new Texture("defaultModelTexture.png"));
-		anvilmat.addTexture("normal_map", new Texture("Normal_Map_Anvil.png"));
-		anvilmat.addFloat("specularIntensity", 1);
-		anvilmat.addFloat("specularPower", 8);
-		Entity anvil = new Entity().addComponent(
-				new MeshRenderer(AIMeshLoader.loadModel("monkey.obj", "Suzanne.001", 0), anvilmat).toggleWireFrames());
 
-		super.addChild(anvil);
+//		Entity anvil = new Entity().addComponent(
+//				new MeshRenderer(AIMeshLoader.loadModel("monkey.obj", "Suzanne.001", 0).bindModel(), anvilmat));
+
+		man.load("monkey.obj", ModelScene.class, null);
+		man.load("Anvil_LowPoly.obj", ModelScene.class, null);
+		man.load("IronMan.obj", ModelScene.class, null);
+		man.load("monkey.obj", ModelScene.class, null);
+
 		super.setMainCamera("playerView");
 		super.addChild(spotLightObject);
 		// super.addChild(new Entity()
@@ -107,10 +118,41 @@ public class EngineSplashScreen extends Scene {
 	}
 
 	float temp = 0.0f;
+	boolean done = false, done2 = false;
 
 	@Override
 	public void update(float delta) {
 		super.update(delta);
+		System.out.println(man.getQueuedAssets());
+		if (man.update()) {
+			done = true;
+			System.out.println("done");
+		}
+
+		// try {
+		if (done && !done2) {
+			Material anvilmat = new Material();
+			anvilmat.addTexture("diffuse", new Texture("defaultModelTexture.png"));
+			anvilmat.addTexture("normal_map", new Texture("Normal_Map_Anvil.png"));
+			anvilmat.addFloat("specularIntensity", 1);
+			anvilmat.addFloat("specularPower", 8);
+			ModelScene m = man.get("monkey.obj", ModelScene.class);
+			Mesh s = m.getMesh("Suzanne.001").bindModel();
+			Entity anvil = new Entity().addComponent(new MeshRenderer(s, anvilmat));
+			super.addChild(anvil);
+
+			m = man.get("IronMan.obj", ModelScene.class);
+			s = m.getMesh("IronMan").bindModel();
+			Entity _anvil = new Entity().addComponent(new MeshRenderer(s, anvilmat));
+			_anvil.getTransform().setScale(0.25f, 0.25f, 0.25f);
+			super.addChild(_anvil);
+			done2 = true;
+		}
+		// } catch (Exception e) {
+		// done = false;
+		// done2 = false;
+		// }
+
 		temp = temp + delta;
 		// monkey.getTransform().setTranslation(0f, 0f, 0.5f * temp);
 	}
@@ -118,8 +160,8 @@ public class EngineSplashScreen extends Scene {
 	@Override
 	public void input(float delta) {
 		super.input(delta);
-		if (super.getInputController().isKeyDown(GLFWInput.GLFW_KEY_ESCAPE)) {
-			super.getInputController().setCursorMode(GLFW.GLFW_CURSOR_NORMAL);
+		if (((GLFWMouseAndKeyboardInput) super.getInputController()).isKeyDown(GLFWInput.GLFW_KEY_ESCAPE)) {
+			((GLFWMouseAndKeyboardInput) super.getInputController()).setCursorMode(GLFW.GLFW_CURSOR_NORMAL);
 			// System.out.println(this);
 			try {
 				GLFWWindowManager.openWindow(new MainGame(), GLFWWindow.NULL, super.getParentWindow().getGlfw_Handle());
@@ -129,15 +171,24 @@ public class EngineSplashScreen extends Scene {
 
 		}
 
-		if (super.getInputController().isMouseButtonDown(GLFWInput.GLFW_MOUSE_BUTTON_RIGHT)) {
-			monkey.getComponents().forEach(v -> {
-				if (v instanceof MeshRenderer) {
-					((MeshRenderer) v).toggleWireFrames();
-				}
+		if (((GLFWMouseAndKeyboardInput) super.getInputController())
+				.isMouseButtonDown(GLFWInput.GLFW_MOUSE_BUTTON_RIGHT)) {
+
+			super.getRootObject().getAllAttached().forEach(v -> {
+				v.getComponents().forEach(_v -> {
+					if (_v instanceof MeshRenderer) {
+						((MeshRenderer) _v).toggleWireFrames();
+					}
+				});
 			});
 		}
 
-		if (super.getInputController().isKeyDown(GLFWInput.GLFW_KEY_C)) {
+		if (((GLFWMouseAndKeyboardInput) super.getInputController())
+				.isMouseButtonDown(GLFWInput.GLFW_MOUSE_BUTTON_LEFT)) {
+			RenderingEngine.toggleDepthTest();
+		}
+
+		if (((GLFWMouseAndKeyboardInput) super.getInputController()).isKeyDown(GLFWInput.GLFW_KEY_C)) {
 			super.getParentWindow().getSceneManager().setCurrentScene("MainMenu");
 		}
 	}

@@ -19,9 +19,11 @@ public class RenderingEngine extends MappedValues {
 
 	private static final Logger logger = LogManager.getLogger(RenderingEngine.class.getName());
 
+	public static boolean depth_test = false;
+
 	private HashMap<String, Integer> samplerMap;
 
-	private Shader forwardAmbientShader;
+	private Shader forwardAmbientShader, depthShader;
 
 	private Light activeLight;
 	private Camera mainCamera;
@@ -57,19 +59,20 @@ public class RenderingEngine extends MappedValues {
 
 	public void initGraphics() {
 		forwardAmbientShader = new Shader("forward-ambient");
+		depthShader = new Shader("visualizers/depthVisualizer");
 		GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 		GL11.glFrontFace(GL11.GL_CW);
 		GL11.glCullFace(GL11.GL_BACK);
 		GL11.glEnable(GL11.GL_CULL_FACE);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
-		GL11.glEnable(GL11.GL_STENCIL_TEST);
+		// GL11.glEnable(GL11.GL_STENCIL_TEST);
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
 
 	@Deprecated
 	public void setClearColor(Vector3f color) {
-		GL11.glClearColor(color.getX(), color.getY(), color.getZ(), 1.0f);
+		GL11.glClearColor(color.x(), color.y(), color.z(), 1.0f);
 	}
 
 	public static String getOpenGLVersion() {
@@ -84,14 +87,24 @@ public class RenderingEngine extends MappedValues {
 		// Clear Screen Before Rendering
 		clearScreen();
 
-		/*
-		 * lights.clear();
-		 * 
-		 * gameObject.addToRenderingEngine(this);
-		 */
+		if (depth_test) {
+			renderDepth(scene);
+		} else {
+			renderLights(scene);
+		}
 
-		// Shader forwardAmbientShader = ForwardAmbientShader.getInstance();
-		// forwardAmbientShader.setRenderingEngine(this);
+	}
+
+	private void renderVisualizers(Scene scene) {
+	}
+
+	private void renderDepth(Scene scene) {
+		GL11.glDepthFunc(GL11.GL_LESS);
+		// GL11.glDepthMask(false);
+		scene.getRootObject().renderAll(depthShader, this);
+	}
+
+	private void renderLights(Scene scene) {
 
 		scene.getRootObject().renderAll(forwardAmbientShader, this);
 
@@ -113,7 +126,6 @@ public class RenderingEngine extends MappedValues {
 		GL11.glDepthMask(true);
 
 		GL11.glDisable(GL11.GL_BLEND);
-
 	}
 
 	public void addCamera(Camera camera) {
@@ -146,6 +158,15 @@ public class RenderingEngine extends MappedValues {
 
 	public void setMainCamera(Camera mainCamera) {
 		this.mainCamera = mainCamera;
+	}
+
+	/**
+	 * 
+	 */
+	public static void toggleDepthTest() {
+
+		depth_test = depth_test == false ? true : false;
+
 	}
 
 }

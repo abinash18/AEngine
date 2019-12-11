@@ -27,9 +27,9 @@ public class Transform {
 
 	public Matrix4f getTransformation() {
 
-		Matrix4f translationMatrix = new Matrix4f().initTranslation(position.getX(), position.getY(), position.getZ());
+		Matrix4f translationMatrix = new Matrix4f().initTranslation(position.x(), position.y(), position.z());
 		Matrix4f rotationMatrix = rotation.toRotationMatrix();
-		Matrix4f scaleMatrix = new Matrix4f().initScale(scale.getX(), scale.getY(), scale.getZ());
+		Matrix4f scaleMatrix = new Matrix4f().initScale(scale.x(), scale.y(), scale.z());
 
 		return this.getParentMatrix().mul(translationMatrix.mul(rotationMatrix.mul(scaleMatrix)));
 	}

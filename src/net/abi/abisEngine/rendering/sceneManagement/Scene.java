@@ -33,8 +33,8 @@ public abstract class Scene {
 		this.addToSceneManager();
 	}
 
-	public GLFWInput getInputController() {
-		return parentWindow.getInput();
+	public <T extends GLFWInput> T getInputController() {
+		return (T) parentWindow.getInput();
 	}
 
 	public UUID getId() {

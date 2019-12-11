@@ -25,8 +25,8 @@ public class Camera extends SceneComponent {
 		 * statement.
 		 */
 		Vector3f cameraPosition = super.getTransform().getTransformedPosition().mul(-1);
-		Matrix4f cameraTranslationMatrix = new Matrix4f().initTranslation(cameraPosition.getX(), cameraPosition.getY(),
-				cameraPosition.getZ());
+		Matrix4f cameraTranslationMatrix = new Matrix4f().initTranslation(cameraPosition.x(), cameraPosition.y(),
+				cameraPosition.z());
 		return projection.mul(cameraRotationMatrix.mul(cameraTranslationMatrix));
 	}
 

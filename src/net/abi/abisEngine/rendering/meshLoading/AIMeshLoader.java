@@ -41,6 +41,8 @@ import org.lwjgl.assimp.Assimp;
 
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
+import net.abi.abisEngine.rendering.Mesh;
+import net.abi.abisEngine.rendering.asset.AssetManager;
 import net.abi.abisEngine.util.IOUtil;
 
 public class AIMeshLoader {
@@ -253,7 +255,7 @@ public class AIMeshLoader {
 	 * @return A Model Scene, since one model file can contain many individual
 	 *         models.
 	 */
-	public static Mesh loadModel(String modelFileName, String modelName, int post_options) {
+	public static Mesh loadModel(String modelFileName, String modelName, int post_options, AssetManager man) {
 		// aiProcess_JoinIdenticalVertices | aiProcess_Triangulate
 
 		ModelScene tempScene = null;
@@ -278,7 +280,7 @@ public class AIMeshLoader {
 			throw new IllegalStateException(aiGetErrorString());
 		}
 
-		loadedScenes.put(modelFileName, new ModelScene(scene));
+		loadedScenes.put(modelFileName, new ModelScene(scene, man));
 
 		if ((tempMesh = loadedScenes.get(modelFileName).getMesh(modelName)) != null) {
 			System.out.println(loadedScenes.size());
@@ -286,6 +288,22 @@ public class AIMeshLoader {
 		}
 		logger.error("Resource Dose Not Exist In. File : '" + modelFileName + "' Model Name: '" + modelName);
 		throw new NullPointerException("Resource Not Found.");
+
+	}
+
+	public static ModelScene loadModelScene(String modelFilePath, int post_options, AssetManager man) {
+		// aiProcess_JoinIdenticalVertices | aiProcess_Triangulate
+
+		AIScene scene = aiImportFileEx(modelFilePath, AI_DEFAULT_FLAGS, fileIO);
+		if (scene == null) {
+			logger.error("Could'nt Load AIScene From File: '" + modelFilePath + "' With Options : " + post_options
+					+ " Error: " + aiGetErrorString());
+			throw new IllegalStateException(aiGetErrorString());
+		}
+
+		ModelScene _ms = new ModelScene(scene, man);
+
+		return _ms;
 
 	}
 

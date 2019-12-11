@@ -1,6 +1,7 @@
 package net.abi.abisEngine.components;
 
 import net.abi.abisEngine.input.GLFWInput;
+import net.abi.abisEngine.input.GLFWMouseAndKeyboardInput;
 import net.abi.abisEngine.math.Transform;
 import net.abi.abisEngine.math.Vector2f;
 
@@ -23,29 +24,32 @@ public class FreeLook extends SceneComponent {
 	@Override
 	public void input(float delta) {
 
-		if (super.getParentScene().getInputController().isKeyDown(unlockMouseKey)) {
-			super.getParentScene().getInputController()
+		if (((GLFWMouseAndKeyboardInput) super.getParentScene().getInputController()).isKeyDown(unlockMouseKey)) {
+			((GLFWMouseAndKeyboardInput) super.getParentScene().getInputController())
 					.setCursorPos(super.getParentScene().getParentWindow().getCenter());
 			// Input.setCursor(true);
-			super.getParentScene().getInputController().setCursorMode(GLFWInput.GLFW_CURSOR_NORMAL);
+			((GLFWMouseAndKeyboardInput) super.getParentScene().getInputController())
+					.setCursorMode(GLFWInput.GLFW_CURSOR_NORMAL);
 		}
 
-		if (super.getParentScene().getInputController().isMouseButtonDown(GLFWInput.GLFW_MOUSE_BUTTON_LEFT)) {
-			super.getParentScene().getInputController()
+		if (((GLFWMouseAndKeyboardInput) super.getParentScene().getInputController())
+				.isMouseButtonDown(GLFWInput.GLFW_MOUSE_BUTTON_LEFT)) {
+			((GLFWMouseAndKeyboardInput) super.getParentScene().getInputController())
 					.setCursorPos(super.getParentScene().getParentWindow().getCenter());
 			// Input.setCursor(false);
-			super.getParentScene().getInputController().setCursorMode(GLFWInput.GLFW_CURSOR_DISABLED);
+			((GLFWMouseAndKeyboardInput) super.getParentScene().getInputController())
+					.setCursorMode(GLFWInput.GLFW_CURSOR_DISABLED);
 		}
 
-		if (super.getParentScene().getInputController().isMouseHiddenAndGrabbed()) {
+		if (((GLFWMouseAndKeyboardInput) super.getParentScene().getInputController()).isMouseHiddenAndGrabbed()) {
 
-			Vector2f deltaPos = super.getParentScene().getInputController().getCursorPos()
+			Vector2f deltaPos = ((GLFWMouseAndKeyboardInput) super.getParentScene().getInputController()).getCursorPos()
 					.sub(super.getParentScene().getParentWindow().getCenter());
 
-			boolean rotY = deltaPos.getX() != 0, rotX = deltaPos.getY() != 0;
+			boolean rotY = deltaPos.x() != 0, rotX = deltaPos.y() != 0;
 
 			if (rotY) {
-				super.getTransform().rotate(Transform.Y_AXIS, (float) Math.toRadians(deltaPos.getX() * sensitivity));
+				super.getTransform().rotate(Transform.Y_AXIS, (float) Math.toRadians(deltaPos.x() * sensitivity));
 			}
 
 			if (rotX) {
@@ -54,11 +58,11 @@ public class FreeLook extends SceneComponent {
 				 * when calling the conjugate in the getViewProjection() Method.
 				 */
 				super.getTransform().rotate(super.getTransform().getRotation().getRight(),
-						(float) Math.toRadians(deltaPos.getY() * sensitivity));
+						(float) Math.toRadians(deltaPos.y() * sensitivity));
 			}
 
 			if (rotY || rotX) {
-				super.getParentScene().getInputController()
+				((GLFWMouseAndKeyboardInput) super.getParentScene().getInputController())
 						.setCursorPos(super.getParentScene().getParentWindow().getCenter());
 			}
 		}

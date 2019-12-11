@@ -9,40 +9,53 @@ import javax.imageio.ImageIO;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL15;
 
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
+import net.abi.abisEngine.util.Expendable;
 import net.abi.abisEngine.util.Util;
 
-public class Texture {
+public class Texture implements Expendable {
 
 	public static final String TEXTURES_DIR = "./res/textures/";
 	private static Logger logger = LogManager.getLogger(Texture.class.getName());
-	private static HashMap<String, TextureResource> loadedTextures = new HashMap<String, TextureResource>();
-	private TextureResource resource;
+	// private static HashMap<String, TextureResource> loadedTextures = new
+	// HashMap<String, TextureResource>();
 	private String fileName;
+	private int id, refCount;
 
 	public Texture(String fileName) {
 		this.fileName = fileName;
-
-		TextureResource oldResource = loadedTextures.get(fileName);
-
-		if (oldResource != null) {
-			this.resource = oldResource;
-			this.resource.addReference();
-		} else {
-			this.resource = loadTexture(fileName);
-			loadedTextures.put(fileName, resource);
-		}
-
+		this.id = loadTexture(fileName);
+		// This is added after loadTexture is executed since if it fails then there is
+		// no refrence.
+		this.refCount = 1;
 	}
 
-	public static HashMap<String, TextureResource> getLoadedTextures() {
-		return loadedTextures;
+	public void addReference() {
+		refCount++;
 	}
 
-	public static void setLoadedTextures(HashMap<String, TextureResource> loadedTextures) {
-		Texture.loadedTextures = loadedTextures;
+	public boolean removeRefrence() {
+		refCount--;
+		return refCount == 0;
+	}
+
+	public int getRefCount() {
+		return refCount;
+	}
+
+	public void setRefCount(int refCount) {
+		this.refCount = refCount;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getFileName() {
@@ -60,22 +73,10 @@ public class Texture {
 	public void bind(int samplerSlot) {
 		assert (samplerSlot >= 0 && samplerSlot <= 31);
 		GL13.glActiveTexture(GL13.GL_TEXTURE0 + samplerSlot);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, resource.getId());
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, getId());
 	}
 
-	public TextureResource getResource() {
-		return resource;
-	}
-
-	public int getId() {
-		return resource.getId();
-	}
-
-	public void setResource(TextureResource resource) {
-		this.resource = resource;
-	}
-
-	private static TextureResource loadTexture(String fileName) {
+	private static int loadTexture(String fileName) {
 
 		// String[] splitArray = fileName.split("\\.");
 
@@ -117,9 +118,10 @@ public class Texture {
 			// Flips the buffer making it possible to read.
 			pixelByteBuffer.flip();
 
-			TextureResource resource = new TextureResource();
+			int _id = GL11.glGenTextures();
 
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, resource.getId());
+			// TODO: Sampler slots using bind();
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, _id);
 
 			// System.out.println(id);
 
@@ -136,7 +138,7 @@ public class Texture {
 			GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, image.getWidth(), image.getHeight(), 0,
 					GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, pixelByteBuffer);
 
-			return resource;
+			return _id;
 
 		} catch (Exception e) {
 			// e.printStackTrace();
@@ -145,20 +147,14 @@ public class Texture {
 			// System.exit(1);
 		}
 
-		return null;
+		return 0;
 
 	}
 
 	@Override
-	protected void finalize() {
-		try {
-			super.finalize();
-		} catch (Throwable e) {
-			// e.printStackTrace();
-			logger.error("Unable to finalize.", e);
-		}
-		if (resource.removeRefrence() && fileName.isEmpty()) {
-			Texture.loadedTextures.remove(fileName);
+	public void dispose() {
+		if (refCount <= 0) {
+			GL15.glDeleteBuffers(id);
 		}
 	}
 

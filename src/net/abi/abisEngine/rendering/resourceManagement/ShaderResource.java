@@ -14,15 +14,31 @@ import net.abi.abisEngine.rendering.windowManagement.GLFWWindowManager;
 
 public class ShaderResource {
 	private int program, refCount;
-	private String name;
+	private String name, vertexShaderName, fragmentShaderName, vertexShaderText, fragmentShaderText;
 
-	private static Logger logger = LogManager.getLogger(ShaderResource.class.getName());
+	private static Logger logger = LogManager.getLogger(ShaderResource.class);
 
 	private Map<String, Integer> uniforms;
 	private List<String> uniformNames;
 	private List<String> uniformTypes;
 
 	public ShaderResource(String name) {
+		this(name, name + ".glvs", name + ".glfs");
+	}
+
+	public ShaderResource(String name, String vertexShaderName, String fragmentShaderName) {
+		this(name, vertexShaderName, fragmentShaderName, null, null);
+	}
+
+	public ShaderResource(String name, String vertexShaderName, String fragmentShaderName, String vertexShaderText,
+			String fragmentShaderText) {
+
+		this.vertexShaderName = vertexShaderName;
+		this.fragmentShaderName = fragmentShaderName;
+
+		this.vertexShaderText = vertexShaderText;
+		this.fragmentShaderText = fragmentShaderText;
+
 		this.program = GL20.glCreateProgram();
 
 		if (program == 0) {
@@ -105,6 +121,22 @@ public class ShaderResource {
 
 	public void setUniformTypes(List<String> uniformTypes) {
 		this.uniformTypes = uniformTypes;
+	}
+
+	public String getVertexShaderName() {
+		return vertexShaderName;
+	}
+
+	public String getFragmentShaderName() {
+		return fragmentShaderName;
+	}
+
+	public String getVertexShaderText() {
+		return vertexShaderText;
+	}
+
+	public String getFragmentShaderText() {
+		return fragmentShaderText;
 	}
 
 }

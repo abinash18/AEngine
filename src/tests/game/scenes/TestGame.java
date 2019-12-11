@@ -10,9 +10,13 @@ import net.abi.abisEngine.components.MeshRenderer;
 import net.abi.abisEngine.components.PointLight;
 import net.abi.abisEngine.components.SpotLight;
 import net.abi.abisEngine.core.Entity;
-import net.abi.abisEngine.input.GLFWInput;
-import net.abi.abisEngine.math.Vector3f;
+import net.abi.abisEngine.rendering.asset.libGDX.AssetManager;
+import net.abi.abisEngine.rendering.asset.loaders.ModelSceneLoader;
 import net.abi.abisEngine.rendering.meshLoading.AIMeshLoader;
+import net.abi.abisEngine.rendering.meshLoading.ModelScene;
+import net.abi.abisEngine.input.GLFWInput;
+import net.abi.abisEngine.input.GLFWMouseAndKeyboardInput;
+import net.abi.abisEngine.math.Vector3f;
 import net.abi.abisEngine.rendering.resourceManagement.Material;
 import net.abi.abisEngine.rendering.resourceManagement.Texture;
 import net.abi.abisEngine.rendering.sceneManagement.Scene;
@@ -28,17 +32,22 @@ public class TestGame extends Scene {
 		super("TestGame", prnt);
 	}
 
-	private Entity monkey, monkey2, cameraObject;
+	private Entity monkey, monkey2, cameraObject, anvil;
 	private Camera cam;
+
+	private AssetManager man;
 
 	public void init() {
 		super.init();
+		man = super.getParentWindow().getAssetManager();
+		man.setLoader(ModelScene.class, null, new ModelSceneLoader("./res/models/"));
 
 		BricksOne material = new BricksOne();
 		BricksTwo material2 = new BricksTwo();
 
-		MeshRenderer meshRenderer2 = new MeshRenderer(AIMeshLoader.loadModel("monkey.obj", "Suzanne.001", 0),
-				material2);
+		// MeshRenderer meshRenderer2 = new
+		// MeshRenderer(AIMeshLoader.loadModel("Anvil_LowPoly.obj", "Cube.003", 0),
+		// material2).toggleWireFrames();
 
 		// planeObject.getTransform().getPosition().set(0, -1, 5);
 
@@ -67,36 +76,41 @@ public class TestGame extends Scene {
 		directionalLight.getTransform().rotate(new Vector3f(1, 0, 0), (float) Math.toRadians(-135));
 
 		Entity ironMan = new Entity();
-		ironMan.addComponent(new MeshRenderer(AIMeshLoader.loadModel("monkey.obj", "Suzanne.001", 0), material2));
+		// ironMan.addComponent(new MeshRenderer(AIMeshLoader.loadModel("monkey.obj",
+		// "Suzanne.001", 0), material2));
 
 		ironMan.getTransform().setTranslation(10, 5, 0);
 
 		monkey = new Entity();
-		monkey.addComponent(meshRenderer2);
+		// monkey.addComponent(meshRenderer2);
 
 		monkey2 = new Entity();
-		monkey2.addComponent(new MeshRenderer(AIMeshLoader.loadModel("monkey.obj", "Suzanne.001", 0), material));
+		// monkey2.addComponent(
+		// new MeshRenderer(AIMeshLoader.loadModel("monkey.obj", "Suzanne.001", 0),
+		// material).toggleWireFrames());
 		monkey2.getTransform().setTranslation(0, 0, 5);
 
 		monkey2.addChild(cameraObject);
 		monkey2.setTransform(cameraObject.getTransform());
 		cam.getTransform().setTranslation(0, 0, -5);
-		Material anvilmat = new Material();
-		anvilmat.addTexture("diffuse", new Texture("defaultModelTexture.png"));
-		anvilmat.addTexture("normal_map", new Texture("Normal_Map_Anvil.png"));
-		anvilmat.addFloat("specularIntensity", 1);
-		anvilmat.addFloat("specularPower", 8);
-		Entity anvil = new Entity()
-				.addComponent(new MeshRenderer(AIMeshLoader.loadModel("monkey.obj", "Suzanne.001", 0), anvilmat));
 
-		super.addChild(anvil);
+//		Entity anvil = new Entity().addComponent(
+//				new MeshRenderer(AIMeshLoader.loadModel("monkey.obj", "Suzanne.001", 0).bindModel(), anvilmat));
+
+		man.load("monkey.obj", ModelScene.class, null);
+		man.load("Anvil_LowPoly.obj", ModelScene.class, null);
+		// man.load("IronMan.obj", ModelScene.class, null);
+		man.load("stall.obj", ModelScene.class, null);
+
 		super.setMainCamera("playerView");
 		super.addChild(spotLightObject);
-		super.addChild(new FlatPlane());
+		// super.addChild(new Entity()
+		// .addComponent(new MeshRenderer(AIMeshLoader.loadModel("plane3.obj", "Cube",
+		// 0), new BricksOne())));
 		super.addChild(directionalLightObject);
-		super.addChild(monkey);
-		super.addChild(ironMan);
-		super.addChild(monkey2);
+		// super.addChild(monkey);
+		// super.addChild(ironMan);
+		super.addChild(cameraObject);
 	}
 
 	float temp = 0.0f;
@@ -112,12 +126,12 @@ public class TestGame extends Scene {
 	public void input(float delta) {
 		super.input(delta);
 
-		if (super.getInputController().isKeyDown(GLFWInput.GLFW_KEY_ESCAPE)) {
-			super.getInputController().setCursorMode(GLFW.GLFW_CURSOR_NORMAL);
+		if (((GLFWMouseAndKeyboardInput) super.getInputController()).isKeyDown(GLFWInput.GLFW_KEY_ESCAPE)) {
+			((GLFWMouseAndKeyboardInput) super.getInputController()).setCursorMode(GLFW.GLFW_CURSOR_NORMAL);
 			// System.out.println(this);
 
 		}
-		if (super.getInputController().isKeyDown(GLFWInput.GLFW_KEY_C)) {
+		if (((GLFWMouseAndKeyboardInput) super.getInputController()).isKeyDown(GLFWInput.GLFW_KEY_C)) {
 			super.getParentWindow().getSceneManager().setCurrentScene("MainMenu");
 		}
 	}

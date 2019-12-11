@@ -1,66 +1,501 @@
 
--------------------------------------November 13, 2019 4:04 PM-------------------------------------
+-------------------------------------December 11, 2019 7:30 AM-------------------------------------
 
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.core.CoreEngine] INFO: Starting Engine.
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.windowManagement.GLFWWindowManager] ERROR: Monitor Provided Is NULL, Defaulting To Primary Monitor.
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.sceneManagement.SceneManager] DEBUG: Setting Scene: EngineSplash
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Successfully Attached Shader: 1 Log: 
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.core.CoreEngine] INFO: Starting Engine.
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.windowManagement.GLFWWindowManager] ERROR: Monitor Provided Is NULL, Defaulting To Primary Monitor.
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.sceneManagement.SceneManager] DEBUG: Setting Scene: EngineSplash
+[December 11, 2019 7:30 AM] [AssetManager] DEBUG: Loader set: ModelScene -> ModelSceneLoader
+[December 11, 2019 7:30 AM] [AssetManager] DEBUG: Loader set: ModelScene -> ModelSceneLoader
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Successfully Attached Shader: 1 Log: 
 
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Successfully Attached Shader: 1 Log: 
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] DEBUG: Shader Text For 'Vertex Shader': 'forward-directional'
+#version 120
+attribute vec3 position;
+attribute vec2 texCoord;
+attribute vec3 normal;
+attribute vec3 tangent;
+varying vec2 texCoord0;
+varying vec3 normal0;
+varying vec3 worldPosition0;
+varying mat3 tbnMatrix;
+uniform mat4 T_model;
+uniform mat4 T_MVP;
+void main() {
+gl_Position = T_MVP * vec4(position, 1.0);
+texCoord0 =  texCoord;
+normal0 = (T_model * vec4(normal, 0.0)).xyz;
+worldPosition0 = (T_model * vec4(position, 1.0)).xyz;
+vec3 n = normalize((T_model * vec4(normal, 0.0)).xyz);
+vec3 t = normalize((T_model * vec4(tangent, 0.0)).xyz);
+t = normalize(t - dot(t, n) * n);
+vec3 biTangent = cross(t, n);
+tbnMatrix = mat3(t, biTangent, n);
+}
 
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'T_model' At Location: 5
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'T_MVP' At Location: 4
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'diffuse' At Location: 8
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'normal_map' At Location: 9
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'C_eyePos' At Location: 0
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'specularIntensity' At Location: 6
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'specularPower' At Location: 7
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_directionalLight.base.color' At Location: 1
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_directionalLight.base.intensity' At Location: 2
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_directionalLight.direction' At Location: 3
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Successfully Attached Shader: 4 Log: 
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Successfully Attached Shader: 1 Log: 
 
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Successfully Attached Shader: 4 Log: 
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] DEBUG: Shader Text For 'Fragment Shader': 'forward-directional'
+#version 120
+varying vec2 texCoord0;
+varying vec3 normal0;
+varying vec3 worldPosition0;
+varying mat3 tbnMatrix;
+uniform sampler2D diffuse;
+uniform sampler2D normal_map;
+uniform vec3 C_eyePos;
+uniform float specularIntensity;
+uniform float specularPower;
+uniform int normal_mapping_enabled;
+struct BaseLight {
+vec3 color;
+float intensity;
+};
+struct DirectionalLight {
+BaseLight base;
+vec3 direction;
+};
+struct Attenuation {
+float constant;
+float linear;
+float exponent;
+};
+struct PointLight {
+BaseLight base;
+Attenuation atten;
+vec3 position;
+float range;
+};
+struct SpotLight {
+PointLight pointLight;
+vec3 direction;
+float cutoff;
+};
+vec4 calcLight(BaseLight base, vec3 direction, vec3 normal, vec3 worldPosition) {
+float diffuseFactor = dot(normal, -direction);
+vec4 diffuseColor = vec4(0, 0, 0, 0);
+vec4 specularColor = vec4(0, 0, 0, 0);
+if (diffuseFactor > 0) {
+diffuseColor = vec4(base.color, 1.0) * base.intensity * diffuseFactor;
+vec3 directionToEye = normalize(C_eyePos - worldPosition);
+vec3 reflectDirection = normalize(reflect(direction, normal));
+float specularFactor = dot(directionToEye, reflectDirection);
+specularFactor = pow(specularFactor, specularPower);
+if(specularFactor > 0){
+specularColor = vec4(base.color, 1.0) * specularIntensity * specularFactor;
+}
+}
+return diffuseColor + specularColor;
+}
+vec4 calcDirectionalLight(DirectionalLight directionalLight, vec3 normal, vec3 worldPosition) {
+return (calcLight(directionalLight.base, -directionalLight.direction, normal, worldPosition));
+}
+vec4 calcPointLight(PointLight pointLight, vec3 normal, vec3 worldPosition){
+vec3 lightDirection = worldPosition - pointLight.position;
+float distanceToPoint = length(lightDirection);
+if (distanceToPoint > pointLight.range) {
+return vec4(0, 0, 0, 0);
+}
+lightDirection = normalize(lightDirection);
+vec4 color = calcLight(pointLight.base, lightDirection, normal, worldPosition);
+float attenuation = pointLight.atten.constant + pointLight.atten.linear * distanceToPoint +
+pointLight.atten.exponent * distanceToPoint * distanceToPoint + 0.0001;
+return color / attenuation;
+}
+vec4 calcSpotLight(SpotLight spotLight, vec3 normal, vec3 worldPosition)  {
+vec3 lightDirection = normalize(worldPosition - spotLight.pointLight.position);
+float spotFactor = dot(lightDirection, spotLight.direction);
+vec4 color = vec4(0, 0, 0, 0);
+if (spotFactor > spotLight.cutoff) {
+color = calcPointLight(spotLight.pointLight, normal, worldPosition) *
+(1.0 - (1.0 - spotFactor) / (1.0 - spotLight.cutoff));
+}
+return color;
+}
+vec3 getNormalFromMap(sampler2D normal_map, vec2 texCoord, mat3 tbnMatrix)  {
+vec3 normal = tbnMatrix * (255.0/128.0 * texture2D(normal_map, texCoord0.xy).xyz - 1);
+return normal;
+}
+uniform DirectionalLight R_directionalLight;
+vec4 calcLighting(vec3 normal, vec3 worldPos) {
+return calcDirectionalLight(R_directionalLight, normal, worldPos);
+}
+void main() {
+vec3 normal;
+if (normal_mapping_enabled == 0) {
+normal = tbnMatrix * (255.0/128.0 * texture2D(normal_map, texCoord0.xy).xyz - 1);
+} else {
+normal = normalize(normal0);
+}
+gl_FragColor = texture2D(diffuse, texCoord0.xy) * calcLighting(normal, worldPosition0);
+}
 
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'T_model' At Location: 9
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'T_MVP' At Location: 8
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'diffuse' At Location: 12
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'normal_map' At Location: 13
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'C_eyePos' At Location: 0
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'specularIntensity' At Location: 10
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'specularPower' At Location: 11
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_pointLight.base.color' At Location: 1
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_pointLight.base.intensity' At Location: 2
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_pointLight.atten.constant' At Location: 3
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_pointLight.atten.linear' At Location: 4
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_pointLight.atten.exponent' At Location: 5
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_pointLight.position' At Location: 6
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_pointLight.range' At Location: 7
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Successfully Attached Shader: 7 Log: 
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'T_model' At Location: 5
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'T_MVP' At Location: 4
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'diffuse' At Location: 9
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'normal_map' At Location: 10
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'C_eyePos' At Location: 0
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'specularIntensity' At Location: 7
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'specularPower' At Location: 8
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'normal_mapping_enabled' At Location: 6
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_directionalLight.base.color' At Location: 1
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_directionalLight.base.intensity' At Location: 2
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_directionalLight.direction' At Location: 3
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Successfully Attached Shader: 4 Log: 
 
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Successfully Attached Shader: 7 Log: 
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] DEBUG: Shader Text For 'Vertex Shader': 'forward-point'
+#version 120
+attribute vec3 position;
+attribute vec2 texCoord;
+attribute vec3 normal;
+attribute vec3 tangent;
+varying vec2 texCoord0;
+varying vec3 normal0;
+varying vec3 worldPosition0;
+varying mat3 tbnMatrix;
+uniform mat4 T_model;
+uniform mat4 T_MVP;
+void main() {
+gl_Position = T_MVP * vec4(position, 1.0);
+texCoord0 =  texCoord;
+normal0 = (T_model * vec4(normal, 0.0)).xyz;
+worldPosition0 = (T_model * vec4(position, 1.0)).xyz;
+vec3 n = normalize((T_model * vec4(normal, 0.0)).xyz);
+vec3 t = normalize((T_model * vec4(tangent, 0.0)).xyz);
+t = normalize(t - dot(t, n) * n);
+vec3 biTangent = cross(t, n);
+tbnMatrix = mat3(t, biTangent, n);
+}
 
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'T_model' At Location: 11
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'T_MVP' At Location: 10
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'diffuse' At Location: 14
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'normal_map' At Location: 15
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'C_eyePos' At Location: 0
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'specularIntensity' At Location: 12
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'specularPower' At Location: 13
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_spotLight.pointLight.base.color' At Location: 1
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_spotLight.pointLight.base.intensity' At Location: 2
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_spotLight.pointLight.atten.constant' At Location: 3
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_spotLight.pointLight.atten.linear' At Location: 4
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_spotLight.pointLight.atten.exponent' At Location: 5
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_spotLight.pointLight.position' At Location: 6
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_spotLight.pointLight.range' At Location: 7
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_spotLight.direction' At Location: 8
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_spotLight.cutoff' At Location: 9
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.sceneManagement.SceneManager] DEBUG: Current Scene: Scene [root=net.abi.abisEngine.core.Entity@6e06451e, id=117c3cdb-c0ca-4dfd-a5d8-74a3c489e380, name=EngineSplash]
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Successfully Attached Shader: 10 Log: 
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Successfully Attached Shader: 4 Log: 
 
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Successfully Attached Shader: 10 Log: 
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] DEBUG: Shader Text For 'Fragment Shader': 'forward-point'
+#version 120
+varying vec2 texCoord0;
+varying vec3 normal0;
+varying vec3 worldPosition0;
+varying mat3 tbnMatrix;
+uniform sampler2D diffuse;
+uniform sampler2D normal_map;
+uniform vec3 C_eyePos;
+uniform float specularIntensity;
+uniform float specularPower;
+uniform int normal_mapping_enabled;
+struct BaseLight {
+vec3 color;
+float intensity;
+};
+struct DirectionalLight {
+BaseLight base;
+vec3 direction;
+};
+struct Attenuation {
+float constant;
+float linear;
+float exponent;
+};
+struct PointLight {
+BaseLight base;
+Attenuation atten;
+vec3 position;
+float range;
+};
+struct SpotLight {
+PointLight pointLight;
+vec3 direction;
+float cutoff;
+};
+vec4 calcLight(BaseLight base, vec3 direction, vec3 normal, vec3 worldPosition) {
+float diffuseFactor = dot(normal, -direction);
+vec4 diffuseColor = vec4(0, 0, 0, 0);
+vec4 specularColor = vec4(0, 0, 0, 0);
+if (diffuseFactor > 0) {
+diffuseColor = vec4(base.color, 1.0) * base.intensity * diffuseFactor;
+vec3 directionToEye = normalize(C_eyePos - worldPosition);
+vec3 reflectDirection = normalize(reflect(direction, normal));
+float specularFactor = dot(directionToEye, reflectDirection);
+specularFactor = pow(specularFactor, specularPower);
+if(specularFactor > 0){
+specularColor = vec4(base.color, 1.0) * specularIntensity * specularFactor;
+}
+}
+return diffuseColor + specularColor;
+}
+vec4 calcDirectionalLight(DirectionalLight directionalLight, vec3 normal, vec3 worldPosition) {
+return (calcLight(directionalLight.base, -directionalLight.direction, normal, worldPosition));
+}
+vec4 calcPointLight(PointLight pointLight, vec3 normal, vec3 worldPosition){
+vec3 lightDirection = worldPosition - pointLight.position;
+float distanceToPoint = length(lightDirection);
+if (distanceToPoint > pointLight.range) {
+return vec4(0, 0, 0, 0);
+}
+lightDirection = normalize(lightDirection);
+vec4 color = calcLight(pointLight.base, lightDirection, normal, worldPosition);
+float attenuation = pointLight.atten.constant + pointLight.atten.linear * distanceToPoint +
+pointLight.atten.exponent * distanceToPoint * distanceToPoint + 0.0001;
+return color / attenuation;
+}
+vec4 calcSpotLight(SpotLight spotLight, vec3 normal, vec3 worldPosition)  {
+vec3 lightDirection = normalize(worldPosition - spotLight.pointLight.position);
+float spotFactor = dot(lightDirection, spotLight.direction);
+vec4 color = vec4(0, 0, 0, 0);
+if (spotFactor > spotLight.cutoff) {
+color = calcPointLight(spotLight.pointLight, normal, worldPosition) *
+(1.0 - (1.0 - spotFactor) / (1.0 - spotLight.cutoff));
+}
+return color;
+}
+vec3 getNormalFromMap(sampler2D normal_map, vec2 texCoord, mat3 tbnMatrix)  {
+vec3 normal = tbnMatrix * (255.0/128.0 * texture2D(normal_map, texCoord0.xy).xyz - 1);
+return normal;
+}
+uniform PointLight R_pointLight;
+vec4 calcLighting(vec3 normal, vec3 worldPos) {
+return calcPointLight(R_pointLight, normal, worldPos);
+}
+void main() {
+vec3 normal;
+if (normal_mapping_enabled == 0) {
+normal = tbnMatrix * (255.0/128.0 * texture2D(normal_map, texCoord0.xy).xyz - 1);
+} else {
+normal = normalize(normal0);
+}
+gl_FragColor = texture2D(diffuse, texCoord0.xy) * calcLighting(normal, worldPosition0);
+}
 
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'T_MVP' At Location: 1
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_ambient' At Location: 0
-[November 13, 2019 4:04 PM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'diffuse' At Location: 2
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'T_model' At Location: 9
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'T_MVP' At Location: 8
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'diffuse' At Location: 13
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'normal_map' At Location: 14
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'C_eyePos' At Location: 0
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'specularIntensity' At Location: 11
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'specularPower' At Location: 12
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'normal_mapping_enabled' At Location: 10
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_pointLight.base.color' At Location: 1
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_pointLight.base.intensity' At Location: 2
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_pointLight.atten.constant' At Location: 3
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_pointLight.atten.linear' At Location: 4
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_pointLight.atten.exponent' At Location: 5
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_pointLight.position' At Location: 6
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_pointLight.range' At Location: 7
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Successfully Attached Shader: 7 Log: 
+
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] DEBUG: Shader Text For 'Vertex Shader': 'forward-spot'
+#version 120
+attribute vec3 position;
+attribute vec2 texCoord;
+attribute vec3 normal;
+attribute vec3 tangent;
+varying vec2 texCoord0;
+varying vec3 normal0;
+varying vec3 worldPosition0;
+varying mat3 tbnMatrix;
+uniform mat4 T_model;
+uniform mat4 T_MVP;
+void main() {
+gl_Position = T_MVP * vec4(position, 1.0);
+texCoord0 =  texCoord;
+normal0 = (T_model * vec4(normal, 0.0)).xyz;
+worldPosition0 = (T_model * vec4(position, 1.0)).xyz;
+vec3 n = normalize((T_model * vec4(normal, 0.0)).xyz);
+vec3 t = normalize((T_model * vec4(tangent, 0.0)).xyz);
+t = normalize(t - dot(t, n) * n);
+vec3 biTangent = cross(t, n);
+tbnMatrix = mat3(t, biTangent, n);
+}
+
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Successfully Attached Shader: 7 Log: 
+
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] DEBUG: Shader Text For 'Fragment Shader': 'forward-spot'
+#version 120
+varying vec2 texCoord0;
+varying vec3 normal0;
+varying vec3 worldPosition0;
+varying mat3 tbnMatrix;
+uniform sampler2D diffuse;
+uniform sampler2D normal_map;
+uniform vec3 C_eyePos;
+uniform float specularIntensity;
+uniform float specularPower;
+uniform int normal_mapping_enabled;
+struct BaseLight {
+vec3 color;
+float intensity;
+};
+struct DirectionalLight {
+BaseLight base;
+vec3 direction;
+};
+struct Attenuation {
+float constant;
+float linear;
+float exponent;
+};
+struct PointLight {
+BaseLight base;
+Attenuation atten;
+vec3 position;
+float range;
+};
+struct SpotLight {
+PointLight pointLight;
+vec3 direction;
+float cutoff;
+};
+vec4 calcLight(BaseLight base, vec3 direction, vec3 normal, vec3 worldPosition) {
+float diffuseFactor = dot(normal, -direction);
+vec4 diffuseColor = vec4(0, 0, 0, 0);
+vec4 specularColor = vec4(0, 0, 0, 0);
+if (diffuseFactor > 0) {
+diffuseColor = vec4(base.color, 1.0) * base.intensity * diffuseFactor;
+vec3 directionToEye = normalize(C_eyePos - worldPosition);
+vec3 reflectDirection = normalize(reflect(direction, normal));
+float specularFactor = dot(directionToEye, reflectDirection);
+specularFactor = pow(specularFactor, specularPower);
+if(specularFactor > 0){
+specularColor = vec4(base.color, 1.0) * specularIntensity * specularFactor;
+}
+}
+return diffuseColor + specularColor;
+}
+vec4 calcDirectionalLight(DirectionalLight directionalLight, vec3 normal, vec3 worldPosition) {
+return (calcLight(directionalLight.base, -directionalLight.direction, normal, worldPosition));
+}
+vec4 calcPointLight(PointLight pointLight, vec3 normal, vec3 worldPosition){
+vec3 lightDirection = worldPosition - pointLight.position;
+float distanceToPoint = length(lightDirection);
+if (distanceToPoint > pointLight.range) {
+return vec4(0, 0, 0, 0);
+}
+lightDirection = normalize(lightDirection);
+vec4 color = calcLight(pointLight.base, lightDirection, normal, worldPosition);
+float attenuation = pointLight.atten.constant + pointLight.atten.linear * distanceToPoint +
+pointLight.atten.exponent * distanceToPoint * distanceToPoint + 0.0001;
+return color / attenuation;
+}
+vec4 calcSpotLight(SpotLight spotLight, vec3 normal, vec3 worldPosition)  {
+vec3 lightDirection = normalize(worldPosition - spotLight.pointLight.position);
+float spotFactor = dot(lightDirection, spotLight.direction);
+vec4 color = vec4(0, 0, 0, 0);
+if (spotFactor > spotLight.cutoff) {
+color = calcPointLight(spotLight.pointLight, normal, worldPosition) *
+(1.0 - (1.0 - spotFactor) / (1.0 - spotLight.cutoff));
+}
+return color;
+}
+vec3 getNormalFromMap(sampler2D normal_map, vec2 texCoord, mat3 tbnMatrix)  {
+vec3 normal = tbnMatrix * (255.0/128.0 * texture2D(normal_map, texCoord0.xy).xyz - 1);
+return normal;
+}
+uniform SpotLight R_spotLight;
+vec4 calcLighting(vec3 normal, vec3 worldPos) {
+return calcSpotLight(R_spotLight, normal, worldPos);
+}
+void main() {
+vec3 normal;
+if (normal_mapping_enabled == 0) {
+normal = tbnMatrix * (255.0/128.0 * texture2D(normal_map, texCoord0.xy).xyz - 1);
+} else {
+normal = normalize(normal0);
+}
+gl_FragColor = texture2D(diffuse, texCoord0.xy) * calcLighting(normal, worldPosition0);
+}
+
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'T_model' At Location: 11
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'T_MVP' At Location: 10
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'diffuse' At Location: 15
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'normal_map' At Location: 16
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'C_eyePos' At Location: 0
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'specularIntensity' At Location: 13
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'specularPower' At Location: 14
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'normal_mapping_enabled' At Location: 12
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_spotLight.pointLight.base.color' At Location: 1
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_spotLight.pointLight.base.intensity' At Location: 2
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_spotLight.pointLight.atten.constant' At Location: 3
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_spotLight.pointLight.atten.linear' At Location: 4
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_spotLight.pointLight.atten.exponent' At Location: 5
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_spotLight.pointLight.position' At Location: 6
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_spotLight.pointLight.range' At Location: 7
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_spotLight.direction' At Location: 8
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_spotLight.cutoff' At Location: 9
+[December 11, 2019 7:30 AM] [AssetManager] DEBUG: Queued: net.abi.abisEngine.rendering.asset.AssetClassifier@e1de817
+[December 11, 2019 7:30 AM] [AssetManager] DEBUG: Queued: net.abi.abisEngine.rendering.asset.AssetClassifier@52102734
+[December 11, 2019 7:30 AM] [AssetManager] DEBUG: Queued: net.abi.abisEngine.rendering.asset.AssetClassifier@3541cb24
+[December 11, 2019 7:30 AM] [AssetManager] DEBUG: Queued: net.abi.abisEngine.rendering.asset.AssetClassifier@2177849e
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.sceneManagement.SceneManager] DEBUG: Current Scene: Scene [root=net.abi.abisEngine.core.Entity@40cb8df7, id=d76e6c9d-de95-4cda-bfb3-11be5020c882, name=EngineSplash]
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.sceneManagement.SceneManager] DEBUG: Current Scene: Scene [root=net.abi.abisEngine.core.Entity@40cb8df7, id=d76e6c9d-de95-4cda-bfb3-11be5020c882, name=EngineSplash]
+[December 11, 2019 7:30 AM] [AssetManager] DEBUG: Loader set: ModelScene -> ModelSceneLoader
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Successfully Attached Shader: 10 Log: 
+
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] DEBUG: Shader Text For 'Vertex Shader': 'forward-ambient'
+#version 120
+attribute vec3 position;
+attribute vec2 texCoord;
+varying vec2 texCoord0;
+uniform mat4 T_MVP;
+void main() {
+gl_Position = T_MVP * vec4(position, 1.0);
+texCoord0 = texCoord;
+}
+
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Successfully Attached Shader: 10 Log: 
+
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] DEBUG: Shader Text For 'Fragment Shader': 'forward-ambient'
+#version 120
+varying vec2 texCoord0;
+uniform vec3 R_ambient;
+uniform sampler2D diffuse;
+void main() {
+gl_FragColor = texture2D(diffuse, texCoord0.xy) * vec4(R_ambient, 1.0);
+}
+
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'T_MVP' At Location: 1
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'R_ambient' At Location: 0
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'diffuse' At Location: 2
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Successfully Attached Shader: 13 Log: 
+
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] DEBUG: Shader Text For 'Vertex Shader': 'visualizers/depthVisualizer'
+#version 330 core
+attribute vec3 position;
+uniform mat4 T_MVP;
+void main() {
+gl_Position = T_MVP * vec4(position, 1.0);
+}
+
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Successfully Attached Shader: 13 Log: 
+
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] DEBUG: Shader Text For 'Fragment Shader': 'visualizers/depthVisualizer'
+#version 330 core
+out vec4 FragColor;
+float near = 0.1;
+float far  = 1000.0;
+float LinearizeDepth(float depth) {
+float z = depth * 2.0 - 1.0;
+return (2.0 * near * far) / (far + near - z * (far - near));
+}
+void main()	{
+float depth = LinearizeDepth(gl_FragCoord.z) / far;
+FragColor = vec4(vec3(depth), 1.0);
+}
+
+[December 11, 2019 7:30 AM] [net.abi.abisEngine.rendering.shaders.Shader] FINE: Uniform 'T_MVP' At Location: 0
+[December 11, 2019 7:30 AM] [AssetManager] INFO: Loading: net.abi.abisEngine.rendering.asset.AssetClassifier@e1de817
+[December 11, 2019 7:31 AM] [AssetManager] ERROR: Error loading asset.
+NullPointerException: 
+java.lang.NullPointerException
+	at net.abi.abisEngine.rendering.asset.loaders.ModelSceneLoader.loadSync(ModelSceneLoader.java:43)
+	at net.abi.abisEngine.rendering.asset.loaders.ModelSceneLoader.loadSync(ModelSceneLoader.java:1)
+	at net.abi.abisEngine.rendering.asset.AssetLoadTask.processAsynchronously(AssetLoadTask.java:59)
+	at net.abi.abisEngine.rendering.asset.AssetLoadTask.update(AssetLoadTask.java:25)
+	at net.abi.abisEngine.rendering.asset.AssetManager.updateTask(AssetManager.java:271)
+	at net.abi.abisEngine.rendering.asset.AssetManager.update(AssetManager.java:191)
+	at net.abi.abisEngine.rendering.sceneManagement.scenes.EngineSplashScreen.update(EngineSplashScreen.java:127)
+	at net.abi.abisEngine.rendering.sceneManagement.SceneManager.update(SceneManager.java:58)
+	at net.abi.abisEngine.rendering.windowManagement.GLFWWindow.update(GLFWWindow.java:515)
+	at net.abi.abisEngine.rendering.windowManagement.models.EngineLoader.update(EngineLoader.java:28)
+	at net.abi.abisEngine.rendering.windowManagement.GLFWWindowManager.update(GLFWWindowManager.java:252)
+	at net.abi.abisEngine.core.CoreEngine.run(CoreEngine.java:133)
+	at net.abi.abisEngine.core.CoreEngine.start(CoreEngine.java:74)
+	at net.abi.abisEngine.core.Main.run(Main.java:84)
+	at tests.game.Start.run(Start.java:18)
+	at tests.game.Start.main(Start.java:13)

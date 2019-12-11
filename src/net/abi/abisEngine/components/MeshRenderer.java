@@ -2,8 +2,8 @@ package net.abi.abisEngine.components;
 
 import org.lwjgl.opengl.GL15;
 
+import net.abi.abisEngine.rendering.Mesh;
 import net.abi.abisEngine.rendering.RenderingEngine;
-import net.abi.abisEngine.rendering.meshLoading.Mesh;
 import net.abi.abisEngine.rendering.resourceManagement.Material;
 import net.abi.abisEngine.rendering.shaders.Shader;
 

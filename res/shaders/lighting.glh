@@ -1,7 +1,11 @@
 // Vars
-uniform vec3 C_eyePos;
+//Position of the camera.
+uniform vec3 C_eyePos; 
 uniform float specularIntensity;
 uniform float specularPower;
+
+// Booleans 0 - true, 1 - false.
+uniform int normal_mapping_enabled;
 
 // Structures
 struct BaseLight {
@@ -81,7 +85,7 @@ vec4 calcPointLight(PointLight pointLight, vec3 normal, vec3 worldPosition){
   return color / attenuation;
 }
 
-vec4 calcSpotLight(SpotLight spotLight, vec3 normal, vec3 worldPosition){
+vec4 calcSpotLight(SpotLight spotLight, vec3 normal, vec3 worldPosition)  {
   vec3 lightDirection = normalize(worldPosition - spotLight.pointLight.position);
   float spotFactor = dot(lightDirection, spotLight.direction);
   vec4 color = vec4(0, 0, 0, 0);
@@ -92,4 +96,29 @@ vec4 calcSpotLight(SpotLight spotLight, vec3 normal, vec3 worldPosition){
 
   return color;
 
+}
+
+vec3 getNormalFromMap(sampler2D normal_map, vec2 texCoord, mat3 tbnMatrix)  {
+    // This is a technique i got from learn opengl and they flatened it out a bit,
+    // since i calculate my tbn matrix in the lighting-vert.glh i dont need to 
+    // recalculte it and i can simply pass it into this method and return the normal 
+    // value by multiplying the map to the matrix.
+
+    // vec3 tangentNormal = texture(normalMap, TexCoords).xyz * 2.0 - 1.0;
+
+    // vec3 Q1  = dFdx(WorldPos);
+    // vec3 Q2  = dFdy(WorldPos);
+    // vec2 st1 = dFdx(TexCoords);
+    // vec2 st2 = dFdy(TexCoords);
+
+    // vec3 N   = normalize(Normal);
+    // vec3 T  = normalize(Q1*st2.t - Q2*st1.t);
+    // vec3 B  = -normalize(cross(N, T));
+    // mat3 TBN = mat3(T, B, N);
+
+    // return normalize(TBN * tangentNormal);
+    
+    vec3 normal = tbnMatrix * (255.0/128.0 * texture2D(normal_map, texCoord0.xy).xyz - 1);
+
+    return normal;
 }

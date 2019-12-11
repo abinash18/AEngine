@@ -5,11 +5,11 @@ import static org.lwjgl.assimp.Assimp.aiReleaseImport;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.lwjgl.PointerBuffer;
-import org.lwjgl.assimp.AIColor4D;
 import org.lwjgl.assimp.AIFace;
 import org.lwjgl.assimp.AIMaterial;
 import org.lwjgl.assimp.AIMesh;
@@ -17,48 +17,80 @@ import org.lwjgl.assimp.AIScene;
 import org.lwjgl.assimp.AIString;
 import org.lwjgl.assimp.AIVector3D;
 import org.lwjgl.assimp.Assimp;
+import org.lwjgl.opengl.GL15;
+import org.lwjgl.opengl.GL20;
 
 import net.abi.abisEngine.math.Vector2f;
 import net.abi.abisEngine.math.Vector3f;
-import net.abi.abisEngine.rendering.meshLoading.legacy.IndexedModel;
+import net.abi.abisEngine.rendering.Mesh;
+import net.abi.abisEngine.rendering.asset.AssetManager;
+import net.abi.abisEngine.rendering.Model;
 import net.abi.abisEngine.rendering.resourceManagement.Material;
 import net.abi.abisEngine.rendering.resourceManagement.Texture;
-import net.abi.abisEngine.util.Color;
+import net.abi.abisEngine.util.Expendable;
 
 /**
  * This class stores all meshes in the AIScene, and converts them to the
  * engine's mesh format;
  * 
  */
-public class ModelScene {
+public class ModelScene implements Expendable {
 	private AIScene ai_scene;
 
 	private Map<String, Mesh> meshes;
 
-	public ModelScene(AIScene scene) {
+	private List<Material> mats = new ArrayList<Material>();
+
+	public ModelScene(AIScene scene, AssetManager man) {
 		this.ai_scene = scene;
-
-		int meshLength = scene.mNumMeshes(), matLength = scene.mNumMaterials();
-
 		meshes = new HashMap<String, Mesh>();
-		List<Material> mats = new ArrayList<Material>();
+		mats = new ArrayList<Material>();
+		processScene(man);
+	}
 
-		PointerBuffer _mats = scene.mMaterials();
+	public void processScene(AssetManager man) {
+		processMaterials(man);
+		processMeshes(man);
+	}
+
+	/**
+	 * @return Returns the scene with bound models to VBO's in the current context.
+	 */
+	public ModelScene bindModels(int draw_usage) {
+		for (Iterator it = meshes.entrySet().iterator(); it.hasNext();) {
+			Mesh mesh = (Mesh) it.next();
+			mesh.bindModel(draw_usage);
+		}
+		return this;
+	}
+
+	public ModelScene bindModels() {
+		return this.bindModels(GL15.GL_STATIC_DRAW);
+	}
+
+	private void processMaterials(AssetManager man) {
+		int matLength = ai_scene.mNumMaterials();
+
+		PointerBuffer _mats = ai_scene.mMaterials();
 
 		for (int i = 0; i < matLength; i++) {
 			AIMaterial _mat = AIMaterial.create(_mats.get(i));
-			mats.add(processMaterial(_mat));
-		}
-
-		PointerBuffer _meshes = scene.mMeshes();
-
-		for (int i = 0; i < meshLength; i++) {
-			AIMesh _mesh = AIMesh.create(_meshes.get(i));
-			meshes.put(_mesh.mName().dataString(), processMesh(_mesh, mats));
+			mats.add(processMaterial(_mat, i));
 		}
 	}
 
-	private Mesh processMesh(AIMesh _mesh, List<Material> mats) {
+	private void processMeshes(AssetManager man) {
+		int meshLength = ai_scene.mNumMeshes();
+		PointerBuffer _meshes = ai_scene.mMeshes();
+
+		for (int i = 0; i < meshLength; i++) {
+			AIMesh _mesh = AIMesh.create(_meshes.get(i));
+			// meshes.put(_mesh.mName().dataString(), processMesh(_mesh, mats));
+			meshes.put(_mesh.mName().dataString(), processMesh(_mesh, man));
+		}
+	}
+
+	private Mesh processMesh(AIMesh _mesh, AssetManager man) {
 		Mesh mesh = null;
 
 		ArrayList<Vector3f> positions = new ArrayList<Vector3f>(), normals = new ArrayList<Vector3f>(),
@@ -69,16 +101,15 @@ public class ModelScene {
 		for (int i = 0; i < _mesh.mNumVertices(); i++) {
 			AIVector3D pos = _mesh.mVertices().get(i);
 			AIVector3D nor = _mesh.mNormals().get(i);
-			AIVector3D tc = _mesh.mTextureCoords(0).get(i);
 
-			if (tc == null) {
-				tc = AIVector3D.create().set(0f, 0f, 0f);
+			AIVector3D.Buffer _tc = _mesh.mTextureCoords(0);
+			AIVector3D tc = AIVector3D.create().set(0f, 0f, 0f);
+			if (_tc != null) {
+				tc = _tc.get(i);
 			}
 
 			AIVector3D.Buffer tngt = _mesh.mTangents();
-
 			AIVector3D _tngt = AIVector3D.create().set(0f, 0f, 0f);
-
 			if (tngt != null) {
 				_tngt = tngt.get(i);
 			}
@@ -98,9 +129,6 @@ public class ModelScene {
 			indices.add(face.mIndices().get(1));
 			indices.add(face.mIndices().get(2));
 		}
-
-		mesh = new Mesh(_mesh.mName().dataString(), new IndexedModel(positions, normals, texCoords, tangents, indices));
-
 //		Material mat = null;
 //
 //		int matIndex = _mesh.mMaterialIndex();
@@ -112,15 +140,40 @@ public class ModelScene {
 //		}
 
 		// mesh.setMat(mat);
+		mesh = new Mesh(_mesh.mName().dataString(), new Model(positions, normals, texCoords, tangents, indices),
+				man.getGLFW_HANDLE(), null);
 
+		System.out.println(mesh);
+		
 		return mesh;
+
 	}
 
-	private Material processMaterial(AIMaterial _mat) {
+	public String[] getTexturePaths() {
+
+		int matLength = ai_scene.mNumMaterials();
+		String[] paths = new String[matLength];
+
+		PointerBuffer _mats = ai_scene.mMaterials();
+
+		for (int i = 0; i < matLength; i++) {
+			AIMaterial _mat = AIMaterial.create(_mats.get(i));
+			AIString path = AIString.calloc();
+
+			Assimp.aiGetMaterialTexture(_mat, AIMeshLoader.aiTextureType_DIFFUSE, 0, path, (IntBuffer) null, null, null,
+					null, null, null);
+			// TODO: The rest of the texture types.
+			String texPath = path.dataString();
+			paths[i] = texPath;
+		}
+		return paths;
+	}
+
+	private Material processMaterial(AIMaterial _mat, int index) {
 
 		Material mat = new Material();
 
-		processMaterialTexture(_mat, AIMeshLoader.aiTextureType_DIFFUSE, mat);
+		processMaterialTexture(_mat, AIMeshLoader.aiTextureType_DIFFUSE, mat, index);
 
 		// TODO: Make Use of these.
 		// processMaterialTexture(_mat, AIMeshLoader.aiTextureType_AMBIENT);
@@ -138,6 +191,27 @@ public class ModelScene {
 
 	}
 
+	private Material processMaterial(AIMaterial _mat, int index, AssetManager man) {
+
+		Material mat = new Material();
+
+		processMaterialTexture(_mat, AIMeshLoader.aiTextureType_DIFFUSE, mat, index);
+
+		// TODO: Make Use of these.
+		// processMaterialTexture(_mat, AIMeshLoader.aiTextureType_AMBIENT);
+		// processMaterialTexture(_mat, AIMeshLoader.aiTextureType_DISPLACEMENT);
+		// processMaterialTexture(_mat, AIMeshLoader.aiTextureType_EMISSIVE);
+		// processMaterialTexture(_mat, AIMeshLoader.aiTextureType_HEIGHT);
+		// processMaterialTexture(_mat, AIMeshLoader.aiTextureType_LIGHTMAP);
+		// processMaterialTexture(_mat, AIMeshLoader.aiTextureType_NORMALS);
+		// processMaterialTexture(_mat, AIMeshLoader.aiTextureType_OPACITY);
+		// processMaterialTexture(_mat, AIMeshLoader.aiTextureType_REFLECTION);
+		// processMaterialTexture(_mat, AIMeshLoader.aiTextureType_SHININESS);
+		// processMaterialTexture(_mat, AIMeshLoader.aiTextureType_SPECULAR);
+
+		return mat;
+
+	}
 //	private Color processMaterialColor(AIMaterial _mat, String color_type, int texture_type, Material mat, int index) {
 //		AIColor4D color = AIColor4D.create();
 //		Color c = Color.DEFAULT_COLOR;
@@ -147,20 +221,15 @@ public class ModelScene {
 //		return c;
 //	}
 
-	/**
-	 * Adds the textures of that type to the material specified from the _mat.
-	 * 
-	 * @param _mat
-	 * @param texture_type
-	 * @param mat
-	 */
-	private void processMaterialTexture(AIMaterial _mat, int texture_type, Material mat) {
+	private void processMaterialTexture(AIMaterial _mat, int texture_type, Material mat, int index) {
 		AIString path = AIString.calloc();
 
 		Assimp.aiGetMaterialTexture(_mat, texture_type, 0, path, (IntBuffer) null, null, null, null, null, null);
 		String texPath = path.dataString();
+
 		if (!texPath.isEmpty()) {
-			mat.addTexture("diffuse", new Texture(texPath));
+			Texture tex = new Texture(texPath);
+			mat.addTexture(String.valueOf(texture_type + index), tex);
 		}
 
 		/*
@@ -168,6 +237,8 @@ public class ModelScene {
 		 * have configured my engine to the appropriate state. and am ready to have
 		 * multiple textures. The material properties are named in such fashion for
 		 * Retrieval: Textures:
+		 * 
+		 * You concat the integer value of the enum to the string.
 		 * 
 		 * aiTextureType_* + index of the texture in the file.
 		 * 
@@ -214,6 +285,15 @@ public class ModelScene {
 
 	public void removeMesh(String meshName) {
 		meshes.remove(meshName);
+	}
+
+	public Map<String, Mesh> getMeshes() {
+		return meshes;
+	}
+
+	@Override
+	public void dispose() {
+		this.free();
 	}
 
 }

@@ -32,6 +32,10 @@ public class LogManager {
 		});
 	}
 
+	public synchronized static <T> Logger getLogger(Class<T> s) {
+		return getLogger(s.getSimpleName());
+	}
+
 	public synchronized static void addFileHandler(int maxLines) {
 		if (fileHandler != null) {
 			return;
