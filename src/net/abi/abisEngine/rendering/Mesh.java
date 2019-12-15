@@ -19,6 +19,7 @@ import org.lwjgl.opengl.GL30;
 
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
+import net.abi.abisEngine.rendering.asset.AssetI;
 import net.abi.abisEngine.rendering.meshLoading.AIMeshLoader;
 import net.abi.abisEngine.math.Vector2f;
 import net.abi.abisEngine.math.Vector3f;
@@ -26,7 +27,7 @@ import net.abi.abisEngine.rendering.resourceManagement.Material;
 import net.abi.abisEngine.rendering.shaders.Shader;
 import net.abi.abisEngine.util.Util;
 
-public class Mesh {
+public class Mesh implements AssetI {
 
 	private static final AIVector3D ZERO_VECTOR = AIVector3D.create().set(0.0f, 0.0f, 0.0f);
 
@@ -57,6 +58,8 @@ public class Mesh {
 		 */
 		private int[] VAOBuffers = new int[NUM_BUFFERS];
 
+		boolean bound = false;
+
 		public VAO() {
 
 		}
@@ -74,6 +77,9 @@ public class Mesh {
 
 			/* Generate VBOs */
 			GL30.glGenBuffers(VAOBuffers);
+
+			bound = true;
+
 		}
 
 	}
@@ -89,6 +95,8 @@ public class Mesh {
 		Model model;
 		String meshName;
 		Material material;
+
+		int refCount = 1;
 
 		/**
 		 * @param model
@@ -114,6 +122,8 @@ public class Mesh {
 		int size, refCount;
 		VAO vao;
 		MeshData meshData;
+
+		boolean initialized = false;
 
 		/**
 		 * @param size
@@ -170,23 +180,7 @@ public class Mesh {
 
 	private MeshResource meshResource;
 
-	// private String meshName;
-
-	// private Material mat;
-
-	// private Model model;
-
-	// private int size, refCount;
-
-	/**
-	 * Mesh Resource ID.
-	 */
-	// private int VAO;
-
-	/**
-	 * Array Containing the IDs for all the opengl buffers.
-	 */
-	// private int[] VAOBuffers = new int[NUM_BUFFERS];
+	private Long context_handle;
 
 	/**
 	 * 
@@ -199,6 +193,8 @@ public class Mesh {
 	 *                        engine.
 	 */
 	public Mesh(String name, Model model, long context_handle, Material initialMaterial) {
+
+		this.context_handle = Long.valueOf(context_handle);
 
 		/*
 		 * Check If the model is in fact valid to continue.
@@ -221,18 +217,23 @@ public class Mesh {
 		 */
 		MeshData _data = loadedModelData.get(name);
 
-		/**
-		 * If the data is not the same then we set the data to the data given. Else we
-		 * Don't change the data and we keep going.
-		 */
-		if (!_data.model.equals(model)) {
+		if (_data == null) {
 			_data = new MeshData(model, name, _mat);
+			loadedModelData.put(name, _data);
+		} else {
+			/**
+			 * If the data is not the same then we set the data to the data given. Else we
+			 * Don't change the data and we keep going.
+			 */
+			if (!_data.model.equals(model)) {
+				_data = new MeshData(model, name, _mat);
+			}
 		}
 
 		/*
 		 * Find the Context in the cache.
 		 */
-		HashMap<String, MeshResource> _mm = loadedModels.get(context_handle);
+		HashMap<String, MeshResource> _mm = loadedModels.get(Long.valueOf(context_handle));
 
 		/*
 		 * If the Context was not found then create a map and add it to the cache.
@@ -248,13 +249,16 @@ public class Mesh {
 		 * Find the MeshResource in the Context thats found or was newly created.
 		 */
 		if ((_mr = _mm.get(name)) == null) {
-			_mm.put(name, new MeshResource(_data));
+			_mr = new MeshResource(_data);
+			_mm.put(name, _mr);
 		} else {
 			/*
 			 * If the context was found then increment the references and we are done.
 			 */
 			_mr.incRefs();
 		}
+
+		this.meshResource = _mr;
 
 		// bindModel(model, GL15.GL_STATIC_DRAW);
 
@@ -271,11 +275,10 @@ public class Mesh {
 	 * @param indices
 	 */
 	public Mesh bindModel(int draw_usage) {
-		// this.refCount = 1;
-		// size = model.getIndices().size() - 1;
 
-		/* Generate VAO */
-		// VAO = GL30.glGenVertexArrays();
+		if (meshResource.vao.bound && meshResource.initialized) {
+			return this;
+		}
 
 		meshResource.vao.bindVAO();
 
@@ -305,6 +308,8 @@ public class Mesh {
 		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, Util.createIntBuffer(meshResource.meshData.model.getIndices()),
 				draw_usage);
 
+		meshResource.initialized = true;
+
 		return this;
 
 	}
@@ -317,11 +322,8 @@ public class Mesh {
 	}
 
 	public void deleteMesh() {
-		if (removeRefrence()) {
-			AIMeshLoader.removeMesh(this);
-			glDeleteBuffers(meshResource.vao.VAOBuffers);
-			glDeleteVertexArrays(meshResource.vao.VAO);
-		}
+		glDeleteBuffers(meshResource.vao.VAOBuffers);
+		glDeleteVertexArrays(meshResource.vao.VAO);
 	}
 
 	private void init() {
@@ -346,24 +348,8 @@ public class Mesh {
 		GL30.glBindVertexArray(0);
 	}
 
-	public void addReference() {
-		meshResource.incRefs();
-	}
-
-	public boolean removeRefrence() {
-		return (meshResource.decAndGetRefs() == 0);
-	}
-
 	public int getSize() {
 		return meshResource.size;
-	}
-
-	public int getRefCount() {
-		return meshResource.refCount;
-	}
-
-	public void setRefCount(int refCount) {
-		this.meshResource.refCount = refCount;
 	}
 
 	public String getMeshName() {
@@ -376,5 +362,70 @@ public class Mesh {
 
 	public void setMat(Material mat) {
 		this.meshResource.meshData.material = mat;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.abi.abisEngine.util.Expendable#dispose()
+	 */
+	@Override
+	public void dispose() {
+		this.loadedModels.remove(this.context_handle, this.meshResource);
+		this.deleteMesh();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.abi.abisEngine.rendering.asset.AssetI#incRef()
+	 */
+	@Override
+	public void incRef() {
+		this.meshResource.incRefs();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.abi.abisEngine.rendering.asset.AssetI#decRef()
+	 */
+	@Override
+	public void decRef() {
+		if (this.meshResource.decAndGetRefs() <= 0) {
+			dispose();
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.abi.abisEngine.rendering.asset.AssetI#getRefs()
+	 */
+	@Override
+	public int getRefs() {
+		return this.meshResource.refCount;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.abi.abisEngine.rendering.asset.AssetI#incAndGetRef()
+	 */
+	@Override
+	public int incAndGetRef() {
+		incRef();
+		return this.meshResource.refCount;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.abi.abisEngine.rendering.asset.AssetI#decAndGetRef()
+	 */
+	@Override
+	public int decAndGetRef() {
+		decRef();
+		return this.meshResource.refCount;
 	}
 }

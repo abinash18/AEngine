@@ -1,79 +1,115 @@
+
 package net.abi.abisEngine.rendering.asset;
 
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-public class AssetLoadTask<T> implements AsyncTask<Void> {
+import net.abi.abisEngine.rendering.asset.AssetLoader;
+import net.abi.abisEngine.rendering.asset.AsyncAssetLoader;
+import net.abi.abisEngine.rendering.asset.SynchronousLoader;
+import net.abi.abisEngine.util.AERuntimeException;
 
-	private AssetManager manager;
-	private AsyncThreadDispatcher dispatch;
-	private boolean asyncDone;
-	private Object asset;
-	private AssetLoader loader;
-	private AsyncResult<Void> result;
+/**
+ * Responsible for loading an asset through an {@link AssetLoader} based on an
+ * {@link AssetDescriptor}.
+ * 
+ * @author mzechner
+ */
+class AssetLoadTask implements AsyncTask<Void> {
+	AssetManager manager;
+	AssetClassifier assetDesc;
+	AssetLoader loader;
+	AsyncThreadDispatcher executor;
+
+	volatile boolean asyncDone = false;
+	volatile boolean dependenciesLoaded = false;
+	volatile ArrayList<AssetClassifier> dependencies;
+	volatile AsyncResult<Void> depsFuture = null;
+	volatile AsyncResult<Void> loadFuture = null;
+	volatile Object asset = null;
+
+	int ticks = 0;
 	volatile boolean cancel = false;
-	private AssetClassifier assetClassifier;
 
-	public AssetLoadTask(AssetClassifier ac, AssetLoader loader, AssetManager manager, AsyncThreadDispatcher ad) {
-		this.assetClassifier = ac;
-		this.loader = loader;
+	public AssetLoadTask(AssetManager manager, AssetClassifier assetDesc, AssetLoader loader,
+			AsyncThreadDispatcher threadPool) {
 		this.manager = manager;
-		this.dispatch = ad;
+		this.assetDesc = assetDesc;
+		this.loader = loader;
+		this.executor = threadPool;
 	}
 
-	public boolean update() {
-		if (loader instanceof AsyncAssetLoader) {
-			processAsynchronously();
-		} else {
-			processSynchronously();
-		}
-
-		if (asset == null) {
-			return false;
-		} else {
-			return true;
-		}
-
-	}
-
-	public <T> T getAsset(Class<T> type) {
-		return (T) asset;
-	}
-
-	private void processSynchronously() {
-		SynchronousLoader loader = (SynchronousLoader) this.loader;
-
-		asset = loader.loadSync(assetClassifier.getFileName(), manager);
-	}
-
-	private void processAsynchronously() {
-		AsyncAssetLoader loader = (AsyncAssetLoader) this.loader;
-		if (!asyncDone) {
-			if (result == null && !asyncDone) {
-				result = dispatch.submit(this);
-			} else {
-				if (asyncDone) {
-					result.get();
-					asset = loader.loadSync(assetClassifier.getFileLocation(), manager);
-				} else if (result.isDone()) {
-					result.get();
-					asset = loader.loadSync(assetClassifier.getFileName(), manager);
-				}
-			}
-		}
-	}
-
-	@Override
+	/**
+	 * Loads parts of the asset asynchronously if the loader is an
+	 * {@link AsynchronousAssetLoader}.
+	 */
 	public Void call() throws ExecutionException {
-		AsyncAssetLoader loader = (AsyncAssetLoader) this.loader;
-		if (!asyncDone) {
-			loader.loadAsync(assetClassifier.getFileName(), manager);
-			asyncDone = true;
-		}
+		AsyncAssetLoader asyncLoader = (AsyncAssetLoader) loader;
+		asyncLoader.loadAsync(assetDesc.getFileName(), manager);
+		asyncDone = true;
 		return null;
 	}
 
-	public AssetClassifier getAssetClassifier() {
-		return assetClassifier;
+	/**
+	 * Updates the loading of the asset. In case the asset is loaded with an
+	 * {@link AsynchronousAssetLoader}, the loaders
+	 * {@link AsynchronousAssetLoader#loadAsync(AssetManager, String, FileHandle, AssetLoaderParameters)}
+	 * method is first called on a worker thread. Once this method returns, the rest
+	 * of the asset is loaded on the rendering thread via
+	 * {@link AsynchronousAssetLoader#loadSync(AssetManager, String, FileHandle, AssetLoaderParameters)}.
+	 * 
+	 * @return true in case the asset was fully loaded, false otherwise
+	 * @throws GdxRuntimeException
+	 */
+	public boolean update() {
+		ticks++;
+		if (loader instanceof SynchronousLoader) {
+			handleSyncLoader();
+		} else {
+			handleAsyncLoader();
+		}
+		return asset != null;
 	}
 
+	private void handleSyncLoader() {
+		SynchronousLoader syncLoader = (SynchronousLoader) loader;
+
+		asset = syncLoader.loadSync(assetDesc.getFileName(), manager);
+
+	}
+
+	private void handleAsyncLoader() {
+		AsyncAssetLoader asyncLoader = (AsyncAssetLoader) loader;
+
+		if (loadFuture == null && !asyncDone) {
+			loadFuture = executor.submit(this);
+		} else {
+			if (asyncDone) {
+				asset = asyncLoader.loadSync(assetDesc.getFileName(), manager);
+			} else if (loadFuture.isDone()) {
+				try {
+					loadFuture.get();
+				} catch (Exception e) {
+					throw new AERuntimeException("Couldn't load asset: " + assetDesc.getFileName(), e);
+				}
+				asset = asyncLoader.loadSync(assetDesc.getFileName(), manager);
+			}
+		}
+
+	}
+
+	public Object getAsset() {
+		return asset;
+	}
+
+	private void removeDuplicates(ArrayList<AssetClassifier> array) {
+		for (int i = 0; i < array.size(); ++i) {
+			final String fn = array.get(i).getFileName();
+			final Class type = array.get(i).getType();
+			for (int j = array.size() - 1; j > i; --j) {
+				if (type == array.get(j).getType() && fn.equals(array.get(j).getFileName()))
+					array.remove(j);
+			}
+		}
+	}
 }

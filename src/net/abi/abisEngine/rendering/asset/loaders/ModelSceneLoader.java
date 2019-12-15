@@ -29,7 +29,6 @@ public class ModelSceneLoader extends AsyncAssetLoader<ModelScene, ModelSceneLoa
 	@Override
 	public void loadAsync(String fileName, AssetManager manager) {
 		scene = AIMeshLoader.loadModelScene(super.resolve(fileName), 0, manager);
-	
 	}
 
 	/*

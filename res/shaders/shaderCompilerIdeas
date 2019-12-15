@@ -65,16 +65,8 @@ BLEND_FUNC:{"GL_ONE_MINUS_SRC", "GL_ONE"}
 SET_PROPERTY:{"DEPTH_MASK", "FALSE"}
 DEPTH_FUNC:{"GL_EQUAL"}
 ```
-And then at the end for good practice we disable these.
-```
-SET_PROPERTY:{"DEPTH_MASK", "TRUE"}
-DEPTH_FUNC:{"GL_LESS"}
-DISABLE:BLEND
-```
-Then we end the pass with the same tags as we started:
-```
-END_PASS:{"FORWARD_AMBIENT", ...}
-```
+
+Now after we set our render options we can define our shaders.
 
 #Definig GLSL programs
 
@@ -144,6 +136,19 @@ The GLSL Program can be ended by this line:
 ```END_GLSL_PROGRAM:{"VERT", "vertex_shader"}```
 
 You have to include the type of shader and name if defined.
+
+And then at the end for good practice we disable these.
+```
+SET_PROPERTY:{"DEPTH_MASK", "TRUE"}
+DEPTH_FUNC:{"GL_LESS"}
+DISABLE:BLEND
+```
+Then we end the pass with the same tags as we started:
+```
+END_PASS:{"FORWARD_AMBIENT", ...}
+```
+
+
 
 After this you can either define another program or end the file by:
 ```

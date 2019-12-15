@@ -5,9 +5,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import net.abi.abisEngine.handlers.logging.LogManager;
+import net.abi.abisEngine.handlers.logging.Logger;
 import net.abi.abisEngine.util.AERuntimeException;
 
 public class AssetStore {
+
+	private static Logger logger = LogManager.getLogger(AssetStore.class);
 
 	/**
 	 * The type of asset mapped to the list of suffix' mapped to their associate
@@ -37,47 +41,80 @@ public class AssetStore {
 	 * @param asset
 	 */
 	public synchronized <T> void addAsset(Class type, String name, T asset) {
-		ConcurrentHashMap<String, AssetContainer> tempMap = null;
+		ConcurrentHashMap<String, AssetContainer> tempMap = assets.get(type);
+
 		/*
-		 * If there is an entry that is mapped to the type we set temp map to that
-		 * entry.
+		 * If the type doesn't exist then we add it to the map this saves us code
+		 * repetition later on in this function.
 		 */
-		if (assets.containsKey(type)) {
-			tempMap = assets.get(type);
-		} else {
-			/* Else we make a new entry and add a new Map to that and with the asset. */
-			tempMap = new ConcurrentHashMap<String, AssetContainer>();
-			tempMap.put(name, new AssetContainer(asset));
-			assets.put(type, tempMap);
-			return;
+		if (!assetTypes.containsKey(name)) {
+			assetTypes.put(name, type);
 		}
-		/**
-		 * We reach this statement only if there is a suffix already registered in the
-		 * assets store.
+
+		/*
+		 * Default value for the container that initializes it later in the check it
+		 * will be set.
 		 */
-		if (tempMap.containsKey(name)) {
-			/**
-			 * Add a reference to it.
+		AssetContainer _asset = null;
+
+		/*
+		 * If the type doesn't exist in the map then we make one and add it to the map.
+		 */
+		if (tempMap == null) {
+			tempMap = new ConcurrentHashMap<String, AssetContainer>();
+			tempMap.put(name, (_asset = new AssetContainer(asset)));
+			assets.put(type, tempMap);
+		} else {
+			/*
+			 * If the map dose exist we get the container and if the container doesn't exist
+			 * we make one and add it to the tempMap.
 			 */
-			tempMap.get(name).incRefCount();
+			if ((_asset = tempMap.get(name)) == null) {
+				tempMap.put(name, new AssetContainer(asset));
+			} else {
+				/*
+				 * TODO: Instead of doing this check every time we need to increment in the
+				 * store instead implement this into the AssetContainer.
+				 */
+				/*
+				 * If the asset exists then we just add a reference.
+				 */
+				if (_asset.getObject(type) instanceof AssetI) {
+					logger.info("Adding Asset To The Store (new): " + name);
+					((AssetI) _asset.getObject(type)).incAndGetRef();
+				} else {
+					/*
+					 * Else if its not managed we increment the containers references.
+					 */
+					_asset.incAndGetRef();
+				}
+			}
 		}
 	}
 
-	public synchronized <T> T getAsset(String fileName) {
+	public synchronized <T> T get(String fileName) {
 		Class<T> type = assetTypes.get(fileName);
 		if (type == null)
-			throw new AERuntimeException("Asset not loaded: " + fileName);
+			throw new AERuntimeException("AssetI not loaded: " + fileName);
 		ConcurrentHashMap<String, AssetContainer> assetsByType = assets.get(type);
 		if (assetsByType == null)
-			throw new AERuntimeException("Asset not loaded: " + fileName);
+			throw new AERuntimeException("AssetI not loaded: " + fileName);
 		AssetContainer assetContainer = assetsByType.get(fileName);
 		if (assetContainer == null)
-			throw new AERuntimeException("Asset not loaded: " + fileName);
+			throw new AERuntimeException("AssetI not loaded: " + fileName);
 		T asset = assetContainer.getObject(type);
 		if (asset == null)
-			throw new AERuntimeException("Asset not loaded: " + fileName);
+			throw new AERuntimeException("AssetI not loaded: " + fileName);
 
 		return asset;
+	}
+
+	public synchronized <T> Class<T> getType(String fileName) {
+		Class<T> type = assetTypes.get(fileName);
+		if (type == null)
+			throw new AERuntimeException("AssetI not loaded: " + fileName);
+
+		return type;
 	}
 
 	/**
@@ -92,26 +129,26 @@ public class AssetStore {
 	 * @param assetName
 	 * @return
 	 */
-	public synchronized <T> T getAsset(Class<T> type, String assetName) {
+	public synchronized <T> T get(Class<T> type, String assetName) {
 
 		AssetContainer _assCont = null;
 
 		ConcurrentHashMap<String, AssetContainer> _assets = assets.get(type);
 
 		if (_assets == null) {
-			throw new AERuntimeException("Asset Not Loaded: " + assetName);
+			throw new AERuntimeException("AssetI Not Loaded: " + assetName);
 		}
 
 		_assCont = _assets.get(assetName);
 
 		if (_assCont == null) {
-			throw new AERuntimeException("Asset Not Loaded: " + assetName);
+			throw new AERuntimeException("AssetI Not Loaded: " + assetName);
 		}
 
 		T ass = _assCont.getObject(type);
 
 		if (ass == null) {
-			throw new AERuntimeException("Asset Not Loaded: " + assetName);
+			throw new AERuntimeException("AssetI Not Loaded: " + assetName);
 		}
 
 		return ass;
@@ -122,18 +159,18 @@ public class AssetStore {
 		ConcurrentHashMap<String, AssetContainer> _assets = assets.get(type);
 
 		if (_assets == null) {
-			throw new AERuntimeException("Asset Type Not Loaded: " + type);
+			throw new AERuntimeException("AssetI Type Not Loaded: " + type);
 		}
 
 		return _assets;
 	}
 
-	public synchronized <T> ArrayList<T> getAllAssets(Class<T> type) {
+	public synchronized <T> ArrayList<T> getAll(Class<T> type) {
 
 		ConcurrentHashMap<String, AssetContainer> _assets = assets.get(type);
 
 		if (_assets == null) {
-			throw new AERuntimeException("Asset Type Dosnt Exist.");
+			throw new AERuntimeException("AssetI Type Dosnt Exist.");
 		}
 
 		ArrayList<T> _assLis = new ArrayList<T>();
@@ -143,6 +180,10 @@ public class AssetStore {
 		}
 
 		return _assLis;
+	}
+
+	public synchronized boolean contains(String assetName) {
+		return contains(assetTypes.get(assetName), assetName);
 	}
 
 	public synchronized boolean contains(Class type, String assetName) {
@@ -166,23 +207,39 @@ public class AssetStore {
 		return true;
 	}
 
-	public synchronized <T> void removeAsset(Class type, String suffix, T asset) {
+	public synchronized <T> void removeAsset(String assetName) {
+		removeAsset(assetTypes.get(assetName), assetName);
+	}
+
+	public synchronized <T> void removeAsset(Class type, String assetName) {
 		ConcurrentHashMap<String, AssetContainer> tempMap = assets.get(type);
+
+		if (tempMap == null) {
+			throw new AERuntimeException("AssetI Not Found : " + assetName + " : " + type.getSimpleName());
+		}
+
+		AssetContainer assetRef = assets.get(type).get(assetName);
+
 		/**
-		 * We reach this statement only if there is a suffix already registered in the
-		 * assets store.
+		 * If the asset has management support then we cast it to the management
+		 * interface and decrement its
 		 */
-		if (tempMap.containsKey(suffix)) {
-			AssetContainer _ac = tempMap.get(suffix);
-			/**
-			 * It either destroys it or removes a reference from it.
-			 */
-			_ac.decRefCount();
-
-			if (_ac.getRefCount() <= 0) {
-				// _ac.dispose();
+		if (assetRef.getObject(type) instanceof AssetI) {
+			logger.info("Unload (dispose): " + assetName);
+			if (((AssetI) assetRef.getObject(type)).decAndGetRef() <= 0) {
+				tempMap.remove(assetName);
+				assetTypes.remove(assetName);
+			} else {
+				logger.info("Unload (decrement): " + assetName);
 			}
-
+		} else {
+			logger.info("Unload (dispose): " + assetName);
+			if (assetRef.decAndGetRef() <= 0) {
+				tempMap.remove(assetName);
+				assetTypes.remove(assetName);
+			} else {
+				logger.info("Unload (decrement): " + assetName);
+			}
 		}
 	}
 

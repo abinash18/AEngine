@@ -39,7 +39,7 @@ public class ModelScene implements Expendable {
 
 	private Map<String, Mesh> meshes;
 
-	private List<Material> mats = new ArrayList<Material>();
+	private List<Material> mats;
 
 	public ModelScene(AIScene scene, AssetManager man) {
 		this.ai_scene = scene;
@@ -57,9 +57,8 @@ public class ModelScene implements Expendable {
 	 * @return Returns the scene with bound models to VBO's in the current context.
 	 */
 	public ModelScene bindModels(int draw_usage) {
-		for (Iterator it = meshes.entrySet().iterator(); it.hasNext();) {
-			Mesh mesh = (Mesh) it.next();
-			mesh.bindModel(draw_usage);
+		for (Mesh _mesh : meshes.values()) {
+			_mesh.bindModel(draw_usage);
 		}
 		return this;
 	}
@@ -141,10 +140,10 @@ public class ModelScene implements Expendable {
 
 		// mesh.setMat(mat);
 		mesh = new Mesh(_mesh.mName().dataString(), new Model(positions, normals, texCoords, tangents, indices),
-				man.getGLFW_HANDLE(), null);
+				man.getGlfw_handle(), null);
 
 		System.out.println(mesh);
-		
+
 		return mesh;
 
 	}

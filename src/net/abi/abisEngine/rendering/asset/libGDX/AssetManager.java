@@ -96,16 +96,16 @@ public class AssetManager implements Expendable {
 	public synchronized <T> T get(String fileName) {
 		Class<T> type = assetTypes.get(fileName);
 		if (type == null)
-			throw new AERuntimeException("Asset not loaded: " + fileName);
+			throw new AERuntimeException("AssetI not loaded: " + fileName);
 		HashMap<String, AssetClassifier> assetsByType = assets.get(type);
 		if (assetsByType == null)
-			throw new AERuntimeException("Asset not loaded: " + fileName);
+			throw new AERuntimeException("AssetI not loaded: " + fileName);
 		AssetClassifier assetContainer = assetsByType.get(fileName);
 		if (assetContainer == null)
-			throw new AERuntimeException("Asset not loaded: " + fileName);
+			throw new AERuntimeException("AssetI not loaded: " + fileName);
 		T asset = assetContainer.getObject(type);
 		if (asset == null)
-			throw new AERuntimeException("Asset not loaded: " + fileName);
+			throw new AERuntimeException("AssetI not loaded: " + fileName);
 
 		return asset;
 	}
@@ -118,13 +118,13 @@ public class AssetManager implements Expendable {
 	public synchronized <T> T get(String fileName, Class<T> type) {
 		HashMap<String, AssetClassifier> assetsByType = assets.get(type);
 		if (assetsByType == null)
-			throw new AERuntimeException("Asset not loaded: " + fileName);
+			throw new AERuntimeException("AssetI not loaded: " + fileName);
 		AssetClassifier assetContainer = assetsByType.get(fileName);
 		if (assetContainer == null)
-			throw new AERuntimeException("Asset not loaded: " + fileName);
+			throw new AERuntimeException("AssetI not loaded: " + fileName);
 		T asset = assetContainer.getObject(type);
 		if (asset == null)
-			throw new AERuntimeException("Asset not loaded: " + fileName);
+			throw new AERuntimeException("AssetI not loaded: " + fileName);
 		return asset;
 	}
 
@@ -222,7 +222,7 @@ public class AssetManager implements Expendable {
 		// get the asset and its type
 		Class type = assetTypes.get(fileName);
 		if (type == null)
-			throw new AERuntimeException("Asset not loaded: " + fileName);
+			throw new AERuntimeException("AssetI not loaded: " + fileName);
 
 		AssetClassifier assetRef = assets.get(type).get(fileName);
 
@@ -396,7 +396,7 @@ public class AssetManager implements Expendable {
 		for (int i = 0; i < loadQueue.size(); i++) {
 			AssetClassifier desc = loadQueue.get(i);
 			if (desc.fileName.equals(fileName) && !desc.type.equals(type))
-				throw new AERuntimeException("Asset with name '" + fileName
+				throw new AERuntimeException("AssetI with name '" + fileName
 						+ "' already in preload queue, but has different type (expected: " + type.getSimpleName()
 						+ ", found: " + desc.type.getSimpleName() + ")");
 		}
@@ -406,7 +406,7 @@ public class AssetManager implements Expendable {
 			AssetClassifier desc = tasks.get(i).assetDesc;
 			if (desc.fileName.equals(fileName) && !desc.type.equals(type))
 				throw new AERuntimeException(
-						"Asset with name '" + fileName + "' already in task list, but has different type (expected: "
+						"AssetI with name '" + fileName + "' already in task list, but has different type (expected: "
 								+ type.getSimpleName() + ", found: " + desc.type.getSimpleName() + ")");
 		}
 
@@ -414,7 +414,7 @@ public class AssetManager implements Expendable {
 		Class otherType = assetTypes.get(fileName);
 		if (otherType != null && !otherType.equals(type))
 			throw new AERuntimeException(
-					"Asset with name '" + fileName + "' already loaded, but has different type (expected: "
+					"AssetI with name '" + fileName + "' already loaded, but has different type (expected: "
 							+ type.getSimpleName() + ", found: " + otherType.getSimpleName() + ")");
 
 		toLoad++;
@@ -499,7 +499,7 @@ public class AssetManager implements Expendable {
 						if (assetContainer != null) {
 							T asset = assetContainer.getObject(type);
 							if (asset != null) {
-								logger.debug("Asset loaded: " + fileName);
+								logger.debug("AssetI loaded: " + fileName);
 								return asset;
 							}
 						}
@@ -829,7 +829,7 @@ public class AssetManager implements Expendable {
 	public synchronized int getReferenceCount(String fileName) {
 		Class type = assetTypes.get(fileName);
 		if (type == null)
-			throw new AERuntimeException("Asset not loaded: " + fileName);
+			throw new AERuntimeException("AssetI not loaded: " + fileName);
 		return assets.get(type).get(fileName).getRefCount();
 	}
 
@@ -841,7 +841,7 @@ public class AssetManager implements Expendable {
 	public synchronized void setReferenceCount(String fileName, int refCount) {
 		Class type = assetTypes.get(fileName);
 		if (type == null)
-			throw new AERuntimeException("Asset not loaded: " + fileName);
+			throw new AERuntimeException("AssetI not loaded: " + fileName);
 		assets.get(type).get(fileName).setRefCount(refCount);
 	}
 

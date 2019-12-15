@@ -294,7 +294,7 @@ public abstract class GLFWWindow {
 		}
 
 		if (store == null) {
-			throw new AERuntimeException("Asset Store Not Defined.");
+			throw new AERuntimeException("AssetI Store Not Defined.");
 		}
 
 		// this.assetManager = new AssetManager(glfw_handle, store);
