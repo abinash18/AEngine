@@ -247,7 +247,7 @@ public class AIMeshLoader {
 	private static Map<String, ModelScene> loadedScenes = new ConcurrentHashMap<String, ModelScene>();
 
 	/**
-	 * Loads a mesh from a file using Asset Importer Library. If no post options are
+	 * Loads a mesh from a file using AssetI Importer Library. If no post options are
 	 * provided (The value is 0) defaults will be used. Defaults are :
 	 * aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs |
 	 * aiProcess_CalcTangentSpace. NOTE: aiProcess_JoinIdenticalVertices is useful.

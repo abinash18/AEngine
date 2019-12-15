@@ -1,4 +1,5 @@
 package net.abi.abisEngine.rendering.asset;
+
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -23,18 +24,8 @@ public class AsyncResult<T> {
 		return future.cancel(mayInterruptIfRunning);
 	}
 
-	public T get() {
-		try {
-			return future.get();
-		} catch (CancellationException e) {
-			// TODO: Log out that it was canceled.
-			return null;
-		} catch (ExecutionException e) {
-			// TODO: Throw AERuntime Exception.
-		} catch (InterruptedException e) {
-			// TODO: Throw AERuntime Exception.
-		}
-		return null;
+	public T get() throws InterruptedException, ExecutionException, CancellationException {
+		return future.get();
 	}
 
 }
