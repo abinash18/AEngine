@@ -1,4 +1,7 @@
-package net.abi.abisEngine.rendering.asset;
+package net.abi.abisEngine.rendering.asset.loaders;
+
+import net.abi.abisEngine.rendering.asset.AssetLoaderParameters;
+import net.abi.abisEngine.rendering.asset.AssetManager;
 
 public abstract class AsyncAssetLoader<T, P extends AssetLoaderParameters<T>> extends AssetLoader<T, P> {
 

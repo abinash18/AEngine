@@ -1,27 +1,25 @@
 package net.abi.abisEngine.util.async;
-
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
-import net.abi.abisEngine.util.AERuntimeException;
-import net.abi.abisEngine.util.Expendable;
+public class AsyncThreadDispatcher {
 
-public class AsyncThreadDispatcher implements Expendable {
+	ExecutorService dispatch;
 
-	protected ExecutorService dispatch;
+	public AsyncThreadDispatcher(int maxThreads, final String threadNameSuffix) {
 
-	public AsyncThreadDispatcher(int maxThreads, String name) {
-		dispatch = Executors.newFixedThreadPool(maxThreads, new ThreadFactory() {
+		this.dispatch = Executors.newFixedThreadPool(maxThreads, new ThreadFactory() {
+			String threadSuffix = threadNameSuffix;
+			int index = 0;
+
 			@Override
 			public Thread newThread(Runnable r) {
-				Thread thread = new Thread(r, name);
-				thread.setDaemon(true);
-				return thread;
+				Thread t = new Thread(r, threadSuffix + "-" + index);
+				index++;
+				return t;
 			}
 		});
 	}
@@ -29,28 +27,35 @@ public class AsyncThreadDispatcher implements Expendable {
 	public <T> AsyncResult<T> submit(AsyncTask<T> task) {
 
 		if (dispatch.isShutdown()) {
-			throw new AERuntimeException("Executor Shutdown Already.");
+			// TODO: Throw AERuntime Exception.
 		}
+
 		return new AsyncResult<T>(dispatch.submit(new Callable<T>() {
 			@Override
 			public T call() throws Exception {
-				return task.execute();
+				return task.call();
 			}
 		}));
 	}
 
-	@Override
 	public void dispose() {
+
+		if (dispatch.isShutdown()) {
+			return;
+		}
+
 		dispatch.shutdown();
+
+		// TODO: Log that dispatch is being shut down.
+
 		try {
 			dispatch.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
 		} catch (InterruptedException e) {
-			throw new AERuntimeException("Dispatch Cannot Be Shut Down.", e);
+			// TODO: handle exception
 		}
-	}
 
-	public interface AsyncTask<T> {
-		public T execute() throws ExecutionException;
+		// TODO: Log that dispatch has been shut down.
+
 	}
 
 }

@@ -46,7 +46,11 @@ public class AssetContainer implements AssetI {
 	 */
 	@Override
 	public void incRef() {
-		refCount++;
+		if (object instanceof AssetI) {
+			((AssetI) object).incRef();
+		} else {
+			refCount++;
+		}
 	}
 
 	/*
@@ -56,10 +60,17 @@ public class AssetContainer implements AssetI {
 	 */
 	@Override
 	public void decRef() {
-		refCount--;
-		if (refCount <= 0) {
-			dispose();
+		if (object instanceof AssetI) {
+			if (((AssetI) object).incAndGetRef() <= 0) {
+				dispose();
+			}
+		} else {
+			refCount++;
+			if (refCount <= 0) {
+				dispose();
+			}
 		}
+
 	}
 
 	/*
@@ -69,7 +80,7 @@ public class AssetContainer implements AssetI {
 	 */
 	@Override
 	public int getRefs() {
-		return refCount;
+		return (object instanceof AssetI) ? ((AssetI) object).getRefs() : refCount;
 	}
 
 	/*
@@ -80,7 +91,7 @@ public class AssetContainer implements AssetI {
 	@Override
 	public int incAndGetRef() {
 		incRef();
-		return refCount;
+		return getRefs();
 	}
 
 	/*
@@ -91,6 +102,6 @@ public class AssetContainer implements AssetI {
 	@Override
 	public int decAndGetRef() {
 		decRef();
-		return refCount;
+		return getRefs();
 	}
 }

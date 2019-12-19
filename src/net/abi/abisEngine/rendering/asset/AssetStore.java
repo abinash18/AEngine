@@ -17,7 +17,7 @@ public class AssetStore {
 	 * The type of asset mapped to the list of suffix' mapped to their associate
 	 * reference counted containers.
 	 */
-	public Map<Class, ConcurrentHashMap<String, AssetContainer>> assets;
+	public Map<Class, HashMap<String, AssetContainer>> assets;
 
 	public HashMap<String, Class> assetTypes;
 
@@ -25,7 +25,7 @@ public class AssetStore {
 	 * 
 	 */
 	public AssetStore() {
-		assets = new ConcurrentHashMap<Class, ConcurrentHashMap<String, AssetContainer>>();
+		assets = new HashMap<Class, HashMap<String, AssetContainer>>();
 		assetTypes = new HashMap<String, Class>();
 	}
 
@@ -41,7 +41,7 @@ public class AssetStore {
 	 * @param asset
 	 */
 	public synchronized <T> void addAsset(Class type, String name, T asset) {
-		ConcurrentHashMap<String, AssetContainer> tempMap = assets.get(type);
+		HashMap<String, AssetContainer> tempMap = assets.get(type);
 
 		/*
 		 * If the type doesn't exist then we add it to the map this saves us code
@@ -61,7 +61,7 @@ public class AssetStore {
 		 * If the type doesn't exist in the map then we make one and add it to the map.
 		 */
 		if (tempMap == null) {
-			tempMap = new ConcurrentHashMap<String, AssetContainer>();
+			tempMap = new HashMap<String, AssetContainer>();
 			tempMap.put(name, (_asset = new AssetContainer(asset)));
 			assets.put(type, tempMap);
 		} else {
@@ -73,21 +73,19 @@ public class AssetStore {
 				tempMap.put(name, new AssetContainer(asset));
 			} else {
 				/*
-				 * TODO: Instead of doing this check every time we need to increment in the
-				 * store instead implement this into the AssetContainer.
-				 */
-				/*
 				 * If the asset exists then we just add a reference.
 				 */
-				if (_asset.getObject(type) instanceof AssetI) {
-					logger.info("Adding Asset To The Store (new): " + name);
-					((AssetI) _asset.getObject(type)).incAndGetRef();
-				} else {
-					/*
-					 * Else if its not managed we increment the containers references.
-					 */
-					_asset.incAndGetRef();
-				}
+				_asset.incRef();
+
+//				if (_asset.getObject(type) instanceof AssetI) {
+//					logger.info("Adding Asset To The Store (new): " + name);
+//					((AssetI) _asset.getObject(type)).incAndGetRef();
+//				} else {
+//					/*
+//					 * Else if its not managed we increment the containers references.
+//					 */
+//					_asset.incAndGetRef();
+//				}
 			}
 		}
 	}
@@ -96,7 +94,7 @@ public class AssetStore {
 		Class<T> type = assetTypes.get(fileName);
 		if (type == null)
 			throw new AERuntimeException("AssetI not loaded: " + fileName);
-		ConcurrentHashMap<String, AssetContainer> assetsByType = assets.get(type);
+		HashMap<String, AssetContainer> assetsByType = assets.get(type);
 		if (assetsByType == null)
 			throw new AERuntimeException("AssetI not loaded: " + fileName);
 		AssetContainer assetContainer = assetsByType.get(fileName);
@@ -133,7 +131,7 @@ public class AssetStore {
 
 		AssetContainer _assCont = null;
 
-		ConcurrentHashMap<String, AssetContainer> _assets = assets.get(type);
+		HashMap<String, AssetContainer> _assets = assets.get(type);
 
 		if (_assets == null) {
 			throw new AERuntimeException("AssetI Not Loaded: " + assetName);
@@ -154,9 +152,9 @@ public class AssetStore {
 		return ass;
 	}
 
-	public synchronized ConcurrentHashMap<String, AssetContainer> get(Class type) {
+	public synchronized HashMap<String, AssetContainer> get(Class type) {
 
-		ConcurrentHashMap<String, AssetContainer> _assets = assets.get(type);
+		HashMap<String, AssetContainer> _assets = assets.get(type);
 
 		if (_assets == null) {
 			throw new AERuntimeException("AssetI Type Not Loaded: " + type);
@@ -167,7 +165,7 @@ public class AssetStore {
 
 	public synchronized <T> ArrayList<T> getAll(Class<T> type) {
 
-		ConcurrentHashMap<String, AssetContainer> _assets = assets.get(type);
+		HashMap<String, AssetContainer> _assets = assets.get(type);
 
 		if (_assets == null) {
 			throw new AERuntimeException("AssetI Type Dosnt Exist.");
@@ -186,9 +184,9 @@ public class AssetStore {
 		return contains(assetTypes.get(assetName), assetName);
 	}
 
-	public synchronized boolean contains(Class type, String assetName) {
+	public boolean contains(Class type, String assetName) {
 
-		ConcurrentHashMap<String, AssetContainer> _assets = assets.get(type);
+		HashMap<String, AssetContainer> _assets = assets.get(type);
 
 		/*
 		 * If the type has not been loaded.
@@ -212,7 +210,7 @@ public class AssetStore {
 	}
 
 	public synchronized <T> void removeAsset(Class type, String assetName) {
-		ConcurrentHashMap<String, AssetContainer> tempMap = assets.get(type);
+		HashMap<String, AssetContainer> tempMap = assets.get(type);
 
 		if (tempMap == null) {
 			throw new AERuntimeException("AssetI Not Found : " + assetName + " : " + type.getSimpleName());
@@ -222,25 +220,33 @@ public class AssetStore {
 
 		/**
 		 * If the asset has management support then we cast it to the management
-		 * interface and decrement its
+		 * interface and decrement its references.
 		 */
-		if (assetRef.getObject(type) instanceof AssetI) {
-			logger.info("Unload (dispose): " + assetName);
-			if (((AssetI) assetRef.getObject(type)).decAndGetRef() <= 0) {
-				tempMap.remove(assetName);
-				assetTypes.remove(assetName);
-			} else {
-				logger.info("Unload (decrement): " + assetName);
-			}
+
+		if (assetRef.decAndGetRef() <= 0) {
+			tempMap.remove(assetName);
+			assetTypes.remove(assetName);
 		} else {
-			logger.info("Unload (dispose): " + assetName);
-			if (assetRef.decAndGetRef() <= 0) {
-				tempMap.remove(assetName);
-				assetTypes.remove(assetName);
-			} else {
-				logger.info("Unload (decrement): " + assetName);
-			}
+			logger.info("Unload (decrement): " + assetName);
 		}
+
+//		if (assetRef.getObject(type) instanceof AssetI) {
+//			logger.info("Unload (dispose): " + assetName);
+//			if (((AssetI) assetRef.getObject(type)).decAndGetRef() <= 0) {
+//				tempMap.remove(assetName);
+//				assetTypes.remove(assetName);
+//			} else {
+//				logger.info("Unload (decrement): " + assetName);
+//			}
+//		} else {
+//			logger.info("Unload (dispose): " + assetName);
+//			if (assetRef.decAndGetRef() <= 0) {
+//				tempMap.remove(assetName);
+//				assetTypes.remove(assetName);
+//			} else {
+//				logger.info("Unload (decrement): " + assetName);
+//			}
+//		}
 	}
 
 	public HashMap<String, Class> getAssetTypes() {

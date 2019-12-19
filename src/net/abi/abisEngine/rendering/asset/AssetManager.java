@@ -9,43 +9,27 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
-import net.abi.abisEngine.rendering.asset.AssetLoader;
+import net.abi.abisEngine.rendering.asset.loaders.AssetLoader;
 import net.abi.abisEngine.rendering.asset.loaders.ModelSceneLoader;
 import net.abi.abisEngine.rendering.meshLoading.ModelScene;
 import net.abi.abisEngine.util.AERuntimeException;
 import net.abi.abisEngine.util.Expendable;
 import net.abi.abisEngine.util.ThreadUtils;
-import net.abi.abisEngine.rendering.asset.AsyncThreadDispatcher;
+import net.abi.abisEngine.util.async.AsyncThreadDispatcher;
 
-/**
- * This class was adopted form LibGDX, Because I was Too Lazy to make my own.
- */
-/**
- * Loads and stores assets like textures, bitmapfonts, tile maps, sounds, music
- * and so on.
- * 
- * @author mzechner
- */
 public class AssetManager implements Expendable {
 
 	private static Logger logger = LogManager.getLogger(AssetManager.class);
+	private AssetStore store;
 
-//	final HashMap<Class, HashMap<String, AssetContainer>> assets = new HashMap();
-//	final HashMap<String, Class> assetTypes = new HashMap();
+	private final HashMap<Class, HashMap<String, AssetLoader>> loaders = new HashMap();
+	private final ArrayList<AssetClassifier> loadQueue = new ArrayList<AssetClassifier>();
+	private final AsyncThreadDispatcher executor;
 
-	AssetStore store = new AssetStore();
-
-	// final HashMap<String, ArrayList<String>> assetDependencies = new HashMap();
-	// final HashSet<String> injected = new HashSet();
-
-	final HashMap<Class, HashMap<String, AssetLoader>> loaders = new HashMap();
-	final ArrayList<AssetClassifier> loadQueue = new ArrayList<AssetClassifier>();
-	final AsyncThreadDispatcher executor;
-
-	final Stack<AssetLoadTask> tasks = new Stack();
-	int loaded = 0;
-	int toLoad = 0;
-	int peakTasks = 0;
+	private final Stack<AssetLoadTask> tasks = new Stack();
+	private int loaded = 0;
+	private int toLoad = 0;
+	private int peakTasks = 0;
 
 	private String assetsDir = "./res/";
 
@@ -74,6 +58,7 @@ public class AssetManager implements Expendable {
 			setLoader(ModelScene.class, new ModelSceneLoader(assetsDir + "models/"));
 		}
 		executor = new AsyncThreadDispatcher(1, "AssetManager");
+		store = new AssetStore();
 	}
 
 	public String getAssetsDir() {
@@ -408,7 +393,7 @@ public class AssetManager implements Expendable {
 			synchronized (this) {
 				Class<T> type = store.assetTypes.get(fileName);
 				if (type != null) {
-					ConcurrentHashMap<String, AssetContainer> assetsByType = store.get(type);
+					HashMap<String, AssetContainer> assetsByType = store.get(type);
 					if (assetsByType != null) {
 						AssetContainer assetContainer = assetsByType.get(fileName);
 						if (assetContainer != null) {
@@ -441,15 +426,18 @@ public class AssetManager implements Expendable {
 			Class type = store.assetTypes.get(assetDesc.getFileName());
 			AssetContainer assetRef = store.assets.get(type).get(assetDesc.getFileName());
 
-			if (assetRef.getObject(type) instanceof AssetI) {
-				logger.info("Adding Asset To The Store (new): " + assetDesc.getFileName());
-				((AssetI) assetRef.getObject(type)).incAndGetRef();
-			} else {
-				/*
-				 * Else if its not managed we increment the containers references.
-				 */
-				assetRef.incAndGetRef();
-			}
+//			if (assetRef.getObject(type) instanceof AssetI) {
+//				logger.info("Adding Asset To The Store (new): " + assetDesc.getFileName());
+//				((AssetI) assetRef.getObject(type)).incAndGetRef();
+//			} else {
+//				/*
+//				 * Else if its not managed we increment the containers references.
+//				 */
+//				assetRef.incAndGetRef();
+//			}
+
+			assetRef.incRef();
+			System.out.println(assetRef.getRefs());
 
 			if (assetDesc.getParameter() != null && assetDesc.getParameter().loadedCallback != null) {
 				assetDesc.getParameter().loadedCallback.finishedLoading(this, assetDesc.getFileName(),
@@ -488,6 +476,8 @@ public class AssetManager implements Expendable {
 //			assets.put(type, typeToAssets);
 //		}
 //		typeToAssets.put(fileName, new AssetContainer(asset));
+
+		store.addAsset(type, fileName, asset);
 
 	}
 
@@ -642,15 +632,6 @@ public class AssetManager implements Expendable {
 		this.tasks.clear();
 	}
 
-	/** @return the {@link Logger} used by the {@link AssetManager} */
-	public Logger getLogger() {
-		return logger;
-	}
-
-	public void setLogger(Logger logger) {
-		logger = logger;
-	}
-
 	/**
 	 * Returns the reference count of an asset.
 	 * 
@@ -658,18 +639,9 @@ public class AssetManager implements Expendable {
 	 */
 	public synchronized int getReferenceCount(String fileName) {
 
-		Class type = store.getType(fileName);
-
 		AssetContainer assetRef = store.get(fileName);
 
-		if (assetRef.getObject(type) instanceof AssetI) {
-			return ((AssetI) assetRef.getObject(type)).getRefs();
-		} else {
-			/*
-			 * Else if its not managed we increment the containers references.
-			 */
-			return assetRef.getRefs();
-		}
+		return assetRef.getRefs();
 	}
 
 //	/**

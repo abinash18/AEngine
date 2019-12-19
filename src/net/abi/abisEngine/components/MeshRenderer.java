@@ -28,10 +28,19 @@ public class MeshRenderer extends SceneComponent {
 		return this;
 	}
 
+	private Shader wir = new Shader("visualizers/wireframe");
+
 	@Override
 	public void render(Shader shader, RenderingEngine engine) {
-		shader.bind();
-		shader.updateUniforms(super.getTransform(), mat, engine);
+
+		if (drawOption == GL15.GL_LINES) {
+			wir.bind();
+			wir.updateUniforms(super.getTransform(), mat, engine);
+		} else {
+			shader.bind();
+			shader.updateUniforms(super.getTransform(), mat, engine);
+		}
+
 		mesh.draw(drawOption);
 	}
 

@@ -123,10 +123,10 @@ public class EngineSplashScreen extends Scene {
 	@Override
 	public void update(float delta) {
 		super.update(delta);
-		System.out.println(man.getQueuedAssets());
+		// System.out.println(man.getQueuedAssets());
 		if (man.update()) {
 			done = true;
-			System.out.println("done");
+			// System.out.println("done");
 		}
 
 		// try {

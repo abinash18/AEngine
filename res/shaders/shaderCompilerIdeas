@@ -64,6 +64,7 @@ ENABLE:BLEND
 BLEND_FUNC:{"GL_ONE_MINUS_SRC", "GL_ONE"}
 SET_PROPERTY:{"DEPTH_MASK", "FALSE"}
 DEPTH_FUNC:{"GL_EQUAL"}
+DRAW_MODE:{"GL_LINES"} //If you are working on an wireframe renderer.
 ```
 
 Now after we set our render options we can define our shaders.

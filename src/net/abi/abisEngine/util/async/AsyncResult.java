@@ -1,28 +1,31 @@
 package net.abi.abisEngine.util.async;
 
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import net.abi.abisEngine.util.AERuntimeException;
-
 public class AsyncResult<T> {
-	protected Future<T> future;
 
-	public AsyncResult(Future<T> f) {
-		this.future = f;
+	private Future<T> future;
+
+	public AsyncResult(Future<T> submit) {
+		this.future = submit;
 	}
 
 	public boolean isDone() {
 		return future.isDone();
 	}
 
-	public T get() {
-		try {
-			return future.get();
-		} catch (InterruptedException e) {
-			return null;
-		} catch (ExecutionException e) {
-			throw new AERuntimeException(e.getCause());
-		}
+	public boolean isCancelled() {
+		return future.isCancelled();
 	}
+
+	public boolean cancel(boolean mayInterruptIfRunning) {
+		return future.cancel(mayInterruptIfRunning);
+	}
+
+	public T get() throws InterruptedException, ExecutionException, CancellationException {
+		return future.get();
+	}
+
 }

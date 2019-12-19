@@ -1,7 +1,8 @@
-package net.abi.abisEngine.rendering.asset;
+package net.abi.abisEngine.util.async;
+
 import java.util.concurrent.ExecutionException;
 
-interface AsyncTask<T> {
+public interface AsyncTask<T> {
 
 	public T call() throws ExecutionException;
 
