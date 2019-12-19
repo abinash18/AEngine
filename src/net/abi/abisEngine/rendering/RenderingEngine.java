@@ -96,6 +96,7 @@ public class RenderingEngine extends MappedValues {
 	}
 
 	private void renderVisualizers(Scene scene) {
+
 	}
 
 	private void renderDepth(Scene scene) {

@@ -4,18 +4,15 @@ package net.abi.abisEngine.rendering.asset;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-import net.abi.abisEngine.rendering.asset.AssetLoader;
-import net.abi.abisEngine.rendering.asset.AsyncAssetLoader;
-import net.abi.abisEngine.rendering.asset.SynchronousLoader;
+import net.abi.abisEngine.rendering.asset.loaders.AssetLoader;
+import net.abi.abisEngine.rendering.asset.loaders.AsyncAssetLoader;
+import net.abi.abisEngine.rendering.asset.loaders.SyncAssetLoader;
 import net.abi.abisEngine.util.AERuntimeException;
+import net.abi.abisEngine.util.async.AsyncResult;
+import net.abi.abisEngine.util.async.AsyncTask;
+import net.abi.abisEngine.util.async.AsyncThreadDispatcher;
 
-/**
- * Responsible for loading an asset through an {@link AssetLoader} based on an
- * {@link AssetDescriptor}.
- * 
- * @author mzechner
- */
-class AssetLoadTask implements AsyncTask<Void> {
+public class AssetLoadTask implements AsyncTask<Void> {
 	AssetManager manager;
 	AssetClassifier assetDesc;
 	AssetLoader loader;
@@ -39,10 +36,6 @@ class AssetLoadTask implements AsyncTask<Void> {
 		this.executor = threadPool;
 	}
 
-	/**
-	 * Loads parts of the asset asynchronously if the loader is an
-	 * {@link AsynchronousAssetLoader}.
-	 */
 	public Void call() throws ExecutionException {
 		AsyncAssetLoader asyncLoader = (AsyncAssetLoader) loader;
 		asyncLoader.loadAsync(assetDesc.getFileName(), manager);
@@ -50,20 +43,9 @@ class AssetLoadTask implements AsyncTask<Void> {
 		return null;
 	}
 
-	/**
-	 * Updates the loading of the asset. In case the asset is loaded with an
-	 * {@link AsynchronousAssetLoader}, the loaders
-	 * {@link AsynchronousAssetLoader#loadAsync(AssetManager, String, FileHandle, AssetLoaderParameters)}
-	 * method is first called on a worker thread. Once this method returns, the rest
-	 * of the asset is loaded on the rendering thread via
-	 * {@link AsynchronousAssetLoader#loadSync(AssetManager, String, FileHandle, AssetLoaderParameters)}.
-	 * 
-	 * @return true in case the asset was fully loaded, false otherwise
-	 * @throws GdxRuntimeException
-	 */
 	public boolean update() {
 		ticks++;
-		if (loader instanceof SynchronousLoader) {
+		if (loader instanceof SyncAssetLoader) {
 			handleSyncLoader();
 		} else {
 			handleAsyncLoader();
@@ -72,7 +54,7 @@ class AssetLoadTask implements AsyncTask<Void> {
 	}
 
 	private void handleSyncLoader() {
-		SynchronousLoader syncLoader = (SynchronousLoader) loader;
+		SyncAssetLoader syncLoader = (SyncAssetLoader) loader;
 
 		asset = syncLoader.loadSync(assetDesc.getFileName(), manager);
 
@@ -100,16 +82,5 @@ class AssetLoadTask implements AsyncTask<Void> {
 
 	public Object getAsset() {
 		return asset;
-	}
-
-	private void removeDuplicates(ArrayList<AssetClassifier> array) {
-		for (int i = 0; i < array.size(); ++i) {
-			final String fn = array.get(i).getFileName();
-			final Class type = array.get(i).getType();
-			for (int j = array.size() - 1; j > i; --j) {
-				if (type == array.get(j).getType() && fn.equals(array.get(j).getFileName()))
-					array.remove(j);
-			}
-		}
 	}
 }
