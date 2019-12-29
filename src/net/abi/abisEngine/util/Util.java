@@ -65,12 +65,32 @@ public class Util {
 	}
 
 	public static FloatBuffer createFlippedBuffer(List<Vector3f> values) {
-		FloatBuffer buffer = createFloatBuffer(values.size() * Vertex.SIZE);
+		FloatBuffer buffer = createFloatBuffer(values.size() * 3);
 
 		for (int i = 0; i < values.size(); i++) {
 			buffer.put(values.get(i).x());
 			buffer.put(values.get(i).y());
 			buffer.put(values.get(i).z());
+		}
+
+		buffer.flip();
+
+		return buffer;
+	}
+
+	public static FloatBuffer createFlippedBuffer(Vector3f[][] values) {
+		FloatBuffer buffer = createFloatBuffer(values.length * 9);
+
+		for (int i = 0; i < values.length; i++) {
+			buffer.put(values[i][0].x());
+			buffer.put(values[i][0].y());
+			buffer.put(values[i][0].z());
+			buffer.put(values[i][1].x());
+			buffer.put(values[i][1].y());
+			buffer.put(values[i][1].z());
+			buffer.put(values[i][2].x());
+			buffer.put(values[i][2].y());
+			buffer.put(values[i][2].z());
 		}
 
 		buffer.flip();

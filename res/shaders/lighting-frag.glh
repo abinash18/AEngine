@@ -1,7 +1,7 @@
-varying vec2 texCoord0;
-varying vec3 normal0;
-varying vec3 worldPosition0;
-varying mat3 tbnMatrix;
+in vec2 texCoord0;
+in vec3 normal0;
+in vec3 worldPosition0;
+in mat3 tbnMatrix;
 
 uniform sampler2D diffuse;
 uniform sampler2D normal_map;

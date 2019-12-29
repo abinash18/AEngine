@@ -1,0 +1,70 @@
+#version 330 core
+precision mediump float;
+layout (location = 0) in vec3 position;
+layout (location = 1) in vec2 texCoord;
+layout (location = 2) in vec3 normal;
+layout (location = 3) in vec3 tangent;
+layout (location = 4) in vec3 baryCentric;
+//attribute vec2 texCoord;
+
+out vec3 vBC;
+
+uniform mat4 T_MVP;
+
+void main() {
+  //texCoord0 = texCoord;    
+  gl_Position = T_MVP * vec4(position, 1.0);
+  vBC = baryCentric;
+}
+
+// uniform vec2 WIN_SCALE;                                                       
+// attribute vec4 p1_3d;                                                         
+// attribute vec4 p2_3d;       
+// attribute vec3 position;                                                  
+// uniform mat4 T_MVP;            
+// varying vec3 dist;                                                            
+// void main(void)                                                               
+// {                                                                             
+// 	 // We store the vertex id (0,1, or 2) in the w coord of the vertex          
+// 	 // which then has to be restored to w=1.                                    
+// 	 float swizz = gl_Vertex.w;                                                  
+// 	 vec4 pos = gl_Vertex;                                                       
+// 	 pos.w = 1.0;                                                                
+                                                                              
+// 	 // Compute the vertex position in the usual fashion.                       
+//      gl_Position = T_MVP * pos;                          
+	                                                                             
+// 	 // p0 is the 2D position of the current vertex.                             
+// 	 vec2 p0 = gl_Position.xy/gl_Position.w;                                     
+                                                                              
+// 	 // Project p1 and p2 and compute the vectors v1 = p1-p0                     
+// 	 // and v2 = p2-p0                                                           
+// 	 vec4 p1_3d_ = gl_ModelViewProjectionMatrix * p1_3d;                         
+// 	 vec2 v1 = WIN_SCALE*(p1_3d_.xy / p1_3d_.w - p0);                            
+                                                                              
+// 	 vec4 p2_3d_ = gl_ModelViewProjectionMatrix * p2_3d;                         
+// 	 vec2 v2 = WIN_SCALE*(p2_3d_.xy / p2_3d_.w - p0);                            
+                                                                              
+// 	 // Compute 2D area of triangle.                                             
+// 	 float area2 = abs(v1.x*v2.y - v1.y * v2.x);                                 
+                                                                              
+//    // Compute distance from vertex to line in 2D coords                       
+//    float h = area2/length(v1-v2);                                             
+                                                                              
+//    // ---                                                                     
+//    // The swizz variable tells us which of the three vertices                 
+//    // we are dealing with. The ugly comparisons would not be needed if 	     
+//    // swizz was an int.                                                     	 
+                                                                              
+//    if(swizz<0.1)                                                              
+//       dist = vec3(h,0,0);                                                     
+//    else if(swizz<1.1)                                                         
+//       dist = vec3(0,h,0);                                                     
+//    else                                                                       
+//       dist = vec3(0,0,h);                                                     
+                                                                              
+//    // ----                                                                    
+//    // Quick fix to defy perspective correction                                
+                                                                              
+//    dist *= gl_Position.w;                                                     
+// } 

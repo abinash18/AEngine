@@ -1,0 +1,4 @@
+#version 330
+void main() {
+    gl_FragColor -= o - length(fwidth(texture2D(iChannel0,u/iResolution.xy)))*3.;
+}

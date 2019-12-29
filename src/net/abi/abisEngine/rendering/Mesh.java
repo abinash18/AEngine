@@ -10,7 +10,10 @@ import static org.lwjgl.opengl.GL30.glDeleteVertexArrays;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.assimp.AIVector3D;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
@@ -19,23 +22,29 @@ import org.lwjgl.opengl.GL30;
 
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
-import net.abi.abisEngine.rendering.asset.AssetI;
-import net.abi.abisEngine.rendering.meshLoading.AIMeshLoader;
-import net.abi.abisEngine.math.Vector2f;
 import net.abi.abisEngine.math.Vector3f;
+import net.abi.abisEngine.rendering.asset.AssetI;
 import net.abi.abisEngine.rendering.resourceManagement.Material;
-import net.abi.abisEngine.rendering.shaders.Shader;
 import net.abi.abisEngine.util.Util;
 
+/*
+ * TODO: Make this class extendible so the user can extend and add attributes pragmatically by extracting them from shaders.
+ */
+
+/**
+ * 
+ * @author abinash
+ *
+ */
 public class Mesh implements AssetI {
 
 	private static final AIVector3D ZERO_VECTOR = AIVector3D.create().set(0.0f, 0.0f, 0.0f);
 
 	/**
-	 * Positions in the VAOBuffers array for the buffers.
+	 * INDEXs for the specific buffers in the VAOBuffers Array.
 	 */
 	private static final int VAO_POSITIONS_INDEX = 0, VAO_TEXTURE_COORDINATE_INDEX = 1, VAO_NORMAL_INDEX = 2,
-			VAO_TANGENT_INDEX = 3, VAO_INDICES_INDEX = 4, NUM_BUFFERS = 5;
+			VAO_TANGENT_INDEX = 3, VAO_INDICES_INDEX = 4, VAO_BC_INDEX = 5, NUM_BUFFERS = 6;
 
 	/**
 	 * Contains the VAO ID and VBO Buffer ID's for the mesh.
@@ -56,7 +65,7 @@ public class Mesh implements AssetI {
 		/**
 		 * Array Containing the IDs for all the opengl buffers.
 		 */
-		private int[] VAOBuffers = new int[NUM_BUFFERS];
+		private int[] VAOBuffers;
 
 		boolean bound = false;
 
@@ -68,7 +77,10 @@ public class Mesh implements AssetI {
 			this.name = name;
 		}
 
-		public void bindVAO() {
+		public VAO bindVAO(int numBuffers) {
+
+			VAOBuffers = new int[numBuffers];
+
 			/* Generate a VAO to use. */
 			VAO = GL30.glGenVertexArrays();
 
@@ -79,7 +91,7 @@ public class Mesh implements AssetI {
 			GL30.glGenBuffers(VAOBuffers);
 
 			bound = true;
-
+			return this;
 		}
 
 	}
@@ -120,7 +132,7 @@ public class Mesh implements AssetI {
 	 */
 	class MeshResource {
 		int size, refCount;
-		VAO vao;
+		HashMap<String, VAO> vaos;
 		MeshData meshData;
 
 		boolean initialized = false;
@@ -133,7 +145,19 @@ public class Mesh implements AssetI {
 			this.size = meshData.model.getIndices().size() - 1;
 			this.refCount = 1;
 			this.meshData = meshData;
-			this.vao = new VAO();
+			this.vaos = new HashMap<String, VAO>();
+		}
+
+		VAO addVAO(String name) {
+			VAO _vao = new VAO();
+
+			this.vaos.put(name, _vao);
+
+			return _vao;
+		}
+
+		VAO getVAO(String name) {
+			return vaos.get(name);
 		}
 
 		void incRefs() {
@@ -276,62 +300,128 @@ public class Mesh implements AssetI {
 	 */
 	public Mesh bindModel(int draw_usage) {
 
-		if (meshResource.vao.bound && meshResource.initialized) {
+		if (meshResource.initialized) {
 			return this;
 		}
 
-		meshResource.vao.bindVAO();
+		VAO _v = meshResource.addVAO("vaoOne").bindVAO(NUM_BUFFERS + 1);
 
-		GL30.glBindVertexArray(meshResource.vao.VAO);
-
-		/* Generate VBOs */
-		// GL30.glGenBuffers(VAOBuffers);
+		/* No need to do this since we do it in the bindVAO Method. */
+		// GL30.glBindVertexArray(meshResource.vao.VAO);
 
 		/* Positions */
-		bindBuffer(GL15.GL_ARRAY_BUFFER, VAO_POSITIONS_INDEX, 0, 3,
-				Util.createFlippedBuffer(meshResource.meshData.model.getPositions()), draw_usage);
+//		bindBuffer(GL15.GL_ARRAY_BUFFER, VAO_POSITIONS_INDEX, 0, 3,
+//				Util.createFlippedBuffer(meshResource.meshData.model.getPositions()), draw_usage);
+
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, _v.VAOBuffers[VAO_POSITIONS_INDEX]);
+		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, Util.createFlippedBuffer(meshResource.meshData.model.getPositions()),
+				draw_usage);
+		GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 0, 0);
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 
 		/* Normals */
-		bindBuffer(GL15.GL_ARRAY_BUFFER, VAO_TEXTURE_COORDINATE_INDEX, 1, 2,
-				Util.createFlippedBuffer(meshResource.meshData.model.getTexCoords()), draw_usage);
+//		bindBuffer(GL15.GL_ARRAY_BUFFER, VAO_TEXTURE_COORDINATE_INDEX, 1, 2,
+//				Util.createFlippedBuffer(meshResource.meshData.model.getTexCoords()), draw_usage);
+
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, _v.VAOBuffers[VAO_TEXTURE_COORDINATE_INDEX]);
+		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, Util.createFlippedBuffer(meshResource.meshData.model.getTexCoords()),
+				draw_usage);
+		GL20.glVertexAttribPointer(1, 2, GL11.GL_FLOAT, false, 0, 0);
+		// GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 
 		/* Texture Coordinates */
-		bindBuffer(GL15.GL_ARRAY_BUFFER, VAO_NORMAL_INDEX, 2, 3,
-				Util.createFlippedBuffer(meshResource.meshData.model.getNormals()), draw_usage);
+//		bindBuffer(GL15.GL_ARRAY_BUFFER, VAO_NORMAL_INDEX, 2, 3,
+//				Util.createFlippedBuffer(meshResource.meshData.model.getNormals()), draw_usage);
+
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, _v.VAOBuffers[VAO_NORMAL_INDEX]);
+		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, Util.createFlippedBuffer(meshResource.meshData.model.getNormals()),
+				draw_usage);
+		GL20.glVertexAttribPointer(2, 3, GL11.GL_FLOAT, false, 0, 0);
 
 		/* Tangents */
-		bindBuffer(GL15.GL_ARRAY_BUFFER, VAO_TANGENT_INDEX, 3, 3,
-				Util.createFlippedBuffer(meshResource.meshData.model.getTangents()), draw_usage);
+//		bindBuffer(GL15.GL_ARRAY_BUFFER, VAO_TANGENT_INDEX, 3, 3,
+//				Util.createFlippedBuffer(meshResource.meshData.model.getTangents()), draw_usage);
+
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, _v.VAOBuffers[VAO_TANGENT_INDEX]);
+		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, Util.createFlippedBuffer(meshResource.meshData.model.getTangents()),
+				draw_usage);
+		GL20.glVertexAttribPointer(3, 3, GL11.GL_FLOAT, false, 0, 0);
 
 		/* Indices */
-		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, meshResource.vao.VAOBuffers[VAO_INDICES_INDEX]);
+		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, _v.VAOBuffers[VAO_INDICES_INDEX]);
 		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, Util.createIntBuffer(meshResource.meshData.model.getIndices()),
 				draw_usage);
 
+		/* Different VAO for barycentric co-ords for performance */
+		// VAO _vb = meshResource.addVAO("baryCoordVAO").bindVAO(1);
+		ArrayList<Vector3f> values = meshResource.meshData.model.getvBCC();
+		// Vector3f[][] vBC =
+		// calculateBarycentric(meshResource.meshData.model.getPositions().size() - 1);
+
+		/* BaryCentric Coordinates. */
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, _v.VAOBuffers[VAO_BC_INDEX]);
+		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, Util.createFlippedBuffer(meshResource.meshData.model.getvBCC()),
+				draw_usage);
+		GL20.glVertexAttribPointer(4, 3, GL11.GL_FLOAT, false, 0, 0);
 		meshResource.initialized = true;
 
 		return this;
 
 	}
 
-	private void bindBuffer(int type, int index, int pos, int numValues, FloatBuffer data, int draw_usage) {
-		GL15.glBindBuffer(type, meshResource.vao.VAOBuffers[index]);
-		GL15.glBufferData(type, data, draw_usage);
-		GL20.glVertexAttribPointer(pos, numValues, GL11.GL_FLOAT, false, 0, 0);
-		GL15.glBindBuffer(type, 0);
-	}
+//	private Vector3f[][] calculateBarycentric(int length) {
+//		int n = length / Vec;
+//		System.out.println(length);
+//		System.out.println(n);
+//		Vector3f[][] barycentric = new Vector3f[n][3];
+//		System.out.println(barycentric[0].length);
+//		for (int i = 1; i < barycentric.length; i++) {
+//			System.out.println(i);
+//			barycentric[n][1] = new Vector3f(1, 0, 0);
+//			barycentric[n][2] = new Vector3f(0, 1, 0);
+//			barycentric[n][3] = new Vector3f(0, 0, 1);
+//		}
+//		return barycentric;
+//
+//	}
+//	private void bindBuffer(int type, int index, int pos, int numValues, FloatBuffer data, int draw_usage) {
+//		GL15.glBindBuffer(type, meshResource.vao.VAOBuffers[index]);
+//		GL15.glBufferData(type, data, draw_usage);
+//		GL20.glVertexAttribPointer(pos, numValues, GL11.GL_FLOAT, false, 0, 0);
+//		//GL15.glBindBuffer(type, 0);
+//	}
 
 	public void deleteMesh() {
-		glDeleteBuffers(meshResource.vao.VAOBuffers);
-		glDeleteVertexArrays(meshResource.vao.VAO);
+//		meshResource.vaos.forEach(v -> {
+//			glDeleteBuffers(v.VAOBuffers);
+//			glDeleteVertexArrays(v.VAO);
+//		});
+
+		for (Iterator<Map.Entry<String, VAO>> iterator = meshResource.vaos.entrySet().iterator(); iterator.hasNext();) {
+			Map.Entry<String, VAO> entry = iterator.next();
+
+			VAO _v = entry.getValue();
+
+			glDeleteBuffers(_v.VAOBuffers);
+			glDeleteVertexArrays(_v.VAO);
+		}
+
 	}
 
 	private void init() {
-		GL30.glBindVertexArray(meshResource.vao.VAO);
+//		meshResource.vaos.forEach(v -> {
+//			GL30.glBindVertexArray(v.VAO);
+//
+//			for (int i = 0; i < NUM_BUFFERS; i++) {
+//				glEnableVertexAttribArray(i);
+//			}
+//		});
+		GL30.glBindVertexArray(meshResource.vaos.get("vaoOne").VAO);
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
 		glEnableVertexAttribArray(2);
 		glEnableVertexAttribArray(3);
+		glEnableVertexAttribArray(4);
 	}
 
 	public void draw(int draw_option) {
@@ -341,10 +431,18 @@ public class Mesh implements AssetI {
 	}
 
 	private void deInit() {
+//		meshResource.vaos.forEach(v -> {
+//			for (int i = 0; i < NUM_BUFFERS; i++) {
+//				glDisableVertexAttribArray(i);
+//			}
+//			GL30.glBindVertexArray(v.VAO);
+//		});
+
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
 		glDisableVertexAttribArray(2);
 		glDisableVertexAttribArray(3);
+		glDisableVertexAttribArray(4);
 		GL30.glBindVertexArray(0);
 	}
 

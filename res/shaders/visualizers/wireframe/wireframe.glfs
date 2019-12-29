@@ -1,0 +1,20 @@
+//http://codeflow.org/entries/2012/aug/02/easy-wireframe-display-with-barycentric-coordinates/
+#version 330 core
+//out vec4 FragColor;
+precision mediump float;
+in vec3 vBC;
+const float lineWidth = 1.0;
+const vec3 color = vec3(0.7, 0.7, 0.7);
+float edgeFactor(){
+    vec3 d = fwidth(vBC);
+    vec3 a3 = smoothstep(vec3(0.0), d*1.5, vBC);
+    return min(min(a3.x, a3.y), a3.z);
+}
+
+void main(){
+    //if(gl_FrontFacing && edgeFactor() >= 0.01){
+        gl_FragColor = vec4(0.0, 1.0, 0.0, (1.0-edgeFactor()));
+   // }else{
+     //   gl_FragColor = vec4(0.0, 0.0, 0.0, (1.0-edgeFactor()) * 0.0);
+   // }
+}
