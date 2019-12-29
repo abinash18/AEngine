@@ -1,6 +1,7 @@
 package net.abi.abisEngine.components;
 
 import org.lwjgl.opengl.GL15;
+import org.lwjgl.opengl.GL45;
 
 import net.abi.abisEngine.rendering.Mesh;
 import net.abi.abisEngine.rendering.RenderingEngine;
@@ -28,20 +29,30 @@ public class MeshRenderer extends SceneComponent {
 		return this;
 	}
 
-	private Shader wir = new Shader("visualizers/wireframe");
+	private Shader wir = new Shader("visualizers/wireframe/wireframe");
 
 	@Override
 	public void render(Shader shader, RenderingEngine engine) {
 
 		if (drawOption == GL15.GL_LINES) {
+			shader.bind();
+			shader.updateUniforms(super.getTransform(), mat, engine);
+			mesh.draw(GL15.GL_TRIANGLES);
 			wir.bind();
 			wir.updateUniforms(super.getTransform(), mat, engine);
+			GL45.glEnable(GL45.GL_BLEND);
+			GL45.glEnable(GL45.GL_SAMPLE_ALPHA_TO_COVERAGE);
+			GL45.glBlendFunc(GL45.GL_SRC_ALPHA, GL45.GL_ONE_MINUS_SRC_ALPHA);
+			// GL45.glLineWidth(10);
+			mesh.draw(GL15.GL_TRIANGLES);
+			GL45.glDisable(GL45.GL_SAMPLE_ALPHA_TO_COVERAGE);
+			// GL45.glLineWidth(1);
+
 		} else {
 			shader.bind();
 			shader.updateUniforms(super.getTransform(), mat, engine);
+			mesh.draw(drawOption);
 		}
-
-		mesh.draw(drawOption);
 	}
 
 	@Override

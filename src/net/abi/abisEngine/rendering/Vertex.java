@@ -4,7 +4,7 @@ import net.abi.abisEngine.math.Vector2f;
 import net.abi.abisEngine.math.Vector3f;
 
 public class Vertex {
-	public static final int SIZE = 11;
+	public static final int SIZE = 12;
 
 	private Vector3f pos, normal, tangent;
 	private Vector2f texCoord;

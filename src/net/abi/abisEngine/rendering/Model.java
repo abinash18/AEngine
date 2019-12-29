@@ -6,7 +6,7 @@ import net.abi.abisEngine.math.Vector2f;
 import net.abi.abisEngine.math.Vector3f;
 
 public class Model {
-	private ArrayList<Vector3f> positions, normals, tangents;
+	private ArrayList<Vector3f> positions, normals, tangents, vBCC;
 	private ArrayList<Vector2f> texCoords;
 	private ArrayList<Integer> indices;
 
@@ -24,6 +24,25 @@ public class Model {
 		this.tangents = tangents;
 		this.texCoords = texCoords;
 		this.indices = indices;
+	}
+
+	/**
+	 * 
+	 * @param positions
+	 * @param normals
+	 * @param texCoords
+	 * @param tangents
+	 * @param indices
+	 * @param vBCC      Bary Centric Coordinates.
+	 */
+	public Model(ArrayList<Vector3f> positions, ArrayList<Vector3f> normals, ArrayList<Vector2f> texCoords,
+			ArrayList<Vector3f> tangents, ArrayList<Integer> indices, ArrayList<Vector3f> vBCC) {
+		this.positions = positions;
+		this.normals = normals;
+		this.tangents = tangents;
+		this.texCoords = texCoords;
+		this.indices = indices;
+		this.vBCC = vBCC;
 	}
 
 	public boolean isValid() {
@@ -49,6 +68,10 @@ public class Model {
 
 	public ArrayList<Integer> getIndices() {
 		return indices;
+	}
+
+	public ArrayList<Vector3f> getvBCC() {
+		return vBCC;
 	}
 
 }

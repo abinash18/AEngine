@@ -81,6 +81,7 @@ public class Shader {
 					fragmentShaderText);
 
 			this.addVertexShader(vertexShaderText);
+			
 			this.addFragmentShader(fragmentShaderText);
 
 			this.addAllAttributes(vertexShaderText);
@@ -106,7 +107,7 @@ public class Shader {
 
 		for (int i = 0; i < shaderProgram.getUniformNames().size(); i++) {
 
-			/* These Were Added At The Same Time So They Should Have The Same Index. */
+			/* These Were Added In The Same Order And Time So They Should Have The Same Index. */
 			String uniformName = shaderProgram.getUniformNames().get(i);
 			String uniformType = shaderProgram.getUniformTypes().get(i);
 

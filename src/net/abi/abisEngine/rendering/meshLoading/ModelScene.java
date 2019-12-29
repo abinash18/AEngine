@@ -120,14 +120,28 @@ public class ModelScene implements Expendable {
 			tangents.add(new Vector3f(_tngt.x(), _tngt.y(), _tngt.z()));
 
 		}
-
+		ArrayList<Vector3f> vBCC = new ArrayList<Vector3f>();
 		for (int i = 0; i < _mesh.mNumFaces(); i++) {
 			AIFace face = _mesh.mFaces().get(i);
 			assert (face.mNumIndices() == 3);
 			indices.add(face.mIndices().get(0));
+			// vBCC.add(new Vector3f(1, 0, 0));
 			indices.add(face.mIndices().get(1));
+			// vBCC.add(new Vector3f(0, 1, 0));
 			indices.add(face.mIndices().get(2));
+			// vBCC.add(new Vector3f(0, 0, 1));
 		}
+
+		//calculateBarycentric(indices.size());
+
+		for (int i = 0; i < indices.size() / 3; i++) {
+			vBCC.add(new Vector3f(1, 0, 0));
+			vBCC.add(new Vector3f(0, 1, 0));
+			vBCC.add(new Vector3f(0, 0, 1));
+		}
+
+//		 = calculateBarycentric(indices.size() - 1);
+
 //		Material mat = null;
 //
 //		int matIndex = _mesh.mMaterialIndex();
@@ -139,13 +153,24 @@ public class ModelScene implements Expendable {
 //		}
 
 		// mesh.setMat(mat);
-		mesh = new Mesh(_mesh.mName().dataString(), new Model(positions, normals, texCoords, tangents, indices),
+		mesh = new Mesh(_mesh.mName().dataString(), new Model(positions, normals, texCoords, tangents, indices, vBCC),
 				man.getGlfw_handle(), null);
 
 		System.out.println(mesh);
 
 		return mesh;
 
+	}
+
+	private Vector3f[][] calculateBarycentric(int length) {
+		int n = length / 9;
+		Vector3f[][] barycentric = new Vector3f[n][3];
+		for (int i = 0; i < n; i++) {
+			barycentric[n][0] = new Vector3f(1, 0, 0);
+			barycentric[n][1] = new Vector3f(0, 1, 0);
+			barycentric[n][2] = new Vector3f(0, 0, 1);
+		}
+		return barycentric;
 	}
 
 	public String[] getTexturePaths() {

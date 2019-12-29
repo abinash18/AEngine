@@ -23,7 +23,7 @@ public class RenderingEngine extends MappedValues {
 
 	private HashMap<String, Integer> samplerMap;
 
-	private Shader forwardAmbientShader, depthShader;
+	private Shader forwardAmbientShader, depthShader, edge_dectect;
 
 	private Light activeLight;
 	private Camera mainCamera;
@@ -59,7 +59,8 @@ public class RenderingEngine extends MappedValues {
 
 	public void initGraphics() {
 		forwardAmbientShader = new Shader("forward-ambient");
-		depthShader = new Shader("visualizers/depthVisualizer");
+		depthShader = new Shader("visualizers/depthVisualizer/depthVisualizer");
+		//edge_dectect = new Shader("visualizers/edge_detect");
 		GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 		GL11.glFrontFace(GL11.GL_CW);
@@ -92,11 +93,11 @@ public class RenderingEngine extends MappedValues {
 		} else {
 			renderLights(scene);
 		}
-
+		renderVisualizers(scene);
 	}
 
 	private void renderVisualizers(Scene scene) {
-
+		// scene.getRootObject().renderAll(edge_detect, this);
 	}
 
 	private void renderDepth(Scene scene) {
