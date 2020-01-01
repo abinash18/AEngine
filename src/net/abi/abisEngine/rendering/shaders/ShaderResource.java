@@ -1,4 +1,4 @@
-package net.abi.abisEngine.rendering.resourceManagement;
+package net.abi.abisEngine.rendering.shaders;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,13 +8,19 @@ import java.util.Map;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 
+import net.abi.abisEngine.handlers.file.PathHandle;
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
+import net.abi.abisEngine.rendering.shaders.Shader.ShaderSource;
 import net.abi.abisEngine.rendering.windowManagement.GLFWWindowManager;
 
 public class ShaderResource {
 	private int program, refCount;
-	private String name, vertexShaderName, fragmentShaderName, vertexShaderText, fragmentShaderText;
+	private String name;
+	private PathHandle path;
+	private HashMap<String, ShaderSource> subPrograms = new HashMap<String, ShaderSource>();
+	// vertexShaderName, fragmentShaderName, vertexShaderText,
+	// fragmentShaderText;
 
 	private static Logger logger = LogManager.getLogger(ShaderResource.class);
 
@@ -22,22 +28,13 @@ public class ShaderResource {
 	private List<String> uniformNames;
 	private List<String> uniformTypes;
 
-	public ShaderResource(String name) {
-		this(name, name + ".glvs", name + ".glfs");
-	}
-
-	public ShaderResource(String name, String vertexShaderName, String fragmentShaderName) {
-		this(name, vertexShaderName, fragmentShaderName, null, null);
-	}
-
-	public ShaderResource(String name, String vertexShaderName, String fragmentShaderName, String vertexShaderText,
-			String fragmentShaderText) {
-
-		this.vertexShaderName = vertexShaderName;
-		this.fragmentShaderName = fragmentShaderName;
-
-		this.vertexShaderText = vertexShaderText;
-		this.fragmentShaderText = fragmentShaderText;
+	public ShaderResource(String name, PathHandle pathToShaderDirectory) {
+		this.path = pathToShaderDirectory;
+//		this.vertexShaderName = vertexShaderName;
+//		this.fragmentShaderName = fragmentShaderName;
+//
+//		this.vertexShaderText = vertexShaderText;
+//		this.fragmentShaderText = fragmentShaderText;
 
 		this.program = GL20.glCreateProgram();
 
@@ -74,11 +71,19 @@ public class ShaderResource {
 
 	}
 
-	public void addReference() {
+	public void addShaderSource(ShaderSource source) {
+		subPrograms.put(source.getName(), source);
+	}
+
+	public ShaderSource getShaderSource(String name) {
+		return subPrograms.get(name);
+	}
+
+	public void incRefs() {
 		refCount++;
 	}
 
-	public boolean removeRefrence() {
+	public boolean decRefs() {
 		refCount--;
 		return refCount == 0;
 	}
@@ -121,22 +126,6 @@ public class ShaderResource {
 
 	public void setUniformTypes(List<String> uniformTypes) {
 		this.uniformTypes = uniformTypes;
-	}
-
-	public String getVertexShaderName() {
-		return vertexShaderName;
-	}
-
-	public String getFragmentShaderName() {
-		return fragmentShaderName;
-	}
-
-	public String getVertexShaderText() {
-		return vertexShaderText;
-	}
-
-	public String getFragmentShaderText() {
-		return fragmentShaderText;
 	}
 
 }
