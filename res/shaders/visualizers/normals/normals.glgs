@@ -1,0 +1,29 @@
+#version 330 core
+
+layout(points) in;
+layout(line_strip, max_vertices = 2) out;
+
+uniform mat4 T_MVP; // Model View Projection Matrix
+uniform mat4 T_MVN;
+const float length = 0.5;
+
+in vec3 vertex_normal[];
+
+out vec3 vertex_color;
+
+void main()
+{
+    vec3 normal = vertex_normal[0];
+
+    vertex_color = abs(vec4(T_MVN * vec4(vertex_normal[0], 0.0)).xyz);
+
+    vec4 v0 = gl_in[0].gl_Position;
+    gl_Position = T_MVP * v0;
+    EmitVertex();
+
+    vec4 v1 = v0 + vec4(normal * length, 0.0);
+    gl_Position = T_MVP * v1;
+    EmitVertex();
+
+    EndPrimitive();
+}
