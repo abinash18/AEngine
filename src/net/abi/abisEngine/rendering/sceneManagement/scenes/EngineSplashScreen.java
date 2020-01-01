@@ -1,5 +1,6 @@
 package net.abi.abisEngine.rendering.sceneManagement.scenes;
 
+import org.lwjgl.egl.MESADRMImage;
 import org.lwjgl.glfw.GLFW;
 
 import net.abi.abisEngine.components.Camera;
@@ -12,6 +13,8 @@ import net.abi.abisEngine.components.SpotLight;
 import net.abi.abisEngine.core.Entity;
 import net.abi.abisEngine.input.GLFWInput;
 import net.abi.abisEngine.input.GLFWMouseAndKeyboardInput;
+import net.abi.abisEngine.math.Quaternion;
+import net.abi.abisEngine.math.Transform;
 import net.abi.abisEngine.math.Vector3f;
 import net.abi.abisEngine.rendering.Mesh;
 import net.abi.abisEngine.rendering.Model;
@@ -138,14 +141,14 @@ public class EngineSplashScreen extends Scene {
 			anvilmat.addFloat("specularPower", 8);
 			ModelScene m = man.get("monkey.obj", ModelScene.class);
 			Mesh s = m.getMesh("Suzanne.001").bindModel();
-			Entity anvil = new Entity().addComponent(new MeshRenderer(s, anvilmat));
-			super.addChild(anvil);
+			monkey = new Entity().addComponent(new MeshRenderer(s, anvilmat));
+			super.addChild(monkey);
 
-			m = man.get("IronMan.obj", ModelScene.class);
-			s = m.getMesh("IronMan").bindModel();
-			Entity _anvil = new Entity().addComponent(new MeshRenderer(s, anvilmat));
-			_anvil.getTransform().setScale(0.25f, 0.25f, 0.25f);
-			super.addChild(_anvil);
+//			m = man.get("IronMan.obj", ModelScene.class);
+//			s = m.getMesh("IronMan").bindModel();
+//			Entity _anvil = new Entity().addComponent(new MeshRenderer(s, anvilmat));
+//			_anvil.getTransform().setScale(0.25f, 0.25f, 0.25f);
+//			super.addChild(_anvil);
 			done2 = true;
 		}
 		// } catch (Exception e) {
@@ -154,7 +157,8 @@ public class EngineSplashScreen extends Scene {
 		// }
 
 		temp = temp + delta;
-		// monkey.getTransform().setTranslation(0f, 0f, 0.5f * temp);
+		float angle = (float) Math.toRadians(temp * 180);
+		monkey.getTransform().setRotation(new Quaternion(Transform.X_AXIS, angle));
 	}
 
 	@Override
@@ -185,7 +189,7 @@ public class EngineSplashScreen extends Scene {
 
 		if (((GLFWMouseAndKeyboardInput) super.getInputController())
 				.isMouseButtonDown(GLFWInput.GLFW_MOUSE_BUTTON_LEFT)) {
-			RenderingEngine.toggleDepthTest();
+			MeshRenderer.drawNormals = MeshRenderer.drawNormals == false ? true : false;
 		}
 
 		if (((GLFWMouseAndKeyboardInput) super.getInputController()).isKeyDown(GLFWInput.GLFW_KEY_C)) {

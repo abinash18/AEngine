@@ -57,7 +57,7 @@ public class AssetManager implements Expendable {
 		if (defaultLoaders) {
 			setLoader(ModelScene.class, new ModelSceneLoader(assetsDir + "models/"));
 		}
-		executor = new AsyncThreadDispatcher(1, "AssetManager");
+		executor = new AsyncThreadDispatcher(1, "AssetManagerChildThread");
 		store = new AssetStore();
 	}
 
