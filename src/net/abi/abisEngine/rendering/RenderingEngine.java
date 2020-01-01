@@ -71,11 +71,6 @@ public class RenderingEngine extends MappedValues {
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
 
-	@Deprecated
-	public void setClearColor(Vector3f color) {
-		GL11.glClearColor(color.x(), color.y(), color.z(), 1.0f);
-	}
-
 	public static String getOpenGLVersion() {
 		return GL11.glGetString(GL11.GL_VERSION);
 	}

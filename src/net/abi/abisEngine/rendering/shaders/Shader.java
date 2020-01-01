@@ -2,6 +2,9 @@ package net.abi.abisEngine.rendering.shaders;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -13,6 +16,8 @@ import net.abi.abisEngine.components.DirectionalLight;
 import net.abi.abisEngine.components.Light;
 import net.abi.abisEngine.components.PointLight;
 import net.abi.abisEngine.components.SpotLight;
+import net.abi.abisEngine.handlers.file.PathHandle;
+import net.abi.abisEngine.handlers.file.PathType;
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
 import net.abi.abisEngine.math.Matrix4f;
@@ -22,77 +27,242 @@ import net.abi.abisEngine.math.Vector3f;
 import net.abi.abisEngine.math.Vector3i;
 import net.abi.abisEngine.math.Vector4f;
 import net.abi.abisEngine.rendering.RenderingEngine;
+import net.abi.abisEngine.rendering.asset.AssetI;
 import net.abi.abisEngine.rendering.resourceManagement.Material;
-import net.abi.abisEngine.rendering.resourceManagement.ShaderResource;
 import net.abi.abisEngine.rendering.resourceManagement.Texture;
 import net.abi.abisEngine.util.Util;
 
-public class Shader {
+public class Shader implements AssetI {
 
 	public static final Shader DEFAULT_SHADER = null;
+	private static final PathHandle DEFAULT_SHADER_ASSET_DIRECTORY_PATH = new PathHandle("./res/shaders/",
+			PathType.Internal);
 
-	private static Logger logger = LogManager.getLogger(Shader.class.getName());
+	private static Logger logger = LogManager.getLogger(Shader.class);
 
-	public static HashMap<String, ShaderResource> loadedShaderPrograms = new HashMap<String, ShaderResource>();
+	private static HashMap<Long, HashMap<String, ShaderResource>> loadedShaders = new HashMap<Long, HashMap<String, ShaderResource>>();
+
+	/**
+	 * The data is managed separately from the MeshResources since there can be
+	 * multiple GLContexts
+	 */
+	private static HashMap<ShaderType, HashMap<String, ShaderSource>> loadedSources = new HashMap<ShaderType, HashMap<String, ShaderSource>>();
+
+	private Long context_handle;
+	private ShaderSource shaderData;
 	private ShaderResource shaderProgram;
 
-	// private String fileName;
+	public static enum ShaderType {
+		VERTEX(".glvs"), FRAGMENT(".glfs"), GEOMETRY(".glgs"), TESSELATION_EVALUATION(".glte"),
+		TESSELATION_CONTROL(".gltc"), COMPUTE(".glc"), HEADER(".glh");
 
-	class ShaderSource {
-		String name;
-		String source;
-	}
+		public String extention;
 
-	class ShaderData {
-		HashMap<String, ShaderSource> proccessedSources;
-
-		public ShaderData(String shaderName) {
-			this.proccessedSources = new HashMap<String, ShaderSource>();
-		}
-
-		public void addSource(String sourceTag, ShaderSource source) {
-			proccessedSources.put(sourceTag, source);
-		}
-
-		public ShaderSource getSource(String sourceTag) {
-			return proccessedSources.get(sourceTag);
+		private ShaderType(String extention) {
+			this.extention = extention;
 		}
 
 	}
 
-	public Shader(String fileName) {
-		//this.fileName = fileName;
+	private PathHandle pathToShaderDirectory;
+	private String shaderName;
 
+	/**
+	 * Loads Or References a shader in the private context, which means where ever
+	 * this shader was created thats were it will be usable since the context handle
+	 * for this is 0. This shader cannot be used universally.
+	 * 
+	 * @param shaderName
+	 */
+	public Shader(String shaderName) {
+		this(shaderName, 0L);
+	}
+
+	/**
+	 * Creates a shader found in the shader assets directory.
+	 * 
+	 * @param shaderName
+	 */
+	public Shader(String shaderName, long context) {
+		this.shaderName = shaderName;
+		// The shader folder containing all the shaders until i can implement the
+		// parsing algorithm for AEShader Lang.
+		/*
+		 * ./res/shaders/@shaderName@/
+		 */
+		this.pathToShaderDirectory = DEFAULT_SHADER_ASSET_DIRECTORY_PATH.resolveChild(shaderName);
 		// TODO: make this hashmap of resources into a HashSet and use compute if absent
 		// method to add shader to set
 
-		ShaderResource oldResource = loadedShaderPrograms.get(fileName);
+		this.context_handle = Long.valueOf(context);
 
-		if (oldResource != null) {
-			this.shaderProgram = oldResource;
-			this.shaderProgram.addReference();
-		} else {
-			// this.shaderProgram = loadShader(fileName);
+		/* Find the type of shader in the cache. */
 
-			String vertexShaderText = loadShader(fileName + ".glvs");
-			String fragmentShaderText = loadShader(fileName + ".glfs");
+		HashMap<String, ShaderSource> _shd = loadedSources.get(ShaderType.VERTEX);
+		HashMap<String, ShaderSource> _shd1 = loadedSources.get(ShaderType.FRAGMENT);
+		HashMap<String, ShaderSource> _shd2 = loadedSources.get(ShaderType.GEOMETRY);
 
-			this.shaderProgram = new ShaderResource(fileName, fileName + ".glvs", fileName + ".glfs", vertexShaderText,
-					fragmentShaderText);
+		/*
+		 * If any of the shader types dont exist then add them to the cache.
+		 */
 
-			this.addVertexShader(vertexShaderText);
-			
-			this.addFragmentShader(fragmentShaderText);
-
-			this.addAllAttributes(vertexShaderText);
-
-			// After Setting Attributes And Loading Shaders
-			this.compileShader();
-
-			this.addAllUniforms(vertexShaderText);
-			this.addAllUniforms(fragmentShaderText);
-			loadedShaderPrograms.put(fileName, shaderProgram);
+		if (_shd == null) {
+			loadedSources.put(ShaderType.VERTEX, (_shd = new HashMap<String, ShaderSource>()));
 		}
+
+		if (_shd1 == null) {
+			loadedSources.put(ShaderType.FRAGMENT, (_shd1 = new HashMap<String, ShaderSource>()));
+		}
+
+		if (_shd2 == null) {
+			loadedSources.put(ShaderType.GEOMETRY, (_shd2 = new HashMap<String, ShaderSource>()));
+		}
+
+		/*
+		 * Find the ShaderSource in the received cache.
+		 */
+
+		ShaderSource _dataVERT = _shd.get(shaderName);
+		ShaderSource _dataFRAG = _shd1.get(shaderName);
+		ShaderSource _dataGEOM = _shd2.get(shaderName);
+
+		/*
+		 * If any of the sources don't exist then add them to the cache map.
+		 */
+
+		if (_dataVERT == null) {
+			/*
+			 * So we load the source using the loadShaderSource Method
+			 */
+			_dataVERT = loadShaderSource(pathToShaderDirectory.resolveChild(shaderName + ShaderType.VERTEX.extention),
+					ShaderType.VERTEX);
+			_shd.put(shaderName, _dataVERT);
+		} else {
+			/**
+			 * If the source exits in the cache. We already have the source stored in the
+			 * temporary variable. So we don't need to do any thing here.
+			 */
+		}
+
+		if (_dataFRAG == null) {
+			/*
+			 * So we load the source using the loadShaderSource Method
+			 */
+			_dataFRAG = loadShaderSource(pathToShaderDirectory.resolveChild(shaderName + ShaderType.FRAGMENT.extention),
+					ShaderType.FRAGMENT);
+			_shd.put(shaderName, _dataFRAG);
+		} else {
+			/**
+			 * If the source exits in the cache. We already have the source stored in the
+			 * temporary variable. So we don't need to do any thing here.
+			 */
+		}
+
+		if (_dataGEOM == null) {
+			/*
+			 * So we load the source using the loadShaderSource Method
+			 */
+			_dataGEOM = (pathToShaderDirectory.contains(shaderName + ShaderType.GEOMETRY.extention) ? loadShaderSource(
+					pathToShaderDirectory.resolveChild(shaderName + ShaderType.GEOMETRY.extention), ShaderType.GEOMETRY)
+					: null);
+			_shd.put(shaderName, _dataGEOM);
+		} else {
+			/**
+			 * If the source exits in the cache. We already have the source stored in the
+			 * temporary variable. So we don't need to do any thing here.
+			 */
+		}
+
+		/*
+		 * Find the Context in the cache.
+		 */
+		HashMap<String, ShaderResource> _ss = loadedShaders.get(Long.valueOf(context_handle));
+
+		/*
+		 * If the Context was not found then create a map and add it to the cache.
+		 */
+		if (_ss == null) {
+			_ss = new HashMap<String, ShaderResource>();
+			loadedShaders.put(context_handle, _ss);
+		}
+
+		ShaderResource _sr;
+
+		/*
+		 * Find the ShaderResource in the Context thats found or was newly created.
+		 */
+		if ((_sr = _ss.get(shaderName)) != null) {
+			/*
+			 * If the resource was found in the context then increment the references and we
+			 * are done.
+			 */
+			_sr.incRefs();
+
+		} else {
+			/*
+			 * If it wasn't found then we create one and get the shader ready to use.
+			 */
+			_sr = new ShaderResource(shaderName, pathToShaderDirectory);
+			_ss.put(shaderName, _sr);
+		}
+
+		this.shaderProgram = _sr;
+
+		this.addVertexShader(_dataVERT);
+		if (_dataGEOM != null) {
+			this.addGeometryShader(_dataGEOM);
+		}
+		this.addFragmentShader(_dataFRAG);
+		this.addAllAttributes(_dataVERT);
+		this.compileShader();
+		this.addAllUniforms(_dataVERT);
+		if (_dataGEOM != null) {
+			this.addAllUniforms(_dataGEOM);
+		}
+		this.addAllUniforms(_dataFRAG);
+
+		this.shaderProgram.addShaderSource(_dataVERT);
+		if (_dataGEOM != null) {
+			this.shaderProgram.addShaderSource(_dataGEOM);
+		}
+		this.shaderProgram.addShaderSource(_dataFRAG);
+//		ShaderResource oldResource = loadedShaders.get(context).get(shaderName);
+//
+//		if (oldResource != null) {
+//			this.shaderProgram = oldResource;
+//			this.shaderProgram.addReference();
+//		} else {
+		// this.shaderProgram = loadShader(fileName);
+
+//		ShaderSource vertexShaderSource = loadShaderSource(pathToShaderDirectory.resolveChild(shaderName),
+//				ShaderType.VERTEX);
+//		ShaderSource fragmentShaderSource = loadShaderSource(pathToShaderDirectory.resolveChild(shaderName),
+//				ShaderType.FRAGMENT);
+//		ShaderSource geometryShaderSource = (pathToShaderDirectory.resolveChild(shaderName).contains(
+//				shaderName + ShaderType.GEOMETRY.extention) ? loadShaderSource(shaderName, ShaderType.GEOMETRY) : null);
+
+		// this.shaderProgram = new ShaderResource(shaderName, pathToShaderDirectory);
+
+//		this.addVertexShader(vertexShaderSource);
+//		if (geometryShaderSource != null) {
+//			this.addGeometryShader(geometryShaderSource);
+//		}
+//
+//		this.addFragmentShader(fragmentShaderSource);
+//
+//		this.addAllAttributes(vertexShaderSource);
+//
+//		// After Setting Attributes And Loading Shaders
+//		this.compileShader();
+//
+//		this.addAllUniforms(vertexShaderSource);
+//		if (geometryShaderSource != null) {
+//			this.addAllUniforms(geometryShaderSource);
+//		}
+//		this.addAllUniforms(fragmentShaderSource);
+//
+//		loadedShaderPrograms.put(shaderName, shaderProgram);
+//	}
 
 	}
 
@@ -103,11 +273,15 @@ public class Shader {
 	public void updateUniforms(Transform transform, Material mat, RenderingEngine engine) {
 
 		Matrix4f worldMatrix = transform.getTransformation(),
-				MVPMatrix = engine.getMainCamera().getViewProjection().mul(worldMatrix);
+				MVPMatrix = engine.getMainCamera().getViewProjection().mul(worldMatrix), MVNMatrix = worldMatrix;
+		MVNMatrix.transpose().invertGeneric();
 
 		for (int i = 0; i < shaderProgram.getUniformNames().size(); i++) {
 
-			/* These Were Added In The Same Order And Time So They Should Have The Same Index. */
+			/*
+			 * These Were Added In The Same Order And Time So They Should Have The Same
+			 * Index.
+			 */
 			String uniformName = shaderProgram.getUniformNames().get(i);
 			String uniformType = shaderProgram.getUniformTypes().get(i);
 
@@ -129,6 +303,8 @@ public class Shader {
 				} else if (uniformName.equals("T_model")) {
 					setUniformMatrix4fv(uniformName, worldMatrix);
 					// logger.finest("Added '" + uniformName + "' as World Matrix.");
+				} else if (uniformName.equals("T_MVN")) {
+					setUniformMatrix4fv(uniformName, MVNMatrix);
 				} else {
 					logger.error("'" + uniformName
 							+ "' is not a valid component of transform. Or is misspelled, please check shader program or change the prefix of the variable.",
@@ -296,6 +472,10 @@ public class Shader {
 
 	}
 
+	public void addAllUniforms(ShaderSource source) {
+		this.addAllUniforms(source.getSource());
+	}
+
 	public void addAllUniforms(String shaderText) {
 
 		HashMap<String, ArrayList<GLSLStruct>> structs = findUniformStructs(shaderText);
@@ -416,6 +596,10 @@ public class Shader {
 
 	}
 
+	public void addAllAttributes(ShaderSource source) {
+		this.addAllAttributes(source.getSource());
+	}
+
 	public void addAllAttributes(String shaderText) {
 
 		// System.out.println("Attempting To Add Attributes Automatically...");
@@ -509,12 +693,24 @@ public class Shader {
 		addProgram(text, GL20.GL_VERTEX_SHADER, "Vertex Shader");
 	}
 
+	public void addVertexShader(ShaderSource source) {
+		addProgram(source.getSource(), GL20.GL_VERTEX_SHADER, "Vertex Shader");
+	}
+
 	public void addGeometryShader(String text) {
 		addProgram(text, GL32.GL_GEOMETRY_SHADER, "Geometry Shader");
 	}
 
+	public void addGeometryShader(ShaderSource source) {
+		addProgram(source.getSource(), GL32.GL_GEOMETRY_SHADER, "Geometry Shader");
+	}
+
 	public void addFragmentShader(String text) {
 		addProgram(text, GL20.GL_FRAGMENT_SHADER, "Fragment Shader");
+	}
+
+	public void addFragmentShader(ShaderSource source) {
+		addProgram(source.getSource(), GL20.GL_FRAGMENT_SHADER, "Fragment Shader");
 	}
 
 	/**
@@ -526,17 +722,17 @@ public class Shader {
 		addProgram(text, GL40.GL_TESS_CONTROL_SHADER, "Tesselation Control Shader");
 	}
 
-	public void addVertexShaderFromFile(String fileName) {
-		addProgram(loadShader(fileName), GL20.GL_VERTEX_SHADER, "Vertex Shader");
-	}
-
-	public void addGeometryShaderFromFile(String fileName) {
-		addProgram(loadShader(fileName), GL32.GL_GEOMETRY_SHADER, "Geometry Shader");
-	}
-
-	public void addFragmentShaderFromFile(String fileName) {
-		addProgram(loadShader(fileName), GL20.GL_FRAGMENT_SHADER, "Fragment Shader");
-	}
+//	public void addVertexShaderFromFile(String fileName) {
+//		addProgram(loadShader(fileName), GL20.GL_VERTEX_SHADER, "Vertex Shader");
+//	}
+//
+//	public void addGeometryShaderFromFile(String fileName) {
+//		addProgram(loadShader(fileName), GL32.GL_GEOMETRY_SHADER, "Geometry Shader");
+//	}
+//
+//	public void addFragmentShaderFromFile(String fileName) {
+//		addProgram(loadShader(fileName), GL20.GL_FRAGMENT_SHADER, "Fragment Shader");
+//	}
 
 	public void compileShader() {
 		GL20.glLinkProgram(shaderProgram.getProgram());
@@ -669,7 +865,15 @@ public class Shader {
 		GL20.glUniformMatrix4fv(shaderProgram.getUniforms().get(uniformName), true, Util.createFlippedBuffer(value));
 	}
 
-	public static String loadShader(String fileName) {
+	// public static String loadShader(String fileName) {
+	/**
+	 * Loads a shader from the path to the shader directory and the type. Resolves a
+	 * file from the path and then loads.
+	 * 
+	 * @param type
+	 * @return
+	 */
+	public static ShaderSource loadShaderSource(PathHandle pathToShader, ShaderType type) {
 		StringBuilder shaderSource = new StringBuilder();
 		BufferedReader shaderReader = null;
 
@@ -678,7 +882,7 @@ public class Shader {
 		// glsl include
 
 		try {
-			shaderReader = new BufferedReader(new FileReader("./res/shaders/" + fileName));
+			shaderReader = new BufferedReader(new FileReader(pathToShader.getFileInstance()));
 			String line;
 
 			while ((line = shaderReader.readLine()) != null) {
@@ -717,9 +921,11 @@ public class Shader {
 					 * and i add 2 to move it past the first quote to the file name. AND THEN IT
 					 * ENDS AT THE END OF THE LINE NO WHITE SPACE AT THE END.
 					 */
-					shaderSource.append( /* This appends the loaded shader to the source of the file */
-							loadShader( /* Loads the shader specified in the #include */
-									line.substring(INCLUDE_DIRECTIVE.length() + 2, line.length() - 1)));
+					/* This appends the loaded shader to the source of the file */
+					/* Loads the shader specified in the #include */
+					PathHandle path = DEFAULT_SHADER_ASSET_DIRECTORY_PATH.resolveChild(
+							"includes/" + line.substring(INCLUDE_DIRECTIVE.length() + 2, line.length() - 1));
+					shaderSource.append(loadShaderSource(path, ShaderType.HEADER).getSource());
 					/* Figures out the name of the file being included. */
 
 				} else {
@@ -729,11 +935,11 @@ public class Shader {
 			shaderReader.close();
 		} catch (Exception e) {
 			// e.printStackTrace();
-			logger.error("Unable to parse shader " + fileName, e);
+			logger.error("Unable to parse shader " + pathToShader.toString(), e);
 			logger.info("Exiting...");
 			System.exit(1);
 		}
-		return shaderSource.toString();
+		return new ShaderSource(pathToShader.getNameWithoutExtension(), shaderSource.toString(), type);
 	}
 
 	/**
@@ -811,4 +1017,123 @@ public class Shader {
 		setUniformf(uniformName + ".cutoff", spotLight.getCutoff());
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.abi.abisEngine.util.Expendable#dispose()
+	 */
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.abi.abisEngine.rendering.asset.AssetI#incRef()
+	 */
+	@Override
+	public void incRef() {
+		// TODO Auto-generated method stub
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.abi.abisEngine.rendering.asset.AssetI#incAndGetRef()
+	 */
+	@Override
+	public int incAndGetRef() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.abi.abisEngine.rendering.asset.AssetI#decRef()
+	 */
+	@Override
+	public void decRef() {
+		// TODO Auto-generated method stub
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.abi.abisEngine.rendering.asset.AssetI#decAndGetRef()
+	 */
+	@Override
+	public int decAndGetRef() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.abi.abisEngine.rendering.asset.AssetI#getRefs()
+	 */
+	@Override
+	public int getRefs() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public static class ShaderSource {
+		private String name, source, tag;
+		ShaderType type;
+
+		/**
+		 * @param name
+		 * @param source
+		 * @param tag
+		 */
+		public ShaderSource(String name, String source, String tag, ShaderType type) {
+			this.name = name;
+			this.source = source;
+			this.tag = tag;
+			this.type = type;
+		}
+
+		public ShaderSource(String name, String source, ShaderType type) {
+			this.name = name;
+			this.source = source;
+			this.tag = "default";
+			this.type = type;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public String getSource() {
+			return source;
+		}
+
+		public String getTag() {
+			return tag;
+		}
+
+	}
+
+	class ShaderData {
+		HashMap<String, ShaderSource> proccessedSources;
+
+		public ShaderData(String shaderName) {
+			this.proccessedSources = new HashMap<String, ShaderSource>();
+		}
+
+		public void addSource(ShaderSource source) {
+			proccessedSources.put(source.getTag(), source);
+		}
+
+		public ShaderSource getSource(String sourceTag) {
+			return proccessedSources.get(sourceTag);
+		}
+
+	}
 }

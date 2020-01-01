@@ -22,7 +22,10 @@ public enum PathType {
 	 * File path to the engines default assets directory.
 	 */
 	Assets,
-
+	/**
+	 * The path relative to the directory of the Application.
+	 */
+	Internal,
 	/**
 	 * Specifies the path to be a directory so it can be manipulated accordingly.
 	 */

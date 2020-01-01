@@ -62,7 +62,8 @@ public class Logger {
 	private synchronized String formatLog(LogLevel l) {
 		// String log = "[" + LogManager.getCurrentTimeAndDate() + "] [" + this.name +
 		// "] " + l + ": ";
-		return String.format("[%s] [%s] %s: ", LogManager.getCurrentTimeAndDate(), this.name, l);
+		return String.format("[%s] [%s/%s] %s: ", LogManager.getCurrentTimeAndDate(), Thread.currentThread().getName(),
+				this.name, l);
 	}
 
 	private boolean checkAllowed(LogLevel l) {

@@ -15,6 +15,8 @@ public class MeshRenderer extends SceneComponent {
 
 	private int drawOption = GL15.GL_TRIANGLES;
 
+	public static boolean drawNormals = false;
+
 	public MeshRenderer(Mesh mesh, Material mat) {
 		this.mesh = mesh;
 		this.mat = mat;
@@ -30,6 +32,7 @@ public class MeshRenderer extends SceneComponent {
 	}
 
 	private Shader wir = new Shader("visualizers/wireframe/wireframe");
+	private Shader nor = new Shader("visualizers/normals/normals");
 
 	@Override
 	public void render(Shader shader, RenderingEngine engine) {
@@ -53,6 +56,13 @@ public class MeshRenderer extends SceneComponent {
 			shader.updateUniforms(super.getTransform(), mat, engine);
 			mesh.draw(drawOption);
 		}
+
+		if (drawNormals) {
+			nor.bind();
+			nor.updateUniforms(super.getTransform(), mat, engine);
+			mesh.draw(GL15.GL_POINTS);
+		}
+
 	}
 
 	@Override

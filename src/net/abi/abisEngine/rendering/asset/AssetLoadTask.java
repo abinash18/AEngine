@@ -4,6 +4,8 @@ package net.abi.abisEngine.rendering.asset;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
+import net.abi.abisEngine.handlers.logging.LogManager;
+import net.abi.abisEngine.handlers.logging.Logger;
 import net.abi.abisEngine.rendering.asset.loaders.AssetLoader;
 import net.abi.abisEngine.rendering.asset.loaders.AsyncAssetLoader;
 import net.abi.abisEngine.rendering.asset.loaders.SyncAssetLoader;
@@ -13,6 +15,7 @@ import net.abi.abisEngine.util.async.AsyncTask;
 import net.abi.abisEngine.util.async.AsyncThreadDispatcher;
 
 public class AssetLoadTask implements AsyncTask<Void> {
+	private final Logger logger = LogManager.getLogger(AssetLoadTask.class);
 	AssetManager manager;
 	AssetClassifier assetDesc;
 	AssetLoader loader;
