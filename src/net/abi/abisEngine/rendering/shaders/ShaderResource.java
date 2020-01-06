@@ -12,13 +12,14 @@ import net.abi.abisEngine.handlers.file.PathHandle;
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
 import net.abi.abisEngine.rendering.shaders.Shader.ShaderSource;
+import net.abi.abisEngine.rendering.shaders.Shader.ShaderType;
 import net.abi.abisEngine.rendering.windowManagement.GLFWWindowManager;
 
 public class ShaderResource {
 	private int program, refCount;
 	private String name;
 	private PathHandle path;
-	private HashMap<String, ShaderSource> subPrograms = new HashMap<String, ShaderSource>();
+	private HashMap<ShaderType, ShaderSource> subPrograms = new HashMap<ShaderType, ShaderSource>();
 	// vertexShaderName, fragmentShaderName, vertexShaderText,
 	// fragmentShaderText;
 
@@ -71,8 +72,8 @@ public class ShaderResource {
 
 	}
 
-	public void addShaderSource(ShaderSource source) {
-		subPrograms.put(source.getName(), source);
+	public void addShaderSource(ShaderType type, ShaderSource source) {
+		subPrograms.put(type, source);
 	}
 
 	public ShaderSource getShaderSource(String name) {
@@ -126,6 +127,10 @@ public class ShaderResource {
 
 	public void setUniformTypes(List<String> uniformTypes) {
 		this.uniformTypes = uniformTypes;
+	}
+
+	public HashMap<ShaderType, ShaderSource> getSubPrograms() {
+		return subPrograms;
 	}
 
 }

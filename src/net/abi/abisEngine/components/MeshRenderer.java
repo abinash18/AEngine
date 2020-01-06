@@ -40,27 +40,25 @@ public class MeshRenderer extends SceneComponent {
 		if (drawOption == GL15.GL_LINES) {
 			shader.bind();
 			shader.updateUniforms(super.getTransform(), mat, engine);
-			mesh.draw(GL15.GL_TRIANGLES);
+			mesh.draw("vaoOne", GL15.GL_TRIANGLES);
 			wir.bind();
 			wir.updateUniforms(super.getTransform(), mat, engine);
 			GL45.glEnable(GL45.GL_BLEND);
 			GL45.glEnable(GL45.GL_SAMPLE_ALPHA_TO_COVERAGE);
 			GL45.glBlendFunc(GL45.GL_SRC_ALPHA, GL45.GL_ONE_MINUS_SRC_ALPHA);
-			// GL45.glLineWidth(10);
-			mesh.draw(GL15.GL_TRIANGLES);
+			mesh.draw("bc", GL15.GL_TRIANGLES);
 			GL45.glDisable(GL45.GL_SAMPLE_ALPHA_TO_COVERAGE);
-			// GL45.glLineWidth(1);
 
 		} else {
 			shader.bind();
 			shader.updateUniforms(super.getTransform(), mat, engine);
-			mesh.draw(drawOption);
+			mesh.draw("vaoOne", drawOption);
 		}
 
 		if (drawNormals) {
 			nor.bind();
 			nor.updateUniforms(super.getTransform(), mat, engine);
-			mesh.draw(GL15.GL_POINTS);
+			mesh.draw("vaoOne", GL15.GL_POINTS);
 		}
 
 	}
