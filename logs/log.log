@@ -1,9 +1,435 @@
 
--------------------------------------December 31, 2019 6:22 PM-------------------------------------
+-------------------------------------January 5, 2020 9:14 PM-------------------------------------
 
-[December 31, 2019 6:22 PM] [main/net.abi.abisEngine.core.CoreEngine] INFO: Starting Engine.
-[December 31, 2019 6:22 PM] [main/net.abi.abisEngine.rendering.windowManagement.GLFWWindowManager] ERROR: Monitor Provided Is NULL, Defaulting To Primary Monitor.
-[December 31, 2019 6:22 PM] [main/net.abi.abisEngine.rendering.sceneManagement.SceneManager] DEBUG: Setting Scene: EngineSplash
-[December 31, 2019 6:22 PM] [main/AssetManager] DEBUG: Loader set: ModelScene -> ModelSceneLoader
-[December 31, 2019 6:22 PM] [main/AssetManager] DEBUG: Loader set: ModelScene -> ModelSceneLoader
-[December 31, 2019 6:22 PM] [main/net.abi.abisEngine.core.CoreEngine] INFO: Terminating Engine.
+[January 5, 2020 9:14 PM] [main/net.abi.abisEngine.core.CoreEngine] INFO: Starting Engine.
+[January 5, 2020 9:14 PM] [main/net.abi.abisEngine.rendering.windowManagement.GLFWWindowManager] ERROR: Monitor Provided Is NULL, Defaulting To Primary Monitor.
+[January 5, 2020 9:14 PM] [main/net.abi.abisEngine.rendering.sceneManagement.SceneManager] DEBUG: Setting Scene: EngineSplash
+[January 5, 2020 9:14 PM] [main/AssetManager] DEBUG: Loader set: ModelScene -> ModelSceneLoader
+[January 5, 2020 9:14 PM] [main/AssetManager] DEBUG: Loader set: ModelScene -> ModelSceneLoader
+[January 5, 2020 9:14 PM] [main/Shader] FINE: Successfully Attached Shader: 1 Log: 
+
+[January 5, 2020 9:14 PM] [main/Shader] DEBUG: Shader Text For 'Vertex Shader': 'forward-directional'
+#version 330 core
+layout (location = 0) in vec3 position;
+layout (location = 1) in vec2 texCoord;
+layout (location = 2) in vec3 normal;
+layout (location = 3) in vec3 tangent;
+out vec2 texCoord0;
+out vec3 normal0;
+out vec3 worldPosition0;
+out mat3 tbnMatrix;
+uniform mat4 T_model;
+uniform mat4 T_MVP;
+void main() {
+gl_Position = T_MVP * vec4(position, 1.0);
+texCoord0 =  texCoord;
+normal0 = (T_model * vec4(normal, 0.0)).xyz;
+worldPosition0 = (T_model * vec4(position, 1.0)).xyz;
+vec3 n = normalize((T_model * vec4(normal, 0.0)).xyz);
+vec3 t = normalize((T_model * vec4(tangent, 0.0)).xyz);
+t = normalize(t - dot(t, n) * n);
+vec3 biTangent = cross(t, n);
+tbnMatrix = mat3(t, biTangent, n);
+}
+
+[January 5, 2020 9:14 PM] [main/Shader] FINE: Successfully Attached Shader: 1 Log: 
+
+[January 5, 2020 9:14 PM] [main/Shader] DEBUG: Shader Text For 'Fragment Shader': 'forward-directional'
+#version 330 core
+in vec2 texCoord0;
+in vec3 normal0;
+in vec3 worldPosition0;
+in mat3 tbnMatrix;
+uniform sampler2D diffuse;
+uniform sampler2D normal_map;
+uniform vec3 C_eyePos;
+uniform float specularIntensity;
+uniform float specularPower;
+uniform int normal_mapping_enabled;
+struct BaseLight {
+vec3 color;
+float intensity;
+};
+struct DirectionalLight {
+BaseLight base;
+vec3 direction;
+};
+struct Attenuation {
+float constant;
+float linear;
+float exponent;
+};
+struct PointLight {
+BaseLight base;
+Attenuation atten;
+vec3 position;
+float range;
+};
+struct SpotLight {
+PointLight pointLight;
+vec3 direction;
+float cutoff;
+};
+vec4 calcLight(BaseLight base, vec3 direction, vec3 normal, vec3 worldPosition) {
+float diffuseFactor = dot(normal, -direction);
+vec4 diffuseColor = vec4(0, 0, 0, 0);
+vec4 specularColor = vec4(0, 0, 0, 0);
+if (diffuseFactor > 0) {
+diffuseColor = vec4(base.color, 1.0) * base.intensity * diffuseFactor;
+vec3 directionToEye = normalize(C_eyePos - worldPosition);
+vec3 reflectDirection = normalize(reflect(direction, normal));
+float specularFactor = dot(directionToEye, reflectDirection);
+specularFactor = pow(specularFactor, specularPower);
+if(specularFactor > 0){
+specularColor = vec4(base.color, 1.0) * specularIntensity * specularFactor;
+}
+}
+return diffuseColor + specularColor;
+}
+vec4 calcDirectionalLight(DirectionalLight directionalLight, vec3 normal, vec3 worldPosition) {
+return (calcLight(directionalLight.base, -directionalLight.direction, normal, worldPosition));
+}
+vec4 calcPointLight(PointLight pointLight, vec3 normal, vec3 worldPosition){
+vec3 lightDirection = worldPosition - pointLight.position;
+float distanceToPoint = length(lightDirection);
+if (distanceToPoint > pointLight.range) {
+return vec4(0, 0, 0, 0);
+}
+lightDirection = normalize(lightDirection);
+vec4 color = calcLight(pointLight.base, lightDirection, normal, worldPosition);
+float attenuation = pointLight.atten.constant + pointLight.atten.linear * distanceToPoint +
+pointLight.atten.exponent * distanceToPoint * distanceToPoint + 0.0001;
+return color / attenuation;
+}
+vec4 calcSpotLight(SpotLight spotLight, vec3 normal, vec3 worldPosition)  {
+vec3 lightDirection = normalize(worldPosition - spotLight.pointLight.position);
+float spotFactor = dot(lightDirection, spotLight.direction);
+vec4 color = vec4(0, 0, 0, 0);
+if (spotFactor > spotLight.cutoff) {
+color = calcPointLight(spotLight.pointLight, normal, worldPosition) *
+(1.0 - (1.0 - spotFactor) / (1.0 - spotLight.cutoff));
+}
+return color;
+}
+vec3 getNormalFromMap(sampler2D normal_map, vec2 texCoord, mat3 tbnMatrix)  {
+vec3 normal = tbnMatrix * (255.0/128.0 * texture2D(normal_map, texCoord0.xy).xyz - 1);
+return normal;
+}
+uniform DirectionalLight R_directionalLight;
+vec4 calcLighting(vec3 normal, vec3 worldPos) {
+return calcDirectionalLight(R_directionalLight, normal, worldPos);
+}
+void main() {
+vec3 normal;
+if (normal_mapping_enabled == 0) {
+normal = tbnMatrix * (255.0/128.0 * texture2D(normal_map, texCoord0.xy).xyz - 1);
+} else {
+normal = normalize(normal0);
+}
+gl_FragColor = texture2D(diffuse, texCoord0.xy) * calcLighting(normal, worldPosition0);
+}
+
+[January 5, 2020 9:14 PM] [main/Shader] DEBUG: Skipped File: PathHandle [path=.\res\shaders\forward-directional\forward-directional.glgs, pathType=Absolute]
+[January 5, 2020 9:14 PM] [main/Shader] DEBUG: Skipped File: PathHandle [path=.\res\shaders\forward-directional\forward-directional.glte, pathType=Absolute]
+[January 5, 2020 9:14 PM] [main/Shader] DEBUG: Skipped File: PathHandle [path=.\res\shaders\forward-directional\forward-directional.gltc, pathType=Absolute]
+[January 5, 2020 9:14 PM] [main/Shader] DEBUG: Skipped File: PathHandle [path=.\res\shaders\forward-directional\forward-directional.glc, pathType=Absolute]
+[January 5, 2020 9:14 PM] [main/Shader] DEBUG: Skipped File: PathHandle [path=.\res\shaders\forward-directional\forward-directional.glh, pathType=Absolute]
+[January 5, 2020 9:14 PM] [main/Shader] FINE: Uniform 'T_model' At Location: 5
+[January 5, 2020 9:14 PM] [main/Shader] FINE: Uniform 'T_MVP' At Location: 4
+[January 5, 2020 9:14 PM] [main/Shader] FINE: Uniform 'diffuse' At Location: 9
+[January 5, 2020 9:14 PM] [main/Shader] FINE: Uniform 'normal_map' At Location: 10
+[January 5, 2020 9:14 PM] [main/Shader] FINE: Uniform 'C_eyePos' At Location: 0
+[January 5, 2020 9:14 PM] [main/Shader] FINE: Uniform 'specularIntensity' At Location: 7
+[January 5, 2020 9:14 PM] [main/Shader] FINE: Uniform 'specularPower' At Location: 8
+[January 5, 2020 9:14 PM] [main/Shader] FINE: Uniform 'normal_mapping_enabled' At Location: 6
+[January 5, 2020 9:14 PM] [main/Shader] FINE: Uniform 'R_directionalLight.base.color' At Location: 1
+[January 5, 2020 9:14 PM] [main/Shader] FINE: Uniform 'R_directionalLight.base.intensity' At Location: 2
+[January 5, 2020 9:14 PM] [main/Shader] FINE: Uniform 'R_directionalLight.direction' At Location: 3
+[January 5, 2020 9:14 PM] [main/Shader] FINE: Successfully Attached Shader: 4 Log: 
+
+[January 5, 2020 9:14 PM] [main/Shader] DEBUG: Shader Text For 'Vertex Shader': 'forward-point'
+#version 330 core
+layout (location = 0) in vec3 position;
+layout (location = 1) in vec2 texCoord;
+layout (location = 2) in vec3 normal;
+layout (location = 3) in vec3 tangent;
+out vec2 texCoord0;
+out vec3 normal0;
+out vec3 worldPosition0;
+out mat3 tbnMatrix;
+uniform mat4 T_model;
+uniform mat4 T_MVP;
+void main() {
+gl_Position = T_MVP * vec4(position, 1.0);
+texCoord0 =  texCoord;
+normal0 = (T_model * vec4(normal, 0.0)).xyz;
+worldPosition0 = (T_model * vec4(position, 1.0)).xyz;
+vec3 n = normalize((T_model * vec4(normal, 0.0)).xyz);
+vec3 t = normalize((T_model * vec4(tangent, 0.0)).xyz);
+t = normalize(t - dot(t, n) * n);
+vec3 biTangent = cross(t, n);
+tbnMatrix = mat3(t, biTangent, n);
+}
+
+[January 5, 2020 9:14 PM] [main/Shader] FINE: Successfully Attached Shader: 4 Log: 
+
+[January 5, 2020 9:14 PM] [main/Shader] DEBUG: Shader Text For 'Fragment Shader': 'forward-point'
+#version 330 core
+in vec2 texCoord0;
+in vec3 normal0;
+in vec3 worldPosition0;
+in mat3 tbnMatrix;
+uniform sampler2D diffuse;
+uniform sampler2D normal_map;
+uniform vec3 C_eyePos;
+uniform float specularIntensity;
+uniform float specularPower;
+uniform int normal_mapping_enabled;
+struct BaseLight {
+vec3 color;
+float intensity;
+};
+struct DirectionalLight {
+BaseLight base;
+vec3 direction;
+};
+struct Attenuation {
+float constant;
+float linear;
+float exponent;
+};
+struct PointLight {
+BaseLight base;
+Attenuation atten;
+vec3 position;
+float range;
+};
+struct SpotLight {
+PointLight pointLight;
+vec3 direction;
+float cutoff;
+};
+vec4 calcLight(BaseLight base, vec3 direction, vec3 normal, vec3 worldPosition) {
+float diffuseFactor = dot(normal, -direction);
+vec4 diffuseColor = vec4(0, 0, 0, 0);
+vec4 specularColor = vec4(0, 0, 0, 0);
+if (diffuseFactor > 0) {
+diffuseColor = vec4(base.color, 1.0) * base.intensity * diffuseFactor;
+vec3 directionToEye = normalize(C_eyePos - worldPosition);
+vec3 reflectDirection = normalize(reflect(direction, normal));
+float specularFactor = dot(directionToEye, reflectDirection);
+specularFactor = pow(specularFactor, specularPower);
+if(specularFactor > 0){
+specularColor = vec4(base.color, 1.0) * specularIntensity * specularFactor;
+}
+}
+return diffuseColor + specularColor;
+}
+vec4 calcDirectionalLight(DirectionalLight directionalLight, vec3 normal, vec3 worldPosition) {
+return (calcLight(directionalLight.base, -directionalLight.direction, normal, worldPosition));
+}
+vec4 calcPointLight(PointLight pointLight, vec3 normal, vec3 worldPosition){
+vec3 lightDirection = worldPosition - pointLight.position;
+float distanceToPoint = length(lightDirection);
+if (distanceToPoint > pointLight.range) {
+return vec4(0, 0, 0, 0);
+}
+lightDirection = normalize(lightDirection);
+vec4 color = calcLight(pointLight.base, lightDirection, normal, worldPosition);
+float attenuation = pointLight.atten.constant + pointLight.atten.linear * distanceToPoint +
+pointLight.atten.exponent * distanceToPoint * distanceToPoint + 0.0001;
+return color / attenuation;
+}
+vec4 calcSpotLight(SpotLight spotLight, vec3 normal, vec3 worldPosition)  {
+vec3 lightDirection = normalize(worldPosition - spotLight.pointLight.position);
+float spotFactor = dot(lightDirection, spotLight.direction);
+vec4 color = vec4(0, 0, 0, 0);
+if (spotFactor > spotLight.cutoff) {
+color = calcPointLight(spotLight.pointLight, normal, worldPosition) *
+(1.0 - (1.0 - spotFactor) / (1.0 - spotLight.cutoff));
+}
+return color;
+}
+vec3 getNormalFromMap(sampler2D normal_map, vec2 texCoord, mat3 tbnMatrix)  {
+vec3 normal = tbnMatrix * (255.0/128.0 * texture2D(normal_map, texCoord0.xy).xyz - 1);
+return normal;
+}
+uniform PointLight R_pointLight;
+vec4 calcLighting(vec3 normal, vec3 worldPos) {
+return calcPointLight(R_pointLight, normal, worldPos);
+}
+void main() {
+vec3 normal;
+if (normal_mapping_enabled == 0) {
+normal = tbnMatrix * (255.0/128.0 * texture2D(normal_map, texCoord0.xy).xyz - 1);
+} else {
+normal = normalize(normal0);
+}
+gl_FragColor = texture2D(diffuse, texCoord0.xy) * calcLighting(normal, worldPosition0);
+}
+
+[January 5, 2020 9:14 PM] [main/Shader] DEBUG: Skipped File: PathHandle [path=.\res\shaders\forward-point\forward-point.glgs, pathType=Absolute]
+[January 5, 2020 9:14 PM] [main/Shader] DEBUG: Skipped File: PathHandle [path=.\res\shaders\forward-point\forward-point.glte, pathType=Absolute]
+[January 5, 2020 9:14 PM] [main/Shader] DEBUG: Skipped File: PathHandle [path=.\res\shaders\forward-point\forward-point.gltc, pathType=Absolute]
+[January 5, 2020 9:14 PM] [main/Shader] DEBUG: Skipped File: PathHandle [path=.\res\shaders\forward-point\forward-point.glc, pathType=Absolute]
+[January 5, 2020 9:14 PM] [main/Shader] DEBUG: Skipped File: PathHandle [path=.\res\shaders\forward-point\forward-point.glh, pathType=Absolute]
+[January 5, 2020 9:14 PM] [main/Shader] FINE: Uniform 'T_model' At Location: 9
+[January 5, 2020 9:14 PM] [main/Shader] FINE: Uniform 'T_MVP' At Location: 8
+[January 5, 2020 9:14 PM] [main/Shader] FINE: Uniform 'diffuse' At Location: 13
+[January 5, 2020 9:14 PM] [main/Shader] FINE: Uniform 'normal_map' At Location: 14
+[January 5, 2020 9:14 PM] [main/Shader] FINE: Uniform 'C_eyePos' At Location: 0
+[January 5, 2020 9:14 PM] [main/Shader] FINE: Uniform 'specularIntensity' At Location: 11
+[January 5, 2020 9:14 PM] [main/Shader] FINE: Uniform 'specularPower' At Location: 12
+[January 5, 2020 9:14 PM] [main/Shader] FINE: Uniform 'normal_mapping_enabled' At Location: 10
+[January 5, 2020 9:14 PM] [main/Shader] FINE: Uniform 'R_pointLight.base.color' At Location: 1
+[January 5, 2020 9:14 PM] [main/Shader] FINE: Uniform 'R_pointLight.base.intensity' At Location: 2
+[January 5, 2020 9:14 PM] [main/Shader] FINE: Uniform 'R_pointLight.atten.constant' At Location: 3
+[January 5, 2020 9:14 PM] [main/Shader] FINE: Uniform 'R_pointLight.atten.linear' At Location: 4
+[January 5, 2020 9:14 PM] [main/Shader] FINE: Uniform 'R_pointLight.atten.exponent' At Location: 5
+[January 5, 2020 9:14 PM] [main/Shader] FINE: Uniform 'R_pointLight.position' At Location: 6
+[January 5, 2020 9:14 PM] [main/Shader] FINE: Uniform 'R_pointLight.range' At Location: 7
+[January 5, 2020 9:14 PM] [main/Shader] FINE: Successfully Attached Shader: 4 Log: 
+
+[January 5, 2020 9:14 PM] [main/Shader] DEBUG: Shader Text For 'Vertex Shader': 'forward-point'
+#version 330 core
+layout (location = 0) in vec3 position;
+layout (location = 1) in vec2 texCoord;
+layout (location = 2) in vec3 normal;
+layout (location = 3) in vec3 tangent;
+out vec2 texCoord0;
+out vec3 normal0;
+out vec3 worldPosition0;
+out mat3 tbnMatrix;
+uniform mat4 T_model;
+uniform mat4 T_MVP;
+void main() {
+gl_Position = T_MVP * vec4(position, 1.0);
+texCoord0 =  texCoord;
+normal0 = (T_model * vec4(normal, 0.0)).xyz;
+worldPosition0 = (T_model * vec4(position, 1.0)).xyz;
+vec3 n = normalize((T_model * vec4(normal, 0.0)).xyz);
+vec3 t = normalize((T_model * vec4(tangent, 0.0)).xyz);
+t = normalize(t - dot(t, n) * n);
+vec3 biTangent = cross(t, n);
+tbnMatrix = mat3(t, biTangent, n);
+}
+
+[January 5, 2020 9:14 PM] [main/Shader] FINE: Successfully Attached Shader: 4 Log: 
+
+[January 5, 2020 9:14 PM] [main/Shader] DEBUG: Shader Text For 'Fragment Shader': 'forward-point'
+#version 330 core
+in vec2 texCoord0;
+in vec3 normal0;
+in vec3 worldPosition0;
+in mat3 tbnMatrix;
+uniform sampler2D diffuse;
+uniform sampler2D normal_map;
+uniform vec3 C_eyePos;
+uniform float specularIntensity;
+uniform float specularPower;
+uniform int normal_mapping_enabled;
+struct BaseLight {
+vec3 color;
+float intensity;
+};
+struct DirectionalLight {
+BaseLight base;
+vec3 direction;
+};
+struct Attenuation {
+float constant;
+float linear;
+float exponent;
+};
+struct PointLight {
+BaseLight base;
+Attenuation atten;
+vec3 position;
+float range;
+};
+struct SpotLight {
+PointLight pointLight;
+vec3 direction;
+float cutoff;
+};
+vec4 calcLight(BaseLight base, vec3 direction, vec3 normal, vec3 worldPosition) {
+float diffuseFactor = dot(normal, -direction);
+vec4 diffuseColor = vec4(0, 0, 0, 0);
+vec4 specularColor = vec4(0, 0, 0, 0);
+if (diffuseFactor > 0) {
+diffuseColor = vec4(base.color, 1.0) * base.intensity * diffuseFactor;
+vec3 directionToEye = normalize(C_eyePos - worldPosition);
+vec3 reflectDirection = normalize(reflect(direction, normal));
+float specularFactor = dot(directionToEye, reflectDirection);
+specularFactor = pow(specularFactor, specularPower);
+if(specularFactor > 0){
+specularColor = vec4(base.color, 1.0) * specularIntensity * specularFactor;
+}
+}
+return diffuseColor + specularColor;
+}
+vec4 calcDirectionalLight(DirectionalLight directionalLight, vec3 normal, vec3 worldPosition) {
+return (calcLight(directionalLight.base, -directionalLight.direction, normal, worldPosition));
+}
+vec4 calcPointLight(PointLight pointLight, vec3 normal, vec3 worldPosition){
+vec3 lightDirection = worldPosition - pointLight.position;
+float distanceToPoint = length(lightDirection);
+if (distanceToPoint > pointLight.range) {
+return vec4(0, 0, 0, 0);
+}
+lightDirection = normalize(lightDirection);
+vec4 color = calcLight(pointLight.base, lightDirection, normal, worldPosition);
+float attenuation = pointLight.atten.constant + pointLight.atten.linear * distanceToPoint +
+pointLight.atten.exponent * distanceToPoint * distanceToPoint + 0.0001;
+return color / attenuation;
+}
+vec4 calcSpotLight(SpotLight spotLight, vec3 normal, vec3 worldPosition)  {
+vec3 lightDirection = normalize(worldPosition - spotLight.pointLight.position);
+float spotFactor = dot(lightDirection, spotLight.direction);
+vec4 color = vec4(0, 0, 0, 0);
+if (spotFactor > spotLight.cutoff) {
+color = calcPointLight(spotLight.pointLight, normal, worldPosition) *
+(1.0 - (1.0 - spotFactor) / (1.0 - spotLight.cutoff));
+}
+return color;
+}
+vec3 getNormalFromMap(sampler2D normal_map, vec2 texCoord, mat3 tbnMatrix)  {
+vec3 normal = tbnMatrix * (255.0/128.0 * texture2D(normal_map, texCoord0.xy).xyz - 1);
+return normal;
+}
+uniform PointLight R_pointLight;
+vec4 calcLighting(vec3 normal, vec3 worldPos) {
+return calcPointLight(R_pointLight, normal, worldPos);
+}
+void main() {
+vec3 normal;
+if (normal_mapping_enabled == 0) {
+normal = tbnMatrix * (255.0/128.0 * texture2D(normal_map, texCoord0.xy).xyz - 1);
+} else {
+normal = normalize(normal0);
+}
+gl_FragColor = texture2D(diffuse, texCoord0.xy) * calcLighting(normal, worldPosition0);
+}
+
+[January 5, 2020 9:14 PM] [main/Shader] DEBUG: Skipped File: PathHandle [path=.\res\shaders\forward-point\forward-point.glgs, pathType=Absolute]
+[January 5, 2020 9:14 PM] [main/Shader] DEBUG: Skipped File: PathHandle [path=.\res\shaders\forward-point\forward-point.glte, pathType=Absolute]
+[January 5, 2020 9:14 PM] [main/Shader] DEBUG: Skipped File: PathHandle [path=.\res\shaders\forward-point\forward-point.gltc, pathType=Absolute]
+[January 5, 2020 9:14 PM] [main/Shader] DEBUG: Skipped File: PathHandle [path=.\res\shaders\forward-point\forward-point.glc, pathType=Absolute]
+[January 5, 2020 9:14 PM] [main/Shader] DEBUG: Skipped File: PathHandle [path=.\res\shaders\forward-point\forward-point.glh, pathType=Absolute]
+[January 5, 2020 9:14 PM] [main/Shader] DEBUG: Error From Shader Program: 'forward-point'
+[January 5, 2020 9:14 PM] [main/Shader] ERROR: Vertex shader(s) failed to link, fragment shader(s) failed to link.
+Vertex link error: INVALID_OPERATION.
+ERROR: 0:12: error(#248) Function already has a body: main
+ERROR: error(#273) 1 compilation errors.  No code generated
+
+fragment link error: INVALID_OPERATION.
+ERROR: 0:36: error(#248) Function already has a body: calcLight
+ERROR: 0:52: error(#248) Function already has a body: calcDirectionalLight
+ERROR: 0:55: error(#248) Function already has a body: calcPointLight
+ERROR: 0:67: error(#248) Function already has a body: calcSpotLight
+ERROR: 0:77: error(#248) Function already has a body: getNormalFromMap
+ERROR: 0:82: error(#248) Function already has a body: calcLighting
+ERROR: 0:85: error(#248) Function already has a body: main
+ERROR: error(#273) 7 compilation errors.  No code generated
+
+

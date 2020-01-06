@@ -284,4 +284,9 @@ public class PathHandle {
 
 	}
 
+	@Override
+	public String toString() {
+		return "PathHandle [path=" + path + ", pathType=" + pathType + "]";
+	}
+
 }

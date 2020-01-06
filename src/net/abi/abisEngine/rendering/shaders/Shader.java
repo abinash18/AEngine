@@ -7,6 +7,8 @@ import java.nio.file.LinkOption;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL32;
@@ -64,7 +66,7 @@ public class Shader implements AssetI {
 
 	}
 
-	private PathHandle pathToShaderDirectory;
+	private PathHandle pathToShaderDirectoryInDefaultDirectory;
 	private String shaderName;
 
 	/**
@@ -85,93 +87,10 @@ public class Shader implements AssetI {
 	 */
 	public Shader(String shaderName, long context) {
 		this.shaderName = shaderName;
-		// The shader folder containing all the shaders until i can implement the
-		// parsing algorithm for AEShader Lang.
-		/*
-		 * ./res/shaders/@shaderName@/
-		 */
-		this.pathToShaderDirectory = DEFAULT_SHADER_ASSET_DIRECTORY_PATH.resolveChild(shaderName);
-		// TODO: make this hashmap of resources into a HashSet and use compute if absent
-		// method to add shader to set
+
+		this.pathToShaderDirectoryInDefaultDirectory = DEFAULT_SHADER_ASSET_DIRECTORY_PATH.resolveChild(shaderName);
 
 		this.context_handle = Long.valueOf(context);
-
-		/* Find the type of shader in the cache. */
-
-		HashMap<String, ShaderSource> _shd = loadedSources.get(ShaderType.VERTEX);
-		HashMap<String, ShaderSource> _shd1 = loadedSources.get(ShaderType.FRAGMENT);
-		HashMap<String, ShaderSource> _shd2 = loadedSources.get(ShaderType.GEOMETRY);
-
-		/*
-		 * If any of the shader types dont exist then add them to the cache.
-		 */
-
-		if (_shd == null) {
-			loadedSources.put(ShaderType.VERTEX, (_shd = new HashMap<String, ShaderSource>()));
-		}
-
-		if (_shd1 == null) {
-			loadedSources.put(ShaderType.FRAGMENT, (_shd1 = new HashMap<String, ShaderSource>()));
-		}
-
-		if (_shd2 == null) {
-			loadedSources.put(ShaderType.GEOMETRY, (_shd2 = new HashMap<String, ShaderSource>()));
-		}
-
-		/*
-		 * Find the ShaderSource in the received cache.
-		 */
-
-		ShaderSource _dataVERT = _shd.get(shaderName);
-		ShaderSource _dataFRAG = _shd1.get(shaderName);
-		ShaderSource _dataGEOM = _shd2.get(shaderName);
-
-		/*
-		 * If any of the sources don't exist then add them to the cache map.
-		 */
-
-		if (_dataVERT == null) {
-			/*
-			 * So we load the source using the loadShaderSource Method
-			 */
-			_dataVERT = loadShaderSource(pathToShaderDirectory.resolveChild(shaderName + ShaderType.VERTEX.extention),
-					ShaderType.VERTEX);
-			_shd.put(shaderName, _dataVERT);
-		} else {
-			/**
-			 * If the source exits in the cache. We already have the source stored in the
-			 * temporary variable. So we don't need to do any thing here.
-			 */
-		}
-
-		if (_dataFRAG == null) {
-			/*
-			 * So we load the source using the loadShaderSource Method
-			 */
-			_dataFRAG = loadShaderSource(pathToShaderDirectory.resolveChild(shaderName + ShaderType.FRAGMENT.extention),
-					ShaderType.FRAGMENT);
-			_shd.put(shaderName, _dataFRAG);
-		} else {
-			/**
-			 * If the source exits in the cache. We already have the source stored in the
-			 * temporary variable. So we don't need to do any thing here.
-			 */
-		}
-
-		if (_dataGEOM == null) {
-			/*
-			 * So we load the source using the loadShaderSource Method
-			 */
-			_dataGEOM = (pathToShaderDirectory.contains(shaderName + ShaderType.GEOMETRY.extention) ? loadShaderSource(
-					pathToShaderDirectory.resolveChild(shaderName + ShaderType.GEOMETRY.extention), ShaderType.GEOMETRY)
-					: null);
-			_shd.put(shaderName, _dataGEOM);
-		} else {
-			/**
-			 * If the source exits in the cache. We already have the source stored in the
-			 * temporary variable. So we don't need to do any thing here.
-			 */
-		}
 
 		/*
 		 * Find the Context in the cache.
@@ -202,68 +121,66 @@ public class Shader implements AssetI {
 			/*
 			 * If it wasn't found then we create one and get the shader ready to use.
 			 */
-			_sr = new ShaderResource(shaderName, pathToShaderDirectory);
+			_sr = new ShaderResource(shaderName, pathToShaderDirectoryInDefaultDirectory);
 			_ss.put(shaderName, _sr);
 		}
 
 		this.shaderProgram = _sr;
 
-		this.addVertexShader(_dataVERT);
-		if (_dataGEOM != null) {
-			this.addGeometryShader(_dataGEOM);
+		for (ShaderType t : ShaderType.values()) {
+			PathHandle _h;
+			if (!(_h = pathToShaderDirectoryInDefaultDirectory.resolveChild(shaderName + t.extention)).exists()) {
+				logger.debug("Skipped File: " + _h);
+				continue;
+			}
+			/* Find the type of shader in the cache. */
+			HashMap<String, ShaderSource> _shd = loadedSources.get(t);
+
+			/*
+			 * If the shader types dose not exist then add it to the cache.
+			 */
+			if (_shd == null) {
+				loadedSources.put(t, (_shd = new HashMap<String, ShaderSource>()));
+			}
+
+			/*
+			 * Find the ShaderSource in the received cache.
+			 */
+			ShaderSource _data = _shd.get(shaderName);
+
+			/*
+			 * If the source dose not exist then add it to the cache map.
+			 */
+			if (_data == null) {
+				/*
+				 * So we load the source using the loadShaderSource Method
+				 */
+				_data = loadShaderSource(pathToShaderDirectoryInDefaultDirectory.resolveChild(shaderName + t.extention),
+						t);
+				_shd.put(shaderName, _data);
+			} else {
+				/**
+				 * If the source exits in the cache. We already have the source stored in the
+				 * temporary variable. So we don't need to do any thing here.
+				 */
+			}
+
+			/*
+			 * Add the source to the resource subProgram list.
+			 */
+			this.shaderProgram.addShaderSource(t, _data);
+
+			this.addShader(t, _data);
+
 		}
-		this.addFragmentShader(_dataFRAG);
-		this.addAllAttributes(_dataVERT);
-		this.compileShader();
-		this.addAllUniforms(_dataVERT);
-		if (_dataGEOM != null) {
-			this.addAllUniforms(_dataGEOM);
-		}
-		this.addAllUniforms(_dataFRAG);
 
-		this.shaderProgram.addShaderSource(_dataVERT);
-		if (_dataGEOM != null) {
-			this.shaderProgram.addShaderSource(_dataGEOM);
-		}
-		this.shaderProgram.addShaderSource(_dataFRAG);
-//		ShaderResource oldResource = loadedShaders.get(context).get(shaderName);
-//
-//		if (oldResource != null) {
-//			this.shaderProgram = oldResource;
-//			this.shaderProgram.addReference();
-//		} else {
-		// this.shaderProgram = loadShader(fileName);
-
-//		ShaderSource vertexShaderSource = loadShaderSource(pathToShaderDirectory.resolveChild(shaderName),
-//				ShaderType.VERTEX);
-//		ShaderSource fragmentShaderSource = loadShaderSource(pathToShaderDirectory.resolveChild(shaderName),
-//				ShaderType.FRAGMENT);
-//		ShaderSource geometryShaderSource = (pathToShaderDirectory.resolveChild(shaderName).contains(
-//				shaderName + ShaderType.GEOMETRY.extention) ? loadShaderSource(shaderName, ShaderType.GEOMETRY) : null);
-
-		// this.shaderProgram = new ShaderResource(shaderName, pathToShaderDirectory);
-
-//		this.addVertexShader(vertexShaderSource);
-//		if (geometryShaderSource != null) {
-//			this.addGeometryShader(geometryShaderSource);
-//		}
-//
-//		this.addFragmentShader(fragmentShaderSource);
-//
-//		this.addAllAttributes(vertexShaderSource);
-//
-//		// After Setting Attributes And Loading Shaders
-//		this.compileShader();
-//
-//		this.addAllUniforms(vertexShaderSource);
-//		if (geometryShaderSource != null) {
-//			this.addAllUniforms(geometryShaderSource);
-//		}
-//		this.addAllUniforms(fragmentShaderSource);
-//
-//		loadedShaderPrograms.put(shaderName, shaderProgram);
-//	}
-
+		shaderProgram.getSubPrograms().forEach((k, v) -> {
+			if (k == ShaderType.VERTEX) {
+				this.addAllAttributes(v);
+				this.compileShader();
+			}
+			this.addAllUniforms(v);
+		});
 	}
 
 	public void bind() {
@@ -693,6 +610,31 @@ public class Shader implements AssetI {
 		addProgram(text, GL20.GL_VERTEX_SHADER, "Vertex Shader");
 	}
 
+	public void addShader(ShaderType type, ShaderSource source) {
+		switch (type) {
+		case VERTEX:
+			this.addVertexShader(source);
+			break;
+		case FRAGMENT:
+			this.addFragmentShader(source);
+			break;
+		case GEOMETRY:
+			this.addGeometryShader(source);
+			break;
+		case COMPUTE:
+			break;
+		case TESSELATION_CONTROL:
+			this.addTesselationControlShader(source);
+			break;
+		case TESSELATION_EVALUATION:
+			this.addTesselationEvaluationShader(source);
+			break;
+
+		default:
+			break;
+		}
+	}
+
 	public void addVertexShader(ShaderSource source) {
 		addProgram(source.getSource(), GL20.GL_VERTEX_SHADER, "Vertex Shader");
 	}
@@ -720,6 +662,14 @@ public class Shader implements AssetI {
 	 */
 	public void addTesselationControlShader(String text) {
 		addProgram(text, GL40.GL_TESS_CONTROL_SHADER, "Tesselation Control Shader");
+	}
+
+	public void addTesselationControlShader(ShaderSource source) {
+		addProgram(source.getSource(), GL40.GL_TESS_CONTROL_SHADER, "Tesselation Control Shader");
+	}
+
+	public void addTesselationEvaluationShader(ShaderSource source) {
+		addProgram(source.getSource(), GL40.GL_TESS_EVALUATION_SHADER, "Tesselation Evaluation Shader");
 	}
 
 //	public void addVertexShaderFromFile(String fileName) {
