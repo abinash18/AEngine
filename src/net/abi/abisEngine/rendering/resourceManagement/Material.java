@@ -3,8 +3,6 @@ package net.abi.abisEngine.rendering.resourceManagement;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter.DEFAULT;
-
 import net.abi.abisEngine.rendering.shaders.Shader;
 import net.abi.abisEngine.util.Color;
 

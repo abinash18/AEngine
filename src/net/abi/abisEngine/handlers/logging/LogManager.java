@@ -95,14 +95,8 @@ public class LogManager {
 	}
 
 	public static String getCurrentTimeAndDate() {
-		return (DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT).format(new Date()));
+		return (DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(new Date()));
 	}
-
-	static SimpleDateFormat sdf = new SimpleDateFormat("yyyyy.MMMMM.dd GGG hh:mm aaa");
-
-//	private static String getCurrentTimeAndDateForFile() {
-//		return sdf.format(new Date());
-//	}
 
 	public static void setFileHandler(FileHandler fileHandler) {
 		LogManager.fileHandler = fileHandler;

@@ -246,6 +246,10 @@ public class AIMeshLoader {
 	 */
 	private static Map<String, ModelScene> loadedScenes = new ConcurrentHashMap<String, ModelScene>();
 
+	public static Mesh loadModel(String modelFileName, String modelName, int post_options) {
+		return loadModel(modelFileName, modelName, post_options, null);
+	}
+	
 	/**
 	 * Loads a mesh from a file using AssetI Importer Library. If no post options
 	 * are provided (The value is 0) defaults will be used. Defaults are :
@@ -371,27 +375,26 @@ public class AIMeshLoader {
 	}
 
 	public static void printLibInfo() {
-		System.out.println(aiGetLegalString());
-		System.out.println("aiGetVersionMajor() = " + aiGetVersionMajor());
-		System.out.println("aiGetVersionMinor() = " + aiGetVersionMinor());
-		System.out.println("aiGetVersionRevision() = " + aiGetVersionRevision());
-		System.out.println("aiGetVersionRevision() = " + aiGetCompileFlags());
+		logger.info(aiGetLegalString());
+		logger.info("aiGetVersionMajor() = " + aiGetVersionMajor());
+		logger.info("aiGetVersionMinor() = " + aiGetVersionMinor());
+		logger.info("aiGetVersionRevision() = " + aiGetVersionRevision());
+		logger.info("aiGetVersionRevision() = " + aiGetCompileFlags());
 
 		long c = aiGetImportFormatCount();
-		System.out.println("\nImport formats:");
+		logger.info("\nImport formats:");
 
 		for (int i = 0; i < c; i++) {
 			AIImporterDesc desc = Objects.requireNonNull(aiGetImportFormatDescription(i));
-			System.out.println("\t" + (i + 1) + ". " + desc.mNameString() + " (" + desc.mFileExtensionsString() + ")");
+			logger.info("\t" + (i + 1) + ". " + desc.mNameString() + " (" + desc.mFileExtensionsString() + ")");
 		}
 
 		c = aiGetExportFormatCount();
-		System.out.println("\nExport formats:");
+		logger.info("\nExport formats:");
 
 		for (int i = 0; i < c; i++) {
 			AIExportFormatDesc desc = Objects.requireNonNull(aiGetExportFormatDescription(i));
-			System.out.println(
-					"\t" + (i + 1) + ". " + desc.descriptionString() + " (" + desc.fileExtensionString() + ")");
+			logger.info("\t" + (i + 1) + ". " + desc.descriptionString() + " (" + desc.fileExtensionString() + ")");
 		}
 	}
 
