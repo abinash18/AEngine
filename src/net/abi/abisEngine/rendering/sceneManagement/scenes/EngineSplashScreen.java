@@ -144,11 +144,11 @@ public class EngineSplashScreen extends Scene {
 			monkey = new Entity().addComponent(new MeshRenderer(s, anvilmat));
 			super.addChild(monkey);
 
-//			m = man.get("IronMan.obj", ModelScene.class);
-//			s = m.getMesh("IronMan").bindModel();
-//			Entity _anvil = new Entity().addComponent(new MeshRenderer(s, anvilmat));
-//			_anvil.getTransform().setScale(0.25f, 0.25f, 0.25f);
-//			super.addChild(_anvil);
+			m = man.get("IronMan.obj", ModelScene.class);
+			s = m.getMesh("IronMan").bindModel();
+			Entity _anvil = new Entity().addComponent(new MeshRenderer(s, anvilmat));
+			_anvil.getTransform().setScale(0.025f, 0.025f, 0.025f);
+			super.addChild(_anvil);
 			done2 = true;
 		}
 		// } catch (Exception e) {
@@ -178,18 +178,12 @@ public class EngineSplashScreen extends Scene {
 		if (((GLFWMouseAndKeyboardInput) super.getInputController())
 				.isMouseButtonDown(GLFWInput.GLFW_MOUSE_BUTTON_RIGHT)) {
 
-			super.getRootObject().getAllAttached().forEach(v -> {
-				v.getComponents().forEach(_v -> {
-					if (_v instanceof MeshRenderer) {
-						((MeshRenderer) _v).toggleWireFrames();
-					}
-				});
-			});
+			//MeshRenderer.toggleWireFrames();
 		}
 
 		if (((GLFWMouseAndKeyboardInput) super.getInputController())
 				.isMouseButtonDown(GLFWInput.GLFW_MOUSE_BUTTON_LEFT)) {
-			MeshRenderer.drawNormals = MeshRenderer.drawNormals == false ? true : false;
+			//MeshRenderer.drawNormals = MeshRenderer.drawNormals == false ? true : false;
 		}
 
 		if (((GLFWMouseAndKeyboardInput) super.getInputController()).isKeyDown(GLFWInput.GLFW_KEY_C)) {

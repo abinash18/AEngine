@@ -59,7 +59,7 @@ public class RenderingEngine extends MappedValues {
 
 	public void initGraphics() {
 		forwardAmbientShader = new Shader("forward-ambient");
-		depthShader = new Shader("visualizers/depthVisualizer/depthVisualizer");
+		//depthShader = new Shader("depthVisualizer");
 		//edge_dectect = new Shader("visualizers/edge_detect");
 		GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
@@ -83,11 +83,11 @@ public class RenderingEngine extends MappedValues {
 		// Clear Screen Before Rendering
 		clearScreen();
 
-		if (depth_test) {
-			renderDepth(scene);
-		} else {
+//		if (depth_test) {
+//			renderDepth(scene);
+//		} else {
 			renderLights(scene);
-		}
+		//}
 		renderVisualizers(scene);
 	}
 

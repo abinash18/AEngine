@@ -153,8 +153,10 @@ public class ModelScene implements Expendable {
 //		}
 
 		// mesh.setMat(mat);
+//		mesh = new Mesh(_mesh.mName().dataString(), new Model(positions, normals, texCoords, tangents, indices, vBCC),
+//				man.getGlfw_handle(), null);
 		mesh = new Mesh(_mesh.mName().dataString(), new Model(positions, normals, texCoords, tangents, indices, vBCC),
-				man.getGlfw_handle(), null);
+				0, null);
 
 		System.out.println(mesh);
 

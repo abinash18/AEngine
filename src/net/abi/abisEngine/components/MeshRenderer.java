@@ -13,51 +13,49 @@ public class MeshRenderer extends SceneComponent {
 	private Mesh mesh;
 	private Material mat;
 
-	private int drawOption = GL15.GL_TRIANGLES;
-
-	public static boolean drawNormals = false;
+	public static boolean drawNormals = false, drawWireframes = false;
 
 	public MeshRenderer(Mesh mesh, Material mat) {
 		this.mesh = mesh;
 		this.mat = mat;
 	}
 
-	public MeshRenderer toggleWireFrames() {
-		if (drawOption == GL15.GL_TRIANGLES) {
-			drawOption = GL15.GL_LINES;
+	public static void toggleWireFrames() {
+		if (drawWireframes) {
+			drawWireframes = false;
 		} else {
-			drawOption = GL15.GL_TRIANGLES;
+			drawWireframes = true;
 		}
-		return this;
 	}
 
-	private Shader wir = new Shader("visualizers/wireframe/wireframe");
-	private Shader nor = new Shader("visualizers/normals/normals");
+//	private Shader wir = new Shader("wireframe");
+//	private Shader nor = new Shader("normals");
 
 	@Override
 	public void render(Shader shader, RenderingEngine engine) {
 
-		if (drawOption == GL15.GL_LINES) {
+		if (drawWireframes) {
 			shader.bind();
 			shader.updateUniforms(super.getTransform(), mat, engine);
 			mesh.draw("vaoOne", GL15.GL_TRIANGLES);
-			wir.bind();
-			wir.updateUniforms(super.getTransform(), mat, engine);
+			//wir.bind();
+			//wir.updateUniforms(super.getTransform(), mat, engine);
 			GL45.glEnable(GL45.GL_BLEND);
 			GL45.glEnable(GL45.GL_SAMPLE_ALPHA_TO_COVERAGE);
 			GL45.glBlendFunc(GL45.GL_SRC_ALPHA, GL45.GL_ONE_MINUS_SRC_ALPHA);
 			mesh.draw("bc", GL15.GL_TRIANGLES);
 			GL45.glDisable(GL45.GL_SAMPLE_ALPHA_TO_COVERAGE);
+			GL45.glEnable(GL45.GL_BLEND);
 
 		} else {
 			shader.bind();
 			shader.updateUniforms(super.getTransform(), mat, engine);
-			mesh.draw("vaoOne", drawOption);
+			mesh.draw("vaoOne", GL15.GL_TRIANGLES);
 		}
 
 		if (drawNormals) {
-			nor.bind();
-			nor.updateUniforms(super.getTransform(), mat, engine);
+			//nor.bind();
+			//nor.updateUniforms(super.getTransform(), mat, engine);
 			mesh.draw("vaoOne", GL15.GL_POINTS);
 		}
 

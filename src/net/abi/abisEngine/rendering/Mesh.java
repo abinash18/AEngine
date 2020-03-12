@@ -44,7 +44,7 @@ public class Mesh implements AssetI {
 	 * INDEXs for the specific buffers in the VAOBuffers Array.
 	 */
 	private static final int VAO_POSITIONS_INDEX = 0, VAO_TEXTURE_COORDINATE_INDEX = 1, VAO_NORMAL_INDEX = 2,
-			VAO_TANGENT_INDEX = 3, VAO_INDICES_INDEX = 4, VAO_BC_INDEX = 5, NUM_BUFFERS = 5;
+			VAO_TANGENT_INDEX = 3, VAO_INDICES_INDEX = 4, VAO_BC_INDEX = 1, NUM_BUFFERS = 5;
 
 	/**
 	 * Contains the VAOID ID and VBO Buffer ID's for the mesh.
@@ -149,7 +149,7 @@ public class Mesh implements AssetI {
 		}
 
 		VAO addVAO(String name) {
-			VAO _vao = new VAO();
+			VAO _vao = new VAO(name);
 
 			this.vaos.put(name, _vao);
 
@@ -307,9 +307,8 @@ public class Mesh implements AssetI {
 		VAO _v = meshResource.addVAO("vaoOne").bindVAO(NUM_BUFFERS);
 
 		/* Positions */
-
 		bindBuffer(_v, GL15.GL_ARRAY_BUFFER, VAO_POSITIONS_INDEX, VAO_POSITIONS_INDEX, 3,
-				Util.createFlippedBuffer(meshResource.meshData.model.getTexCoords()), draw_usage);
+				Util.createFlippedBuffer(meshResource.meshData.model.getPositions()), draw_usage);
 
 		/* Texture Coordinates */
 		bindBuffer(_v, GL15.GL_ARRAY_BUFFER, VAO_TEXTURE_COORDINATE_INDEX, VAO_TEXTURE_COORDINATE_INDEX, 2,
@@ -328,13 +327,18 @@ public class Mesh implements AssetI {
 		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, Util.createIntBuffer(meshResource.meshData.model.getIndices()),
 				draw_usage);
 
+		/* VAO For BaryCentric Coordinates */
+		_v = meshResource.addVAO("bc").bindVAO(3);
+		/* Positions */
+		bindBuffer(_v, GL15.GL_ARRAY_BUFFER, VAO_POSITIONS_INDEX, 0, 3,
+				Util.createFlippedBuffer(meshResource.meshData.model.getPositions()), draw_usage);
 		/* BaryCentric Coordinates. */
-
-		_v = meshResource.addVAO("bc").bindVAO(1);
-
-		bindBuffer(_v, GL15.GL_ARRAY_BUFFER, VAO_BC_INDEX, 4, 3,
+		bindBuffer(_v, GL15.GL_ARRAY_BUFFER, VAO_BC_INDEX, 1, 3,
 				Util.createFlippedBuffer(meshResource.meshData.model.getvBCC()), draw_usage);
-
+		/* Indices */
+		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, _v.VAOBuffers[2]);
+		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, Util.createIntBuffer(meshResource.meshData.model.getIndices()),
+				draw_usage);
 		meshResource.initialized = true;
 
 		return this;
@@ -370,7 +374,7 @@ public class Mesh implements AssetI {
 		for (int i = 0; i < _v.VAOBuffers.length; i++) {
 			GL30.glEnableVertexAttribArray(i);
 		}
-//		GL30.glBindVertexArray(meshResource.vaos.get("vaoOne").VAO);
+//		GL30.glBindVertexArray(meshResource.vaos.get("vaoOne").VAOID);
 //		glEnableVertexAttribArray(0);
 //		glEnableVertexAttribArray(1);
 //		glEnableVertexAttribArray(2);

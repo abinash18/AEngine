@@ -6,23 +6,17 @@ import net.abi.abisEngine.components.Camera;
 import net.abi.abisEngine.components.DirectionalLight;
 import net.abi.abisEngine.components.FreeLook;
 import net.abi.abisEngine.components.FreeMove;
-import net.abi.abisEngine.components.MeshRenderer;
 import net.abi.abisEngine.components.PointLight;
 import net.abi.abisEngine.components.SpotLight;
 import net.abi.abisEngine.core.Entity;
-import net.abi.abisEngine.rendering.asset.libGDX.AssetManager;
-import net.abi.abisEngine.rendering.asset.loaders.ModelSceneLoader;
-import net.abi.abisEngine.rendering.meshLoading.AIMeshLoader;
-import net.abi.abisEngine.rendering.meshLoading.ModelScene;
 import net.abi.abisEngine.input.GLFWInput;
 import net.abi.abisEngine.input.GLFWMouseAndKeyboardInput;
 import net.abi.abisEngine.math.Vector3f;
-import net.abi.abisEngine.rendering.resourceManagement.Material;
-import net.abi.abisEngine.rendering.resourceManagement.Texture;
+import net.abi.abisEngine.rendering.asset.loaders.ModelSceneLoader;
+import net.abi.abisEngine.rendering.meshLoading.ModelScene;
 import net.abi.abisEngine.rendering.sceneManagement.Scene;
 import net.abi.abisEngine.rendering.windowManagement.GLFWWindow;
 import net.abi.abisEngine.util.Attenuation;
-import tests.game.entitys.FlatPlane;
 import tests.game.materials.BricksOne;
 import tests.game.materials.BricksTwo;
 
@@ -35,7 +29,7 @@ public class TestGame extends Scene {
 	private Entity monkey, monkey2, cameraObject, anvil;
 	private Camera cam;
 
-	private AssetManager man;
+	private net.abi.abisEngine.rendering.asset.AssetManager man;
 
 	public void init() {
 		super.init();

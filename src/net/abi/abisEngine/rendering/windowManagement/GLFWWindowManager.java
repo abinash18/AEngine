@@ -391,7 +391,7 @@ public class GLFWWindowManager {
 	public static void openWindow(GLFWWindow wnd, long monitor, String sharedContextName) throws Exception {
 
 		if (monitor == NULL) {
-			logger.debug("Monitor Provided Is NULL, Defaulting To Primary Monitor.");
+			logger.warning("Monitor Provided Is NULL, Defaulting To Primary Monitor.");
 		}
 
 		GLContext tempContext;
@@ -408,7 +408,7 @@ public class GLFWWindowManager {
 	public static void openWindow(GLFWWindow wnd, long monitor, long sharedContext) throws Exception {
 
 		if (monitor == NULL) {
-			logger.debug("Monitor Provided Is NULL, Defaulting To Primary Monitor.");
+			logger.warning("Monitor Provided Is NULL, Defaulting To Primary Monitor.");
 		}
 
 		GLContext tempContext;
@@ -432,7 +432,7 @@ public class GLFWWindowManager {
 	public static void openWindow(GLFWWindow wnd, long monitor, RenderingEngine rndEng) throws Exception {
 
 		if (monitor == NULL) {
-			logger.error("Monitor Provided Is NULL, Defaulting To Primary Monitor.");
+			logger.warning("Monitor Provided Is NULL, Defaulting To Primary Monitor.");
 		}
 
 		if (findContext(wnd.getWindowName()) != null) {

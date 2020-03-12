@@ -19,7 +19,7 @@ public abstract class Main {
 	protected abstract void addWindows();
 
 	public void run(String[] args) {
-		int width = 800, height = 600, frameRate = 1000;
+		int width = 800, height = 600, frameRate = 2000;
 		// int width = 1920, height = 1080, frameRate = 1000;
 		boolean fullScreen = false, vSync = false;
 		String windowTitle = "Project Quaternion | pre-alpha release";
@@ -28,11 +28,11 @@ public abstract class Main {
 		LogManager.addFileHandler(1000);
 		// LogManager.setCurrentLevel(LogLevel.ALL);
 		LogManager.addAllowedLevel(LogLevel.DEBUG);
-		LogManager.addAllowedLevel(LogLevel.INFO);
+//		LogManager.addAllowedLevel(LogLevel.INFO);
 		LogManager.addAllowedLevel(LogLevel.ERROR);
-		LogManager.addAllowedLevel(LogLevel.FINE);
-		LogManager.addAllowedLevel(LogLevel.WARNING);
-		LogManager.fileHandler.setAppend(false);
+//		LogManager.addAllowedLevel(LogLevel.FINE);
+//		LogManager.addAllowedLevel(LogLevel.WARNING);
+//		LogManager.fileHandler.setAppend(false);
 
 		opts.addOption(new Option("t", "title", true, "The Title Of The Frame."));
 		opts.addOption(new Option("w", "width", true, "The Width Of The Frame."));
