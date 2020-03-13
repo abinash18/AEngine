@@ -59,8 +59,8 @@ public class RenderingEngine extends MappedValues {
 
 	public void initGraphics() {
 		forwardAmbientShader = new Shader("forward-ambient");
-		//depthShader = new Shader("depthVisualizer");
-		//edge_dectect = new Shader("visualizers/edge_detect");
+		depthShader = new Shader("depthVisualizer");
+		edge_dectect = new Shader("visualizers/edge_detect");
 		GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 		GL11.glFrontFace(GL11.GL_CW);
@@ -83,16 +83,16 @@ public class RenderingEngine extends MappedValues {
 		// Clear Screen Before Rendering
 		clearScreen();
 
-//		if (depth_test) {
-//			renderDepth(scene);
-//		} else {
+		if (depth_test) {
+			renderDepth(scene);
+		} else {
 			renderLights(scene);
-		//}
+		}
 		renderVisualizers(scene);
 	}
 
 	private void renderVisualizers(Scene scene) {
-		// scene.getRootObject().renderAll(edge_detect, this);
+		scene.getRootObject().renderAll(edge_dectect, this);
 	}
 
 	private void renderDepth(Scene scene) {
