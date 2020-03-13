@@ -28,6 +28,7 @@ import net.abi.abisEngine.rendering.sceneManagement.Scene;
 import net.abi.abisEngine.rendering.windowManagement.GLFWWindow;
 import net.abi.abisEngine.rendering.windowManagement.GLFWWindowManager;
 import net.abi.abisEngine.util.Attenuation;
+import net.abi.abisEngine.util.Color;
 import tests.game.materials.BricksOne;
 import tests.game.materials.BricksTwo;
 import tests.game.windows.MainGame;
@@ -77,6 +78,8 @@ public class EngineSplashScreen extends Scene {
 
 		cameraObject.addComponent(cam);
 		cameraObject.addComponent(new FreeLook(0.35f)).addComponent(new FreeMove(10f));
+		cameraObject.addComponent(spotLight);
+		spotLight.getTransform().setParent(cam.getTransform());
 
 		// super.addChild(testMesh1);
 
@@ -110,14 +113,14 @@ public class EngineSplashScreen extends Scene {
 		man.load("monkey.obj", ModelScene.class, null);
 
 		super.setMainCamera("playerView");
-		super.addChild(spotLightObject);
+		// super.addChild(spotLightObject);
 		// super.addChild(new Entity()
 		// .addComponent(new MeshRenderer(AIMeshLoader.loadModel("plane3.obj", "Cube",
 		// 0), new BricksOne())));
 		super.addChild(directionalLightObject);
-		// super.addChild(monkey);
+		super.addChild(monkey2);
 		// super.addChild(ironMan);
-		super.addChild(cameraObject);
+		// super.addChild(cameraObject);
 	}
 
 	float temp = 0.0f;
@@ -178,12 +181,12 @@ public class EngineSplashScreen extends Scene {
 		if (((GLFWMouseAndKeyboardInput) super.getInputController())
 				.isMouseButtonDown(GLFWInput.GLFW_MOUSE_BUTTON_RIGHT)) {
 
-			//MeshRenderer.toggleWireFrames();
+			MeshRenderer.toggleWireFrames();
 		}
 
 		if (((GLFWMouseAndKeyboardInput) super.getInputController())
 				.isMouseButtonDown(GLFWInput.GLFW_MOUSE_BUTTON_LEFT)) {
-			//MeshRenderer.drawNormals = MeshRenderer.drawNormals == false ? true : false;
+			MeshRenderer.drawNormals = MeshRenderer.drawNormals == false ? true : false;
 		}
 
 		if (((GLFWMouseAndKeyboardInput) super.getInputController()).isKeyDown(GLFWInput.GLFW_KEY_C)) {

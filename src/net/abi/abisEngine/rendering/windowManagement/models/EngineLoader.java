@@ -9,7 +9,7 @@ import tests.game.windows.MainGame;
 public class EngineLoader extends GLFWWindow {
 
 	public EngineLoader() {
-		super(800, 600, "EngineSplash", "", false, false);
+		super(1920, 1080, "EngineSplash", "", true, false);
 	}
 
 	@Override
