@@ -1,101 +1,101 @@
 
--------------------------------------3/13/20 3:29 PM-------------------------------------
+-------------------------------------2020-03-14, 8:42 p.m.-------------------------------------
 
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: Open Asset Import Library (Assimp).
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: Open Asset Import Library (Assimp).
 A free C/C++ library to import various 3D file formats into applications
 
 (c) 2008-2017, assimp team
 License under the terms and conditions of the 3-clause BSD license
 http://assimp.sourceforge.net
 
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: aiGetVersionMajor() = 4
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: aiGetVersionMinor() = 1
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: aiGetVersionRevision() = 844643017
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: aiGetVersionRevision() = 17
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: aiGetVersionMajor() = 4
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: aiGetVersionMinor() = 1
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: aiGetVersionRevision() = 844643017
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: aiGetVersionRevision() = 17
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 
 Import formats:
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	1. Direct3D XFile Importer (x)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	2. Wavefront Object Importer (obj)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	3. Additive manufacturing file format(AMF) Importer (amf)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	4. Discreet 3DS Importer (3ds prj)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	5. Quake III Mesh Importer (md3)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	6. Quake II Mesh Importer (md2)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	7. Stanford Polygon Library (PLY) Importer (ply)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	8. Quake Mesh / 3D GameStudio Mesh Importer (mdl)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	9. ASE Importer (ase ask)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	10. 3D GameStudio Heightmap (HMP) Importer (hmp)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	11. Valve SMD Importer (smd vta)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	12. Return To Castle Wolfenstein Mesh Importer (mdc)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	13. Doom 3 / MD5 Mesh Importer (md5mesh md5camera md5anim)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	14. Stereolithography (STL) Importer (stl)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	15. LightWave/Modo Object Importer (lwo lxo)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	16. Drawing Interchange Format (DXF) Importer (dxf)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	17. Neutral File Format Importer (enff nff)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	18. Raw Importer (raw)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	19. Silo SIB Importer (sib)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	20. OFF Importer (off)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	21. AC3D Importer (ac acc ac3d)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	22. BVH Importer (MoCap) (bvh)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	23. Irrlicht Mesh Reader (xml irrmesh)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	24. Irrlicht Scene Reader (irr xml)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	25. Quick3D Importer (q3o q3s)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	26. BlitzBasic 3D Importer (b3d)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	27. Collada Importer (dae zae)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	28. Terragen Heightmap Importer (ter)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	29. CharacterStudio Motion Importer (MoCap) (csm)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	30. Unreal Mesh Importer (3d uc)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	31. LightWave Scene Importer (lws mot)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	32. Ogre3D Mesh Importer (mesh mesh.xml)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	33. Open Game Engine Exchange (ogex)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	34. Milkshape 3D Importer (ms3d)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	35. TrueSpace Object Importer (cob scn)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	36. Blender 3D Importer 
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	1. Direct3D XFile Importer (x)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	2. Wavefront Object Importer (obj)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	3. Additive manufacturing file format(AMF) Importer (amf)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	4. Discreet 3DS Importer (3ds prj)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	5. Quake III Mesh Importer (md3)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	6. Quake II Mesh Importer (md2)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	7. Stanford Polygon Library (PLY) Importer (ply)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	8. Quake Mesh / 3D GameStudio Mesh Importer (mdl)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	9. ASE Importer (ase ask)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	10. 3D GameStudio Heightmap (HMP) Importer (hmp)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	11. Valve SMD Importer (smd vta)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	12. Return To Castle Wolfenstein Mesh Importer (mdc)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	13. Doom 3 / MD5 Mesh Importer (md5mesh md5camera md5anim)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	14. Stereolithography (STL) Importer (stl)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	15. LightWave/Modo Object Importer (lwo lxo)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	16. Drawing Interchange Format (DXF) Importer (dxf)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	17. Neutral File Format Importer (enff nff)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	18. Raw Importer (raw)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	19. Silo SIB Importer (sib)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	20. OFF Importer (off)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	21. AC3D Importer (ac acc ac3d)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	22. BVH Importer (MoCap) (bvh)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	23. Irrlicht Mesh Reader (xml irrmesh)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	24. Irrlicht Scene Reader (irr xml)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	25. Quick3D Importer (q3o q3s)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	26. BlitzBasic 3D Importer (b3d)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	27. Collada Importer (dae zae)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	28. Terragen Heightmap Importer (ter)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	29. CharacterStudio Motion Importer (MoCap) (csm)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	30. Unreal Mesh Importer (3d uc)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	31. LightWave Scene Importer (lws mot)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	32. Ogre3D Mesh Importer (mesh mesh.xml)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	33. Open Game Engine Exchange (ogex)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	34. Milkshape 3D Importer (ms3d)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	35. TrueSpace Object Importer (cob scn)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	36. Blender 3D Importer 
 http://www.blender3d.org (blend)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	37. Quake III BSP Importer (pk3)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	38. Nendo Mesh Importer (ndo)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	39. Industry Foundation Classes (IFC) Importer (ifc ifczip stp)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	40. XGL Importer (xgl zgl)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	41. Autodesk FBX Importer (fbx)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	42. Assimp Binary Importer (assbin)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	43. glTF Importer (gltf glb)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	44. glTF2 Importer (gltf glb)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	45. 3mf Importer (3mf)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	46. Extensible 3D(X3D) Importer (x3d x3db)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	47. MMD Importer (pmx)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	48. StepFile Importer (stp)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	37. Quake III BSP Importer (pk3)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	38. Nendo Mesh Importer (ndo)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	39. Industry Foundation Classes (IFC) Importer (ifc ifczip stp)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	40. XGL Importer (xgl zgl)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	41. Autodesk FBX Importer (fbx)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	42. Assimp Binary Importer (assbin)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	43. glTF Importer (gltf glb)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	44. glTF2 Importer (gltf glb)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	45. 3mf Importer (3mf)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	46. Extensible 3D(X3D) Importer (x3d x3db)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	47. MMD Importer (pmx)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	48. StepFile Importer (stp)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 
 Export formats:
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	1. COLLADA - Digital Asset Exchange Schema (dae)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	2. X Files (x)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	3. Step Files (stp)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	4. Wavefront OBJ format (obj)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	5. Wavefront OBJ format without material file (obj)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	6. Stereolithography (stl)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	7. Stereolithography (binary) (stl)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	8. Stanford Polygon Library (ply)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	9. Stanford Polygon Library (binary) (ply)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	10. Autodesk 3DS (legacy) (3ds)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	11. GL Transmission Format v. 2 (gltf)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	12. GL Transmission Format v. 2 (binary) (glb)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	13. GL Transmission Format (gltf)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	14. GL Transmission Format (binary) (glb)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	15. Assimp Binary File (assbin)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	16. Assimp XML Document (assxml)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	17. Extensible 3D (x3d)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	18. Autodesk FBX (binary) (fbx)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	19. Autodesk FBX (ascii) (fbx)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	20. The 3MF-File-Format (3mf)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	21. Assimp JSON Document (json)
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.core.CoreEngine] INFO: Starting Engine.
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.windowManagement.GLFWWindowManager] WARNING: Monitor Provided Is NULL, Defaulting To Primary Monitor.
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.sceneManagement.SceneManager] DEBUG: Setting Scene: EngineSplash
-[3/13/20 3:29 PM] [main/AssetManager] DEBUG: Loader set: ModelScene -> ModelSceneLoader
-[3/13/20 3:29 PM] [main/AssetManager] DEBUG: Loader set: ModelScene -> ModelSceneLoader
-[3/13/20 3:29 PM] [main/Shader] DEBUG: Parsing File: (VERTEX)Path: .\res\shaders\forward-directional\forward-directional.glvs, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] DEBUG: Added Shader: (VERTEX)Path: .\res\shaders\forward-directional\forward-directional.glvs, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] DEBUG: Successfully Attached Shader: 1 Log: 
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	1. COLLADA - Digital Asset Exchange Schema (dae)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	2. X Files (x)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	3. Step Files (stp)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	4. Wavefront OBJ format (obj)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	5. Wavefront OBJ format without material file (obj)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	6. Stereolithography (stl)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	7. Stereolithography (binary) (stl)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	8. Stanford Polygon Library (ply)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	9. Stanford Polygon Library (binary) (ply)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	10. Autodesk 3DS (legacy) (3ds)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	11. GL Transmission Format v. 2 (gltf)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	12. GL Transmission Format v. 2 (binary) (glb)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	13. GL Transmission Format (gltf)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	14. GL Transmission Format (binary) (glb)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	15. Assimp Binary File (assbin)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	16. Assimp XML Document (assxml)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	17. Extensible 3D (x3d)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	18. Autodesk FBX (binary) (fbx)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	19. Autodesk FBX (ascii) (fbx)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	20. The 3MF-File-Format (3mf)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.meshLoading.AIMeshLoader] INFO: 	21. Assimp JSON Document (json)
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.core.CoreEngine] INFO: Starting Engine.
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.windowManagement.GLFWWindowManager] WARNING: Monitor Provided Is NULL, Defaulting To Primary Monitor.
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.sceneManagement.SceneManager] DEBUG: Setting Scene: EngineSplash
+[2020-03-14, 8:42 p.m.] [main/AssetManager] DEBUG: Loader set: ModelScene -> ModelSceneLoader
+[2020-03-14, 8:42 p.m.] [main/AssetManager] DEBUG: Loader set: ModelScene -> ModelSceneLoader
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Parsing File: (VERTEX)Path: .\res\shaders\forward-directional\forward-directional.glvs, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Added Shader: (VERTEX)Path: .\res\shaders\forward-directional\forward-directional.glvs, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Successfully Attached Shader: 1 Log: 
 
-[3/13/20 3:29 PM] [main/Shader] FINEST: Shader Text For 'Vertex Shader': 'forward-directional'
+[2020-03-14, 8:42 p.m.] [main/Shader] FINEST: Shader Text For 'Vertex Shader': 'forward-directional'
 #version 330 core
 layout (location = 0) in vec3 position;
 layout (location = 1) in vec2 texCoord;
@@ -119,11 +119,12 @@ vec3 biTangent = cross(t, n);
 tbnMatrix = mat3(t, biTangent, n);
 }
 
-[3/13/20 3:29 PM] [main/Shader] DEBUG: Parsing File: (FRAGMENT)Path: .\res\shaders\forward-directional\forward-directional.glfs, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] DEBUG: Added Shader: (FRAGMENT)Path: .\res\shaders\forward-directional\forward-directional.glfs, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] DEBUG: Successfully Attached Shader: 1 Log: 
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Parsing File: (FRAGMENT)Path: .\res\shaders\forward-directional\forward-directional.glfs, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Added Shader: (FRAGMENT)Path: .\res\shaders\forward-directional\forward-directional.glfs, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Successfully Attached Shader: 1 Log: 
+0(92) : warning C7533: global variable gl_FragColor is deprecated after version 120
 
-[3/13/20 3:29 PM] [main/Shader] FINEST: Shader Text For 'Fragment Shader': 'forward-directional'
+[2020-03-14, 8:42 p.m.] [main/Shader] FINEST: Shader Text For 'Fragment Shader': 'forward-directional'
 #version 330 core
 in vec2 texCoord0;
 in vec3 normal0;
@@ -218,29 +219,29 @@ normal = normalize(normal0);
 gl_FragColor = texture2D(diffuse, texCoord0.xy) * calcLighting(normal, worldPosition0);
 }
 
-[3/13/20 3:29 PM] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-directional\forward-directional.glgs, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-directional\forward-directional.glte, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-directional\forward-directional.gltc, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-directional\forward-directional.glc, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-directional\forward-directional.glh, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] DEBUG: Compiling Shader: forward-directional
-[3/13/20 3:29 PM] [main/Shader] DEBUG: Shader Compiled Successfully
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'T_model' At Location: 1
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'T_MVP' At Location: 0
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'diffuse' At Location: 10
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'normal_map' At Location: 9
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'C_eyePos' At Location: 2
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'specularIntensity' At Location: 4
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'specularPower' At Location: 3
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'normal_mapping_enabled' At Location: 8
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'R_directionalLight.base.color' At Location: 5
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'R_directionalLight.base.intensity' At Location: 6
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'R_directionalLight.direction' At Location: 7
-[3/13/20 3:29 PM] [main/Shader] DEBUG: Parsing File: (VERTEX)Path: .\res\shaders\forward-point\forward-point.glvs, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] DEBUG: Added Shader: (VERTEX)Path: .\res\shaders\forward-point\forward-point.glvs, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] DEBUG: Successfully Attached Shader: 4 Log: 
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-directional\forward-directional.glgs, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-directional\forward-directional.glte, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-directional\forward-directional.gltc, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-directional\forward-directional.glc, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-directional\forward-directional.glh, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Compiling Shader: forward-directional
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Shader Compiled Successfully
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'diffuse' At Location: 6
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'normal_map' At Location: 7
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'C_eyePos' At Location: 0
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'specularIntensity' At Location: 9
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'specularPower' At Location: 10
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'normal_mapping_enabled' At Location: 8
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'R_directionalLight.base.color' At Location: 1
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'R_directionalLight.base.intensity' At Location: 2
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'R_directionalLight.direction' At Location: 3
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'T_model' At Location: 5
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'T_MVP' At Location: 4
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Parsing File: (VERTEX)Path: .\res\shaders\forward-point\forward-point.glvs, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Added Shader: (VERTEX)Path: .\res\shaders\forward-point\forward-point.glvs, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Successfully Attached Shader: 4 Log: 
 
-[3/13/20 3:29 PM] [main/Shader] FINEST: Shader Text For 'Vertex Shader': 'forward-point'
+[2020-03-14, 8:42 p.m.] [main/Shader] FINEST: Shader Text For 'Vertex Shader': 'forward-point'
 #version 330 core
 layout (location = 0) in vec3 position;
 layout (location = 1) in vec2 texCoord;
@@ -264,11 +265,12 @@ vec3 biTangent = cross(t, n);
 tbnMatrix = mat3(t, biTangent, n);
 }
 
-[3/13/20 3:29 PM] [main/Shader] DEBUG: Parsing File: (FRAGMENT)Path: .\res\shaders\forward-point\forward-point.glfs, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] DEBUG: Added Shader: (FRAGMENT)Path: .\res\shaders\forward-point\forward-point.glfs, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] DEBUG: Successfully Attached Shader: 4 Log: 
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Parsing File: (FRAGMENT)Path: .\res\shaders\forward-point\forward-point.glfs, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Added Shader: (FRAGMENT)Path: .\res\shaders\forward-point\forward-point.glfs, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Successfully Attached Shader: 4 Log: 
+0(92) : warning C7533: global variable gl_FragColor is deprecated after version 120
 
-[3/13/20 3:29 PM] [main/Shader] FINEST: Shader Text For 'Fragment Shader': 'forward-point'
+[2020-03-14, 8:42 p.m.] [main/Shader] FINEST: Shader Text For 'Fragment Shader': 'forward-point'
 #version 330 core
 in vec2 texCoord0;
 in vec3 normal0;
@@ -363,33 +365,33 @@ normal = normalize(normal0);
 gl_FragColor = texture2D(diffuse, texCoord0.xy) * calcLighting(normal, worldPosition0);
 }
 
-[3/13/20 3:29 PM] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-point\forward-point.glgs, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-point\forward-point.glte, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-point\forward-point.gltc, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-point\forward-point.glc, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-point\forward-point.glh, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] DEBUG: Compiling Shader: forward-point
-[3/13/20 3:29 PM] [main/Shader] DEBUG: Shader Compiled Successfully
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'T_model' At Location: 1
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'T_MVP' At Location: 0
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'diffuse' At Location: 14
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'normal_map' At Location: 13
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'C_eyePos' At Location: 2
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'specularIntensity' At Location: 4
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'specularPower' At Location: 3
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'normal_mapping_enabled' At Location: 12
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'R_pointLight.base.color' At Location: 5
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'R_pointLight.base.intensity' At Location: 6
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'R_pointLight.atten.constant' At Location: 7
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'R_pointLight.atten.linear' At Location: 8
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'R_pointLight.atten.exponent' At Location: 9
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'R_pointLight.position' At Location: 10
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'R_pointLight.range' At Location: 11
-[3/13/20 3:29 PM] [main/Shader] DEBUG: Parsing File: (VERTEX)Path: .\res\shaders\forward-spot\forward-spot.glvs, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] DEBUG: Added Shader: (VERTEX)Path: .\res\shaders\forward-spot\forward-spot.glvs, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] DEBUG: Successfully Attached Shader: 7 Log: 
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-point\forward-point.glgs, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-point\forward-point.glte, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-point\forward-point.gltc, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-point\forward-point.glc, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-point\forward-point.glh, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Compiling Shader: forward-point
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Shader Compiled Successfully
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'diffuse' At Location: 10
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'normal_map' At Location: 11
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'C_eyePos' At Location: 0
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'specularIntensity' At Location: 13
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'specularPower' At Location: 14
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'normal_mapping_enabled' At Location: 12
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'R_pointLight.base.color' At Location: 4
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'R_pointLight.base.intensity' At Location: 5
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'R_pointLight.atten.constant' At Location: 1
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'R_pointLight.atten.linear' At Location: 3
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'R_pointLight.atten.exponent' At Location: 2
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'R_pointLight.position' At Location: 6
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'R_pointLight.range' At Location: 7
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'T_model' At Location: 9
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'T_MVP' At Location: 8
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Parsing File: (VERTEX)Path: .\res\shaders\forward-spot\forward-spot.glvs, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Added Shader: (VERTEX)Path: .\res\shaders\forward-spot\forward-spot.glvs, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Successfully Attached Shader: 7 Log: 
 
-[3/13/20 3:29 PM] [main/Shader] FINEST: Shader Text For 'Vertex Shader': 'forward-spot'
+[2020-03-14, 8:42 p.m.] [main/Shader] FINEST: Shader Text For 'Vertex Shader': 'forward-spot'
 #version 330 core
 layout (location = 0) in vec3 position;
 layout (location = 1) in vec2 texCoord;
@@ -413,11 +415,12 @@ vec3 biTangent = cross(t, n);
 tbnMatrix = mat3(t, biTangent, n);
 }
 
-[3/13/20 3:29 PM] [main/Shader] DEBUG: Parsing File: (FRAGMENT)Path: .\res\shaders\forward-spot\forward-spot.glfs, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] DEBUG: Added Shader: (FRAGMENT)Path: .\res\shaders\forward-spot\forward-spot.glfs, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] DEBUG: Successfully Attached Shader: 7 Log: 
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Parsing File: (FRAGMENT)Path: .\res\shaders\forward-spot\forward-spot.glfs, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Added Shader: (FRAGMENT)Path: .\res\shaders\forward-spot\forward-spot.glfs, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Successfully Attached Shader: 7 Log: 
+0(92) : warning C7533: global variable gl_FragColor is deprecated after version 120
 
-[3/13/20 3:29 PM] [main/Shader] FINEST: Shader Text For 'Fragment Shader': 'forward-spot'
+[2020-03-14, 8:42 p.m.] [main/Shader] FINEST: Shader Text For 'Fragment Shader': 'forward-spot'
 #version 330 core
 in vec2 texCoord0;
 in vec3 normal0;
@@ -512,42 +515,42 @@ normal = normalize(normal0);
 gl_FragColor = texture2D(diffuse, texCoord0.xy) * calcLighting(normal, worldPosition0);
 }
 
-[3/13/20 3:29 PM] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-spot\forward-spot.glgs, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-spot\forward-spot.glte, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-spot\forward-spot.gltc, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-spot\forward-spot.glc, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-spot\forward-spot.glh, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] DEBUG: Compiling Shader: forward-spot
-[3/13/20 3:29 PM] [main/Shader] DEBUG: Shader Compiled Successfully
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'T_model' At Location: 1
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'T_MVP' At Location: 0
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'diffuse' At Location: 16
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'normal_map' At Location: 15
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'C_eyePos' At Location: 2
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'specularIntensity' At Location: 4
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'specularPower' At Location: 3
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'normal_mapping_enabled' At Location: 14
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'R_spotLight.pointLight.base.color' At Location: 5
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'R_spotLight.pointLight.base.intensity' At Location: 6
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'R_spotLight.pointLight.atten.constant' At Location: 7
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'R_spotLight.pointLight.atten.linear' At Location: 8
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'R_spotLight.pointLight.atten.exponent' At Location: 9
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'R_spotLight.pointLight.position' At Location: 10
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'R_spotLight.pointLight.range' At Location: 11
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'R_spotLight.direction' At Location: 12
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'R_spotLight.cutoff' At Location: 13
-[3/13/20 3:29 PM] [main/AssetManager] DEBUG: Queued: net.abi.abisEngine.rendering.asset.AssetClassifier@1bce4f0a
-[3/13/20 3:29 PM] [main/AssetManager] DEBUG: Queued: net.abi.abisEngine.rendering.asset.AssetClassifier@5e3a8624
-[3/13/20 3:29 PM] [main/AssetManager] DEBUG: Queued: net.abi.abisEngine.rendering.asset.AssetClassifier@5c3bd550
-[3/13/20 3:29 PM] [main/AssetManager] DEBUG: Queued: net.abi.abisEngine.rendering.asset.AssetClassifier@91161c7
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.sceneManagement.SceneManager] DEBUG: Current Scene: Scene [root=net.abi.abisEngine.core.Entity@604ed9f0, id=e66b88ae-5349-4083-9b7f-8ed15d37d2fe, name=EngineSplash]
-[3/13/20 3:29 PM] [main/net.abi.abisEngine.rendering.sceneManagement.SceneManager] DEBUG: Current Scene: Scene [root=net.abi.abisEngine.core.Entity@604ed9f0, id=e66b88ae-5349-4083-9b7f-8ed15d37d2fe, name=EngineSplash]
-[3/13/20 3:29 PM] [main/AssetManager] DEBUG: Loader set: ModelScene -> ModelSceneLoader
-[3/13/20 3:29 PM] [main/Shader] DEBUG: Parsing File: (VERTEX)Path: .\res\shaders\forward-ambient\forward-ambient.glvs, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] DEBUG: Added Shader: (VERTEX)Path: .\res\shaders\forward-ambient\forward-ambient.glvs, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] DEBUG: Successfully Attached Shader: 10 Log: 
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-spot\forward-spot.glgs, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-spot\forward-spot.glte, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-spot\forward-spot.gltc, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-spot\forward-spot.glc, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-spot\forward-spot.glh, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Compiling Shader: forward-spot
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Shader Compiled Successfully
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'diffuse' At Location: 12
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'normal_map' At Location: 13
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'C_eyePos' At Location: 0
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'specularIntensity' At Location: 15
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'specularPower' At Location: 16
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'normal_mapping_enabled' At Location: 14
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'R_spotLight.pointLight.base.color' At Location: 6
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'R_spotLight.pointLight.base.intensity' At Location: 7
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'R_spotLight.pointLight.atten.constant' At Location: 3
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'R_spotLight.pointLight.atten.linear' At Location: 5
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'R_spotLight.pointLight.atten.exponent' At Location: 4
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'R_spotLight.pointLight.position' At Location: 8
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'R_spotLight.pointLight.range' At Location: 9
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'R_spotLight.direction' At Location: 2
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'R_spotLight.cutoff' At Location: 1
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'T_model' At Location: 11
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'T_MVP' At Location: 10
+[2020-03-14, 8:42 p.m.] [main/AssetManager] DEBUG: Queued: net.abi.abisEngine.rendering.asset.AssetClassifier@56de5251
+[2020-03-14, 8:42 p.m.] [main/AssetManager] DEBUG: Queued: net.abi.abisEngine.rendering.asset.AssetClassifier@419c5f1a
+[2020-03-14, 8:42 p.m.] [main/AssetManager] DEBUG: Queued: net.abi.abisEngine.rendering.asset.AssetClassifier@12b0404f
+[2020-03-14, 8:42 p.m.] [main/AssetManager] DEBUG: Queued: net.abi.abisEngine.rendering.asset.AssetClassifier@769e7ee8
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.sceneManagement.SceneManager] DEBUG: Current Scene: Scene [root=net.abi.abisEngine.core.Entity@5276e6b0, id=f15c93f8-2ed8-4066-a3cf-58259be0566c, name=EngineSplash]
+[2020-03-14, 8:42 p.m.] [main/net.abi.abisEngine.rendering.sceneManagement.SceneManager] DEBUG: Current Scene: Scene [root=net.abi.abisEngine.core.Entity@5276e6b0, id=f15c93f8-2ed8-4066-a3cf-58259be0566c, name=EngineSplash]
+[2020-03-14, 8:42 p.m.] [main/AssetManager] DEBUG: Loader set: ModelScene -> ModelSceneLoader
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Parsing File: (VERTEX)Path: .\res\shaders\forward-ambient\forward-ambient.glvs, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Added Shader: (VERTEX)Path: .\res\shaders\forward-ambient\forward-ambient.glvs, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Successfully Attached Shader: 10 Log: 
 
-[3/13/20 3:29 PM] [main/Shader] FINEST: Shader Text For 'Vertex Shader': 'forward-ambient'
+[2020-03-14, 8:42 p.m.] [main/Shader] FINEST: Shader Text For 'Vertex Shader': 'forward-ambient'
 #version 330 core
 layout (location = 0) in vec3 position;
 layout (location = 1) in vec2 texCoord;
@@ -558,11 +561,12 @@ gl_Position = T_MVP * vec4(position, 1.0);
 texCoord0 = texCoord;
 }
 
-[3/13/20 3:29 PM] [main/Shader] DEBUG: Parsing File: (FRAGMENT)Path: .\res\shaders\forward-ambient\forward-ambient.glfs, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] DEBUG: Added Shader: (FRAGMENT)Path: .\res\shaders\forward-ambient\forward-ambient.glfs, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] DEBUG: Successfully Attached Shader: 10 Log: 
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Parsing File: (FRAGMENT)Path: .\res\shaders\forward-ambient\forward-ambient.glfs, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Added Shader: (FRAGMENT)Path: .\res\shaders\forward-ambient\forward-ambient.glfs, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Successfully Attached Shader: 10 Log: 
+0(6) : warning C7533: global variable gl_FragColor is deprecated after version 120
 
-[3/13/20 3:29 PM] [main/Shader] FINEST: Shader Text For 'Fragment Shader': 'forward-ambient'
+[2020-03-14, 8:42 p.m.] [main/Shader] FINEST: Shader Text For 'Fragment Shader': 'forward-ambient'
 #version 330 core
 in vec2 texCoord0;
 uniform vec3 R_ambient;
@@ -571,24 +575,162 @@ void main() {
 gl_FragColor = texture2D(diffuse, texCoord0.xy) * vec4(R_ambient, 1.0);
 }
 
-[3/13/20 3:29 PM] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-ambient\forward-ambient.glgs, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-ambient\forward-ambient.glte, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-ambient\forward-ambient.gltc, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-ambient\forward-ambient.glc, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-ambient\forward-ambient.glh, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] DEBUG: Compiling Shader: forward-ambient
-[3/13/20 3:29 PM] [main/Shader] DEBUG: Shader Compiled Successfully
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'T_MVP' At Location: 0
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'R_ambient' At Location: 2
-[3/13/20 3:29 PM] [main/Shader] FINE: Uniform 'diffuse' At Location: 1
-[3/13/20 3:29 PM] [main/Shader] FINE: Skipped File: Path: .\res\shaders\depthVisualizer\depthVisualizer.glvs, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] FINE: Skipped File: Path: .\res\shaders\depthVisualizer\depthVisualizer.glfs, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] FINE: Skipped File: Path: .\res\shaders\depthVisualizer\depthVisualizer.glgs, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] FINE: Skipped File: Path: .\res\shaders\depthVisualizer\depthVisualizer.glte, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] FINE: Skipped File: Path: .\res\shaders\depthVisualizer\depthVisualizer.gltc, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] FINE: Skipped File: Path: .\res\shaders\depthVisualizer\depthVisualizer.glc, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] FINE: Skipped File: Path: .\res\shaders\depthVisualizer\depthVisualizer.glh, PathType=Absolute]
-[3/13/20 3:29 PM] [main/Shader] DEBUG: Compiling Shader: depthVisualizer
-[3/13/20 3:29 PM] [main/Shader] DEBUG: Error From Shader Program: 'depthVisualizer'
-[3/13/20 3:29 PM] [main/Shader] ERROR: Link called without any attached shader objects.
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-ambient\forward-ambient.glgs, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-ambient\forward-ambient.glte, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-ambient\forward-ambient.gltc, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-ambient\forward-ambient.glc, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Skipped File: Path: .\res\shaders\forward-ambient\forward-ambient.glh, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Compiling Shader: forward-ambient
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Shader Compiled Successfully
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'R_ambient' At Location: 0
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'diffuse' At Location: 2
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'T_MVP' At Location: 1
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Parsing File: (VERTEX)Path: .\res\shaders\depthVisualizer\depthVisualizer.glvs, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Added Shader: (VERTEX)Path: .\res\shaders\depthVisualizer\depthVisualizer.glvs, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Successfully Attached Shader: 13 Log: 
+0(2) : warning C7555: 'attribute' is deprecated, use 'in/out' instead
 
+[2020-03-14, 8:42 p.m.] [main/Shader] FINEST: Shader Text For 'Vertex Shader': 'depthVisualizer'
+#version 330 core
+attribute vec3 position;
+uniform mat4 T_MVP;
+void main() {
+gl_Position = T_MVP * vec4(position, 1.0);
+}
+
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Parsing File: (FRAGMENT)Path: .\res\shaders\depthVisualizer\depthVisualizer.glfs, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Added Shader: (FRAGMENT)Path: .\res\shaders\depthVisualizer\depthVisualizer.glfs, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Successfully Attached Shader: 13 Log: 
+
+[2020-03-14, 8:42 p.m.] [main/Shader] FINEST: Shader Text For 'Fragment Shader': 'depthVisualizer'
+#version 330 core
+out vec4 FragColor;
+float near = 0.1;
+float far  = 1000.0;
+float LinearizeDepth(float depth) {
+float z = depth * 2.0 - 1.0;
+return (2.0 * near * far) / (far + near - z * (far - near));
+}
+void main()	{
+float depth = LinearizeDepth(gl_FragCoord.z) / far;
+FragColor = vec4(vec3(depth), 1.0);
+}
+
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Skipped File: Path: .\res\shaders\depthVisualizer\depthVisualizer.glgs, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Skipped File: Path: .\res\shaders\depthVisualizer\depthVisualizer.glte, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Skipped File: Path: .\res\shaders\depthVisualizer\depthVisualizer.gltc, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Skipped File: Path: .\res\shaders\depthVisualizer\depthVisualizer.glc, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Skipped File: Path: .\res\shaders\depthVisualizer\depthVisualizer.glh, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Compiling Shader: depthVisualizer
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Shader Compiled Successfully
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'T_MVP' At Location: 0
+[2020-03-14, 8:42 p.m.] [main/AssetManager] INFO: Loading: net.abi.abisEngine.rendering.asset.AssetClassifier@56de5251
+[2020-03-14, 8:42 p.m.] [main/AssetManager] INFO: Loading: net.abi.abisEngine.rendering.asset.AssetClassifier@419c5f1a
+[2020-03-14, 8:42 p.m.] [main/AssetManager] INFO: Loading: net.abi.abisEngine.rendering.asset.AssetClassifier@12b0404f
+[2020-03-14, 8:42 p.m.] [main/AssetManager] DEBUG: Already loaded: net.abi.abisEngine.rendering.asset.AssetClassifier@769e7ee8
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Parsing File: (VERTEX)Path: .\res\shaders\wireframe\wireframe.glvs, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Added Shader: (VERTEX)Path: .\res\shaders\wireframe\wireframe.glvs, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Successfully Attached Shader: 16 Log: 
+
+[2020-03-14, 8:42 p.m.] [main/Shader] FINEST: Shader Text For 'Vertex Shader': 'wireframe'
+#version 330 core
+precision mediump float;
+layout (location = 0) in vec3 position;
+layout (location = 1) in vec3 baryCentric;
+out vec3 vBC;
+uniform mat4 T_MVP;
+void main() {
+gl_Position = T_MVP * vec4(position, 1.0);
+vBC = baryCentric;
+}
+
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Parsing File: (FRAGMENT)Path: .\res\shaders\wireframe\wireframe.glfs, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Added Shader: (FRAGMENT)Path: .\res\shaders\wireframe\wireframe.glfs, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Successfully Attached Shader: 16 Log: 
+0(12) : warning C7533: global variable gl_FragColor is deprecated after version 120
+
+[2020-03-14, 8:42 p.m.] [main/Shader] FINEST: Shader Text For 'Fragment Shader': 'wireframe'
+#version 330 core
+precision mediump float;
+in vec3 vBC;
+const float lineWidth = 0.4;
+const vec3 color = vec3(0.0, 1.0, 0.0);
+float edgeFactor(){
+vec3 d = fwidth(vBC);
+vec3 a3 = smoothstep(vec3(0.0), d*1.5, vBC);
+return min(min(a3.x, a3.y), a3.z);
+}
+void main(){
+gl_FragColor = vec4(min(vec3(edgeFactor()), color), 1.0);
+}
+
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Skipped File: Path: .\res\shaders\wireframe\wireframe.glgs, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Skipped File: Path: .\res\shaders\wireframe\wireframe.glte, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Skipped File: Path: .\res\shaders\wireframe\wireframe.gltc, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Skipped File: Path: .\res\shaders\wireframe\wireframe.glc, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Skipped File: Path: .\res\shaders\wireframe\wireframe.glh, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Compiling Shader: wireframe
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Shader Compiled Successfully
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'T_MVP' At Location: 0
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Parsing File: (VERTEX)Path: .\res\shaders\normals\normals.glvs, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Added Shader: (VERTEX)Path: .\res\shaders\normals\normals.glvs, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Successfully Attached Shader: 19 Log: 
+
+[2020-03-14, 8:42 p.m.] [main/Shader] FINEST: Shader Text For 'Vertex Shader': 'normals'
+#version 330 core
+layout(location = 0) in vec3 position;
+layout(location = 2) in vec3 normal;
+out vec3 vertex_normal;
+void main()
+{
+vertex_normal = normal;
+gl_Position = vec4(position, 1.0);
+}
+
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Parsing File: (FRAGMENT)Path: .\res\shaders\normals\normals.glfs, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Added Shader: (FRAGMENT)Path: .\res\shaders\normals\normals.glfs, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Successfully Attached Shader: 19 Log: 
+0(5) : warning C7533: global variable gl_FragColor is deprecated after version 120
+
+[2020-03-14, 8:42 p.m.] [main/Shader] FINEST: Shader Text For 'Fragment Shader': 'normals'
+#version 330 core
+in vec3 vertex_color;
+void main()
+{
+gl_FragColor = vec4(vertex_color, 1.0);
+}
+
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Parsing File: (GEOMETRY)Path: .\res\shaders\normals\normals.glgs, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Added Shader: (GEOMETRY)Path: .\res\shaders\normals\normals.glgs, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Successfully Attached Shader: 19 Log: 
+
+[2020-03-14, 8:42 p.m.] [main/Shader] FINEST: Shader Text For 'Geometry Shader': 'normals'
+#version 330 core
+layout(points) in;
+layout(line_strip, max_vertices = 2) out;
+uniform mat4 T_MVP;
+uniform mat4 T_MVN;
+const float length = 0.5;
+in vec3 vertex_normal[];
+out vec3 vertex_color;
+void main()
+{
+vec3 normal = vertex_normal[0];
+vertex_color = abs(vec4(T_MVN * vec4(vertex_normal[0], 0.0)).xyz);
+vec4 v0 = gl_in[0].gl_Position;
+gl_Position = T_MVP * v0;
+EmitVertex();
+vec4 v1 = v0 + vec4(normal * length, 0.0);
+gl_Position = T_MVP * v1;
+EmitVertex();
+EndPrimitive();
+}
+
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Skipped File: Path: .\res\shaders\normals\normals.glte, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Skipped File: Path: .\res\shaders\normals\normals.gltc, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Skipped File: Path: .\res\shaders\normals\normals.glc, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Skipped File: Path: .\res\shaders\normals\normals.glh, PathType=Absolute]
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Compiling Shader: normals
+[2020-03-14, 8:42 p.m.] [main/Shader] DEBUG: Shader Compiled Successfully
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'T_MVP' At Location: 1
+[2020-03-14, 8:42 p.m.] [main/Shader] FINE: Uniform 'T_MVN' At Location: 0

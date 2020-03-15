@@ -247,7 +247,7 @@ public class AIMeshLoader {
 	private static Map<String, ModelScene> loadedScenes = new ConcurrentHashMap<String, ModelScene>();
 
 	public static Mesh loadModel(String modelFileName, String modelName, int post_options) {
-		return loadModel(modelFileName, modelName, post_options, null);
+		return loadModel(modelFileName, modelName, AI_DEFAULT_FLAGS, null);
 	}
 	
 	/**
