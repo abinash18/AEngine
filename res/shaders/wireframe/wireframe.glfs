@@ -3,8 +3,8 @@
 //out vec4 FragColor;
 precision mediump float;
 in vec3 vBC;
-const float lineWidth = 1.0;
-const vec3 color = vec3(0.7, 0.7, 0.7);
+const float lineWidth = 0.4;
+const vec3 color = vec3(0.0, 1.0, 0.0);
 float edgeFactor(){
     vec3 d = fwidth(vBC);
     vec3 a3 = smoothstep(vec3(0.0), d*1.5, vBC);
@@ -13,7 +13,7 @@ float edgeFactor(){
 
 void main(){
     //if(gl_FrontFacing && edgeFactor() >= 0.01){
-        gl_FragColor = vec4(0.0, 1.0, 0.0, (1.0-edgeFactor()));
+       gl_FragColor = vec4(min(vec3(edgeFactor()), color), 1.0);
    // }else{
      //   gl_FragColor = vec4(0.0, 0.0, 0.0, (1.0-edgeFactor()) * 0.0);
    // }
