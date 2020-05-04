@@ -17,7 +17,7 @@ public class Color extends Vector3f {
 
 	public Color(float red, float green, float blue) {
 		super(red, green, blue);
-		this.alpha = 1;
+		this.alpha = 1.0f;
 	}
 
 	public Color(float red, float green, float blue, float alpha) {
@@ -27,12 +27,41 @@ public class Color extends Vector3f {
 
 	public Color(Vector3f colorInVector3f) {
 		super(colorInVector3f.x(), colorInVector3f.y(), colorInVector3f.z());
-		this.alpha = 1;
+		this.alpha = 1.0f;
 	}
 
 	public Color(Vector3f colorInVector3f, float alpha) {
 		super(colorInVector3f.x(), colorInVector3f.y(), colorInVector3f.z());
 		this.alpha = alpha;
+	}
+
+	public Color(String hex) {
+		super(Integer.valueOf(hex.substring(1, 3), 16), Integer.valueOf(hex.substring(3, 5), 16),
+				Integer.valueOf(hex.substring(5, 7), 16));
+		this.alpha = 1.0f;
+	}
+
+	public Color(String hex, float alpha) {
+		super(Integer.valueOf(hex.substring(1, 3), 16), Integer.valueOf(hex.substring(3, 5), 16),
+				Integer.valueOf(hex.substring(5, 7), 16));
+		this.alpha = alpha;
+	}
+
+	/**
+	 * 
+	 * @param colorStr e.g. "#FFFFFF"\
+	 * Beware if you are using this for any open gl functions the value needs to be normalized see Vector3f normalize.
+	 * @return 
+	 */
+	public static Color hex2Rgb(String colorStr) {
+		return new Color(Integer.valueOf(colorStr.substring(1, 3), 16), Integer.valueOf(colorStr.substring(3, 5), 16),
+				Integer.valueOf(colorStr.substring(5, 7), 16));
+	}
+
+	@Override
+	public Color normalize() {
+		super.normalize();
+		return this;
 	}
 
 	public float getRed() {

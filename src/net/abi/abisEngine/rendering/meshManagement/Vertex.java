@@ -1,4 +1,4 @@
-package net.abi.abisEngine.rendering;
+package net.abi.abisEngine.rendering.meshManagement;
 
 import net.abi.abisEngine.math.Vector2f;
 import net.abi.abisEngine.math.Vector3f;

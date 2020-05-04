@@ -1,0 +1,64 @@
+{
+  "AE_SHADER": {
+    "meta-data": {
+      "name": "base",
+      "file-type": "json"
+    },
+    "AE_SHADER_PROPERTIES": [
+      {
+        "AE_SHADER_NAME": "ref-shader"
+      },
+      {
+        "AE_SHADER_DESC": "A reference shader file."
+      },
+      {
+        "type": "int",
+        "name": "test",
+        "value": 1
+      }
+    ],
+    "AE_SHADER_PASS": {
+      "Tags": [
+        "first",
+        "forward",
+        "ambient",
+        "reference"
+      ],
+      "AE_PREP_PROPERTIES": [
+        {
+          "AE_ENABLE": "BLEND"
+        },
+        {
+          "BLEND_FUNC": [
+            "GL_ONE_MINUS_SRC",
+            "GL_ONE"
+          ]
+        },
+        {
+          "AE_SET_PROPERTY": {
+            "DEPTH_MASK": "FALSE"
+          }
+        },
+        {
+          "DEPTH_FUNC": "GL_EQUAL"
+        },
+        {
+          "AE_DRAW_MODE": "GL_TRIANGLES"
+        }
+      ],
+      "BEGIN_GLSL_PROGRAM": [
+        {
+          "AE_PROGRAM_PROPERTIES": [
+            {
+              "AE_SHADER_TYPE": "VERT"
+            },
+            {
+              "name": "vertex_shader"
+            }
+          ],
+          "GLSL_PROGRAM": ""
+        }
+      ]
+    }
+  }
+}

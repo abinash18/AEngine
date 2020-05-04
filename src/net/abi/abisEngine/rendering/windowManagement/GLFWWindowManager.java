@@ -13,15 +13,16 @@ import org.lwjgl.opengl.GL;
 import net.abi.abisEngine.core.CoreEngine;
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
-import net.abi.abisEngine.rendering.RenderingEngine;
 import net.abi.abisEngine.rendering.asset.AssetStore;
+import net.abi.abisEngine.rendering.pipelineManagement.RenderingEngine;
+import net.abi.abisEngine.util.Expendable;
 
 /**
  * GLFW Implementation Of Window. This Implementation supports shared contexts.
  * 
  * @author abinash
  */
-public class GLFWWindowManager {
+public class GLFWWindowManager implements Expendable {
 	/*
 	 * NOTE to self: After about 6 windows it will start having a visible impact on
 	 * performance, maybe render clusters of windows on different threads at a time
@@ -479,6 +480,11 @@ public class GLFWWindowManager {
 
 	public static CoreEngine getCoreEngine() {
 		return coreEngine;
+	}
+
+	@Override
+	public void dispose() {
+		
 	}
 
 }

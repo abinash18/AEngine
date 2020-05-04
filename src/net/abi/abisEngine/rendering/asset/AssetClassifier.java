@@ -17,6 +17,7 @@ public class AssetClassifier<T> {
 	private String fileLocation;
 	private AssetLoaderParameters<T> parameter;
 	private Class<T> type;
+	private TaskCompleteHandler callback;
 
 	/**
 	 * @param fileName

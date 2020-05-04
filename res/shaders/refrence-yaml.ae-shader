@@ -1,0 +1,53 @@
+!!net.abi.abisEngine.rendering.shaderManagement.compiler.fileTypes.AEShaderFileYAML
+---
+AE_SHADER:
+  AE_SHADER_META_DATA: {AE_SHADER_FILE_NAME: "base", AE_SHADER_FILE_TYPE: "yaml"}
+  AE_SHADER_PROPERTIES:
+   AE_SHADER_NAME: *AE_SHADER_FILE_NAME
+   AE_SHADER_DESC: "A reference shader file."
+  AE_SHADER_PASS:
+    Tags: [ first, forward, ambient, reference]
+    AE_PREP_PROPERTIES:
+      - AE_ENABLE: BLEND
+      - BLEND_FUNC:
+         GL_ONE_MINUS_SRC
+         GL_ONE
+      - AE_SET_PROPERTY:
+          DEPTH_MASK: False
+      - DEPTH_FUNC: GL_EQUAL
+      - AE_DRAW_MODE: GL_TRIANGLES
+    BEGIN_GLSL_PROGRAM:
+      VERTEX:
+        - AE_PROGRAM_PROPERTIES:
+           AE_SHADER_TYPE: VERT
+           AE_PROGRAM_NAME: vertex_shader
+        - AE_SHADER_PROGRAM_SOURCE: |- #This is a chomp modifier it says that take the next block of string exactly as it is here, but with the exception that extralines at the end of the block that are whitespace will be spared.
+          "#version 330 core
+          precision mediump int;
+          precision mediump float;
+          layout (location = 0) in vec3 position;
+          layout (location = 1) in vec3 baryCentric;
+          out vec3 vBC;
+          uniform mat4 T_MVP;
+          void main() {
+          gl_Position = T_MVP * vec4(position, 1.0);
+          vBC = baryCentric;
+          }"
+      FRAGMENT:
+        - AE_PROGRAM_PROPERTIES:
+          - AE_SHADER_TYPE: FRAG
+          - AE_PROGRAM_NAME: fragment_shader
+        - AE_SHADER_PROGRAM_SOURCE: |- #This is a chomp modifier it says that take the next block of string exactly as it is here, but with the exception that extralines at the end of the block that are whitespace will be spared.
+          "#version 330 core
+          precision mediump float;
+          in vec3 vBC;
+          const float lineWidth = 0.4;
+          const vec3 color = vec3(0.0, 1.0, 0.0);
+          float edgeFactor(){
+              vec3 d = fwidth(vBC);
+              vec3 a3 = smoothstep(vec3(0.0), d*1.5, vBC);
+              return min(min(a3.x, a3.y), a3.z);
+          }
+          void main(){
+            gl_FragColor.rgb = mix(vec3(0.0), vec3(0.5), edgeFactor());
+          }"

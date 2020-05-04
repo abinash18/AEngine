@@ -1,4 +1,4 @@
-package net.abi.abisEngine.rendering.meshLoading;
+package net.abi.abisEngine.rendering.meshManagement;
 
 import static org.lwjgl.assimp.Assimp.aiGetCompileFlags;
 import static org.lwjgl.assimp.Assimp.aiGetErrorString;
@@ -41,7 +41,6 @@ import org.lwjgl.assimp.Assimp;
 
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
-import net.abi.abisEngine.rendering.Mesh;
 import net.abi.abisEngine.rendering.asset.AssetManager;
 import net.abi.abisEngine.util.IOUtil;
 
@@ -233,7 +232,7 @@ public class AIMeshLoader {
 	public static final int AI_MAX_NUMBER_OF_TEXTURECOORDS = 0x8;
 
 	public static final int AI_DEFAULT_FLAGS = aiProcess_Triangulate | aiProcess_GenSmoothNormals
-			| aiProcess_CalcTangentSpace | aiProcess_JoinIdenticalVertices | aiProcess_OptimizeMeshes;
+			| aiProcess_CalcTangentSpace | aiProcess_OptimizeMeshes| aiProcess_JoinIdenticalVertices;
 
 	private static final AIFileIO fileIO = null;
 
@@ -249,7 +248,7 @@ public class AIMeshLoader {
 	public static Mesh loadModel(String modelFileName, String modelName, int post_options) {
 		return loadModel(modelFileName, modelName, AI_DEFAULT_FLAGS, null);
 	}
-	
+
 	/**
 	 * Loads a mesh from a file using AssetI Importer Library. If no post options
 	 * are provided (The value is 0) defaults will be used. Defaults are :

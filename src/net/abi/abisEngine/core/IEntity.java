@@ -4,8 +4,8 @@
 package net.abi.abisEngine.core;
 
 import net.abi.abisEngine.math.Transform;
-import net.abi.abisEngine.rendering.RenderingEngine;
-import net.abi.abisEngine.rendering.shaders.Shader;
+import net.abi.abisEngine.rendering.pipelineManagement.RenderingEngine;
+import net.abi.abisEngine.rendering.shaderManagement.Shader;
 
 /**
  * @author abinash Basic Way Of Communicating With An Game Entity

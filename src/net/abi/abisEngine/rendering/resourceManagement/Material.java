@@ -3,7 +3,7 @@ package net.abi.abisEngine.rendering.resourceManagement;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.abi.abisEngine.rendering.shaders.Shader;
+import net.abi.abisEngine.rendering.shaderManagement.Shader;
 import net.abi.abisEngine.util.Color;
 
 public class Material extends MappedValues {

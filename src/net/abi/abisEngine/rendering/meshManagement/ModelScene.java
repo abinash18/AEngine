@@ -1,4 +1,4 @@
-package net.abi.abisEngine.rendering.meshLoading;
+package net.abi.abisEngine.rendering.meshManagement;
 
 import static org.lwjgl.assimp.Assimp.aiReleaseImport;
 
@@ -22,9 +22,7 @@ import org.lwjgl.opengl.GL20;
 
 import net.abi.abisEngine.math.Vector2f;
 import net.abi.abisEngine.math.Vector3f;
-import net.abi.abisEngine.rendering.Mesh;
 import net.abi.abisEngine.rendering.asset.AssetManager;
-import net.abi.abisEngine.rendering.Model;
 import net.abi.abisEngine.rendering.resourceManagement.Material;
 import net.abi.abisEngine.rendering.resourceManagement.Texture;
 import net.abi.abisEngine.util.Expendable;
@@ -134,11 +132,11 @@ public class ModelScene implements Expendable {
 
 		//calculateBarycentric(indices.size());
 
-		for (int i = 0; i < indices.size() / 3; i++) {
-			vBCC.add(new Vector3f(1, 0, 0));
-			vBCC.add(new Vector3f(0, 1, 0));
-			vBCC.add(new Vector3f(0, 0, 1));
-		}
+//		for (int i = 0; i < indices.size() / 3; i++) {
+//			vBCC.add(new Vector3f(1, 0, 0));
+//			vBCC.add(new Vector3f(0, 1, 0));
+//			vBCC.add(new Vector3f(0, 0, 1));
+//		}
 
 //		 = calculateBarycentric(indices.size() - 1);
 
@@ -155,7 +153,7 @@ public class ModelScene implements Expendable {
 		// mesh.setMat(mat);
 //		mesh = new Mesh(_mesh.mName().dataString(), new Model(positions, normals, texCoords, tangents, indices, vBCC),
 //				man.getGlfw_handle(), null);
-		mesh = new Mesh(_mesh.mName().dataString(), new Model(positions, normals, texCoords, tangents, indices, vBCC),
+		mesh = new Mesh(_mesh.mName().dataString(), new Model(positions, normals, texCoords, tangents, indices),
 				0, null);
 
 		System.out.println(mesh);

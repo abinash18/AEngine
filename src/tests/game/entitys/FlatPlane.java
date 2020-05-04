@@ -2,7 +2,7 @@ package tests.game.entitys;
 
 import net.abi.abisEngine.components.MeshRenderer;
 import net.abi.abisEngine.core.Entity;
-import net.abi.abisEngine.rendering.meshLoading.AIMeshLoader;
+import net.abi.abisEngine.rendering.meshManagement.AIMeshLoader;
 import tests.game.materials.BricksOne;
 
 public class FlatPlane extends Entity {

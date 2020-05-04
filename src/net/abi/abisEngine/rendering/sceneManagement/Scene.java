@@ -10,7 +10,7 @@ import net.abi.abisEngine.components.Light;
 import net.abi.abisEngine.components.SceneComponent;
 import net.abi.abisEngine.core.Entity;
 import net.abi.abisEngine.input.GLFWInput;
-import net.abi.abisEngine.rendering.RenderingEngine;
+import net.abi.abisEngine.rendering.pipelineManagement.RenderingEngine;
 import net.abi.abisEngine.rendering.windowManagement.GLFWWindow;
 
 public abstract class Scene {

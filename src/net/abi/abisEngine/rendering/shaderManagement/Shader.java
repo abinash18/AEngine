@@ -1,4 +1,4 @@
-package net.abi.abisEngine.rendering.shaders;
+package net.abi.abisEngine.rendering.shaderManagement;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -13,6 +13,7 @@ import java.util.Map;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL32;
 import org.lwjgl.opengl.GL40;
+import org.lwjgl.opengl.GL45;
 
 import net.abi.abisEngine.components.DirectionalLight;
 import net.abi.abisEngine.components.Light;
@@ -22,14 +23,15 @@ import net.abi.abisEngine.handlers.file.PathHandle;
 import net.abi.abisEngine.handlers.file.PathType;
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
+import net.abi.abisEngine.math.Matrix;
 import net.abi.abisEngine.math.Matrix4f;
 import net.abi.abisEngine.math.Transform;
 import net.abi.abisEngine.math.Vector2f;
 import net.abi.abisEngine.math.Vector3f;
 import net.abi.abisEngine.math.Vector3i;
 import net.abi.abisEngine.math.Vector4f;
-import net.abi.abisEngine.rendering.RenderingEngine;
 import net.abi.abisEngine.rendering.asset.AssetI;
+import net.abi.abisEngine.rendering.pipelineManagement.RenderingEngine;
 import net.abi.abisEngine.rendering.resourceManagement.Material;
 import net.abi.abisEngine.rendering.resourceManagement.Texture;
 import net.abi.abisEngine.util.Util;
@@ -192,9 +194,20 @@ public class Shader implements AssetI {
 
 	public void updateUniforms(Transform transform, Material mat, RenderingEngine engine) {
 
-		Matrix4f worldMatrix = transform.getTransformation(),
-				MVPMatrix = engine.getMainCamera().getViewProjection().mul(worldMatrix), MVNMatrix = worldMatrix;
+		Matrix4f MVMatrix = transform.getTransformation(), // Model view matrix, aka world matrix
+				MVPMatrix = engine.getMainCamera().getViewProjection().mul(MVMatrix), // Model View Projection Matrix
+				MVNMatrix = MVMatrix, // Model View Normal Matrix
+				T_PM, //Projection Matrix
+				T_VPM; // ViewPort Matrix
 		MVNMatrix.transpose().invertGeneric();
+
+		int[] ar = new int[4];
+		GL45.glGetIntegerv(GL45.GL_VIEWPORT, ar);
+		T_VPM = new Matrix4f();
+		T_VPM.set(0, 0, ar[0]);
+		T_VPM.set(1, 0, ar[1]);
+		T_VPM.set(2, 0, ar[2]);
+		T_VPM.set(3, 0, ar[3]);
 
 		for (int i = 0; i < shaderProgram.getUniformNames().size(); i++) {
 
@@ -221,10 +234,12 @@ public class Shader implements AssetI {
 					setUniformMatrix4fv(uniformName, MVPMatrix);
 					// logger.finest("Added '" + uniformName + "' as MVP Matrix.");
 				} else if (uniformName.equals("T_model")) {
-					setUniformMatrix4fv(uniformName, worldMatrix);
+					setUniformMatrix4fv(uniformName, MVMatrix);
 					// logger.finest("Added '" + uniformName + "' as World Matrix.");
 				} else if (uniformName.equals("T_MVN")) {
 					setUniformMatrix4fv(uniformName, MVNMatrix);
+				} else if (uniformName.equals("T_VPM")) {
+					setUniformMatrix4fv(uniformName, T_VPM);
 				} else {
 					logger.error("'" + uniformName
 							+ "' is not a valid component of transform. Or is misspelled, please check shader program or change the prefix of the variable.",
@@ -808,11 +823,10 @@ public class Shader implements AssetI {
 	 */
 	// TODO: All Other types of matrices.
 
-	public void setUniformMatrix4fv(String uniformName, Matrix4f value) {
+	public void setUniformMatrix4fv(String uniformName, Matrix value) {
 		GL20.glUniformMatrix4fv(shaderProgram.getUniforms().get(uniformName), true, Util.createFlippedBuffer(value));
 	}
 
-	// public static String loadShader(String fileName) {
 	/**
 	 * Loads a shader from the path to the shader directory and the type. Resolves a
 	 * file from the path and then loads.
