@@ -2,6 +2,7 @@ package net.abi.abisEngine.rendering.windowManagement;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.GLFW_TRUE;
+import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.glfw.GLFW.glfwCreateWindow;
 import static org.lwjgl.glfw.GLFW.glfwDefaultWindowHints;
 import static org.lwjgl.glfw.GLFW.glfwDestroyWindow;
@@ -43,6 +44,7 @@ import static org.lwjgl.system.MemoryStack.stackPush;
 import java.nio.IntBuffer;
 import java.util.UUID;
 
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowCloseCallback;
@@ -54,6 +56,7 @@ import org.lwjgl.glfw.GLFWWindowPosCallback;
 import org.lwjgl.glfw.GLFWWindowRefreshCallback;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL45;
 import org.lwjgl.opengl.GLCapabilities;
 import org.lwjgl.system.MemoryStack;
 
@@ -62,8 +65,8 @@ import net.abi.abisEngine.handlers.logging.Logger;
 import net.abi.abisEngine.input.GLFWInput;
 import net.abi.abisEngine.input.GLFWMouseAndKeyboardInput;
 import net.abi.abisEngine.math.Vector2f;
-import net.abi.abisEngine.rendering.RenderingEngine;
 import net.abi.abisEngine.rendering.asset.AssetStore;
+import net.abi.abisEngine.rendering.pipelineManagement.RenderingEngine;
 import net.abi.abisEngine.rendering.asset.AssetManager;
 import net.abi.abisEngine.rendering.sceneManagement.Scene;
 import net.abi.abisEngine.rendering.sceneManagement.SceneManager;
@@ -287,6 +290,13 @@ public abstract class GLFWWindow {
 		 * action which dose not require a window handle to be created.
 		 */
 		this.pre_init();
+		// This is important due to changes made to the new opengl version on my computer.
+		 addGLFWWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+		 addGLFWWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
+		 addGLFWWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+		 //addGLFWWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW.GLFW_TRUE);
+		//addGLFWWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);  
+		//addGLFWWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
 		this.glfw_handle = glfwCreateWindow(sc_width, sc_height, title, monitor, share);
 		if (this.glfw_handle == NULL) {
 			logger.error("Failed to create the GLFW window: name: '" + name + "' title: '" + title + "'");
@@ -373,6 +383,9 @@ public abstract class GLFWWindow {
 		this.addScenes();
 		this.assetManager = new AssetManager(glfw_handle);
 		this.resetToDefaults();
+		
+		System.out.println(GL45.glGetString(GL45.GL_VERSION));
+		System.out.println(GL45.glGetString(GL45.GL_SHADING_LANGUAGE_VERSION));
 		return this;
 	}
 
@@ -438,7 +451,7 @@ public abstract class GLFWWindow {
 		glfwSetWindowPos(glfw_handle, (int) position.x(), (int) position.y());
 	}
 
-	public void addHints(int hint, int value) {
+	public void addGLFWWindowHint(int hint, int value) {
 		glfwWindowHint(hint, value);
 	}
 

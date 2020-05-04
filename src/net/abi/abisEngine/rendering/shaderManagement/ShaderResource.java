@@ -1,4 +1,4 @@
-package net.abi.abisEngine.rendering.shaders;
+package net.abi.abisEngine.rendering.shaderManagement;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,8 +11,8 @@ import org.lwjgl.opengl.GL20;
 import net.abi.abisEngine.handlers.file.PathHandle;
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
-import net.abi.abisEngine.rendering.shaders.Shader.ShaderSource;
-import net.abi.abisEngine.rendering.shaders.Shader.ShaderType;
+import net.abi.abisEngine.rendering.shaderManagement.Shader.ShaderSource;
+import net.abi.abisEngine.rendering.shaderManagement.Shader.ShaderType;
 import net.abi.abisEngine.rendering.windowManagement.GLFWWindowManager;
 
 public class ShaderResource {

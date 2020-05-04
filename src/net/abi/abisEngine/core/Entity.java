@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import net.abi.abisEngine.components.SceneComponent;
 import net.abi.abisEngine.math.Transform;
-import net.abi.abisEngine.rendering.RenderingEngine;
+import net.abi.abisEngine.rendering.pipelineManagement.RenderingEngine;
 import net.abi.abisEngine.rendering.sceneManagement.Scene;
-import net.abi.abisEngine.rendering.shaders.Shader;
+import net.abi.abisEngine.rendering.shaderManagement.Shader;
 
 public class Entity implements IEntity {
 

@@ -8,10 +8,11 @@ import java.util.List;
 
 import org.lwjgl.BufferUtils;
 
+import net.abi.abisEngine.math.Matrix;
 import net.abi.abisEngine.math.Matrix4f;
 import net.abi.abisEngine.math.Vector2f;
 import net.abi.abisEngine.math.Vector3f;
-import net.abi.abisEngine.rendering.Vertex;
+import net.abi.abisEngine.rendering.meshManagement.Vertex;
 
 public class Util {
 	public static FloatBuffer createFloatBuffer(int size) {
@@ -116,6 +117,18 @@ public class Util {
 
 		for (int i = 0; i < 4; i++)
 			for (int j = 0; j < 4; j++)
+				buffer.put(value.get(i, j));
+
+		buffer.flip();
+
+		return buffer;
+	}
+	
+	public static FloatBuffer createFlippedBuffer(Matrix value) {
+		FloatBuffer buffer = createFloatBuffer(4 * 4);
+
+		for (int i = 0; i < value.getCols(); i++)
+			for (int j = 0; j < value.getRows(); j++)
 				buffer.put(value.get(i, j));
 
 		buffer.flip();

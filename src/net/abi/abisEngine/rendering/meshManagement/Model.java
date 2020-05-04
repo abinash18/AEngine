@@ -1,4 +1,4 @@
-package net.abi.abisEngine.rendering;
+package net.abi.abisEngine.rendering.meshManagement;
 
 import java.util.ArrayList;
 
@@ -70,7 +70,7 @@ public class Model {
 		return indices;
 	}
 
-	public ArrayList<Vector3f> getvBCC() {
+	public ArrayList<Vector3f> getvBCC() {		
 		return vBCC;
 	}
 

@@ -1,6 +1,6 @@
 package net.abi.abisEngine.math;
 
-public class Matrix4f {
+public class Matrix4f implements Matrix {
 	private float[][] m;
 
 	public Matrix4f() {
@@ -241,11 +241,11 @@ public class Matrix4f {
 
 		Vector3f u = f.cross(r);
 
-//		m[0][0] = r.getX();	m[0][1] = r.getY();	m[0][2] = r.getZ();	m[0][3] = 0;
-//		m[1][0] = u.getX();	m[1][1] = u.getY();	m[1][2] = u.getZ();	m[1][3] = 0;
-//		m[2][0] = f.getX();	m[2][1] = f.getY();	m[2][2] = f.getZ();	m[2][3] = 0;
-//		m[3][0] = 0;		m[3][1] = 0;		m[3][2] = 0;		m[3][3] = 1;
-//		
+		//		m[0][0] = r.getX();	m[0][1] = r.getY();	m[0][2] = r.getZ();	m[0][3] = 0;
+		//		m[1][0] = u.getX();	m[1][1] = u.getY();	m[1][2] = u.getZ();	m[1][3] = 0;
+		//		m[2][0] = f.getX();	m[2][1] = f.getY();	m[2][2] = f.getZ();	m[2][3] = 0;
+		//		m[3][0] = 0;		m[3][1] = 0;		m[3][2] = 0;		m[3][3] = 1;
+		//		
 		return initRotation(f, u, r);
 	}
 
@@ -409,6 +409,16 @@ public class Matrix4f {
 
 		dest.set(res);
 		return dest;
+	}
+
+	@Override
+	public int getCols() {
+		return (m[0].length);
+	}
+
+	@Override
+	public int getRows() {
+		return (m.length);
 	}
 
 }

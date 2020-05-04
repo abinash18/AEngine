@@ -2,8 +2,8 @@ package net.abi.abisEngine.components;
 
 import net.abi.abisEngine.math.Quaternion;
 import net.abi.abisEngine.math.Transform;
-import net.abi.abisEngine.rendering.RenderingEngine;
-import net.abi.abisEngine.rendering.shaders.Shader;
+import net.abi.abisEngine.rendering.pipelineManagement.RenderingEngine;
+import net.abi.abisEngine.rendering.shaderManagement.Shader;
 
 public class LockView extends SceneComponent {
 

@@ -1,9 +1,9 @@
-package net.abi.abisEngine.rendering.shaders;
+package net.abi.abisEngine.rendering.shaderManagement;
 
 import net.abi.abisEngine.components.Light;
 import net.abi.abisEngine.components.PointLight;
 import net.abi.abisEngine.math.Transform;
-import net.abi.abisEngine.rendering.RenderingEngine;
+import net.abi.abisEngine.rendering.pipelineManagement.RenderingEngine;
 import net.abi.abisEngine.rendering.resourceManagement.Material;
 
 @Deprecated

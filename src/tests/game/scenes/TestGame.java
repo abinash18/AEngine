@@ -13,7 +13,7 @@ import net.abi.abisEngine.input.GLFWInput;
 import net.abi.abisEngine.input.GLFWMouseAndKeyboardInput;
 import net.abi.abisEngine.math.Vector3f;
 import net.abi.abisEngine.rendering.asset.loaders.ModelSceneLoader;
-import net.abi.abisEngine.rendering.meshLoading.ModelScene;
+import net.abi.abisEngine.rendering.meshManagement.ModelScene;
 import net.abi.abisEngine.rendering.sceneManagement.Scene;
 import net.abi.abisEngine.rendering.windowManagement.GLFWWindow;
 import net.abi.abisEngine.util.Attenuation;

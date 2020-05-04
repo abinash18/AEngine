@@ -15,8 +15,8 @@ import org.lwjgl.opengl.GL43;
 import net.abi.abisEngine.handlers.logging.LogLevel;
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
-import net.abi.abisEngine.rendering.meshLoading.AIMeshLoader;
-import net.abi.abisEngine.rendering.RenderingEngine;
+import net.abi.abisEngine.rendering.meshManagement.AIMeshLoader;
+import net.abi.abisEngine.rendering.pipelineManagement.RenderingEngine;
 import net.abi.abisEngine.rendering.windowManagement.GLFWWindow;
 import net.abi.abisEngine.rendering.windowManagement.GLFWWindowManager;
 import net.abi.abisEngine.rendering.windowManagement.models.EngineLoader;
@@ -26,13 +26,10 @@ public class CoreEngine {
 	private static Logger logger = LogManager.getLogger(CoreEngine.class.getName());
 	private double frameTime, frameRate;
 	private boolean isRunning;
-	private RenderingEngine renderEngine;
-	// Have A Better Way Of Doing This Rather Than Just Make It Static.
-	// I.e. Maybe Pass It As A Parameter Through Each Scene.
-	// private GLFWWindow currentWindow;
 
-	@SuppressWarnings("unused")
 	private GLFWErrorCallback errClbk;
+	
+	private GLFWWindowManager windowManager;
 
 	public CoreEngine(double framerate) {
 		this.isRunning = false;
@@ -43,30 +40,31 @@ public class CoreEngine {
 	}
 
 	public void initialize() {
-		// GLFWWindowManager.getCurrentWindow().create();
-		this.renderEngine = new RenderingEngine();
 		this.printDeviceProperties();
 		AIMeshLoader.printLibInfo();
 	}
 
 	public void initialize(RenderingEngine rndrEng) {
-		// GLFWWindowManager.getCurrentWindow().create();
-		this.renderEngine = rndrEng;
 		this.printDeviceProperties();
 	}
 
 	public void initGLFW() {
-		// Setup an error callback. The default implementation
-		// will print the error message in System.err.
-		glfwSetErrorCallback(errClbk = GLFWErrorCallback.createPrint(System.err));
+		/* Setup an error callback. The default implementation
+		 will print the error message in System.err. */
+		glfwSetErrorCallback((errClbk = GLFWErrorCallback.createPrint(System.err)));
 
 		// Initialize GLFW. Most GLFW functions will not work before doing this.
 		if (!glfwInit()) {
 			logger.error("Unable to initialize GLFW");
 			throw new IllegalStateException("Unable to initialize GLFW");
 		}
+		
+		windowManager = new GLFWWindowManager();
 	}
 
+	/**
+	 * Starts the engine. And if it is already running dose nothing.
+	 */
 	public void start() {
 		if (isRunning) {
 			return;
@@ -78,7 +76,7 @@ public class CoreEngine {
 		if (!isRunning) {
 			return;
 		}
-		logger.info("Terminating Engine.");
+		logger.info("Terminating Engine...");
 		isRunning = false;
 	}
 
@@ -186,10 +184,6 @@ public class CoreEngine {
 		logger.info("Max Uniform Buffer Bindings: " + GL31.GL_MAX_UNIFORM_BUFFER_BINDINGS + " bytes");
 		logger.info("Max Uniform Block Size: " + GL31.GL_MAX_UNIFORM_BLOCK_SIZE + " bytes");
 		logger.info("Max SSBO Block Size: " + GL43.GL_MAX_SHADER_STORAGE_BLOCK_SIZE + " bytes");
-	}
-
-	public RenderingEngine getRenderEngine() {
-		return renderEngine;
 	}
 
 	public double getFrameRate() {

@@ -5,4 +5,4 @@
  * @author abinash
  *
  */
-package net.abi.abisEngine.rendering.shaders;
+package net.abi.abisEngine.rendering.shaderManagement;
