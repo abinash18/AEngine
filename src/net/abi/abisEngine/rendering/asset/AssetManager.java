@@ -12,10 +12,10 @@ import net.abi.abisEngine.handlers.logging.Logger;
 import net.abi.abisEngine.rendering.asset.loaders.AssetLoader;
 import net.abi.abisEngine.rendering.asset.loaders.ModelSceneLoader;
 import net.abi.abisEngine.rendering.meshManagement.ModelScene;
-import net.abi.abisEngine.util.AERuntimeException;
 import net.abi.abisEngine.util.Expendable;
 import net.abi.abisEngine.util.ThreadUtils;
 import net.abi.abisEngine.util.async.AsyncThreadDispatcher;
+import net.abi.abisEngine.util.exceptions.AERuntimeException;
 
 public class AssetManager implements Expendable {
 

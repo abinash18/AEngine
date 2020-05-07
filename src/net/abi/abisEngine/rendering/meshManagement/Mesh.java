@@ -335,21 +335,6 @@ public class Mesh implements AssetI {
 				draw_usage);
 
 		_v.unbind();
-//		
-//		/* VAO For BaryCentric Coordinates */
-//		_v = meshResource.addVAO("bc").initVAO(3);
-//		/* Positions */
-//		bindBuffer(_v, GL15.GL_ARRAY_BUFFER, VAO_POSITIONS_INDEX, VAO_POSITIONS_INDEX, 3,
-//				Util.createFlippedBuffer(meshResource.meshData.model.getPositions()), draw_usage);
-//		/* BaryCentric Coordinates. */
-//		bindBuffer(_v, GL15.GL_ARRAY_BUFFER, VAO_BC_INDEX, VAO_BC_INDEX, 3,
-//				Util.createFlippedBuffer(meshResource.meshData.model.getvBCC()), draw_usage);
-//		/* Indices */
-//		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, _v.VAOBuffers[2]);
-//		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, Util.createIntBuffer(meshResource.meshData.model.getIndices()),
-//				draw_usage);
-//		
-//		_v.unbind();
 		meshResource.initialized = true;
 
 		return this;
