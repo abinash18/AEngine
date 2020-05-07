@@ -1,4 +1,4 @@
-package net.abi.abisEngine.util;
+package net.abi.abisEngine.util.exceptions;
 
 public class AERuntimeException extends RuntimeException {
 	private static final long serialVersionUID = 666666555666666L;

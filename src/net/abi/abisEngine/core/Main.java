@@ -78,7 +78,6 @@ public abstract class Main {
 			frameRate = Integer.parseInt(cmd.getOptionValue("fps"));
 		}
 		CoreEngine engine = new CoreEngine(frameRate);
-		GLFWWindowManager.init(engine);
 		addWindows();
 		// engine.initialize();
 		engine.start();

@@ -103,9 +103,10 @@ public class EngineSplashScreen extends Scene {
 		monkey2.setTransform(cameraObject.getTransform());
 		cam.getTransform().setTranslation(0, 0, -5);
 
-		//		Entity anvil = new Entity().addComponent(
-		//				new MeshRenderer(AIMeshLoader.loadModel("monkey.obj", "Suzanne.001", 0).bindModel(), anvilmat));
-		
+		// Entity anvil = new Entity().addComponent(
+		// new MeshRenderer(AIMeshLoader.loadModel("monkey.obj", "Suzanne.001",
+		// 0).bindModel(), anvilmat));
+
 		ModelSceneLoader.Params parm = new ModelSceneLoader.Params();
 		parm.loadedCallback = new LoadedCallback() {
 			public void finishedLoading(AssetManager assetManager, String fileName, Class type) {
@@ -117,11 +118,12 @@ public class EngineSplashScreen extends Scene {
 				ModelScene m = assetManager.get("IronMan.obj", ModelScene.class);
 				Mesh s = m.getMesh("monkey").bindModel();
 				monkey = new Entity().addComponent(new MeshRenderer(s, anvilmat));
+				monkey.getTransform().setScale(0.250f, 0.250f, 0.250f);
 				test.addChild(monkey);
 			}
 		};
-		
-		//man.load("monkey.obj", ModelScene.class, parm);
+
+		// man.load("monkey.obj", ModelScene.class, parm);
 //		man.load("Anvil_LowPoly.obj", ModelScene.class, parm);
 		man.load("IronMan.obj", ModelScene.class, parm);
 //		man.load("monkey.obj", ModelScene.class, parm);
@@ -174,8 +176,8 @@ public class EngineSplashScreen extends Scene {
 		// }
 
 		temp = temp + delta;
-		float angle = (float) Math.toRadians(temp * 180);
-		//monkey.getTransform().setRotation(new Quaternion(Transform.X_AXIS, angle));
+		float angle = (float) Math.toRadians(temp * 360);
+		monkey.getTransform().getRotation().rotate(Transform.X_AXIS, (float) Math.toRadians(angle * 2));
 	}
 
 	@Override
@@ -183,18 +185,11 @@ public class EngineSplashScreen extends Scene {
 		super.input(delta);
 		if (((GLFWMouseAndKeyboardInput) super.getInputController()).isKeyDown(GLFWInput.GLFW_KEY_ESCAPE)) {
 			((GLFWMouseAndKeyboardInput) super.getInputController()).setCursorMode(GLFW.GLFW_CURSOR_NORMAL);
-			// System.out.println(this);
-			try {
-				GLFWWindowManager.openWindow(new MainGame(), GLFWWindow.NULL, super.getParentWindow().getGlfw_Handle());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
 		}
 
 		if (((GLFWMouseAndKeyboardInput) super.getInputController())
 				.isMouseButtonDown(GLFWInput.GLFW_MOUSE_BUTTON_RIGHT)) {
-
+			super.getParentWindow().toggleVSync();
 			MeshRenderer.toggleWireFrames();
 		}
 

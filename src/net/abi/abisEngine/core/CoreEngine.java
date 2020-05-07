@@ -59,7 +59,7 @@ public class CoreEngine {
 			throw new IllegalStateException("Unable to initialize GLFW");
 		}
 		
-		windowManager = new GLFWWindowManager();
+		windowManager = new GLFWWindowManager(this);
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class CoreEngine {
 	 */
 	protected void openLoadingWindow() {
 		try {
-			GLFWWindowManager.openWindow(new EngineLoader(), GLFWWindow.NULL, new RenderingEngine());
+			windowManager.openWindow(new EngineLoader());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -94,7 +94,6 @@ public class CoreEngine {
 	private void run() {
 		logger.info("Starting Engine.");
 
-		GLFWWindowManager.init(this);
 		openLoadingWindow();
 		isRunning = true;
 
@@ -120,15 +119,15 @@ public class CoreEngine {
 
 			while (isRunning && (unprocessedTime > frameTime)) {
 
-				if (GLFWWindowManager.isStopRequested()) {
+				if (windowManager.isStopRequested()) {
 					stop();
 					render = false;
 					break;
 				} else {
 					render = true;
 					unprocessedTime -= frameTime;
-					GLFWWindowManager.input((float) frameTime);
-					GLFWWindowManager.update((float) frameTime);
+					windowManager.input((float) frameTime);
+					windowManager.update((float) frameTime);
 
 					if (frameCounter >= 1.0) {
 						//////////////////////////////////////////////
@@ -146,7 +145,7 @@ public class CoreEngine {
 				}
 			}
 			if (render) {
-				GLFWWindowManager.render();
+				windowManager.render();
 				frames++;
 			} else {
 				try {
@@ -162,7 +161,7 @@ public class CoreEngine {
 
 	private void cleanUp() {
 		try {
-			GLFWWindowManager.destroyAll();
+			windowManager.disposeAllWindows();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

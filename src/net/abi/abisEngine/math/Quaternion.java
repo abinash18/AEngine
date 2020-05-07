@@ -79,19 +79,18 @@ public class Quaternion {
 		this.normalize();
 	}
 
-	@Deprecated
-	public Quaternion initRotationDeg(Vector3f axis, float angleInDegrees) {
-
-		float sinHalfAngle = (float) Math.sin(Math.toRadians(angleInDegrees / 2));
-		float cosHalfAngle = (float) Math.cos(Math.toRadians(angleInDegrees / 2));
+	public Quaternion rotate(Vector3f axis, float angleRad) {
+		float sinHalfAngle = (float) Math.sin(angleRad / 2);
+		float cosHalfAngle = (float) Math.cos(angleRad / 2);
 
 		this.x = axis.x() * sinHalfAngle;
 		this.y = axis.y() * sinHalfAngle;
 		this.z = axis.z() * sinHalfAngle;
 		this.w = cosHalfAngle;
 
-		return (this);
+		this.normalize();
 
+		return (this);
 	}
 
 	public boolean equals(Quaternion r) {

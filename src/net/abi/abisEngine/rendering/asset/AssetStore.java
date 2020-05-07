@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
-import net.abi.abisEngine.util.AERuntimeException;
+import net.abi.abisEngine.util.exceptions.AERuntimeException;
 
 public class AssetStore {
 

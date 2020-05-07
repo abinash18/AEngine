@@ -94,15 +94,16 @@ public class Shader implements AssetI {
 
 		this.context_handle = Long.valueOf(context);
 
+		
+		HashMap<String, ShaderResource> _ss; 
+
 		/*
 		 * Find the Context in the cache.
 		 */
-		HashMap<String, ShaderResource> _ss = loadedShaders.get(Long.valueOf(context_handle));
-
 		/*
 		 * If the Context was not found then create a map and add it to the cache.
 		 */
-		if (_ss == null) {
+		if ((_ss = loadedShaders.get(Long.valueOf(context_handle))) == null) {
 			_ss = new HashMap<String, ShaderResource>();
 			loadedShaders.put(context_handle, _ss);
 		}
@@ -137,7 +138,7 @@ public class Shader implements AssetI {
 				HashMap<String, ShaderSource> _shd = loadedSources.get(t);
 
 				/*
-				 * If the shader types dose not exist then add it to the cache.
+				 * If the shader types dose not exist in the cache then add it to the cache.
 				 */
 				if (_shd == null) {
 					loadedSources.put(t, (_shd = new HashMap<String, ShaderSource>()));

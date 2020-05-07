@@ -16,6 +16,7 @@ import net.abi.abisEngine.handlers.logging.Logger;
 import net.abi.abisEngine.rendering.asset.AssetStore;
 import net.abi.abisEngine.rendering.pipelineManagement.RenderingEngine;
 import net.abi.abisEngine.util.Expendable;
+import net.abi.abisEngine.util.exceptions.AEWindowInitializationException;
 
 /**
  * GLFW Implementation Of Window. This Implementation supports shared contexts.
@@ -28,24 +29,21 @@ public class GLFWWindowManager implements Expendable {
 	 * performance, maybe render clusters of windows on different threads at a time
 	 * if a context contains 6 or more windows, or even render each window on a
 	 * different thread, or even render windows on a different thread than the core
-	 * engine.F
+	 * engine.
 	 */
 
-	// TODO: Make a better exception for throwing when there is a failure to create
-	// windows.
 	private static final Logger logger = LogManager.getLogger(GLFWWindowManager.class.getName());
-	// private static Map<String, GLFWWindow> activeWindows = new HashMap<String,
-	// GLFWWindow>();
+
 	/*
-	 * Bucket list of contexts and windows which share context. The name of the
-	 * context is the name of the window that shares its context
+	 * Bucket list of Window contexts, which are mapped to their child windows.
 	 */
-	private static Map<GLContext, CopyOnWriteArrayList<GLFWWindow>> sharedContexts = new ConcurrentHashMap<GLContext, CopyOnWriteArrayList<GLFWWindow>>();
+	private Map<GLFWWindowContext, CopyOnWriteArrayList<GLFWWindow>> windows;
+
 	/*
 	 * Core engine really has no use in this class for now since we have a separate
 	 * rendering engine for each context.
 	 */
-	private static CoreEngine coreEngine;
+	private CoreEngine coreEngine;
 	/* If this is set to true the engine will terminate. */
 	private static boolean engineStopFlag = false;
 
@@ -58,7 +56,7 @@ public class GLFWWindowManager implements Expendable {
 	 * @author abinash
 	 *
 	 */
-	public static class GLContext {
+	public class GLFWWindowContext {
 		/* Handle of the stored context */
 		public long context = NULL;
 		/* Name of the window which this context belongs to. */
@@ -79,20 +77,26 @@ public class GLFWWindowManager implements Expendable {
 
 		public AssetStore store;
 
-		public GLContext(String name, long context, RenderingEngine rndEng) {
+		public GLFWWindowContext(String name, long context, RenderingEngine rndEng) {
 			this.context = context;
 			this.name = name;
 			this.renderEngine = rndEng;
 			this.store = new AssetStore();
 		}
 
-		public GLContext(String name, long context, RenderingEngine rndEng, AssetStore store) {
+		public GLFWWindowContext(String name, long context, RenderingEngine rndEng, AssetStore store) {
 			this.context = context;
 			this.name = name;
 			this.renderEngine = rndEng;
 			this.store = store;
 		}
 
+	}
+
+	public GLFWWindowManager(CoreEngine core) {
+		this.windows = new ConcurrentHashMap<GLFWWindowContext, CopyOnWriteArrayList<GLFWWindow>>();
+
+		this.setCoreEngine(core);
 	}
 
 	/**
@@ -102,11 +106,11 @@ public class GLFWWindowManager implements Expendable {
 	 * @return Returns true if the context has been set successfully. Otherwise
 	 *         false is returned if the context invalid.
 	 */
-	private static void setContext(GLContext context) {
+	private void setContext(GLFWWindowContext context) {
 		glfwMakeContextCurrent(context.context);
 	}
 
-	private static void setContext(long context) {
+	private void setContext(long context) {
 		glfwMakeContextCurrent(context);
 	}
 
@@ -114,20 +118,20 @@ public class GLFWWindowManager implements Expendable {
 	 * Renders all windows stored in the bucket list, and the windows which inherit
 	 * their context.
 	 */
-	public static void render() {
+	public void render() {
 
 		/*
 		 * Since using a for loop iterating over the hash map will cause a concurrent
 		 * modification exception, we use the iterator which iterates over the entris in
 		 * the map.
 		 */
-		for (Iterator<Map.Entry<GLContext, CopyOnWriteArrayList<GLFWWindow>>> entries = sharedContexts.entrySet()
+		for (Iterator<Map.Entry<GLFWWindowContext, CopyOnWriteArrayList<GLFWWindow>>> entries = windows.entrySet()
 				.iterator(); entries.hasNext();) {
 			/*
 			 * Current Entry, we cannot call next() on the iterator every time we need the
 			 * entry because then it will skip to the next entry in line.
 			 */
-			Map.Entry<GLContext, CopyOnWriteArrayList<GLFWWindow>> entry = entries.next();
+			Map.Entry<GLFWWindowContext, CopyOnWriteArrayList<GLFWWindow>> entry = entries.next();
 
 			/* Iterates over the windows which share the context. */
 			for (Iterator<GLFWWindow> subEntrys = entry.getValue().iterator(); subEntrys.hasNext();) {
@@ -170,25 +174,25 @@ public class GLFWWindowManager implements Expendable {
 	 * Returns either true or false if the window has requested close or not,
 	 * respectively.
 	 */
-	private static boolean checkClose(GLFWWindow wnd) {
+	private boolean checkClose(GLFWWindow wnd) {
 		if (wnd.isCloseRequested()) {
 			return true;
 		}
 		return false;
 	}
 
-	public static void input(float delta) {
+	public void input(float delta) {
 		/* If there are no contexts left stop the engine. */
-		if (sharedContexts.size() == 0) {
+		if (windows.size() == 0) {
 			raiseStopFlag();
 			return;
 		}
 
 		/* Iterates over everything contained in the hash map to */
-		for (Iterator<Map.Entry<GLContext, CopyOnWriteArrayList<GLFWWindow>>> entries = sharedContexts.entrySet()
+		for (Iterator<Map.Entry<GLFWWindowContext, CopyOnWriteArrayList<GLFWWindow>>> entries = windows.entrySet()
 				.iterator(); entries.hasNext();) {
 
-			Map.Entry<GLContext, CopyOnWriteArrayList<GLFWWindow>> entry = entries.next();
+			Map.Entry<GLFWWindowContext, CopyOnWriteArrayList<GLFWWindow>> entry = entries.next();
 
 			for (int i = 0; i < entry.getValue().size(); i++) {
 				GLFWWindow wnd = entry.getValue().get(i);
@@ -236,11 +240,11 @@ public class GLFWWindowManager implements Expendable {
 		GL.setCapabilities(null);
 	}
 
-	public static void update(float delta) {
-		for (Iterator<Map.Entry<GLContext, CopyOnWriteArrayList<GLFWWindow>>> entries = sharedContexts.entrySet()
+	public void update(float delta) {
+		for (Iterator<Map.Entry<GLFWWindowContext, CopyOnWriteArrayList<GLFWWindow>>> entries = windows.entrySet()
 				.iterator(); entries.hasNext();) {
 
-			Map.Entry<GLContext, CopyOnWriteArrayList<GLFWWindow>> entry = entries.next();
+			Map.Entry<GLFWWindowContext, CopyOnWriteArrayList<GLFWWindow>> entry = entries.next();
 
 			for (Iterator<GLFWWindow> subEntrys = entry.getValue().iterator(); subEntrys.hasNext();) {
 				GLFWWindow wnd = subEntrys.next();
@@ -265,10 +269,10 @@ public class GLFWWindowManager implements Expendable {
 	 * @param name
 	 * @return
 	 */
-	public static GLFWWindow getGLFWWindow(String name) {
-		for (Iterator<Map.Entry<GLContext, CopyOnWriteArrayList<GLFWWindow>>> entries = sharedContexts.entrySet()
+	public GLFWWindow getGLFWWindow(String name) {
+		for (Iterator<Map.Entry<GLFWWindowContext, CopyOnWriteArrayList<GLFWWindow>>> entries = windows.entrySet()
 				.iterator(); entries.hasNext();) {
-			Map.Entry<GLContext, CopyOnWriteArrayList<GLFWWindow>> entry = entries.next();
+			Map.Entry<GLFWWindowContext, CopyOnWriteArrayList<GLFWWindow>> entry = entries.next();
 			for (Iterator<GLFWWindow> subEntrys = entry.getValue().iterator(); subEntrys.hasNext();) {
 				GLFWWindow wnd = subEntrys.next();
 				if (name.equals(wnd.getWindowName())) {
@@ -287,10 +291,10 @@ public class GLFWWindowManager implements Expendable {
 	 * @return Returns null if no context was found with the specified name, else
 	 *         returns the entry in the sharedContexts Bucket list.
 	 */
-	public static Map.Entry<GLContext, CopyOnWriteArrayList<GLFWWindow>> getContext(String name) {
-		for (Iterator<Map.Entry<GLContext, CopyOnWriteArrayList<GLFWWindow>>> entries = sharedContexts.entrySet()
+	public Map.Entry<GLFWWindowContext, CopyOnWriteArrayList<GLFWWindow>> getContext(String name) {
+		for (Iterator<Map.Entry<GLFWWindowContext, CopyOnWriteArrayList<GLFWWindow>>> entries = windows.entrySet()
 				.iterator(); entries.hasNext();) {
-			Map.Entry<GLContext, CopyOnWriteArrayList<GLFWWindow>> entry = entries.next();
+			Map.Entry<GLFWWindowContext, CopyOnWriteArrayList<GLFWWindow>> entry = entries.next();
 			if (entry.getKey().name.equals(name)) {
 				return entry;
 			}
@@ -299,11 +303,11 @@ public class GLFWWindowManager implements Expendable {
 		return null;
 	}
 
-	private static void setCoreEngine(CoreEngine creng) {
-		GLFWWindowManager.coreEngine = creng;
+	private void setCoreEngine(CoreEngine creng) {
+		this.coreEngine = creng;
 	}
 
-	public static void init(CoreEngine coreEngine) {
+	public void init(CoreEngine coreEngine) {
 		setCoreEngine(coreEngine);
 	}
 
@@ -311,10 +315,10 @@ public class GLFWWindowManager implements Expendable {
 	 * Destroys all active contexts. This is executed before the engine terminates.
 	 * Throws Exception.
 	 */
-	public static void destroyAll() throws Exception {
-		for (Iterator<Map.Entry<GLContext, CopyOnWriteArrayList<GLFWWindow>>> entries = sharedContexts.entrySet()
+	public void disposeAllWindows() throws Exception {
+		for (Iterator<Map.Entry<GLFWWindowContext, CopyOnWriteArrayList<GLFWWindow>>> entries = windows.entrySet()
 				.iterator(); entries.hasNext();) {
-			Map.Entry<GLContext, CopyOnWriteArrayList<GLFWWindow>> entry = entries.next();
+			Map.Entry<GLFWWindowContext, CopyOnWriteArrayList<GLFWWindow>> entry = entries.next();
 			for (Iterator<GLFWWindow> subEntrys = entry.getValue().iterator(); subEntrys.hasNext();) {
 				GLFWWindow wnd = subEntrys.next();
 				wnd.dispose();
@@ -328,10 +332,10 @@ public class GLFWWindowManager implements Expendable {
 	/**
 	 * Destroys all windows in a active context. Throws Exception.
 	 */
-	public static void destroyAll(GLContext context) throws Exception {
-		for (Iterator<Map.Entry<GLContext, CopyOnWriteArrayList<GLFWWindow>>> entries = sharedContexts.entrySet()
+	public void disposeAllWindows(GLFWWindowContext context) throws Exception {
+		for (Iterator<Map.Entry<GLFWWindowContext, CopyOnWriteArrayList<GLFWWindow>>> entries = windows.entrySet()
 				.iterator(); entries.hasNext();) {
-			Map.Entry<GLContext, CopyOnWriteArrayList<GLFWWindow>> entry = entries.next();
+			Map.Entry<GLFWWindowContext, CopyOnWriteArrayList<GLFWWindow>> entry = entries.next();
 			/*
 			 * If the context being iterated over is the same as the one provided then
 			 * execute.
@@ -355,10 +359,10 @@ public class GLFWWindowManager implements Expendable {
 	 * @param context
 	 * @return
 	 */
-	public static GLContext findContext(String name) {
-		for (Iterator<Map.Entry<GLContext, CopyOnWriteArrayList<GLFWWindow>>> entries = sharedContexts.entrySet()
+	public GLFWWindowContext findContext(String name) {
+		for (Iterator<Map.Entry<GLFWWindowContext, CopyOnWriteArrayList<GLFWWindow>>> entries = windows.entrySet()
 				.iterator(); entries.hasNext();) {
-			Map.Entry<GLContext, CopyOnWriteArrayList<GLFWWindow>> entry = entries.next();
+			Map.Entry<GLFWWindowContext, CopyOnWriteArrayList<GLFWWindow>> entry = entries.next();
 
 			if (entry.getKey().name.equals(name)) {
 				return entry.getKey();
@@ -367,10 +371,10 @@ public class GLFWWindowManager implements Expendable {
 		return null;
 	}
 
-	public static GLContext findContext(long context) {
-		for (Iterator<Map.Entry<GLContext, CopyOnWriteArrayList<GLFWWindow>>> entries = sharedContexts.entrySet()
+	public GLFWWindowContext findContext(long context) {
+		for (Iterator<Map.Entry<GLFWWindowContext, CopyOnWriteArrayList<GLFWWindow>>> entries = windows.entrySet()
 				.iterator(); entries.hasNext();) {
-			Map.Entry<GLContext, CopyOnWriteArrayList<GLFWWindow>> entry = entries.next();
+			Map.Entry<GLFWWindowContext, CopyOnWriteArrayList<GLFWWindow>> entry = entries.next();
 
 			if (entry.getKey().context == context) {
 				return entry.getKey();
@@ -389,38 +393,27 @@ public class GLFWWindowManager implements Expendable {
 	 * @param wnd
 	 * @throws Exception
 	 */
-	public static void openWindow(GLFWWindow wnd, long monitor, String sharedContextName) throws Exception {
-
-		if (monitor == NULL) {
-			logger.warning("Monitor Provided Is NULL, Defaulting To Primary Monitor.");
-		}
-
-		GLContext tempContext;
-		if ((tempContext = findContext(sharedContextName)) != null) {
-			CopyOnWriteArrayList<GLFWWindow> wnds = sharedContexts.get(tempContext);
-			wnd.setRenderEngine(tempContext.renderEngine);
-			wnds.add(wnd);
-			wnd.setAssetStore(tempContext.store);
-			wnd.create(monitor, tempContext.context, tempContext.renderEngine);
-			return;
-		}
+	public void openWindow(GLFWWindow wnd, String sharedContextName) throws AEWindowInitializationException {
+		openWindow(wnd, getContext(sharedContextName).getKey().context);
 	}
 
-	public static void openWindow(GLFWWindow wnd, long monitor, long sharedContext) throws Exception {
+	public void openWindow(GLFWWindow wnd, long sharedContext) throws AEWindowInitializationException {
 
-		if (monitor == NULL) {
-			logger.warning("Monitor Provided Is NULL, Defaulting To Primary Monitor.");
+		if (wnd.getMonitor() == NULL) {
+			logger.info("Monitor Provided Is NULL, Defaulting To Primary Monitor.");
 		}
 
-		GLContext tempContext;
+		GLFWWindowContext tempContext;
 		if ((tempContext = findContext(sharedContext)) != null) {
-			CopyOnWriteArrayList<GLFWWindow> wnds = sharedContexts.get(tempContext);
+			CopyOnWriteArrayList<GLFWWindow> wnds = windows.get(tempContext);
 			wnd.setRenderEngine(tempContext.renderEngine);
 			wnds.add(wnd);
 			wnd.setAssetStore(tempContext.store);
-			wnd.create(monitor, tempContext.context, tempContext.renderEngine);
+			wnd.create(tempContext.context, tempContext.renderEngine);
 			return;
 		}
+		throw new AEWindowInitializationException(
+				"New window could not be initialized. Of desired shared context: " + sharedContext + "", wnd);
 	}
 
 	/**
@@ -430,36 +423,35 @@ public class GLFWWindowManager implements Expendable {
 	 * as context handle, and if in the future you wish to add a window to this
 	 * context use the window's name as the sharedContextName.
 	 */
-	public static void openWindow(GLFWWindow wnd, long monitor, RenderingEngine rndEng) throws Exception {
+	public void openWindow(GLFWWindow wnd) throws AEWindowInitializationException {
 
-		if (monitor == NULL) {
-			logger.warning("Monitor Provided Is NULL, Defaulting To Primary Monitor.");
+		if (wnd.getMonitor() == NULL) {
+			logger.info("Monitor Provided Is NULL, Defaulting To Primary Monitor.");
 		}
 
 		if (findContext(wnd.getWindowName()) != null) {
-			throw new Exception("Window Already Exits With The Same Name.");
+			throw new AEWindowInitializationException("Window Already Exits With The Same Name.");
 		}
 
-		GLContext context = new GLContext(wnd.getWindowName(), wnd.getGlfw_Handle(), rndEng);
+		GLFWWindowContext context = new GLFWWindowContext(wnd.getWindowName(), wnd.getGlfw_Handle(), wnd.getRenderEngine());
 		AssetStore store = context.store;
 		CopyOnWriteArrayList<GLFWWindow> wnds = new CopyOnWriteArrayList<GLFWWindow>();
 
 		wnd.setAssetStore(store);
-		wnd.create(monitor, rndEng);
 		wnds.add(wnd);
-		sharedContexts.put(context, wnds);
+		windows.put(context, wnds);
 		wnd.setAssetStore(store);
-		rndEng.initGraphics();
+		wnd.create(wnd.getMonitor(), wnd.getRenderEngine());
 	}
 
-	public static void printWindows() {
+	public void printWindows() {
 
 		StringBuilder opnWnds = new StringBuilder();
 
 		logger.debug("Open Windows: ");
-		for (Iterator<Map.Entry<GLContext, CopyOnWriteArrayList<GLFWWindow>>> entries = sharedContexts.entrySet()
+		for (Iterator<Map.Entry<GLFWWindowContext, CopyOnWriteArrayList<GLFWWindow>>> entries = windows.entrySet()
 				.iterator(); entries.hasNext();) {
-			Map.Entry<GLContext, CopyOnWriteArrayList<GLFWWindow>> entry = entries.next();
+			Map.Entry<GLFWWindowContext, CopyOnWriteArrayList<GLFWWindow>> entry = entries.next();
 
 			opnWnds.append("\n GLContext Name: " + entry.getKey().name + ": " + "\n");
 
@@ -478,13 +470,17 @@ public class GLFWWindowManager implements Expendable {
 		engineStopFlag = true;
 	}
 
-	public static CoreEngine getCoreEngine() {
+	public CoreEngine getCoreEngine() {
 		return coreEngine;
 	}
 
 	@Override
 	public void dispose() {
-		
+		try {
+			disposeAllWindows();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

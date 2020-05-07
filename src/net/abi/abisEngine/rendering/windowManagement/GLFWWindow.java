@@ -2,7 +2,6 @@ package net.abi.abisEngine.rendering.windowManagement;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.GLFW_TRUE;
-import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.glfw.GLFW.glfwCreateWindow;
 import static org.lwjgl.glfw.GLFW.glfwDefaultWindowHints;
 import static org.lwjgl.glfw.GLFW.glfwDestroyWindow;
@@ -26,6 +25,7 @@ import static org.lwjgl.glfw.GLFW.glfwSetWindowContentScaleCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowFocusCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowIconifyCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowMaximizeCallback;
+import static org.lwjgl.glfw.GLFW.glfwSetWindowMonitor;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowOpacity;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowPos;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowPosCallback;
@@ -44,7 +44,6 @@ import static org.lwjgl.system.MemoryStack.stackPush;
 import java.nio.IntBuffer;
 import java.util.UUID;
 
-import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowCloseCallback;
@@ -62,22 +61,16 @@ import org.lwjgl.system.MemoryStack;
 
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
-import net.abi.abisEngine.input.GLFWInput;
 import net.abi.abisEngine.input.GLFWMouseAndKeyboardInput;
 import net.abi.abisEngine.math.Vector2f;
+import net.abi.abisEngine.math.Vector2i;
+import net.abi.abisEngine.rendering.asset.AssetManager;
 import net.abi.abisEngine.rendering.asset.AssetStore;
 import net.abi.abisEngine.rendering.pipelineManagement.RenderingEngine;
-import net.abi.abisEngine.rendering.asset.AssetManager;
 import net.abi.abisEngine.rendering.sceneManagement.Scene;
 import net.abi.abisEngine.rendering.sceneManagement.SceneManager;
-import net.abi.abisEngine.util.AERuntimeException;
+import net.abi.abisEngine.util.exceptions.AEWindowInitializationException;
 
-/**
- * Window ModelScene For The GLFW GLContext Handle.
- * 
- * @author abinash
- *
- */
 public abstract class GLFWWindow {
 
 	public static final long NULL = 0L;
@@ -100,77 +93,98 @@ public abstract class GLFWWindow {
 
 	private static Logger logger = LogManager.getLogger(GLFWWindow.class.getName());
 
-	private long glfw_handle, monitor;
+	public class GLFWWindowProperties {
+		public long preferredMonitor = 0, sharedContext = 0;
+		/**
+		 * sc_ is the dimensions of the window in screen coordinates, This is different
+		 * than pixels since the positive of the y axis is inverted meaning it points
+		 * down instead of up so the 0, 0 of the window is in the top left of the
+		 * corner.
+		 */
+		public int sc_width, sc_height,
+				/**
+				 * The dimensions of the window in pixels this corresponds to the size of the
+				 * frame buffer and may not always be the size of the window, since some
+				 * displays can have a higher pixel density.
+				 */
+				p_width, p_height,
+				/**
+				 * Stores the size of each of the frame elements, if the window is not decorated
+				 * than the value is zero.
+				 */
+				f_top, f_left, f_right, f_bottom,
+				/* The refresh rate used by VSync */
+				preferredRefreshRate;
+
+		/** The name is what the engine recognizes and it is used to find the window. */
+		public String name,
+				/**
+				 * The title to show on the decorated frame and the general title where ever it
+				 * is showed.
+				 */
+				title;
+		public boolean fullscreen = false,
+				/**
+				 * This option Synchronizes the frames so they render more steadily instead of
+				 * dropping and causing lag.
+				 */
+				vSync = false,
+				/** If the window is currently focused on or not. */
+				focused,
+				/** If the window has been minimized to tray (iconified) */
+				minimized,
+				/** If the window is maximized or not */
+				maximized;
+		/**
+		 * GLFW Supports whole window transparency, but only if the system supports it
+		 * as well.
+		 */
+		public float opacity = 1.0f;
+
+		/** Position of the window in screen coordinates (the top left of the window) */
+		public Vector2i position;
+
+		public GLCapabilities capabilities;
+		public GLFWFramebufferSizeCallback frmBffrClbk;
+		public GLFWWindowCloseCallback wndCloseClbk;
+		public GLFWWindowContentScaleCallback wndCntSclClbk;
+		public GLFWWindowFocusCallback wndFcsClbk;
+		public GLFWWindowIconifyCallback wndIconifyClbk;
+		public GLFWWindowMaximizeCallback wndMxmzClbk;
+		public GLFWWindowPosCallback wndPosClbk;
+		public GLFWWindowSizeCallback wndSizeClbk;
+		public GLFWWindowRefreshCallback wndRfrshClbk;
+
+		public RenderingEngine renderEngine;
+
+		public GLFWVidMode videoMode;
+
+	}
+
 	/**
-	 * sc_ is the dimensions of the window in screen coordinates, This is different
-	 * than pixels since the positive of the y axis is inverted meaning it points
-	 * down instead of up so the 0, 0 of the window is in the top left of the
-	 * corner.
+	 * Properties and preferences
 	 */
-	private int sc_width, sc_height,
-			/**
-			 * The dimensions of the window in pixels this corresponds to the size of the
-			 * frame buffer and may not always be the size of the window, since some
-			 * displays can have a higher pixel density.
-			 */
-			p_width, p_height,
-			/**
-			 * Stores the size of each of the frame elements, if the window is not decorated
-			 * than the value is zero.
-			 */
-			f_top, f_left, f_right, f_bottom;
+	protected GLFWWindowProperties properties;
+
+	/**
+	 * These are actualized values, these values are unique to each window,
+	 * exempting monitor which can be altered because of monitors.
+	 */
+	private long glfw_handle, currentMonitor, currentRefreshRate;
+
 	/**
 	 * Unique id given to the window, this is used if there are multiple windows
 	 * with the same names.
 	 */
-	private UUID id;
-	/** The name is what the engine recognizes and it is used to find the window. */
-	private String name,
-			/**
-			 * The title to show on the decorated frame and the general title where ever it
-			 * is showed.
-			 */
-			title;
-	private boolean fullscreen,
-			/**
-			 * This option Synchronizes the frames so they render more steadily instead of
-			 * dropping and causing lag.
-			 */
-			vSync,
-			/** If the window is currently focused on or not. */
-			focused,
-			/** If the window has been minimized to tray (iconified) */
-			minimized,
-			/** If the window is maximized or not */
-			maximized;
-	/**
-	 * GLFW Supports whole window transparency, but only if the system supports it
-	 * as well.
-	 */
-	private float opacity;
-	/** Position of the window in screen coordinates (the top left of the window) */
-	private Vector2f position;
+	public UUID id;
+
 	/**
 	 * The type of input this window accepts;
 	 */
 	private GLFWMouseAndKeyboardInput input;
 	private SceneManager sceneManager;
-
 	private AssetStore store;
 	private AssetManager assetManager;
-
-	private GLCapabilities capabilities;
-	private GLFWFramebufferSizeCallback frmBffrClbk;
-	private GLFWWindowCloseCallback wndCloseClbk;
-	private GLFWWindowContentScaleCallback wndCntSclClbk;
-	private GLFWWindowFocusCallback wndFcsClbk;
-	private GLFWWindowIconifyCallback wndIconifyClbk;
-	private GLFWWindowMaximizeCallback wndMxmzClbk;
-	private GLFWWindowPosCallback wndPosClbk;
-	private GLFWWindowSizeCallback wndSizeClbk;
-	private GLFWWindowRefreshCallback wndRfrshClbk;
-
-	private RenderingEngine renderEngine;
 
 	/**
 	 * Scenes should only be added here, since it is systematically called during
@@ -204,6 +218,14 @@ public abstract class GLFWWindow {
 		return assetManager;
 	}
 
+	public GLFWWindow(GLFWWindowProperties props) {
+		this.properties = props;
+	}
+
+	public GLFWWindow(int sc_width, int sc_height, String name, String title, boolean fullscreen, boolean vSync) {
+		this(sc_width, sc_height, name, title, fullscreen, vSync, 0);
+	}
+
 	/**
 	 * Initializes the window instance but dose not create the window.
 	 * 
@@ -214,106 +236,129 @@ public abstract class GLFWWindow {
 	 * @param fullscreen
 	 * @param vSync
 	 */
-	public GLFWWindow(int sc_width, int sc_height, String name, String title, boolean fullscreen, boolean vSync) {
-		this.sc_width = sc_width;
-		this.sc_height = sc_height;
-		this.name = name;
-		this.title = title;
-		this.fullscreen = fullscreen;
-		this.vSync = vSync;
+	public GLFWWindow(int sc_width, int sc_height, String name, String title, boolean fullscreen, boolean vSync,
+			long preferedMonitor) {
+		this.properties = new GLFWWindowProperties();
+		this.properties.sc_width = sc_width;
+		this.properties.sc_height = sc_height;
+		this.properties.name = name;
+		this.properties.title = title;
+		this.properties.fullscreen = fullscreen;
+		this.properties.vSync = vSync;
+		this.properties.preferredMonitor = preferedMonitor;
 		this.sceneManager = new SceneManager(this);
 		this.input = new GLFWMouseAndKeyboardInput();
 
-		// this.addToWindowManager();
+	}
+
+	/**
+	 * Creates a window on the shared context on the preferred monitor.
+	 * 
+	 * @param share
+	 * @return
+	 * @throws AEWindowInitializationException
+	 */
+	public GLFWWindow create(long share) throws AEWindowInitializationException {
+		return this.create(share);
+	}
+
+	/**
+	 * Creates the window. Must be called from main thread.
+	 * 
+	 * @param monitor The monitor to create the window on. NULL will create it on
+	 *                main monitor.
+	 * @param share   The handle of the window the new window will share. NULL will
+	 *                make a new GLContext.
+	 * @return
+	 * @throws AEWindowInitializationException
+	 */
+	public GLFWWindow create(long monitor, long share, RenderingEngine rndEng) throws AEWindowInitializationException {
+		this.properties.sharedContext = share;
+		this.create(monitor, rndEng);
+		return this;
+	}
+
+	/**
+	 * This monitor will be considered the preferred monitor.
+	 * 
+	 * @param monitor
+	 * @param rndEng
+	 * @return
+	 * @throws AEWindowInitializationException
+	 */
+	public GLFWWindow create(long monitor, RenderingEngine rndEng) throws AEWindowInitializationException {
+		this.properties.preferredMonitor = monitor;
+		this.create(rndEng);
+		return this;
+	}
+
+	public GLFWWindow create(RenderingEngine rndEng) throws AEWindowInitializationException {
+		properties.renderEngine = rndEng;
+		this.create();
+		return this;
 	}
 
 	/**
 	 * Creates a new window on the primary monitor with a new context. It is not
 	 * recommended that you create a window with this method unless you have a way
 	 * of keeping track of this window and updating rendering etc. Otherwise use
-	 * GLWFWWindowManager's openWindow function.
+	 * GLWFWWindowManager's openWindow function. But this instance if created
+	 * explicitly through user code and not the engine's window manager this window
+	 * will not be updated automatically through the core engine.
 	 * 
 	 * @return
+	 * @throws AEWindowInitializationException
 	 */
-	public GLFWWindow create() {
-		return this.create(NULL);
-	}
-
-	/**
-	 * Creates a window on the shared context on the primary monitor.
-	 * 
-	 * @param share
-	 * @return
-	 */
-	public GLFWWindow create(long share) {
-		return this.create(glfwGetPrimaryMonitor(), share);
-	}
-
-	/**
-	 * Creates the window. Must be called from main thread.
-	 * 
-	 * @param monitor The monitor to create the window on. NULL will create it on
-	 *                main monitor.
-	 * @param share   The handle of the window the new window will share. NULL will
-	 *                make a new GLContext.
-	 * @return
-	 */
-	public GLFWWindow create(long monitor, long share, RenderingEngine rndEng) {
-		this.setRenderEngine(rndEng);
-		this.create(monitor, share);
-		rndEng.initGraphics(); // Since the capabilities are created and set, and the context is current we can
-								// initialize the graphics for this window.
-		return this;
-	}
-
-	public GLFWWindow create(long monitor, RenderingEngine rndEng) {
-		this.setRenderEngine(rndEng);
-		this.create(monitor, NULL);
-		rndEng.initGraphics(); // Since the capabilities are created and set, and the context is current we can
-								// initialize the graphics for this window.
-		return this;
-	}
-
-	/**
-	 * Creates the window. Must be called from main thread.
-	 * 
-	 * @param monitor The monitor to create the window on. NULL will create it on
-	 *                main monitor.
-	 * @param share   The handle of the window the new window will share. NULL will
-	 *                make a new GLContext.
-	 * @return
-	 */
-	public GLFWWindow create(long monitor, long share) {
+	public GLFWWindow create() throws AEWindowInitializationException {
 		this.genUniqueID();
+
+		addGLFWWindowHint(GLFW_REFRESH_RATE, properties.preferredRefreshRate);
+
 		/*
 		 * Pre initialization is for the user to set any window hints or any other
 		 * action which dose not require a window handle to be created.
 		 */
 		this.pre_init();
-		// This is important due to changes made to the new opengl version on my computer.
-		 addGLFWWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-		 addGLFWWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
-		 addGLFWWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-		 //addGLFWWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW.GLFW_TRUE);
-		//addGLFWWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);  
-		//addGLFWWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
-		this.glfw_handle = glfwCreateWindow(sc_width, sc_height, title, monitor, share);
-		if (this.glfw_handle == NULL) {
-			logger.error("Failed to create the GLFW window: name: '" + name + "' title: '" + title + "'");
-			throw new RuntimeException("Failed to create the GLFW window");
+
+		if (this.properties.preferredMonitor == NULL) {
+			this.properties.preferredMonitor = glfwGetPrimaryMonitor();
 		}
 
+		long mon = properties.preferredMonitor;
+
+		/**
+		 * This is done because creating a window defaults to full screen and if the
+		 * user wants it full screen it will be other wise we can change it like so and
+		 * then move the window to the proper monitor later.
+		 */
+		if (!properties.fullscreen) {
+			mon = NULL;
+		}
+
+		this.glfw_handle = glfwCreateWindow(properties.sc_width, properties.sc_height, properties.title, mon,
+				properties.sharedContext);
+
+		/*
+		 * To check if the window was created without errors this checks if glfw
+		 * provided a handle, if it is NULL then a AEWindowInitializationException is
+		 * thrown.
+		 */
+		if (this.glfw_handle == NULL) {
+			logger.error("Failed to create the GLFW window: name: '" + properties.name + "' title: '" + properties.title
+					+ "'");
+			throw new AEWindowInitializationException(
+					"Failed to create the GLFW window, Either GLFW denied to create this context or it failed.", this);
+		}
+
+		/* If there is no store provided there is no place to cache assets. */
 		if (store == null) {
-			throw new AERuntimeException("AssetI Store Not Defined.");
+			throw new AEWindowInitializationException("Asset Store Not Defined.", this);
 		}
 
 		// this.assetManager = new AssetManager(glfw_handle, store);
 
-		this.monitor = monitor;
+		this.currentMonitor = properties.preferredMonitor;
 
-		if (this.monitor == NULL) {
-			this.monitor = glfwGetPrimaryMonitor();
-		}
 		// Make the OpenGL context current
 		glfwMakeContextCurrent(glfw_handle);
 
@@ -342,19 +387,23 @@ public abstract class GLFWWindow {
 			glfwGetWindowFrameSize(glfw_handle, fLeft, fTop, fRight, fBottom);
 
 			glfwGetWindowPos(glfw_handle, xpos, ypos);
+			properties.p_width = pWidth.get(0);
+			properties.sc_width = scWidth.get(0);
+			properties.p_height = pHeight.get(0);
+			properties.sc_height = scHeight.get(0);
 
-			sc_width = scWidth.get(0);
-			sc_height = scHeight.get(0);
-			p_width = pWidth.get(0);
-			p_height = pHeight.get(0);
-			f_top = fTop.get(0);
-			f_left = fLeft.get(0);
-			f_right = fRight.get(0);
-			f_bottom = fBottom.get(0);
+			properties.f_top = fTop.get(0);
+			properties.f_left = fLeft.get(0);
+			properties.f_right = fRight.get(0);
+			properties.f_bottom = fBottom.get(0);
 
-			position = new Vector2f(xpos.get(0), ypos.get(0));
+			properties.position = new Vector2i(xpos.get(0), ypos.get(0));
 
 		}
+
+		properties.videoMode = glfwGetVideoMode(currentMonitor);
+
+		currentRefreshRate = properties.videoMode.refreshRate();
 
 		/*
 		 * Post initialization is for the user to center the window set attributes and
@@ -364,29 +413,49 @@ public abstract class GLFWWindow {
 		this.post_init();
 
 		/* TODO: let the user decide when or if to show the window. */
-		glfwShowWindow(glfw_handle);
+		//glfwShowWindow(glfw_handle);
 
-		if (vSync) {
+		if (properties.vSync) {
 			glfwSwapInterval(1); // Enables V Sync.
 		} else {
 			glfwSwapInterval(0);
 		}
-		// This line is critical for LWJGL's inter-operation with GLFW's
-		// OpenGL context, or any context that is managed externally.
-		// LWJGL detects the context that is current in the current thread,
-		// creates the GLCapabilities instance and makes the OpenGL
-		// bindings available for use.
-		capabilities = GL.createCapabilities();
-		// this.coreEngine = GLFWWindowManager.getCoreEngine();
+		/*
+		 * This line is critical for LWJGL's inter-operation with GLFW's OpenGL context,
+		 * or any context that is managed externally. LWJGL detects the context that is
+		 * current in the current thread, creates the GLCapabilities instance and makes
+		 * the OpenGL bindings available for use.
+		 */
+		properties.capabilities = GL.createCapabilities();
 		this.initCallBacks();
 		this.input.initInput(glfw_handle);
 		this.addScenes();
 		this.assetManager = new AssetManager(glfw_handle);
 		this.resetToDefaults();
-		
-		System.out.println(GL45.glGetString(GL45.GL_VERSION));
-		System.out.println(GL45.glGetString(GL45.GL_SHADING_LANGUAGE_VERSION));
+
+		this.properties.renderEngine.initGraphics();
+
+		logger.debug(GL45.glGetString(GL45.GL_VERSION));
+		logger.debug(GL45.glGetString(GL45.GL_SHADING_LANGUAGE_VERSION));
 		return this;
+	}
+	
+	/**
+	 * Sets the preferred monitor for this window. meaning what monitor this window
+	 * is supposed to be on, is going to be on, or the default for it. it can also
+	 * be used to set the target location for the setMonitor() function.
+	 */
+	public void setPreferredMonitor(long prfdMntr) {
+		this.properties.preferredMonitor = prfdMntr;
+	}
+
+	/**
+	 * Moves the window to the monitor described in the preferredMonitor variable or
+	 * in the setPreferredMonitor() function.
+	 */
+	public void setMonitor() {
+		glfwSetWindowMonitor(glfw_handle, properties.preferredMonitor, properties.position.x(), properties.position.y(),
+				properties.sc_width, properties.sc_height, properties.preferredRefreshRate);
 	}
 
 	/**
@@ -398,6 +467,42 @@ public abstract class GLFWWindow {
 			logger.error("Handle is invalid.");
 			throw new NullPointerException("Handle is invalid for the current call.");
 		}
+	}
+
+	/**
+	 * Sets the window onto the preferred monitor as defined in properties and also
+	 * carries all other setting over so to change the window on the other monitor
+	 * change the properties before moving.
+	 */
+	public void setWindowMonitor() {
+		long mon = NULL;
+		if (properties.fullscreen) {
+			mon = properties.preferredMonitor;
+		}
+		glfwSetWindowMonitor(glfw_handle, mon, properties.position.x(), properties.position.y(),
+				properties.sc_width, properties.sc_height, properties.preferredRefreshRate);
+	}
+
+	public void setWindowPosition(Vector2i newPos) {
+		setWindowPosition(newPos.x(), newPos.y());
+	}
+
+	/**
+	 * Sets the windows position on the preferred monitor.
+	 */
+	public void setWindowPosition(int xpos, int ypos) {
+		glfwSetWindowPos(glfw_handle, xpos, ypos);
+		this.properties.position.set(xpos, ypos);
+	}
+
+	/**
+	 * Changes the video mode to full screen or vice versa
+	 * 
+	 * @param fullscreen
+	 */
+	public void setFullscreen(boolean fullscreen) {
+		this.properties.fullscreen = fullscreen;
+		this.setWindowMonitor();
 	}
 
 	/**
@@ -414,12 +519,12 @@ public abstract class GLFWWindow {
 	}
 
 	public void setRenderEngine(RenderingEngine rndEng) {
-		this.renderEngine = rndEng;
+		this.properties.renderEngine = rndEng;
 	}
 
 	public RenderingEngine getRenderEngine() {
-		if (renderEngine != null) {
-			return renderEngine;
+		if (properties.renderEngine != null) {
+			return properties.renderEngine;
 		}
 		logger.error("Render Engine Not Specified. ", new NullPointerException("Render Engine Not Specified."));
 		throw new NullPointerException();
@@ -444,11 +549,12 @@ public abstract class GLFWWindow {
 	public void centerWindow() {
 		checkWindowPointer();
 
-		GLFWVidMode vidmode = glfwGetVideoMode(this.monitor);
+		GLFWVidMode vidmode = glfwGetVideoMode(this.currentMonitor);
 
-		position.set((float) ((vidmode.width() - sc_width) / 2), (float) ((vidmode.height() - sc_height) / 2));
+		properties.position.set(((vidmode.width() - properties.sc_width) / 2),
+				((vidmode.height() - properties.sc_height) / 2));
 		// Center the window using the sc_* values.
-		glfwSetWindowPos(glfw_handle, (int) position.x(), (int) position.y());
+		glfwSetWindowPos(glfw_handle, properties.position.x(), properties.position.y());
 	}
 
 	public void addGLFWWindowHint(int hint, int value) {
@@ -539,88 +645,94 @@ public abstract class GLFWWindow {
 
 	private void initCallBacks() {
 
-		glfwSetFramebufferSizeCallback(glfw_handle, (frmBffrClbk = new GLFWFramebufferSizeCallback() {
+		glfwSetFramebufferSizeCallback(glfw_handle, (properties.frmBffrClbk = new GLFWFramebufferSizeCallback() {
 			@Override
 			public void invoke(long window, int width, int height) {
-				p_width = width;
-				p_height = height;
+				properties.p_width = width;
+				properties.p_height = height;
 			}
 		}));
 
-		glfwSetWindowCloseCallback(glfw_handle, (wndCloseClbk = new GLFWWindowCloseCallback() {
+		glfwSetWindowCloseCallback(glfw_handle, (properties.wndCloseClbk = new GLFWWindowCloseCallback() {
 			@Override
 			public void invoke(long window) {
 				glfwSetWindowShouldClose(glfw_handle, true);
 			}
 		}));
 
-		glfwSetWindowContentScaleCallback(glfw_handle, (wndCntSclClbk = new GLFWWindowContentScaleCallback() {
-			@Override
-			public void invoke(long window, float xscale, float yscale) {
+		glfwSetWindowContentScaleCallback(glfw_handle,
+				(properties.wndCntSclClbk = new GLFWWindowContentScaleCallback() {
+					@Override
+					public void invoke(long window, float xscale, float yscale) {
 
-			}
-		}));
+					}
+				}));
 
-		glfwSetWindowFocusCallback(glfw_handle, (wndFcsClbk = new GLFWWindowFocusCallback() {
+		glfwSetWindowFocusCallback(glfw_handle, (properties.wndFcsClbk = new GLFWWindowFocusCallback() {
 			@Override
 			public void invoke(long window, boolean focus) {
-				focused = focus;
+				properties.focused = focus;
 			}
 		}));
 
-		glfwSetWindowIconifyCallback(glfw_handle, (wndIconifyClbk = new GLFWWindowIconifyCallback() {
+		glfwSetWindowIconifyCallback(glfw_handle, (properties.wndIconifyClbk = new GLFWWindowIconifyCallback() {
 			@Override
 			public void invoke(long window, boolean iconified) {
-				minimized = iconified;
+				properties.minimized = iconified;
 			}
 		}));
 
-		glfwSetWindowMaximizeCallback(glfw_handle, (wndMxmzClbk = new GLFWWindowMaximizeCallback() {
+		glfwSetWindowMaximizeCallback(glfw_handle, (properties.wndMxmzClbk = new GLFWWindowMaximizeCallback() {
 			@Override
 			public void invoke(long window, boolean maximize) {
-				maximized = maximize;
+				properties.maximized = maximize;
 			}
 		}));
 
-		glfwSetWindowPosCallback(glfw_handle, (wndPosClbk = new GLFWWindowPosCallback() {
+		glfwSetWindowPosCallback(glfw_handle, (properties.wndPosClbk = new GLFWWindowPosCallback() {
 			@Override
 			public void invoke(long window, int xpos, int ypos) {
-				position.set(xpos, ypos);
+				properties.position.set(xpos, ypos);
 			}
 		}));
 
-		glfwSetWindowRefreshCallback(glfw_handle, (wndRfrshClbk = new GLFWWindowRefreshCallback() {
+		glfwSetWindowRefreshCallback(glfw_handle, (properties.wndRfrshClbk = new GLFWWindowRefreshCallback() {
 			@Override
 			public void invoke(long window) {
 				swapBuffers();
 			}
 		}));
 
-		glfwSetWindowSizeCallback(glfw_handle, (wndSizeClbk = new GLFWWindowSizeCallback() {
+		glfwSetWindowSizeCallback(glfw_handle, (properties.wndSizeClbk = new GLFWWindowSizeCallback() {
 			@Override
 			public void invoke(long window, int width, int height) {
-				sc_width = width;
-				sc_height = height;
+				properties.sc_width = width;
+				properties.sc_height = height;
 			}
 		}));
 
 	}
 
+	public void toggleVSync() {
+		properties.vSync = !properties.vSync;
+		glfwSwapInterval((properties.vSync) ? 1 : 0);
+	}
+
 	public void setWindowTitle(String title) {
 		checkWindowPointer();
 		glfwSetWindowTitle(glfw_handle, title);
-		this.title = title;
+		this.properties.title = title;
 	}
 
 	public void setWindowOpacity(float opacity) {
 		checkWindowPointer();
 		glfwSetWindowOpacity(glfw_handle, opacity);
-		this.opacity = glfwGetWindowOpacity(glfw_handle);
+		this.properties.opacity = glfwGetWindowOpacity(glfw_handle);
 	}
 
 	public float getWindowOpacity() {
 		checkWindowPointer();
-		return (opacity = glfwGetWindowOpacity(glfw_handle));
+		return (properties.opacity = glfwGetWindowOpacity(glfw_handle));
 	}
 
 	public boolean isFocused() {
@@ -651,16 +763,15 @@ public abstract class GLFWWindow {
 		glfwIconifyWindow(glfw_handle);
 	}
 
-	public GLFWFramebufferSizeCallback getFrmBffrClbk() {
-		return frmBffrClbk;
-	}
-
-	public void setFrmBffrClbk(GLFWFramebufferSizeCallback frmBffrClbk) {
-		this.frmBffrClbk = frmBffrClbk;
-	}
+	/*
+	 * public GLFWFramebufferSizeCallback getFrmBffrClbk() { return frmBffrClbk; }
+	 * 
+	 * public void setFrmBffrClbk(GLFWFramebufferSizeCallback frmBffrClbk) {
+	 * this.frmBffrClbk = frmBffrClbk; }
+	 */
 
 	public long getMonitor() {
-		return monitor;
+		return currentMonitor;
 	}
 
 	public Vector2f getCenter() {
@@ -672,32 +783,29 @@ public abstract class GLFWWindow {
 	 * 
 	 * @return
 	 */
+
 	public int getPWidth() {
-		return p_width;
+		return properties.p_width;
 	}
 
 	public int getPHeight() {
-		return p_height;
+		return properties.p_height;
 	}
 
 	public String getTitle() {
-		return title;
+		return properties.title;
 	}
 
 	public void setTitle(String title) {
-		this.title = title;
+		this.properties.title = title;
 	}
 
 	public boolean isFullscreen() {
-		return fullscreen;
-	}
-
-	public void setFullscreen(boolean fullscreen) {
-		this.fullscreen = fullscreen;
+		return properties.fullscreen;
 	}
 
 	public boolean isvSync() {
-		return vSync;
+		return properties.vSync;
 	}
 
 	public SceneManager getSceneManager() {
@@ -709,7 +817,7 @@ public abstract class GLFWWindow {
 	}
 
 	public void setvSync(boolean vSync) {
-		this.vSync = vSync;
+		this.properties.vSync = vSync;
 	}
 
 	public UUID getID() {
@@ -724,15 +832,29 @@ public abstract class GLFWWindow {
 	}
 
 	public String getWindowName() {
-		return name;
+		return properties.name;
+	}
+
+	public GLCapabilities getCapabilities() {
+		return properties.capabilities;
+	}
+
+	@Override
+	public String toString() {
+		return "GLFWWindow [monitor=" + currentMonitor + ", id=" + id + ", name=" + properties.name + ", title="
+				+ properties.title + "]";
 	}
 
 	public <T> T getInput() {
 		return (T) input;
 	}
 
-	public GLCapabilities getCapabilities() {
-		return capabilities;
+	public GLFWWindowProperties getProperties() {
+		return properties;
+	}
+
+	public void setProperties(GLFWWindowProperties properties) {
+		this.properties = properties;
 	}
 
 }
