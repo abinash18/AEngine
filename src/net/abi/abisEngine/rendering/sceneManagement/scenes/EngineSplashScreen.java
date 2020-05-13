@@ -22,8 +22,8 @@ import net.abi.abisEngine.rendering.meshManagement.Mesh;
 import net.abi.abisEngine.rendering.meshManagement.ModelScene;
 import net.abi.abisEngine.rendering.pipelineManagement.RenderingEngine;
 import net.abi.abisEngine.rendering.resourceManagement.Material;
-import net.abi.abisEngine.rendering.resourceManagement.Texture;
 import net.abi.abisEngine.rendering.sceneManagement.Scene;
+import net.abi.abisEngine.rendering.textureManagement.Texture;
 import net.abi.abisEngine.rendering.windowManagement.GLFWWindow;
 import net.abi.abisEngine.rendering.windowManagement.GLFWWindowManager;
 import net.abi.abisEngine.util.Attenuation;
@@ -115,17 +115,17 @@ public class EngineSplashScreen extends Scene {
 				anvilmat.addTexture("normal_map", new Texture("Normal_Map_Anvil.png"));
 				anvilmat.addFloat("specularIntensity", 1);
 				anvilmat.addFloat("specularPower", 8);
-				ModelScene m = assetManager.get("IronMan.obj", ModelScene.class);
+				ModelScene m = assetManager.get("monkey.obj", ModelScene.class);
 				Mesh s = m.getMesh("monkey").bindModel();
 				monkey = new Entity().addComponent(new MeshRenderer(s, anvilmat));
-				monkey.getTransform().setScale(0.250f, 0.250f, 0.250f);
+				// monkey.getTransform().setScale(0.250f, 0.250f, 0.250f);
 				test.addChild(monkey);
 			}
 		};
 
 		// man.load("monkey.obj", ModelScene.class, parm);
 //		man.load("Anvil_LowPoly.obj", ModelScene.class, parm);
-		man.load("IronMan.obj", ModelScene.class, parm);
+		man.load("monkey.obj", ModelScene.class, parm);
 //		man.load("monkey.obj", ModelScene.class, parm);
 
 		super.setMainCamera("playerView");
@@ -176,29 +176,32 @@ public class EngineSplashScreen extends Scene {
 		// }
 
 		temp = temp + delta;
-		float angle = (float) Math.toRadians(temp * 360);
-		monkey.getTransform().getRotation().rotate(Transform.X_AXIS, (float) Math.toRadians(angle * 2));
+		float angle = (float) Math.toRadians(temp * 180);
+		monkey.getTransform().getRotation().rotate(Transform.X_AXIS, (float) Math.toRadians(angle * 200));
 	}
+
+	GLFWMouseAndKeyboardInput in = (GLFWMouseAndKeyboardInput) super.getInputController();
 
 	@Override
 	public void input(float delta) {
 		super.input(delta);
-		if (((GLFWMouseAndKeyboardInput) super.getInputController()).isKeyDown(GLFWInput.GLFW_KEY_ESCAPE)) {
-			((GLFWMouseAndKeyboardInput) super.getInputController()).setCursorMode(GLFW.GLFW_CURSOR_NORMAL);
+		if (in.isKeyDown(GLFWInput.GLFW_KEY_ESCAPE)) {
+			in.setCursorMode(GLFW.GLFW_CURSOR_NORMAL);
 		}
 
-		if (((GLFWMouseAndKeyboardInput) super.getInputController())
-				.isMouseButtonDown(GLFWInput.GLFW_MOUSE_BUTTON_RIGHT)) {
+		if (in.isKeyDown(GLFWInput.GLFW_KEY_V)) {
 			super.getParentWindow().toggleVSync();
+		}
+
+		if (in.isMouseButtonDown(GLFWInput.GLFW_MOUSE_BUTTON_RIGHT)) {
 			MeshRenderer.toggleWireFrames();
 		}
 
-		if (((GLFWMouseAndKeyboardInput) super.getInputController())
-				.isMouseButtonDown(GLFWInput.GLFW_MOUSE_BUTTON_LEFT)) {
+		if (in.isMouseButtonDown(GLFWInput.GLFW_MOUSE_BUTTON_LEFT)) {
 			RenderingEngine.depth_test = RenderingEngine.depth_test == false ? true : false;
 		}
 
-		if (((GLFWMouseAndKeyboardInput) super.getInputController()).isKeyDown(GLFWInput.GLFW_KEY_C)) {
+		if (in.isKeyDown(GLFWInput.GLFW_KEY_C)) {
 			super.getParentWindow().getSceneManager().setCurrentScene("MainMenu");
 		}
 	}

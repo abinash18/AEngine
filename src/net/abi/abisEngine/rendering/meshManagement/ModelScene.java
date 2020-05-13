@@ -24,7 +24,7 @@ import net.abi.abisEngine.math.Vector2f;
 import net.abi.abisEngine.math.Vector3f;
 import net.abi.abisEngine.rendering.asset.AssetManager;
 import net.abi.abisEngine.rendering.resourceManagement.Material;
-import net.abi.abisEngine.rendering.resourceManagement.Texture;
+import net.abi.abisEngine.rendering.textureManagement.Texture;
 import net.abi.abisEngine.util.Expendable;
 
 /**

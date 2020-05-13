@@ -10,12 +10,12 @@ import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
 import net.abi.abisEngine.math.Transform;
 import net.abi.abisEngine.math.Vector3f;
-import net.abi.abisEngine.rendering.resourceManagement.MappedValues;
 import net.abi.abisEngine.rendering.resourceManagement.Material;
 import net.abi.abisEngine.rendering.sceneManagement.Scene;
 import net.abi.abisEngine.rendering.shaderManagement.Shader;
 import net.abi.abisEngine.util.Color;
 import net.abi.abisEngine.util.Expendable;
+import net.abi.abisEngine.util.MappedValues;
 
 public class RenderingEngine extends MappedValues implements Expendable {
 

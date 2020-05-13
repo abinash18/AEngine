@@ -157,6 +157,7 @@ public class CoreEngine {
 		}
 
 		cleanUp();
+		System.exit(1);
 	}
 
 	private void cleanUp() {

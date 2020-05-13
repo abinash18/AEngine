@@ -33,7 +33,7 @@ import net.abi.abisEngine.math.Vector4f;
 import net.abi.abisEngine.rendering.asset.AssetI;
 import net.abi.abisEngine.rendering.pipelineManagement.RenderingEngine;
 import net.abi.abisEngine.rendering.resourceManagement.Material;
-import net.abi.abisEngine.rendering.resourceManagement.Texture;
+import net.abi.abisEngine.rendering.textureManagement.Texture;
 import net.abi.abisEngine.util.Util;
 
 public class Shader implements AssetI {

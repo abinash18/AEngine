@@ -319,10 +319,10 @@ public class GLFWWindowManager implements Expendable {
 		for (Iterator<Map.Entry<GLFWWindowContext, CopyOnWriteArrayList<GLFWWindow>>> entries = windows.entrySet()
 				.iterator(); entries.hasNext();) {
 			Map.Entry<GLFWWindowContext, CopyOnWriteArrayList<GLFWWindow>> entry = entries.next();
-			for (Iterator<GLFWWindow> subEntrys = entry.getValue().iterator(); subEntrys.hasNext();) {
-				GLFWWindow wnd = subEntrys.next();
+			for (GLFWWindow subEntrys : entry.getValue()) {
+				GLFWWindow wnd = subEntrys;
 				wnd.dispose();
-				subEntrys.remove();
+				entry.getValue().remove(wnd);
 				break;
 			}
 			entries.remove();
@@ -341,10 +341,11 @@ public class GLFWWindowManager implements Expendable {
 			 * execute.
 			 */
 			if (entry.getKey().name.equals(context.name)) {
-				for (Iterator<GLFWWindow> subEntrys = entry.getValue().iterator(); subEntrys.hasNext();) {
-					GLFWWindow wnd = subEntrys.next();
+				for (GLFWWindow subEntrys : entry.getValue()) {
+					GLFWWindow wnd = subEntrys;
 					wnd.dispose();
-					subEntrys.remove();
+					entry.getValue().remove(wnd);
+					break;
 				}
 				/* Remove the row because the context related to that is destroyed. */
 				entries.remove();
@@ -433,7 +434,8 @@ public class GLFWWindowManager implements Expendable {
 			throw new AEWindowInitializationException("Window Already Exits With The Same Name.");
 		}
 
-		GLFWWindowContext context = new GLFWWindowContext(wnd.getWindowName(), wnd.getGlfw_Handle(), wnd.getRenderEngine());
+		GLFWWindowContext context = new GLFWWindowContext(wnd.getWindowName(), wnd.getGlfw_Handle(),
+				wnd.getRenderEngine());
 		AssetStore store = context.store;
 		CopyOnWriteArrayList<GLFWWindow> wnds = new CopyOnWriteArrayList<GLFWWindow>();
 

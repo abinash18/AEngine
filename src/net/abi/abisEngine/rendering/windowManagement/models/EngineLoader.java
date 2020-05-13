@@ -1,9 +1,13 @@
 package net.abi.abisEngine.rendering.windowManagement.models;
 
+import net.abi.abisEngine.handlers.file.PathHandle;
+import net.abi.abisEngine.rendering.AEImage;
 import net.abi.abisEngine.rendering.pipelineManagement.RenderingEngine;
 import net.abi.abisEngine.rendering.sceneManagement.scenes.EngineSplashScreen;
 import net.abi.abisEngine.rendering.windowManagement.GLFWWindow;
 import net.abi.abisEngine.rendering.windowManagement.GLFWWindowManager;
+import net.abi.abisEngine.util.exceptions.AECursorInitializationException;
+import net.abi.abisEngine.util.exceptions.AEImageManipulationException;
 import tests.game.scenes.MainMenu;
 import tests.game.windows.MainGame;
 
@@ -12,7 +16,7 @@ public class EngineLoader extends GLFWWindow {
 	public EngineLoader() {
 		super(800, 600, "EngineSplash", "", false, false);
 		super.properties.sc_height = 600;
-		super.properties.sc_height = 800;
+		super.properties.sc_width = 800;
 		super.properties.renderEngine = new RenderingEngine();
 	}
 
@@ -38,13 +42,26 @@ public class EngineLoader extends GLFWWindow {
 		 * try { GLFWWindowManager.openWindow(new MainGame(), NULL,
 		 * this.getGlfw_Handle()); } catch (Exception e) { e.printStackTrace(); }
 		 */
+		GLFWWindowManager.raiseStopFlag();
 	}
 
 	@Override
 	protected void post_init() {
 		super.centerWindow();
 		super.showWindow();
-		// super.setWindowOpacity(0.5f);
+		AEImage i = new AEImage(new PathHandle("./res/textures/cursor.png"));
+
+		try {
+			i.loadImage();
+			i = AEImage.resize(i, 32, 32);
+			super.setCursor(new StaticCursor("s", i, 0, 0));
+		} catch (AECursorInitializationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (AEImageManipulationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

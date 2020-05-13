@@ -4,7 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.abi.abisEngine.rendering.shaderManagement.Shader;
+import net.abi.abisEngine.rendering.textureManagement.Texture;
 import net.abi.abisEngine.util.Color;
+import net.abi.abisEngine.util.MappedValues;
 
 public class Material extends MappedValues {
 

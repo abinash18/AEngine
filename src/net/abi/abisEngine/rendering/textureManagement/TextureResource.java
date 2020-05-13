@@ -1,4 +1,4 @@
-package net.abi.abisEngine.rendering.resourceManagement;
+package net.abi.abisEngine.rendering.textureManagement;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;

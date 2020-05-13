@@ -1,4 +1,4 @@
-package net.abi.abisEngine.rendering.resourceManagement;
+package net.abi.abisEngine.rendering.textureManagement;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -13,6 +13,7 @@ import org.lwjgl.opengl.GL15;
 
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
+import net.abi.abisEngine.rendering.PixelMap;
 import net.abi.abisEngine.util.Expendable;
 import net.abi.abisEngine.util.Util;
 
@@ -20,10 +21,17 @@ public class Texture implements Expendable {
 
 	public static final String TEXTURES_DIR = "./res/textures/";
 	private static Logger logger = LogManager.getLogger(Texture.class.getName());
+	
+	public class TextureData {
+		private PixelMap data;
+		
+	}
+	
 	// private static HashMap<String, TextureResource> loadedTextures = new
 	// HashMap<String, TextureResource>();
 	private String fileName;
 	private int id, refCount;
+	private TextureData data;
 
 	public Texture(String fileName) {
 		this.fileName = fileName;
