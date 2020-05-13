@@ -1,4 +1,4 @@
-package net.abi.abisEngine.rendering.resourceManagement;
+package net.abi.abisEngine.util;
 
 import java.util.HashMap;
 import java.util.Map;

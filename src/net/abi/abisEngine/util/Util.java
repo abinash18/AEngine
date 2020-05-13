@@ -1,6 +1,7 @@
 package net.abi.abisEngine.util;
 
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -33,6 +34,18 @@ public class Util {
 		return buffer;
 	}
 
+	 /**
+     * Allocates a direct native-ordered {@code ByteBuffer} with the specified capacity.
+     *
+     * @param capacity the capacity, in bytes
+     *
+     * @return a {@code ByteBuffer}
+     */
+    public static ByteBuffer createByteBuffer(int capacity) {
+        return ByteBuffer.allocateDirect(capacity).order(ByteOrder.nativeOrder());
+    }
+
+	
 	public static FloatBuffer createFlippedBuffer(Vertex[] vertices) {
 		FloatBuffer buffer = createFloatBuffer(vertices.length * Vertex.SIZE);
 
@@ -167,10 +180,6 @@ public class Util {
 	public static int[] listIntToArray(List<Integer> list) {
 		int[] result = list.stream().mapToInt((Integer v) -> v).toArray();
 		return result;
-	}
-
-	public static ByteBuffer createByteBuffer(int size) {
-		return BufferUtils.createByteBuffer(size);
 	}
 
 	/* https://dzone.com/articles/how-to-write-a-c-like-sizeof-function-in-java */

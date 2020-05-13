@@ -2,7 +2,7 @@ package net.abi.abisEngine.rendering.windowManagement;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.GLFW_TRUE;
-import static org.lwjgl.glfw.GLFW.glfwCreateWindow;
+import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.glfw.GLFW.glfwDefaultWindowHints;
 import static org.lwjgl.glfw.GLFW.glfwDestroyWindow;
 import static org.lwjgl.glfw.GLFW.glfwFocusWindow;
@@ -44,7 +44,9 @@ import static org.lwjgl.system.MemoryStack.stackPush;
 import java.nio.IntBuffer;
 import java.util.UUID;
 
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
+import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowCloseCallback;
 import org.lwjgl.glfw.GLFWWindowContentScaleCallback;
@@ -61,17 +63,23 @@ import org.lwjgl.system.MemoryStack;
 
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
+import net.abi.abisEngine.input.GLFWInput;
 import net.abi.abisEngine.input.GLFWMouseAndKeyboardInput;
 import net.abi.abisEngine.math.Vector2f;
 import net.abi.abisEngine.math.Vector2i;
+import net.abi.abisEngine.rendering.AEImage;
+import net.abi.abisEngine.rendering.PixelMap;
 import net.abi.abisEngine.rendering.asset.AssetManager;
 import net.abi.abisEngine.rendering.asset.AssetStore;
 import net.abi.abisEngine.rendering.pipelineManagement.RenderingEngine;
 import net.abi.abisEngine.rendering.sceneManagement.Scene;
 import net.abi.abisEngine.rendering.sceneManagement.SceneManager;
+import net.abi.abisEngine.util.Expendable;
+import net.abi.abisEngine.util.Util;
+import net.abi.abisEngine.util.exceptions.AECursorInitializationException;
 import net.abi.abisEngine.util.exceptions.AEWindowInitializationException;
 
-public abstract class GLFWWindow {
+public abstract class GLFWWindow implements Expendable {
 
 	public static final long NULL = 0L;
 
@@ -92,6 +100,95 @@ public abstract class GLFWWindow {
 			GLFW_SRGB_CAPABLE = 0x2100E, GLFW_REFRESH_RATE = 0x2100F, GLFW_DOUBLEBUFFER = 0x21010;
 
 	private static Logger logger = LogManager.getLogger(GLFWWindow.class.getName());
+
+	public interface CursorI extends Expendable {
+		public long create() throws AECursorInitializationException;
+
+		public String getID();
+
+		public long getHandle();
+	}
+
+	public class AnimatedCursor implements CursorI {
+		String id;
+		long cursor_handle;
+		AEImage animationStages[];
+		int yHotspot = 0, xHotspot = 0;
+
+		@Override
+		public void dispose() {
+
+		}
+
+		@Override
+		public long create() throws AECursorInitializationException {
+			// TODO Auto-generated method stub
+			return 0L;
+		}
+
+		@Override
+		public String getID() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public long getHandle() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+	}
+
+	public class StaticCursor implements CursorI {
+		/* Something to represent this object other than the handle. */
+		String id;
+		long cursor_handle;
+		AEImage image;
+		int standardCursorType = 0, yHotspot = 0, xHotspot = 0;
+
+		public StaticCursor(String id) {
+			this.standardCursorType = GLFWInput.GLFW_ARROW_CURSOR;
+		}
+
+		public StaticCursor(String id, int standardCursor) {
+			this.standardCursorType = standardCursor;
+		}
+
+		public StaticCursor(String id, AEImage imageToUse, int xHot, int yHot) {
+			this.image = imageToUse;
+			this.xHotspot = xHot;
+			this.yHotspot = yHot;
+		}
+
+		public long create() throws AECursorInitializationException {
+			if (standardCursorType != 0) {
+				cursor_handle = GLFW.glfwCreateStandardCursor(standardCursorType);
+			} else {
+				GLFWImage i = GLFWImage.malloc();
+				i.set(image.getData().getWidth(), image.getData().getHeight(), image.getData().getPixelsInByteBuffer());
+				cursor_handle = GLFW.glfwCreateCursor(i, xHotspot, yHotspot);
+				i.free();
+			}
+			if (cursor_handle == NULL) {
+				throw new AECursorInitializationException("Failed to create cursor.", this);
+			}
+			return cursor_handle;
+		}
+
+		public String getID() {
+			return id;
+		}
+
+		@Override
+		public void dispose() {
+			glfwDestroyCursor(cursor_handle);
+		}
+
+		@Override
+		public long getHandle() {
+			return cursor_handle;
+		}
+	}
 
 	public class GLFWWindowProperties {
 		public long preferredMonitor = 0, sharedContext = 0;
@@ -157,8 +254,6 @@ public abstract class GLFWWindow {
 
 		public RenderingEngine renderEngine;
 
-		public GLFWVidMode videoMode;
-
 	}
 
 	/**
@@ -177,6 +272,8 @@ public abstract class GLFWWindow {
 	 * with the same names.
 	 */
 	public UUID id;
+
+	public GLFWVidMode videoMode;
 
 	/**
 	 * The type of input this window accepts;
@@ -210,7 +307,9 @@ public abstract class GLFWWindow {
 
 	/**
 	 * Called before the window is destroyed with the context, here the user can
-	 * call last minute methods which require window handles.
+	 * call last minute methods which require window handles. But Dont call the
+	 * engine to stop becasue the window is already destroyed after and is removed
+	 * from GLFW context.
 	 */
 	protected abstract void close();
 
@@ -401,9 +500,9 @@ public abstract class GLFWWindow {
 
 		}
 
-		properties.videoMode = glfwGetVideoMode(currentMonitor);
+		videoMode = glfwGetVideoMode(currentMonitor);
 
-		currentRefreshRate = properties.videoMode.refreshRate();
+		currentRefreshRate = videoMode.refreshRate();
 
 		/*
 		 * Post initialization is for the user to center the window set attributes and
@@ -413,7 +512,7 @@ public abstract class GLFWWindow {
 		this.post_init();
 
 		/* TODO: let the user decide when or if to show the window. */
-		//glfwShowWindow(glfw_handle);
+		// glfwShowWindow(glfw_handle);
 
 		if (properties.vSync) {
 			glfwSwapInterval(1); // Enables V Sync.
@@ -439,7 +538,11 @@ public abstract class GLFWWindow {
 		logger.debug(GL45.glGetString(GL45.GL_SHADING_LANGUAGE_VERSION));
 		return this;
 	}
-	
+
+	public void setCursorType() {
+
+	}
+
 	/**
 	 * Sets the preferred monitor for this window. meaning what monitor this window
 	 * is supposed to be on, is going to be on, or the default for it. it can also
@@ -469,6 +572,10 @@ public abstract class GLFWWindow {
 		}
 	}
 
+	public void setCursor(CursorI cursor) throws AECursorInitializationException {
+		glfwSetCursor(glfw_handle, cursor.create());
+	}
+
 	/**
 	 * Sets the window onto the preferred monitor as defined in properties and also
 	 * carries all other setting over so to change the window on the other monitor
@@ -479,8 +586,8 @@ public abstract class GLFWWindow {
 		if (properties.fullscreen) {
 			mon = properties.preferredMonitor;
 		}
-		glfwSetWindowMonitor(glfw_handle, mon, properties.position.x(), properties.position.y(),
-				properties.sc_width, properties.sc_height, properties.preferredRefreshRate);
+		glfwSetWindowMonitor(glfw_handle, mon, properties.position.x(), properties.position.y(), properties.sc_width,
+				properties.sc_height, properties.preferredRefreshRate);
 	}
 
 	public void setWindowPosition(Vector2i newPos) {
@@ -579,6 +686,9 @@ public abstract class GLFWWindow {
 		/* Call user operations before disposal. */
 		this.close();
 		// input.destroySafe();
+		if (glfw_handle == NULL) {
+			return;
+		}
 		glfwFreeCallbacks(glfw_handle);
 		glfwDestroyWindow(glfw_handle);
 		glfw_handle = NULL;

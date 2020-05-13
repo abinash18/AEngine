@@ -16,8 +16,8 @@ import net.abi.abisEngine.rendering.meshManagement.AIMeshLoader;
 import net.abi.abisEngine.rendering.meshManagement.Mesh;
 import net.abi.abisEngine.rendering.meshManagement.Vertex;
 import net.abi.abisEngine.rendering.resourceManagement.Material;
-import net.abi.abisEngine.rendering.resourceManagement.Texture;
 import net.abi.abisEngine.rendering.sceneManagement.Scene;
+import net.abi.abisEngine.rendering.textureManagement.Texture;
 import net.abi.abisEngine.rendering.windowManagement.GLFWWindow;
 import net.abi.abisEngine.util.Attenuation;
 
