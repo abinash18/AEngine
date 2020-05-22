@@ -440,8 +440,7 @@ public class AssetManager implements Expendable {
 			System.out.println(assetRef.getRefs());
 
 			if (assetDesc.getParameter() != null && assetDesc.getParameter().loadedCallback != null) {
-				assetDesc.getParameter().loadedCallback.finishedLoading(this, assetDesc.getFileName(),
-						assetDesc.getType());
+				assetDesc.getParameter().loadedCallback.finishedLoading(this, assetDesc.getFileName(), assetRef);
 			}
 			loaded++;
 		} else {
@@ -465,7 +464,7 @@ public class AssetManager implements Expendable {
 	}
 
 	/** Adds an asset to this AssetManager */
-	protected <T> void addAsset(final String fileName, Class<T> type, T asset) {
+	protected <T> AssetContainer addAsset(final String fileName, Class<T> type, T asset) {
 //		// add the asset to the filename lookup
 //		assetTypes.put(fileName, type);
 //
@@ -478,7 +477,7 @@ public class AssetManager implements Expendable {
 //		typeToAssets.put(fileName, new AssetContainer(asset));
 
 		store.addAsset(type, fileName, asset);
-
+		return store.getContainer(type, fileName);
 	}
 
 	/**
@@ -509,12 +508,11 @@ public class AssetManager implements Expendable {
 			if (task.cancel)
 				return true;
 
-			addAsset(task.assetDesc.getFileName(), task.assetDesc.getType(), task.getAsset());
+			AssetContainer c = addAsset(task.assetDesc.getFileName(), task.assetDesc.getType(), task.getAsset());
 
 			// otherwise, if a listener was found in the parameter invoke it
 			if (task.assetDesc.getParameter() != null && task.assetDesc.getParameter().loadedCallback != null) {
-				task.assetDesc.getParameter().loadedCallback.finishedLoading(this, task.assetDesc.getFileName(),
-						task.assetDesc.getType());
+				task.assetDesc.getParameter().loadedCallback.finishedLoading(this, task.assetDesc.getFileName(), c);
 			}
 
 			return true;

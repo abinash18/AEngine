@@ -12,9 +12,9 @@ import net.abi.abisEngine.components.SpotLight;
 import net.abi.abisEngine.core.Entity;
 import net.abi.abisEngine.input.GLFWInput;
 import net.abi.abisEngine.input.GLFWMouseAndKeyboardInput;
-import net.abi.abisEngine.math.Quaternion;
 import net.abi.abisEngine.math.Transform;
 import net.abi.abisEngine.math.Vector3f;
+import net.abi.abisEngine.rendering.asset.AssetContainer;
 import net.abi.abisEngine.rendering.asset.AssetLoaderParameters.LoadedCallback;
 import net.abi.abisEngine.rendering.asset.AssetManager;
 import net.abi.abisEngine.rendering.asset.loaders.ModelSceneLoader;
@@ -25,11 +25,9 @@ import net.abi.abisEngine.rendering.resourceManagement.Material;
 import net.abi.abisEngine.rendering.sceneManagement.Scene;
 import net.abi.abisEngine.rendering.textureManagement.Texture;
 import net.abi.abisEngine.rendering.windowManagement.GLFWWindow;
-import net.abi.abisEngine.rendering.windowManagement.GLFWWindowManager;
 import net.abi.abisEngine.util.Attenuation;
 import tests.game.materials.BricksOne;
 import tests.game.materials.BricksTwo;
-import tests.game.windows.MainGame;
 
 public class EngineSplashScreen extends Scene {
 
@@ -99,34 +97,40 @@ public class EngineSplashScreen extends Scene {
 		// material).toggleWireFrames());
 		monkey2.getTransform().setTranslation(0, 0, 5);
 
-		monkey2.addChild(cameraObject);
-		monkey2.setTransform(cameraObject.getTransform());
-		cam.getTransform().setTranslation(0, 0, -5);
+		//monkey2.addChild(cameraObject);
+		//monkey2.setTransform(cameraObject.getTransform());
+		//cam.getTransform().setTranslation(0, 0, -5);
 
 		// Entity anvil = new Entity().addComponent(
 		// new MeshRenderer(AIMeshLoader.loadModel("monkey.obj", "Suzanne.001",
 		// 0).bindModel(), anvilmat));
 
-		ModelSceneLoader.Params parm = new ModelSceneLoader.Params();
+		ModelSceneLoader.Parameter parm = new ModelSceneLoader.Parameter();
 		parm.loadedCallback = new LoadedCallback() {
-			public void finishedLoading(AssetManager assetManager, String fileName, Class type) {
+
+			@Override
+			public void finishedLoading(AssetManager assetManager, String fileName, AssetContainer container) {
 				Material anvilmat = new Material();
 				anvilmat.addTexture("diffuse", new Texture("defaultModelTexture.png"));
 				anvilmat.addTexture("normal_map", new Texture("Normal_Map_Anvil.png"));
 				anvilmat.addFloat("specularIntensity", 1);
 				anvilmat.addFloat("specularPower", 8);
-				ModelScene m = assetManager.get("monkey.obj", ModelScene.class);
-				Mesh s = m.getMesh("monkey").bindModel();
+				ModelScene m = assetManager.get(fileName, ModelScene.class);
+				Mesh s = m.getMesh("tree.002_Mesh.001").bindModel();
 				monkey = new Entity().addComponent(new MeshRenderer(s, anvilmat));
 				// monkey.getTransform().setScale(0.250f, 0.250f, 0.250f);
 				test.addChild(monkey);
+				
+				monkey2 = new Entity().addComponent(new MeshRenderer(s, anvilmat));
+				monkey2.getTransform().setTranslation(0, 0, 10.0f);
 			}
+			
 		};
 
 		// man.load("monkey.obj", ModelScene.class, parm);
 //		man.load("Anvil_LowPoly.obj", ModelScene.class, parm);
-		man.load("monkey.obj", ModelScene.class, parm);
-//		man.load("monkey.obj", ModelScene.class, parm);
+		//man.load("monkey.obj", ModelScene.class, parm);
+		man.load("Tree1.obj", ModelScene.class, parm);
 
 		super.setMainCamera("playerView");
 		// super.addChild(spotLightObject);
@@ -134,9 +138,9 @@ public class EngineSplashScreen extends Scene {
 		// .addComponent(new MeshRenderer(AIMeshLoader.loadModel("plane3.obj", "Cube",
 		// 0), new BricksOne())));
 		super.addChild(directionalLightObject);
-		super.addChild(monkey2);
+		//super.addChild(monkey2);
 		// super.addChild(ironMan);
-		// super.addChild(cameraObject);
+		super.addChild(cameraObject);
 	}
 
 	float temp = 0.0f;
@@ -177,7 +181,7 @@ public class EngineSplashScreen extends Scene {
 
 		temp = temp + delta;
 		float angle = (float) Math.toRadians(temp * 180);
-		monkey.getTransform().getRotation().rotate(Transform.X_AXIS, (float) Math.toRadians(angle * 200));
+		//monkey.getTransform().getRotation().rotate(Transform.X_AXIS, (float) Math.toRadians(angle * 20));
 	}
 
 	GLFWMouseAndKeyboardInput in = (GLFWMouseAndKeyboardInput) super.getInputController();

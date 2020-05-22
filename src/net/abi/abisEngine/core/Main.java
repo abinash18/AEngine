@@ -26,8 +26,8 @@ public abstract class Main {
 
 		Options opts = new Options();
 		LogManager.addFileHandler(1000);
-		LogManager.setCurrentLevel(LogLevel.ALL);
-		//LogManager.addAllowedLevel(LogLevel.DEBUG);
+		//LogManager.setCurrentLevel(LogLevel.ALL);
+		LogManager.addAllowedLevel(LogLevel.DEBUG);
 //		LogManager.addAllowedLevel(LogLevel.INFO);
 		//LogManager.addAllowedLevel(LogLevel.ERROR);
 //		LogManager.addAllowedLevel(LogLevel.FINE);
