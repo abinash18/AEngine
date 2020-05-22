@@ -22,6 +22,8 @@ import net.abi.abisEngine.handlers.logging.Logger;
 import net.abi.abisEngine.rendering.asset.AssetI;
 import net.abi.abisEngine.rendering.resourceManagement.Material;
 import net.abi.abisEngine.util.Util;
+import net.abi.abisEngine.util.cacheing.GenericCache;
+import net.abi.abisEngine.util.cacheing.TwoFactorGenericCache;
 
 /*
  * TODO: Make this class extendible so the user can extend and add attributes pragmatically by extracting them from shaders.
@@ -74,11 +76,12 @@ public class Mesh implements AssetI {
 		}
 
 		public void bind() {
-			if (bound) return;
+			if (bound)
+				return;
 			/* Bind the VAOID to create buffers */
 			GL30.glBindVertexArray(VAOID);
 		}
-		
+
 		public VAO initVAO(int numBuffers) {
 
 			VAOBuffers = new int[numBuffers];
@@ -95,7 +98,7 @@ public class Mesh implements AssetI {
 			bound = true;
 			return this;
 		}
-		
+
 		public void unbind() {
 			GL30.glBindVertexArray(0);
 			bound = false;
@@ -137,7 +140,8 @@ public class Mesh implements AssetI {
 	 * @author abinash
 	 *
 	 */
-	class MeshResource {
+	class MeshResource implements AssetI {
+		String name;
 		int size, refCount;
 		HashMap<String, VAO> vaos;
 		MeshData meshData;
@@ -148,7 +152,8 @@ public class Mesh implements AssetI {
 		 * @param size
 		 * @param meshData
 		 */
-		public MeshResource(MeshData meshData) {
+		public MeshResource(String name, MeshData meshData) {
+			this.name = name;
 			this.size = meshData.model.getIndices().size() - 1;
 			this.refCount = 1;
 			this.meshData = meshData;
@@ -167,45 +172,63 @@ public class Mesh implements AssetI {
 			return vaos.get(name);
 		}
 
-		void incRefs() {
+		public void incRef() {
 			refCount++;
 		}
 
-		void decRefs() {
+		public void decRef() {
 			refCount--;
 		}
 
-		int decAndGetRefs() {
+		public int decAndGetRef() {
 			refCount--;
 			return refCount;
 		}
 
-		int getAndDecRefs() {
+		int getAndDecRef() {
 			int _refs = refCount;
 			refCount--;
 			return _refs;
 		}
 
-		int incAndGetRefs() {
+		public int incAndGetRef() {
 			refCount++;
 			return refCount;
 		}
 
-		int getAndIncRefs() {
+		int getAndIncRef() {
 			int _refs = refCount;
 			refCount++;
 			return _refs;
+		}
+
+		@Override
+		public void dispose() {
+
+		}
+
+		@Override
+		public int getRefs() {
+			return refCount;
 		}
 
 	}
 
-	private static HashMap<Long, HashMap<String, MeshResource>> loadedModels = new HashMap<Long, HashMap<String, MeshResource>>();
+	// private static HashMap<Long, HashMap<String, MeshResource>> loadedModels =
+	// new HashMap<Long, HashMap<String, MeshResource>>();
+
+	private static TwoFactorGenericCache<Long, String, MeshResource> loadedModels = new TwoFactorGenericCache<Long, String, MeshResource>(
+			Long.class, String.class, MeshResource.class);
 
 	/**
 	 * The data is managed seperatly from the MeshResources since there can be
 	 * multiple GLContexts
 	 */
-	private static HashMap<String, MeshData> loadedModelData = new HashMap<String, MeshData>();
+	// private static HashMap<String, MeshData> loadedModelData = new
+	// HashMap<String, MeshData>();
+
+	private static GenericCache<String, MeshData> loadedModelData = new GenericCache<String, MeshData>(String.class,
+			MeshData.class);
 
 	private static Logger logger = LogManager.getLogger(Mesh.class.getName());
 
@@ -246,12 +269,11 @@ public class Mesh implements AssetI {
 		/*
 		 * Find the MeshData in the cache.
 		 */
-		MeshData _data = loadedModelData.get(name);
+		MeshData _data;// = loadedModelData.get(name);
 
-		if (_data == null) {
-			_data = new MeshData(model, name, _mat);
-			loadedModelData.put(name, _data);
-		} else {
+		if (loadedModelData.containsKey(name)) {
+			_data = loadedModelData.get(name);
+			// System.out.println("ssssss");
 			/**
 			 * If the data is not the same then we set the data to the data given. Else we
 			 * Don't change the data and we keep going.
@@ -259,37 +281,68 @@ public class Mesh implements AssetI {
 			if (!_data.model.equals(model)) {
 				_data = new MeshData(model, name, _mat);
 			}
+		} else {
+			_data = new MeshData(model, name, _mat);
+			loadedModelData.put(name, _data);
 		}
+
+//		if (_data == null) {
+//			_data = new MeshData(model, name, _mat);
+//			loadedModelData.put(name, _data);
+//		} else {
+//			/**
+//			 * If the data is not the same then we set the data to the data given. Else we
+//			 * Don't change the data and we keep going.
+//			 */
+//			if (!_data.model.equals(model)) {
+//				_data = new MeshData(model, name, _mat);
+//			}
+//		}
 
 		/*
 		 * Find the Context in the cache.
 		 */
-		HashMap<String, MeshResource> _mm = loadedModels.get(Long.valueOf(context_handle));
+		// HashMap<String, MeshResource> _mm =
+		// loadedModels.get(Long.valueOf(context_handle));
+
+		/*
+		 * If we find the resource all together for this context we can inc ref.
+		 */
+		MeshResource mr;
+		if ((mr = loadedModels.get(this.context_handle, name)) != null) {
+			/*
+			 * Even though the cache is compatible for incrementing references that is only
+			 * for put.
+			 */
+			mr.incRef();
+		} else {
+			loadedModels.put(this.context_handle, name, (mr = new MeshResource(name, _data)));
+		}
 
 		/*
 		 * If the Context was not found then create a map and add it to the cache.
 		 */
-		if (_mm == null) {
-			_mm = new HashMap<String, MeshResource>();
-			loadedModels.put(context_handle, _mm);
-		}
+//		if (_mm == null) {
+//			_mm = new HashMap<String, MeshResource>();
+//			loadedModels.put(context_handle, _mm);
+//		}
 
-		MeshResource _mr;
+		// MeshResource _mr;
 
 		/*
 		 * Find the MeshResource in the Context thats found or was newly created.
 		 */
-		if ((_mr = _mm.get(name)) == null) {
-			_mr = new MeshResource(_data);
-			_mm.put(name, _mr);
-		} else {
-			/*
-			 * If the context was found then increment the references and we are done.
-			 */
-			_mr.incRefs();
-		}
+//		if ((_mr = _mm.get(name)) == null) {
+//			_mr = new MeshResource(_data);
+//			_mm.put(name, _mr);
+//		} else {
+//			/*
+//			 * If the context was found then increment the references and we are done.
+//			 */
+//			_mr.incRefs();
+//		}
 
-		this.meshResource = _mr;
+		this.meshResource = mr;
 
 		// bindModel(model, GL15.GL_STATIC_DRAW);
 
@@ -328,7 +381,7 @@ public class Mesh implements AssetI {
 		/* Tangents */
 		bindBuffer(_v, GL15.GL_ARRAY_BUFFER, VAO_TANGENT_INDEX, VAO_TANGENT_INDEX, 3,
 				Util.createFlippedBuffer(meshResource.meshData.model.getTangents()), draw_usage);
-		
+
 		/* Indices */
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, _v.VAOBuffers[VAO_INDICES_INDEX]);
 		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, Util.createIntBuffer(meshResource.meshData.model.getIndices()),
@@ -344,14 +397,14 @@ public class Mesh implements AssetI {
 		GL15.glBindBuffer(type, _v.VAOBuffers[index]);
 		GL15.glBufferData(type, data, draw_usage);
 		GL20.glVertexAttribPointer(pos, numValues, GL11.GL_FLOAT, false, 0, 0);
-		//GL15.glBindBuffer(type, 0);
+		// GL15.glBindBuffer(type, 0);
 	}
 
 	public void deleteMesh() {
-		//		meshResource.vaos.forEach(v -> {
-		//			glDeleteBuffers(v.VAOBuffers);
-		//			glDeleteVertexArrays(v.VAO);
-		//		});
+		// meshResource.vaos.forEach(v -> {
+		// glDeleteBuffers(v.VAOBuffers);
+		// glDeleteVertexArrays(v.VAO);
+		// });
 
 		for (Iterator<Map.Entry<String, VAO>> iterator = meshResource.vaos.entrySet().iterator(); iterator.hasNext();) {
 			Map.Entry<String, VAO> entry = iterator.next();
@@ -367,16 +420,16 @@ public class Mesh implements AssetI {
 	private void init(VAO _v) {
 
 		_v.bind();
-		
+
 		for (int i = 0; i < _v.VAOBuffers.length; i++) {
 			GL30.glEnableVertexAttribArray(i);
 		}
-		//		GL30.glBindVertexArray(meshResource.vaos.get("vaoOne").VAOID);
-		//		glEnableVertexAttribArray(0);
-		//		glEnableVertexAttribArray(1);
-		//		glEnableVertexAttribArray(2);
-		//		glEnableVertexAttribArray(3);
-		//		glEnableVertexAttribArray(4);
+		// GL30.glBindVertexArray(meshResource.vaos.get("vaoOne").VAOID);
+		// glEnableVertexAttribArray(0);
+		// glEnableVertexAttribArray(1);
+		// glEnableVertexAttribArray(2);
+		// glEnableVertexAttribArray(3);
+		// glEnableVertexAttribArray(4);
 	}
 
 	public void draw(String vaoName, int draw_option) {
@@ -391,12 +444,12 @@ public class Mesh implements AssetI {
 		}
 		_v.unbind();
 
-		//		glDisableVertexAttribArray(0);
-		//		glDisableVertexAttribArray(1);
-		//		glDisableVertexAttribArray(2);
-		//		glDisableVertexAttribArray(3);
-		//		glDisableVertexAttribArray(4);
-		//		GL30.glBindVertexArray(0);
+		// glDisableVertexAttribArray(0);
+		// glDisableVertexAttribArray(1);
+		// glDisableVertexAttribArray(2);
+		// glDisableVertexAttribArray(3);
+		// glDisableVertexAttribArray(4);
+		// GL30.glBindVertexArray(0);
 	}
 
 	public int getSize() {
@@ -422,7 +475,7 @@ public class Mesh implements AssetI {
 	 */
 	@Override
 	public void dispose() {
-		this.loadedModels.remove(this.context_handle, this.meshResource);
+		Mesh.loadedModels.remove(this.context_handle, this.meshResource.name);
 		this.deleteMesh();
 	}
 
@@ -433,7 +486,7 @@ public class Mesh implements AssetI {
 	 */
 	@Override
 	public void incRef() {
-		this.meshResource.incRefs();
+		this.meshResource.incRef();
 	}
 
 	/*
@@ -443,7 +496,7 @@ public class Mesh implements AssetI {
 	 */
 	@Override
 	public void decRef() {
-		if (this.meshResource.decAndGetRefs() <= 0) {
+		if (this.meshResource.decAndGetRef() <= 0) {
 			dispose();
 		}
 	}

@@ -34,7 +34,7 @@ public class AssetStore {
 	 * since there can be only one type. And when loading ModelScenes There can be
 	 * many assets there.
 	 * 
-	 * @param          <T>
+	 * @param <T>
 	 * 
 	 * @param type
 	 * @param fileName
@@ -121,7 +121,7 @@ public class AssetStore {
 	 * loads all assets from the file which there can be multiple of. So the loader
 	 * assigns the names as keys to find them.
 	 * 
-	 * @param           <T>
+	 * @param <T>
 	 * 
 	 * @param type
 	 * @param assetName
@@ -251,6 +251,24 @@ public class AssetStore {
 
 	public HashMap<String, Class> getAssetTypes() {
 		return assetTypes;
+	}
+
+	public <T> AssetContainer getContainer(Class<T> type, String assetName) {
+		AssetContainer _assCont = null;
+
+		HashMap<String, AssetContainer> _assets = assets.get(type);
+
+		if (_assets == null) {
+			throw new AERuntimeException("AssetI Not Loaded: " + assetName);
+		}
+
+		_assCont = _assets.get(assetName);
+
+		if (_assCont == null) {
+			throw new AERuntimeException("AssetI Not Loaded: " + assetName);
+		}
+
+		return _assCont;
 	}
 
 }

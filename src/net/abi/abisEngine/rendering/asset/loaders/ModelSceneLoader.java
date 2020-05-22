@@ -7,7 +7,7 @@ import net.abi.abisEngine.rendering.asset.AssetManager;
 import net.abi.abisEngine.rendering.meshManagement.AIMeshLoader;
 import net.abi.abisEngine.rendering.meshManagement.ModelScene;
 
-public class ModelSceneLoader extends AsyncAssetLoader<ModelScene, ModelSceneLoader.Params> {
+public class ModelSceneLoader extends AsyncAssetLoader<ModelScene, ModelSceneLoader.Parameter> {
 
 	public ModelSceneLoader(String assetsDir) {
 		super(assetsDir);
@@ -15,7 +15,7 @@ public class ModelSceneLoader extends AsyncAssetLoader<ModelScene, ModelSceneLoa
 
 	ModelScene scene = null;
 
-	static public class Params extends AssetLoaderParameters<ModelScene> {
+	static public class Parameter extends AssetLoaderParameters<ModelScene> {
 
 	}
 
