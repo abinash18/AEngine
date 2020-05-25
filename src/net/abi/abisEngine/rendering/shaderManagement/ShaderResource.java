@@ -31,17 +31,10 @@ public class ShaderResource {
 
 	public ShaderResource(String name, PathHandle pathToShaderDirectory) {
 		this.path = pathToShaderDirectory;
-//		this.vertexShaderName = vertexShaderName;
-//		this.fragmentShaderName = fragmentShaderName;
-//
-//		this.vertexShaderText = vertexShaderText;
-//		this.fragmentShaderText = fragmentShaderText;
 
 		this.program = GL20.glCreateProgram();
 
 		if (program == 0) {
-			// System.err.println("Shader creation failed: Could not find valid memory
-			// location in constructor");
 			logger.error("Shader creation failed: Could not find valid memory location in constructor",
 					new Exception());
 			logger.info("Exiting...");

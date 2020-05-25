@@ -52,14 +52,13 @@ public class EngineLoader extends GLFWWindow {
 		AEImage i = new AEImage(new PathHandle("./res/textures/cursor.png"));
 
 		try {
-			i.loadImage();
+			// i.loadImage();
 			i = AEImage.resize(i, 32, 32);
+			super.setWindowIcon(i);
 			super.setCursor(new StaticCursor("s", i, 0, 0));
-		} catch (AECursorInitializationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (AEImageManipulationException e) {
-			// TODO Auto-generated catch block
+			// } catch (AECursorInitializationException e) {
+			// e.printStackTrace();
+		} catch (AEImageManipulationException | AECursorInitializationException e) {
 			e.printStackTrace();
 		}
 	}

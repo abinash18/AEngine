@@ -1,0 +1,37 @@
+#!!net.abi.abisEngine.rendering.shaderManagement.compiler.fileTypes.yaml.AEShaderFileYAML
+AE_SHADER_NAME: "refrence-yaml.ae-shader" #*AE_SHADER_FILE_NAME
+AE_SHADER_DESC: "A reference shader file."
+#AE_SHADER_PASS: "forward-ambient"
+AE_PREP_PROPERTIES:
+  - AE_PREP_PROPERTY_IDENTIFIER: "AE_ENABLE"
+    AE_PREP_PROPERTY_PARAMETERS: ["BLEND"]
+  - AE_PREP_PROPERTY_IDENTIFIER: "BLEND_FUNC"
+    AE_PREP_PROPERTY_PARAMETERS: ["GL_ONE_MINUS_SRC", "GL_ONE"]
+  - AE_PREP_PROPERTY_IDENTIFIER: "DEPTH_MASK"
+    AE_PREP_PROPERTY_PARAMETERS: ["AE_FALSE"]
+  - AE_PREP_PROPERTY_IDENTIFIER: "DEPTH_FUNC"
+    AE_PREP_PROPERTY_PARAMETERS: ["GL_EQUAL"]
+  - AE_PREP_PROPERTY_IDENTIFIER: "AE_DRAW_MODE"
+    AE_PREP_PROPERTY_PARAMETERS: ["GL_TRIANGLES"]
+AE_SHADER_GLSL_PROGRAMS:
+  - AE_SHADER_GLSL_PROGRAM_TYPE: "AE_VERTEX_SHADER"
+    AE_SHADER_GLSL_PROGRAM_NAME: "vertex_shader"
+    AE_SHADER_GLSL_PROGRAM_SOURCE: |
+      #version 330 core
+      precision mediump int;
+      precision mediump float;
+      layout (location = 0) in vec3 position;
+      uniform mat4 T_MVP;
+      void main() {
+        gl_Position = T_MVP * vec4(position, 1.0);
+      }
+  - AE_SHADER_GLSL_PROGRAM_TYPE: "AE_FRAGMENT_SHADER"
+    AE_SHADER_GLSL_PROGRAM_NAME: "fragment_shader"
+    AE_SHADER_GLSL_PROGRAM_SOURCE: |
+      #version 330 core
+      in vec2 texCoord0;
+      uniform vec3 R_ambient;
+      uniform sampler2D diffuse;
+      void main() {
+        gl_FragColor = texture2D(diffuse, texCoord0.xy) * vec4(R_ambient, 1.0);
+      }

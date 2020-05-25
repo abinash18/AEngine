@@ -1,5 +1,7 @@
 package net.abi.abisEngine.rendering.sceneManagement.scenes;
 
+import java.nio.file.Paths;
+
 import org.lwjgl.glfw.GLFW;
 
 import net.abi.abisEngine.components.Camera;
@@ -10,6 +12,7 @@ import net.abi.abisEngine.components.MeshRenderer;
 import net.abi.abisEngine.components.PointLight;
 import net.abi.abisEngine.components.SpotLight;
 import net.abi.abisEngine.core.Entity;
+import net.abi.abisEngine.handlers.file.PathHandle;
 import net.abi.abisEngine.input.GLFWInput;
 import net.abi.abisEngine.input.GLFWMouseAndKeyboardInput;
 import net.abi.abisEngine.math.Transform;
@@ -23,6 +26,8 @@ import net.abi.abisEngine.rendering.meshManagement.ModelScene;
 import net.abi.abisEngine.rendering.pipelineManagement.RenderingEngine;
 import net.abi.abisEngine.rendering.resourceManagement.Material;
 import net.abi.abisEngine.rendering.sceneManagement.Scene;
+import net.abi.abisEngine.rendering.shaderManagement.compiler.AEShaderCompiler;
+import net.abi.abisEngine.rendering.shaderManagement.compiler.loader.AEShaderLoader;
 import net.abi.abisEngine.rendering.textureManagement.Texture;
 import net.abi.abisEngine.rendering.windowManagement.GLFWWindow;
 import net.abi.abisEngine.util.Attenuation;
@@ -97,9 +102,9 @@ public class EngineSplashScreen extends Scene {
 		// material).toggleWireFrames());
 		monkey2.getTransform().setTranslation(0, 0, 5);
 
-		//monkey2.addChild(cameraObject);
-		//monkey2.setTransform(cameraObject.getTransform());
-		//cam.getTransform().setTranslation(0, 0, -5);
+		// monkey2.addChild(cameraObject);
+		// monkey2.setTransform(cameraObject.getTransform());
+		// cam.getTransform().setTranslation(0, 0, -5);
 
 		// Entity anvil = new Entity().addComponent(
 		// new MeshRenderer(AIMeshLoader.loadModel("monkey.obj", "Suzanne.001",
@@ -120,16 +125,16 @@ public class EngineSplashScreen extends Scene {
 				monkey = new Entity().addComponent(new MeshRenderer(s, anvilmat));
 				// monkey.getTransform().setScale(0.250f, 0.250f, 0.250f);
 				test.addChild(monkey);
-				
+
 				monkey2 = new Entity().addComponent(new MeshRenderer(s, anvilmat));
 				monkey2.getTransform().setTranslation(0, 0, 10.0f);
 			}
-			
+
 		};
 
 		// man.load("monkey.obj", ModelScene.class, parm);
 //		man.load("Anvil_LowPoly.obj", ModelScene.class, parm);
-		//man.load("monkey.obj", ModelScene.class, parm);
+		// man.load("monkey.obj", ModelScene.class, parm);
 		man.load("Tree1.obj", ModelScene.class, parm);
 
 		super.setMainCamera("playerView");
@@ -138,7 +143,7 @@ public class EngineSplashScreen extends Scene {
 		// .addComponent(new MeshRenderer(AIMeshLoader.loadModel("plane3.obj", "Cube",
 		// 0), new BricksOne())));
 		super.addChild(directionalLightObject);
-		//super.addChild(monkey2);
+		// super.addChild(monkey2);
 		// super.addChild(ironMan);
 		super.addChild(cameraObject);
 	}
@@ -181,13 +186,15 @@ public class EngineSplashScreen extends Scene {
 
 		temp = temp + delta;
 		float angle = (float) Math.toRadians(temp * 180);
-		//monkey.getTransform().getRotation().rotate(Transform.X_AXIS, (float) Math.toRadians(angle * 20));
+		// monkey.getTransform().getRotation().rotate(Transform.X_AXIS, (float)
+		// Math.toRadians(angle * 20));
 	}
 
 	GLFWMouseAndKeyboardInput in = (GLFWMouseAndKeyboardInput) super.getInputController();
 
 	@Override
 	public void input(float delta) {
+		in = (GLFWMouseAndKeyboardInput) super.getInputController();
 		super.input(delta);
 		if (in.isKeyDown(GLFWInput.GLFW_KEY_ESCAPE)) {
 			in.setCursorMode(GLFW.GLFW_CURSOR_NORMAL);

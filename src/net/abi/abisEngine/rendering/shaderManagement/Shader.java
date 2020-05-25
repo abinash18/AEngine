@@ -56,9 +56,9 @@ public class Shader implements AssetI {
 	private ShaderSource shaderData;
 	private ShaderResource shaderProgram;
 
-	public static enum ShaderType {
-		VERTEX(".glvs"), FRAGMENT(".glfs"), GEOMETRY(".glgs"), TESSELATION_EVALUATION(".glte"),
-		TESSELATION_CONTROL(".gltc"), COMPUTE(".glc"), HEADER(".glh");
+	public enum ShaderType {
+		AE_VERTEX_SHADER(".glvs"), AE_FRAGMENT_SHADER(".glfs"), AE_GEOMETRY_SHADER(".glgs"), AE_TESSELATION_EVALUATION_SHADER(".glte"),
+		AE_TESSELATION_CONTROL_SHADER(".gltc"), AE_COMPUTE_SHADER(".glc"), AE_HEADER(".glh");
 
 		public String extention;
 
@@ -177,7 +177,7 @@ public class Shader implements AssetI {
 
 			ShaderSource _d;
 
-			if ((_d = shaderProgram.getSubPrograms().get(ShaderType.VERTEX)) != null) {
+			if ((_d = shaderProgram.getSubPrograms().get(ShaderType.AE_VERTEX_SHADER)) != null) {
 				this.addAllAttributes(_d);
 			}
 
@@ -631,21 +631,21 @@ public class Shader implements AssetI {
 
 	public void addShader(ShaderType type, ShaderSource source) {
 		switch (type) {
-		case VERTEX:
+		case AE_VERTEX_SHADER:
 			this.addVertexShader(source);
 			break;
-		case FRAGMENT:
+		case AE_FRAGMENT_SHADER:
 			this.addFragmentShader(source);
 			break;
-		case GEOMETRY:
+		case AE_GEOMETRY_SHADER:
 			this.addGeometryShader(source);
 			break;
-		case COMPUTE:
+		case AE_COMPUTE_SHADER:
 			break;
-		case TESSELATION_CONTROL:
+		case AE_TESSELATION_CONTROL_SHADER:
 			this.addTesselationControlShader(source);
 			break;
-		case TESSELATION_EVALUATION:
+		case AE_TESSELATION_EVALUATION_SHADER:
 			this.addTesselationEvaluationShader(source);
 			break;
 
@@ -887,7 +887,7 @@ public class Shader implements AssetI {
 					/* Loads the shader specified in the #include */
 					PathHandle path = DEFAULT_SHADER_ASSET_DIRECTORY_PATH.resolveChild(
 							"includes/" + line.substring(INCLUDE_DIRECTIVE.length() + 2, line.length() - 1));
-					shaderSource.append(loadShaderSource(path, ShaderType.HEADER).getSource());
+					shaderSource.append(loadShaderSource(path, ShaderType.AE_HEADER).getSource());
 					/* Figures out the name of the file being included. */
 
 				} else {
