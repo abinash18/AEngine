@@ -20,45 +20,46 @@ import org.lwjgl.system.MemoryUtil;
 import net.abi.abisEngine.handlers.file.PathHandle;
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
+import net.abi.abisEngine.rendering.asset.AssetI;
 import net.abi.abisEngine.util.IOUtil;
+import net.abi.abisEngine.util.cacheing.GenericCache;
 import net.abi.abisEngine.util.exceptions.AEIOException;
 import net.abi.abisEngine.util.exceptions.AEImageManipulationException;
 import net.abi.abisEngine.util.exceptions.AERuntimeException;
 
-public class AEImage {
+public class AEImage implements AssetI {
 	private static final Logger logger = LogManager.getLogger(PixelMap.class);
 
-	public class ImageMetaData {
-		public int width, height, channels, format;
+	private static GenericCache<String, PixelMap> pixmaps = new GenericCache<String, PixelMap>(String.class,
+			PixelMap.class);
 
-		public ImageMetaData(int width, int height, int channels, int format) {
-			this.width = width;
-			this.height = height;
-			this.channels = channels;
-			this.format = format;
-		}
-	}
-
-	private PathHandle file;
 	private ImageMetaData md;
 	private PixelMap image;
 
 	public AEImage(PathHandle file) {
-		this.file = file;
+		if ((image = pixmaps.get(file.getName())) == null) {
+			try {
+				pixmaps.put(file.getName(), (image = loadImage(file)));
+				md = image.getImageMetaData();
+			} catch (AEIOException e) {
+				logger.error("Could not load image: " + file + " :" + e.getStackTrace());
+			}
+		}
 	}
 
 	public AEImage(PathHandle file, int w, int h, int channels, int format, ByteBuffer image) {
-		this.file = file;
-		this.md = new ImageMetaData(w, h, channels, format);
-		this.image = new PixelMap(image, w, h, channels, format);
+		this.md = new ImageMetaData(file, w, h, channels, format);
+		this.image = new PixelMap(image, this.md);
 	}
 
 	public PixelMap getData() {
 		return image;
 	}
 
-	public void loadImage() throws AEIOException {
-		ByteBuffer image;
+	public static PixelMap loadImage(PathHandle file) throws AEIOException {
+		ByteBuffer _image;
+		ImageMetaData _md;
+		PixelMap _image_;
 
 		try (MemoryStack stack = stackPush()) {
 			IntBuffer w = stack.mallocInt(1);
@@ -66,25 +67,28 @@ public class AEImage {
 			IntBuffer comp = stack.mallocInt(1);
 
 			// Decode the image
-			image = stbi_load(file.getPath(), w, h, comp, 4);
-			if (image == null) {
+			_image = STBImage.stbi_load(file.getPath(), w, h, comp, 4);
+			if (_image == null) {
 				throw new AERuntimeException("Failed to load image: " + stbi_failure_reason());
 			}
 
-			logger.debug("Image width: " + w.get(0));
-			logger.debug("Image height: " + h.get(0));
-			logger.debug("Image components: " + comp.get(0));
-			logger.debug("Image HDR: " + stbi_is_hdr_from_memory(image));
-			this.md = new ImageMetaData(w.get(0), h.get(0), comp.get(0), 0);
-			this.image = new PixelMap(image, md.width, md.height, md.channels, md.format);
+			logger.fine("Image width: " + w.get(0));
+			logger.fine("Image height: " + h.get(0));
+			logger.fine("Image components: " + comp.get(0));
+			logger.fine("Image HDR: " + STBImage.stbi_is_hdr_from_memory(_image));
+			_md = new ImageMetaData(file, w.get(0), h.get(0), comp.get(0), 0);
+			_image_ = new PixelMap(_image, _md);
 
 			/* If there is alpha */
 			if (comp.get(0) == 4) {
-				premultiplyAlpha();
+				premultiplyAlpha(_image_);
 			}
 
-			STBImage.stbi_image_free(image);
+			STBImage.stbi_image_free(_image);
 		}
+
+		return _image_;
+
 	}
 
 	/**
@@ -98,32 +102,35 @@ public class AEImage {
 	 */
 	public static AEImage resize(AEImage src, int newW, int newH) throws AEImageManipulationException {
 		ByteBuffer input = src.getData().getPixelsInByteBuffer(),
-				output = MemoryUtil.memAlloc(newW * newH * src.getMD().channels);
+				output = MemoryUtil.memAlloc(newW * newH * src.getImageMetaData().channels);
 
-		boolean result = STBImageResize.stbir_resize(input, src.getMD().width, /* The input data */
-				src.getMD().height, src.getMd().width * src.getMd().channels,
+		boolean result = STBImageResize.stbir_resize(input, src.getImageMetaData().width, /* The input data */
+				src.getImageMetaData().height, src.getImageMetaData().width * src.getImageMetaData().channels,
 				output, /* The out put data */
-				newW, newH, newW * src.getMd().channels, /* The output stride can be zero. */ STBImageResize.STBIR_TYPE_UINT8,
-				src.getMD().channels,
-				/* The number of channels */ (src.getMD().channels == 4) ? 3 : STBImageResize.STBIR_ALPHA_CHANNEL_NONE,
+				newW, newH, newW * src.getImageMetaData().channels,
+				/* The output stride can be zero. */ STBImageResize.STBIR_TYPE_UINT8, src.getImageMetaData().channels,
+				/* The number of channels */ (src.getImageMetaData().channels == 4) ? 3
+						: STBImageResize.STBIR_ALPHA_CHANNEL_NONE,
 				0, STBImageResize.STBIR_EDGE_ZERO, STBImageResize.STBIR_EDGE_ZERO,
 				STBImageResize.STBIR_FILTER_CUBICBSPLINE, STBImageResize.STBIR_FILTER_CUBICBSPLINE,
 				STBImageResize.STBIR_COLORSPACE_SRGB);
 
 		MemoryUtil.memFree(output);
-		
+
 		if (!result) {
-			throw new AEImageManipulationException("The image :" + src.file.toString() + " Failed to resize.");
+			throw new AEImageManipulationException(
+					"The image :" + src.getImageMetaData().file.toString() + " Failed to resize.");
 		}
-		AEImage returnVal = new AEImage(src.file, newW, newH, src.getMD().channels, src.getMD().format, output);
+		AEImage returnVal = new AEImage(src.getImageMetaData().file, newW, newH, src.getImageMetaData().channels,
+				src.getImageMetaData().format, output);
 		return returnVal;
 
 	}
 
-	public void premultiplyAlpha() {
-		int stride = md.width * 4;
-		for (int y = 0; y < md.height; y++) {
-			for (int x = 0; x < md.width; x++) {
+	public static void premultiplyAlpha(PixelMap image) {
+		int stride = image.getImageMetaData().width * 4;
+		for (int y = 0; y < image.getImageMetaData().height; y++) {
+			for (int x = 0; x < image.getImageMetaData().width; x++) {
 				int i = y * stride + x * 4;
 
 				float alpha = (image.getPixelsInByteBuffer().get(i + 3) & 0xFF) / 255.0f;
@@ -135,19 +142,7 @@ public class AEImage {
 		}
 	}
 
-	public ImageMetaData getMD() {
-		return md;
-	}
-
-	public PathHandle getFile() {
-		return file;
-	}
-
-	public void setFile(PathHandle file) {
-		this.file = file;
-	}
-
-	public ImageMetaData getMd() {
+	public ImageMetaData getImageMetaData() {
 		return md;
 	}
 
@@ -165,5 +160,35 @@ public class AEImage {
 
 	public static Logger getLogger() {
 		return logger;
+	}
+
+	@Override
+	public void dispose() {
+
+	}
+
+	@Override
+	public void incRef() {
+
+	}
+
+	@Override
+	public int incAndGetRef() {
+		return 0;
+	}
+
+	@Override
+	public void decRef() {
+
+	}
+
+	@Override
+	public int decAndGetRef() {
+		return 0;
+	}
+
+	@Override
+	public int getRefs() {
+		return 0;
 	}
 }

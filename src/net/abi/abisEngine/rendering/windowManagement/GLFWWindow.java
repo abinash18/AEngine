@@ -69,6 +69,7 @@ import net.abi.abisEngine.math.Vector2f;
 import net.abi.abisEngine.math.Vector2i;
 import net.abi.abisEngine.rendering.AEImage;
 import net.abi.abisEngine.rendering.PixelMap;
+import net.abi.abisEngine.rendering.asset.AssetI;
 import net.abi.abisEngine.rendering.asset.AssetManager;
 import net.abi.abisEngine.rendering.asset.AssetStore;
 import net.abi.abisEngine.rendering.pipelineManagement.RenderingEngine;
@@ -76,6 +77,8 @@ import net.abi.abisEngine.rendering.sceneManagement.Scene;
 import net.abi.abisEngine.rendering.sceneManagement.SceneManager;
 import net.abi.abisEngine.util.Expendable;
 import net.abi.abisEngine.util.Util;
+import net.abi.abisEngine.util.cacheing.GenericCache;
+import net.abi.abisEngine.util.cacheing.TwoFactorGenericCache;
 import net.abi.abisEngine.util.exceptions.AECursorInitializationException;
 import net.abi.abisEngine.util.exceptions.AEWindowInitializationException;
 
@@ -101,10 +104,15 @@ public abstract class GLFWWindow implements Expendable {
 
 	private static Logger logger = LogManager.getLogger(GLFWWindow.class.getName());
 
+	private static GenericCache<String, StaticCursorResource> cursors = new GenericCache<String, StaticCursorResource>(
+			String.class, StaticCursorResource.class);
+
 	public interface CursorI extends Expendable {
 		public long create() throws AECursorInitializationException;
 
 		public String getID();
+
+		public StaticCursorResource getCursorResource();
 
 		public long getHandle();
 	}
@@ -122,71 +130,145 @@ public abstract class GLFWWindow implements Expendable {
 
 		@Override
 		public long create() throws AECursorInitializationException {
-			// TODO Auto-generated method stub
 			return 0L;
 		}
 
 		@Override
 		public String getID() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public long getHandle() {
-			// TODO Auto-generated method stub
 			return 0;
+		}
+
+		@Override
+		public StaticCursorResource getCursorResource() {
+			return null;
+		}
+	}
+
+	public class StaticCursorResource implements AssetI {
+		String id;
+		long cursor_handle;
+		AEImage image;
+		int standardCursorType = 0, yHotspot = 0, xHotspot = 0, refs = 1;
+
+		@Override
+		public void dispose() {
+			if (refs <= 0) {
+				image.decRef();
+				glfwDestroyCursor(cursor_handle);
+			}
+		}
+
+		@Override
+		public void incRef() {
+			refs += 1;
+		}
+
+		@Override
+		public int incAndGetRef() {
+			incRef();
+			return refs;
+		}
+
+		@Override
+		public void decRef() {
+			refs -= 1;
+		}
+
+		@Override
+		public int decAndGetRef() {
+			decRef();
+			return refs;
+		}
+
+		@Override
+		public int getRefs() {
+			return refs;
 		}
 	}
 
 	public class StaticCursor implements CursorI {
-		/* Something to represent this object other than the handle. */
-		String id;
-		long cursor_handle;
-		AEImage image;
-		int standardCursorType = 0, yHotspot = 0, xHotspot = 0;
 
+		StaticCursorResource cr;
+
+		/**
+		 * Creates a standard GLFW_ARROW_CURSOR
+		 * 
+		 * @param id
+		 */
 		public StaticCursor(String id) {
-			this.standardCursorType = GLFWInput.GLFW_ARROW_CURSOR;
+			this(id, GLFWInput.GLFW_ARROW_CURSOR);
 		}
 
 		public StaticCursor(String id, int standardCursor) {
-			this.standardCursorType = standardCursor;
+			if ((this.cr = cursors.get(id)) == null) {
+				this.cr = new StaticCursorResource();
+				this.cr.id = id;
+				this.cr.standardCursorType = GLFWInput.GLFW_ARROW_CURSOR;
+				cursors.put(id, cr);
+			} else {
+				/*
+				 * This is the only thing we need to do since the user decided to make a copy of
+				 * the cursor.
+				 */
+				this.cr.incRef();
+			}
 		}
 
 		public StaticCursor(String id, AEImage imageToUse, int xHot, int yHot) {
-			this.image = imageToUse;
-			this.xHotspot = xHot;
-			this.yHotspot = yHot;
+			if ((this.cr = cursors.get(id)) == null) {
+				this.cr = new StaticCursorResource();
+				this.cr.id = id;
+				this.cr.image = imageToUse;
+				this.cr.xHotspot = xHot;
+				this.cr.yHotspot = yHot;
+			} else {
+				/*
+				 * This is the only thing we need to do since the user decided to make a copy of
+				 * the cursor.
+				 */
+				this.cr.incRef();
+			}
+
 		}
 
 		public long create() throws AECursorInitializationException {
-			if (standardCursorType != 0) {
-				cursor_handle = GLFW.glfwCreateStandardCursor(standardCursorType);
+			if (this.cr.standardCursorType != 0) {
+				this.cr.cursor_handle = GLFW.glfwCreateStandardCursor(this.cr.standardCursorType);
 			} else {
 				GLFWImage i = GLFWImage.malloc();
-				i.set(image.getData().getWidth(), image.getData().getHeight(), image.getData().getPixelsInByteBuffer());
-				cursor_handle = GLFW.glfwCreateCursor(i, xHotspot, yHotspot);
+				i.set(this.cr.image.getImageMetaData().width, this.cr.image.getImageMetaData().height,
+						this.cr.image.getData().getPixelsInByteBuffer());
+				this.cr.cursor_handle = GLFW.glfwCreateCursor(i, this.cr.xHotspot, this.cr.yHotspot);
 				i.free();
 			}
-			if (cursor_handle == NULL) {
+			if (this.cr.cursor_handle == NULL) {
 				throw new AECursorInitializationException("Failed to create cursor.", this);
 			}
-			return cursor_handle;
+			return this.cr.cursor_handle;
 		}
 
 		public String getID() {
-			return id;
+			return cr.id;
 		}
 
 		@Override
 		public void dispose() {
-			glfwDestroyCursor(cursor_handle);
+			this.cr.decRef();
 		}
 
 		@Override
 		public long getHandle() {
-			return cursor_handle;
+			return cr.cursor_handle;
+		}
+
+		@Override
+		public StaticCursorResource getCursorResource() {
+			return cr;
 		}
 	}
 
@@ -600,6 +682,34 @@ public abstract class GLFWWindow implements Expendable {
 	public void setWindowPosition(int xpos, int ypos) {
 		glfwSetWindowPos(glfw_handle, xpos, ypos);
 		this.properties.position.set(xpos, ypos);
+	}
+
+	/**
+	 * Icons can be set to null by setting the first element of the array to null to
+	 * reset to default platform window icon.
+	 * 
+	 * @param icons
+	 */
+	public void setWindowIcon(AEImage... icons) {
+		if (icons[0] == null) {
+			glfwSetWindowIcon(glfw_handle, null);
+			return;
+		}
+		
+		GLFWImage[] i = new GLFWImage[icons.length];
+		GLFWImage.Buffer ibf = GLFWImage.malloc(icons.length);
+		for (int j = 0; j < icons.length; j++) {
+			i[j] = GLFWImage.malloc();
+			i[j].set(icons[j].getImageMetaData().width, icons[j].getImageMetaData().height,
+					icons[j].getData().getPixelsInByteBuffer());
+			ibf.put(j, i[j]);
+		}
+		// ibf.flip();
+		glfwSetWindowIcon(glfw_handle, ibf);
+		for (int j = 0; j < icons.length; j++) {
+			i[j].free();
+		}
+		ibf.free();
 	}
 
 	/**

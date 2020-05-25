@@ -2,24 +2,24 @@ package net.abi.abisEngine.rendering;
 
 import java.nio.ByteBuffer;
 
+import net.abi.abisEngine.rendering.asset.AssetI;
 import net.abi.abisEngine.util.Color;
 
-public class PixelMap {
+public class PixelMap implements AssetI {
 
 	private ByteBuffer image;
-	private int width, height, format, channels;
+	private ImageMetaData md;
+	private int refs;
 
 	/**
 	 * ./res/textures/ is automatically prepended.
 	 * 
 	 * @param file
 	 */
-	public PixelMap(ByteBuffer image, int width, int height, int channels, int format) {
+	public PixelMap(ByteBuffer image, ImageMetaData md) {
 		this.image = image;
-		this.width = width;
-		this.height = height;
-		this.format = format;
-		this.channels = channels;
+		this.md = md;
+		this.refs = 1;
 	}
 
 	public ByteBuffer getPixelsInByteBuffer() {
@@ -27,7 +27,7 @@ public class PixelMap {
 	}
 	
 	public void setPixel(int x, int y, Color c) {
-		int offset = (width * y + x) * 4;
+		int offset = (md.width * y + x) * 4;
 		image.flip();
 		image.put(offset + 0, (byte) c.getRed());
 		image.put(offset + 1, (byte) c.getRed());
@@ -37,7 +37,7 @@ public class PixelMap {
 	}
 
 	public Color getPixel(int x, int y) {
-		int offset = (width * y + x) * 4;
+		int offset = (md.width * y + x) * 4;
 		int r = image.get(offset + 0);
 		int g = image.get(offset + 1);
 		int b = image.get(offset + 2);
@@ -49,36 +49,47 @@ public class PixelMap {
 		this.image = data;
 	}
 
-	public int getWidth() {
-		return width;
+	public ImageMetaData getImageMetaData() {
+		return md;
 	}
 
-	public void setWidth(int width) {
-		this.width = width;
+	@Override
+	public void dispose() {
+		if (refs <= 0) {
+			image = null;
+		} else {
+			decRef();
+		}
 	}
 
-	public int getHeight() {
-		return height;
+	@Override
+	public void incRef() {
+		refs += 1;
 	}
 
-	public void setHeight(int height) {
-		this.height = height;
+	@Override
+	public int incAndGetRef() {
+		incRef();
+		return refs;
 	}
 
-	public int getFormat() {
-		return format;
+	@Override
+	public void decRef() {
+		this.refs -= 1;
+		if (refs <= 0) {
+			dispose();
+		}
 	}
 
-	public void setFormat(int format) {
-		this.format = format;
+	@Override
+	public int decAndGetRef() {
+		decRef();
+		return refs;
 	}
 
-	public int getChannels() {
-		return channels;
-	}
-
-	public void setChannels(int channels) {
-		this.channels = channels;
+	@Override
+	public int getRefs() {
+		return refs;
 	}
 
 }
