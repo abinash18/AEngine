@@ -39,7 +39,7 @@ import net.abi.abisEngine.util.Util;
 public class Shader implements AssetI {
 
 	public static final Shader DEFAULT_SHADER = null;
-	private static final PathHandle DEFAULT_SHADER_ASSET_DIRECTORY_PATH = new PathHandle("./res/shaders/",
+	public static final PathHandle DEFAULT_SHADER_ASSET_DIRECTORY_PATH = new PathHandle("res/shaders/",
 			PathType.Internal);
 
 	private static Logger logger = LogManager.getLogger(Shader.class);
@@ -744,22 +744,19 @@ public class Shader implements AssetI {
 	}
 
 	/**
-	 * 0 - true, 1 - false;
+	 * 1 - true, 0 - false;
 	 * 
 	 * @param uniformName
 	 * @param value
 	 */
 	public void setUniformBoolean(String uniformName, boolean value) {
-
-		int b_v = 1;
-
-		if (value) {
-			b_v = 0;
-		}
-
-		setUniformi(uniformName, b_v);
+		setUniform1i(uniformName, (value) ? 1 : 0);
 	}
 
+	public void setUniform1i(String uniformName, int value) {
+		GL40.glUniform1i(shaderProgram.getUniforms().get(uniformName), value);
+	}
+	
 	public void setUniformi(String uniformName, int value) {
 		GL40.glUniform1i(shaderProgram.getUniforms().get(uniformName), value);
 	}

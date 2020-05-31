@@ -47,7 +47,7 @@ public class TwoFactorGenericCache<F, K, V> implements TwoFactorGenericCacheI<F,
 		V _resource;
 
 		if ((_resource = resource.get(factorTwo)) == null) {
-			resource.put(factorTwo, _resource);
+			resource.put(factorTwo, value);
 		} else {
 
 			if (_resource instanceof AssetI) {
@@ -55,7 +55,7 @@ public class TwoFactorGenericCache<F, K, V> implements TwoFactorGenericCacheI<F,
 			}
 		}
 
-		printStatistics();
+		//printStatistics();
 		
 		return _resource;
 	}

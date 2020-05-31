@@ -125,7 +125,6 @@ public class RenderingEngine extends MappedValues implements Expendable {
 		GL11.glDepthFunc(GL11.GL_LESS);
 
 		GL11.glDepthMask(true);
-
 		GL11.glDisable(GL11.GL_BLEND);
 	}
 
