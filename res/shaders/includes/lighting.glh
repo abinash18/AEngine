@@ -4,7 +4,7 @@ uniform vec3 C_eyePos;
 uniform float specularIntensity;
 uniform float specularPower;
 
-// Booleans 0 - true, 1 - false.
+// Booleans 0 - fasle, 1 - true.
 uniform int normal_mapping_enabled;
 
 // Structures

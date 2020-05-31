@@ -1,0 +1,160 @@
+---
+AE_SHADER_NAME: "AE_LIGHTING_IMPORTS.ae-shader"
+AE_SHADER_DESC: "A file for generic forward lighting based functions and imports."
+AE_SHADER_GLSL_PROGRAMS:
+  - AE_SHADER_GLSL_PROGRAM_TYPE: "AE_SHADER_IMPORT"
+    AE_SHADER_GLSL_PROGRAM_NAME: "LIGHTING"
+    AE_SHADER_GLSL_PROGRAM_SOURCE: | #The compiler will load these functions in order.
+      #import AE_LIGHTING_IMPORTS:{"LIGHTING_VARS", "LIGHTING_FUNC_CALCLIGHT", "LIGHTING_FUNC_CALCDIRECTIONALLIGHT", "LIGHTING_FUNC_CALCPOINTLIGHT", "LIGHTING_FUNC_CALCSPOTLIGHT", "LIGHTING_FUNC_GETNORMALFROMMAP"}
+  - AE_SHADER_GLSL_PROGRAM_TYPE: "AE_SHADER_IMPORT"
+    AE_SHADER_GLSL_PROGRAM_NAME: "LIGHTING_VARS"
+    AE_SHADER_GLSL_PROGRAM_SOURCE: |
+      // Vars
+      //Position of the camera.
+      uniform vec3 C_eyePos; 
+      uniform float specularIntensity;
+      uniform float specularPower;
+      // Booleans 0 - true, 1 - false.
+      uniform int normal_mapping_enabled;
+      // Structures
+      struct BaseLight {
+        vec3 color;
+        float intensity;
+      };
+      struct DirectionalLight {
+        BaseLight base;
+        vec3 direction;
+      };
+      struct Attenuation {
+        float constant;
+        float linear;
+        float exponent;
+      };
+      struct PointLight {
+        BaseLight base;
+        Attenuation atten;
+        vec3 position;
+        float range;
+      };
+      struct SpotLight {
+        PointLight pointLight;
+        vec3 direction;
+        float cutoff;
+      };
+  - AE_SHADER_GLSL_PROGRAM_TYPE: "AE_SHADER_IMPORT"
+    AE_SHADER_GLSL_PROGRAM_NAME: "LIGHTING_FUNC_CALCLIGHT" #Different from caclLighting since thats light specific.
+    AE_SHADER_GLSL_PROGRAM_SOURCE: | #The compiler will insert the vars at the index of the import keyword.
+      vec4 calcLight(BaseLight base, vec3 direction, vec3 normal, vec3 worldPosition) {
+        float diffuseFactor = dot(normal, -direction);
+        vec4 diffuseColor = vec4(0, 0, 0, 0);
+        vec4 specularColor = vec4(0, 0, 0, 0);
+        if (diffuseFactor > 0) {
+          diffuseColor = vec4(base.color, 1.0) * base.intensity * diffuseFactor;
+          vec3 directionToEye = normalize(C_eyePos - worldPosition);
+          // More Accurate I guess but ididnt like the way it looked
+          //vec3 halfDirection = normalize(directionToEye - direction);
+          //float specularFactor = dot(halfDirection, normal);
+          vec3 reflectDirection = normalize(reflect(direction, normal));
+          float specularFactor = dot(directionToEye, reflectDirection);
+          specularFactor = pow(specularFactor, specularPower);
+          if(specularFactor > 0){
+            specularColor = vec4(base.color, 1.0) * specularIntensity * specularFactor;
+          }
+        }
+        return diffuseColor + specularColor;
+      }
+  - AE_SHADER_GLSL_PROGRAM_TYPE: "AE_SHADER_IMPORT"
+    AE_SHADER_GLSL_PROGRAM_NAME: "LIGHTING_FUNC_CALCDIRECTIONALLIGHT"
+    AE_SHADER_GLSL_PROGRAM_SOURCE: |
+      vec4 calcDirectionalLight(DirectionalLight directionalLight, vec3 normal, vec3 worldPosition) {
+        return (calcLight(directionalLight.base, -directionalLight.direction, normal, worldPosition));
+      }
+  - AE_SHADER_GLSL_PROGRAM_TYPE: "AE_SHADER_IMPORT"
+    AE_SHADER_GLSL_PROGRAM_NAME: "LIGHTING_FUNC_CALCPOINTLIGHT"
+    AE_SHADER_GLSL_PROGRAM_SOURCE: |
+      vec4 calcPointLight(PointLight pointLight, vec3 normal, vec3 worldPosition){
+        vec3 lightDirection = worldPosition - pointLight.position;
+        float distanceToPoint = length(lightDirection);
+        if (distanceToPoint > pointLight.range) {
+          return vec4(0, 0, 0, 0);
+        }
+        lightDirection = normalize(lightDirection);
+        vec4 color = calcLight(pointLight.base, lightDirection, normal, worldPosition);
+        float attenuation = pointLight.atten.constant + pointLight.atten.linear * distanceToPoint +
+        pointLight.atten.exponent * distanceToPoint * distanceToPoint + 0.0001;
+        return color / attenuation;
+      }
+  - AE_SHADER_GLSL_PROGRAM_TYPE: "AE_SHADER_IMPORT"
+    AE_SHADER_GLSL_PROGRAM_NAME: "LIGHTING_FUNC_CALCSPOTLIGHT"
+    AE_SHADER_GLSL_PROGRAM_SOURCE: |
+      vec4 calcSpotLight(SpotLight spotLight, vec3 normal, vec3 worldPosition)  {
+        vec3 lightDirection = normalize(worldPosition - spotLight.pointLight.position);
+        float spotFactor = dot(lightDirection, spotLight.direction);
+        vec4 color = vec4(0, 0, 0, 0);
+        if (spotFactor > spotLight.cutoff) {
+          color = calcPointLight(spotLight.pointLight, normal, worldPosition) *
+            (1.0 - (1.0 - spotFactor) / (1.0 - spotLight.cutoff));
+        }
+        return color;
+      }
+  - AE_SHADER_GLSL_PROGRAM_TYPE: "AE_SHADER_IMPORT"
+    AE_SHADER_GLSL_PROGRAM_NAME: "LIGHTING_FUNC_GETNORMALFROMMAP"
+    AE_SHADER_GLSL_PROGRAM_SOURCE: |
+      vec3 getNormalFromMap(sampler2D normal_map, vec2 texCoord, mat3 tbnMatrix)  {          
+          vec3 normal = tbnMatrix * (255.0/128.0 * texture2D(normal_map, texCoord0.xy).xyz - 1);
+          return normal;
+      }
+  - AE_SHADER_GLSL_PROGRAM_TYPE: "AE_SHADER_IMPORT"
+    AE_SHADER_GLSL_PROGRAM_NAME: "LIGHTING_VERTEX"
+    AE_SHADER_GLSL_PROGRAM_SOURCE: |
+      layout (location = 0) in vec3 position;
+      layout (location = 1) in vec2 texCoord;
+      layout (location = 2) in vec3 normal;
+      layout (location = 3) in vec3 tangent;
+      out vec2 texCoord0;
+      out vec3 normal0;
+      out vec3 worldPosition0;
+      out mat3 tbnMatrix;
+      uniform mat4 T_model;
+      uniform mat4 T_MVP;
+      void main() {
+        gl_Position = T_MVP * vec4(position, 1.0);
+        texCoord0 =  texCoord;
+        // This is here for convinience in the future this will be removed,
+        // and the normal can be extracted from the 3rd dimenstion
+        // of the tbnMatrix.
+        normal0 = (T_model * vec4(normal, 0.0)).xyz;
+        worldPosition0 = (T_model * vec4(position, 1.0)).xyz;
+        // Here i set the normal in the n variable which is normalized!
+        vec3 n = normalize((T_model * vec4(normal, 0.0)).xyz);
+        vec3 t = normalize((T_model * vec4(tangent, 0.0)).xyz);
+        t = normalize(t - dot(t, n) * n);
+        vec3 biTangent = cross(t, n);
+        tbnMatrix = mat3(t, biTangent, n);
+      }
+  - AE_SHADER_GLSL_PROGRAM_TYPE: "AE_SHADER_IMPORT"
+    AE_SHADER_GLSL_PROGRAM_NAME: "LIGHTING_FRAGMENT_MAIN"
+    AE_SHADER_GLSL_PROGRAM_SOURCE: |
+      void main() {
+        // tbnMatrix orients it in the correct position as for the objects rotation in the game world.
+        // This Can Sometimes Return A Value Of negatives or values greater than 1 since normals can be both,
+        // so i multiply it by 255 to make represent a up vector since up is half way between 255 and 0 and that is 128
+        // just like how 90 degrees is half way between 180 and 0.
+        vec3 normal;
+        if (normal_mapping_enabled == 0) {
+          normal = tbnMatrix * (255.0/128.0 * texture2D(normal_map, texCoord0.xy).xyz - 1);
+        } else {
+          normal = normalize(normal0);
+        }
+        gl_FragColor = texture2D(diffuse, texCoord0.xy) * calcLighting(normal, worldPosition0);
+      }
+  - AE_SHADER_GLSL_PROGRAM_TYPE: "AE_SHADER_IMPORT"
+    AE_SHADER_GLSL_PROGRAM_NAME: "LIGHTING_FRAGMENT"
+    AE_SHADER_GLSL_PROGRAM_SOURCE: |
+      in vec2 texCoord0;
+      in vec3 normal0;
+      in vec3 worldPosition0;
+      in mat3 tbnMatrix;
+      uniform sampler2D diffuse;
+      uniform sampler2D normal_map;
+...

@@ -19,17 +19,17 @@ public abstract class Main {
 	protected abstract void addWindows();
 
 	public void run(String[] args) {
-		//int width = 800, height = 600, frameRate = 2000;
-		 int width = 1920, height = 1080, frameRate = 1000;
+		// int width = 800, height = 600, frameRate = 2000;
+		int width = 1920, height = 1080, frameRate = 1000;
 		boolean fullScreen = true, vSync = false;
 		String windowTitle = "Project Quaternion | pre-alpha release";
 
 		Options opts = new Options();
 		LogManager.addFileHandler(1000);
-		//LogManager.setCurrentLevel(LogLevel.ALL);
-		//LogManager.addAllowedLevel(LogLevel.DEBUG);
+		// LogManager.setCurrentLevel(LogLevel.ALL);
+		// LogManager.addAllowedLevel(LogLevel.DEBUG);
 //		LogManager.addAllowedLevel(LogLevel.INFO);
-		//LogManager.addAllowedLevel(LogLevel.ERROR);
+		// LogManager.addAllowedLevel(LogLevel.ERROR);
 //		LogManager.addAllowedLevel(LogLevel.FINE);
 //		LogManager.addAllowedLevel(LogLevel.WARNING);
 //		LogManager.fileHandler.setAppend(false);
