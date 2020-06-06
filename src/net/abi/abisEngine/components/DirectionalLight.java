@@ -1,7 +1,7 @@
 package net.abi.abisEngine.components;
 
 import net.abi.abisEngine.math.Vector3f;
-import net.abi.abisEngine.rendering.shaderManagement.Shader;
+import net.abi.abisEngine.rendering.shader.Shader;
 
 public class DirectionalLight extends Light {
 

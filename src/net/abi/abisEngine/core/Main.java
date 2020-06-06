@@ -10,7 +10,7 @@ import org.apache.commons.cli.ParseException;
 import net.abi.abisEngine.handlers.logging.LogLevel;
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
-import net.abi.abisEngine.rendering.windowManagement.GLFWWindowManager;
+import net.abi.abisEngine.rendering.window.GLFWWindowManager;
 
 public abstract class Main {
 

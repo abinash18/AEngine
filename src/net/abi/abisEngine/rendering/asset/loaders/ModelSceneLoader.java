@@ -4,8 +4,8 @@ import org.lwjgl.opengl.GL15;
 
 import net.abi.abisEngine.rendering.asset.AssetLoaderParameters;
 import net.abi.abisEngine.rendering.asset.AssetManager;
-import net.abi.abisEngine.rendering.meshManagement.AIMeshLoader;
-import net.abi.abisEngine.rendering.meshManagement.ModelScene;
+import net.abi.abisEngine.rendering.mesh.AIMeshLoader;
+import net.abi.abisEngine.rendering.mesh.ModelScene;
 
 public class ModelSceneLoader extends AsyncAssetLoader<ModelScene, ModelSceneLoader.Parameter> {
 

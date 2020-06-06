@@ -1,6 +1,6 @@
 package net.abi.abisEngine.util.exceptions;
 
-import net.abi.abisEngine.rendering.windowManagement.GLFWWindow;
+import net.abi.abisEngine.rendering.window.GLFWWindow;
 
 public class AEWindowInitializationException extends AEException {
 

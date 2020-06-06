@@ -13,7 +13,7 @@ import net.abi.abisEngine.math.Matrix;
 import net.abi.abisEngine.math.Matrix4f;
 import net.abi.abisEngine.math.Vector2f;
 import net.abi.abisEngine.math.Vector3f;
-import net.abi.abisEngine.rendering.meshManagement.Vertex;
+import net.abi.abisEngine.rendering.mesh.Vertex;
 
 public class Util {
 	public static FloatBuffer createFloatBuffer(int size) {

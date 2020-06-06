@@ -2,9 +2,9 @@ package net.abi.abisEngine.components;
 
 import net.abi.abisEngine.core.Entity;
 import net.abi.abisEngine.math.Transform;
-import net.abi.abisEngine.rendering.pipelineManagement.RenderingEngine;
-import net.abi.abisEngine.rendering.sceneManagement.Scene;
-import net.abi.abisEngine.rendering.shaderManagement.Shader;
+import net.abi.abisEngine.rendering.renderPipeline.RenderingEngine;
+import net.abi.abisEngine.rendering.scene.Scene;
+import net.abi.abisEngine.rendering.shader.Shader;
 
 public abstract class SceneComponent {
 
