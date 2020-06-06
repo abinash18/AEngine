@@ -12,13 +12,13 @@ import net.abi.abisEngine.input.GLFWInput;
 import net.abi.abisEngine.input.GLFWMouseAndKeyboardInput;
 import net.abi.abisEngine.math.Vector2f;
 import net.abi.abisEngine.math.Vector3f;
-import net.abi.abisEngine.rendering.meshManagement.AIMeshLoader;
-import net.abi.abisEngine.rendering.meshManagement.Mesh;
-import net.abi.abisEngine.rendering.meshManagement.Vertex;
-import net.abi.abisEngine.rendering.resourceManagement.Material;
-import net.abi.abisEngine.rendering.sceneManagement.Scene;
-import net.abi.abisEngine.rendering.textureManagement.Texture;
-import net.abi.abisEngine.rendering.windowManagement.GLFWWindow;
+import net.abi.abisEngine.rendering.material.Material;
+import net.abi.abisEngine.rendering.mesh.AIMeshLoader;
+import net.abi.abisEngine.rendering.mesh.Mesh;
+import net.abi.abisEngine.rendering.mesh.Vertex;
+import net.abi.abisEngine.rendering.scene.Scene;
+import net.abi.abisEngine.rendering.texture.Texture;
+import net.abi.abisEngine.rendering.window.GLFWWindow;
 import net.abi.abisEngine.util.Attenuation;
 
 public class MainMenu extends Scene {

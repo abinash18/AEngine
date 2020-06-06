@@ -15,11 +15,11 @@ import org.lwjgl.opengl.GL43;
 import net.abi.abisEngine.handlers.logging.LogLevel;
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
-import net.abi.abisEngine.rendering.meshManagement.AIMeshLoader;
-import net.abi.abisEngine.rendering.pipelineManagement.RenderingEngine;
-import net.abi.abisEngine.rendering.windowManagement.GLFWWindow;
-import net.abi.abisEngine.rendering.windowManagement.GLFWWindowManager;
-import net.abi.abisEngine.rendering.windowManagement.models.EngineLoader;
+import net.abi.abisEngine.rendering.mesh.AIMeshLoader;
+import net.abi.abisEngine.rendering.renderPipeline.RenderingEngine;
+import net.abi.abisEngine.rendering.window.GLFWWindow;
+import net.abi.abisEngine.rendering.window.GLFWWindowManager;
+import net.abi.abisEngine.rendering.window.models.EngineLoader;
 
 public class CoreEngine {
 

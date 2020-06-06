@@ -1,6 +1,6 @@
 package tests.game.windows;
 
-import net.abi.abisEngine.rendering.windowManagement.GLFWWindow;
+import net.abi.abisEngine.rendering.window.GLFWWindow;
 import tests.game.scenes.MainMenu;
 import tests.game.scenes.TestGame;
 

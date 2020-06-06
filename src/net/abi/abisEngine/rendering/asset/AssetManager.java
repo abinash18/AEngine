@@ -11,7 +11,7 @@ import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
 import net.abi.abisEngine.rendering.asset.loaders.AssetLoader;
 import net.abi.abisEngine.rendering.asset.loaders.ModelSceneLoader;
-import net.abi.abisEngine.rendering.meshManagement.ModelScene;
+import net.abi.abisEngine.rendering.mesh.ModelScene;
 import net.abi.abisEngine.util.Expendable;
 import net.abi.abisEngine.util.ThreadUtils;
 import net.abi.abisEngine.util.async.AsyncThreadDispatcher;

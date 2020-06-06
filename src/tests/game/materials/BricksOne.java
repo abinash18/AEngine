@@ -1,7 +1,7 @@
 package tests.game.materials;
 
-import net.abi.abisEngine.rendering.resourceManagement.Material;
-import net.abi.abisEngine.rendering.textureManagement.Texture;
+import net.abi.abisEngine.rendering.material.Material;
+import net.abi.abisEngine.rendering.texture.Texture;
 
 public class BricksOne extends Material {
 

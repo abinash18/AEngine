@@ -1,6 +1,6 @@
 package net.abi.abisEngine.util.exceptions;
 
-import net.abi.abisEngine.rendering.windowManagement.GLFWWindow.StaticCursor;
+import net.abi.abisEngine.rendering.window.GLFWWindow.StaticCursor;
 
 public class AECursorInitializationException extends AEException {
 

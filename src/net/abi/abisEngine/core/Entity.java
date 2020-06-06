@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 import net.abi.abisEngine.components.SceneComponent;
 import net.abi.abisEngine.math.Transform;
-import net.abi.abisEngine.rendering.pipelineManagement.RenderingEngine;
-import net.abi.abisEngine.rendering.sceneManagement.Scene;
-import net.abi.abisEngine.rendering.shaderManagement.Shader;
+import net.abi.abisEngine.rendering.renderPipeline.RenderingEngine;
+import net.abi.abisEngine.rendering.scene.Scene;
+import net.abi.abisEngine.rendering.shader.Shader;
 
-public class Entity implements IEntity {
+public class Entity implements EntityI {
 
 	private ArrayList<Entity> children;
 	private ArrayList<SceneComponent> components;

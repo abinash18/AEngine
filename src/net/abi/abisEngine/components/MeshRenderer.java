@@ -3,10 +3,10 @@ package net.abi.abisEngine.components;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL45;
 
-import net.abi.abisEngine.rendering.meshManagement.Mesh;
-import net.abi.abisEngine.rendering.pipelineManagement.RenderingEngine;
-import net.abi.abisEngine.rendering.resourceManagement.Material;
-import net.abi.abisEngine.rendering.shaderManagement.Shader;
+import net.abi.abisEngine.rendering.material.Material;
+import net.abi.abisEngine.rendering.mesh.Mesh;
+import net.abi.abisEngine.rendering.renderPipeline.RenderingEngine;
+import net.abi.abisEngine.rendering.shader.Shader;
 
 public class MeshRenderer extends SceneComponent {
 
