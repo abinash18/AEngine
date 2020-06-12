@@ -28,7 +28,7 @@ public class CoreEngine {
 	private boolean isRunning;
 
 	private GLFWErrorCallback errClbk;
-	
+
 	private GLFWWindowManager windowManager;
 
 	public CoreEngine(double framerate) {
@@ -49,8 +49,10 @@ public class CoreEngine {
 	}
 
 	public void initGLFW() {
-		/* Setup an error callback. The default implementation
-		 will print the error message in System.err. */
+		/*
+		 * Setup an error callback. The default implementation will print the error
+		 * message in System.err.
+		 */
 		glfwSetErrorCallback((errClbk = GLFWErrorCallback.createPrint(System.err)));
 
 		// Initialize GLFW. Most GLFW functions will not work before doing this.
@@ -58,7 +60,7 @@ public class CoreEngine {
 			logger.error("Unable to initialize GLFW");
 			throw new IllegalStateException("Unable to initialize GLFW");
 		}
-		
+
 		windowManager = new GLFWWindowManager(this);
 	}
 
@@ -100,7 +102,7 @@ public class CoreEngine {
 		int frames = 0;
 		double frameCounter = 0;
 
-		final double frameTime = this.frameTime;
+		final double m_frameTime = this.frameTime;
 
 		double lastTime = Time.getTime();
 		double unprocessedTime = 0;
@@ -109,31 +111,26 @@ public class CoreEngine {
 
 		while (isRunning) {
 			boolean render = false;
-
 			double startTime = Time.getTime();
 			double passedTime = startTime - lastTime;
 			lastTime = startTime;
-
 			unprocessedTime += passedTime;
 			frameCounter += passedTime;
-
-			while (isRunning && (unprocessedTime > frameTime)) {
-
-				if (windowManager.isStopRequested()) {
+			while (isRunning && (unprocessedTime > m_frameTime)) {
+				if (GLFWWindowManager.isStopRequested()) {
 					stop();
 					render = false;
 					break;
 				} else {
 					render = true;
-					unprocessedTime -= frameTime;
-					windowManager.input((float) frameTime);
-					windowManager.update((float) frameTime);
-
+					unprocessedTime -= m_frameTime;
+					windowManager.update((float) m_frameTime);
+					windowManager.input((float) m_frameTime);
 					if (frameCounter >= 1.0) {
 						//////////////////////////////////////////////
 						//////////// -Just For Debugging-/////////////
 						if (!finestLoglevel) {
-							System.out.println("Frames: " + frames);
+							System.out.println("Frames: " + frames + " Frame Time: " + m_frameTime + "ms");
 						} else {
 							logger.finest("Frames: " + frames);
 						}
@@ -155,7 +152,6 @@ public class CoreEngine {
 				}
 			}
 		}
-
 		cleanUp();
 		System.exit(1);
 	}

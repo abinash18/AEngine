@@ -8,15 +8,18 @@ import net.abi.abisEngine.rendering.window.GLFWWindow;
 import net.abi.abisEngine.rendering.window.GLFWWindowManager;
 import net.abi.abisEngine.util.exceptions.AECursorInitializationException;
 import net.abi.abisEngine.util.exceptions.AEImageManipulationException;
-import tests.game.scenes.MainMenu;
-import tests.game.windows.MainGame;
+import tests.renderTest.scenes.MainMenu;
 
 public class EngineLoader extends GLFWWindow {
 
 	public EngineLoader() {
-		super(800, 600, "EngineSplash", "", false, false);
-		super.properties.sc_height = 600;
-		super.properties.sc_width = 800;
+		super();
+		super.properties.name = "EngineSplash";
+		super.properties.title = "AEngine";
+		super.properties.sc_height = 1080;
+		super.properties.sc_width = 1920;
+		super.properties.fullscreen = true;
+		super.properties.vSync = 0;
 		super.properties.renderEngine = new RenderingEngine();
 	}
 
@@ -49,15 +52,11 @@ public class EngineLoader extends GLFWWindow {
 	protected void post_init() {
 		super.centerWindow();
 		super.showWindow();
-		AEImage i = new AEImage(new PathHandle("./res/textures/cursor.png"));
-
+		AEImage i = new AEImage(new PathHandle("./res/icons/1x/ae-generic-icon-256x256.png"));
 		try {
-			// i.loadImage();
 			i = AEImage.resize(i, 32, 32);
 			super.setWindowIcon(i);
 			super.setCursor(new StaticCursor("s", i, 0, 0));
-			// } catch (AECursorInitializationException e) {
-			// e.printStackTrace();
 		} catch (AEImageManipulationException | AECursorInitializationException e) {
 			e.printStackTrace();
 		}

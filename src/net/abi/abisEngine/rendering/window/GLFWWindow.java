@@ -272,7 +272,7 @@ public abstract class GLFWWindow implements Expendable {
 		}
 	}
 
-	public class GLFWWindowProperties {
+	public static class GLFWWindowProperties {
 		public long preferredMonitor = 0, sharedContext = 0;
 		/**
 		 * sc_ is the dimensions of the window in screen coordinates, This is different
@@ -293,7 +293,12 @@ public abstract class GLFWWindow implements Expendable {
 				 */
 				f_top, f_left, f_right, f_bottom,
 				/* The refresh rate used by VSync */
-				preferredRefreshRate;
+				preferredRefreshRate = GLFW_DONT_CARE,
+				/**
+				 * This option Synchronizes the frames so they render more steadily instead of
+				 * dropping and causing lag.
+				 */
+				vSync = 0;
 
 		/** The name is what the engine recognizes and it is used to find the window. */
 		public String name,
@@ -303,11 +308,6 @@ public abstract class GLFWWindow implements Expendable {
 				 */
 				title;
 		public boolean fullscreen = false,
-				/**
-				 * This option Synchronizes the frames so they render more steadily instead of
-				 * dropping and causing lag.
-				 */
-				vSync = false,
 				/** If the window is currently focused on or not. */
 				focused,
 				/** If the window has been minimized to tray (iconified) */
@@ -399,11 +399,17 @@ public abstract class GLFWWindow implements Expendable {
 		return assetManager;
 	}
 
-	public GLFWWindow(GLFWWindowProperties props) {
-		this.properties = props;
+	public GLFWWindow() {
+		this(new GLFWWindowProperties());
 	}
 
-	public GLFWWindow(int sc_width, int sc_height, String name, String title, boolean fullscreen, boolean vSync) {
+	public GLFWWindow(GLFWWindowProperties props) {
+		this.properties = props;
+		this.sceneManager = new SceneManager(this);
+		this.input = new GLFWMouseAndKeyboardInput();
+	}
+
+	public GLFWWindow(int sc_width, int sc_height, String name, String title, boolean fullscreen, int vSync) {
 		this(sc_width, sc_height, name, title, fullscreen, vSync, 0);
 	}
 
@@ -417,7 +423,7 @@ public abstract class GLFWWindow implements Expendable {
 	 * @param fullscreen
 	 * @param vSync
 	 */
-	public GLFWWindow(int sc_width, int sc_height, String name, String title, boolean fullscreen, boolean vSync,
+	public GLFWWindow(int sc_width, int sc_height, String name, String title, boolean fullscreen, int vSync,
 			long preferedMonitor) {
 		this.properties = new GLFWWindowProperties();
 		this.properties.sc_width = sc_width;
@@ -595,19 +601,14 @@ public abstract class GLFWWindow implements Expendable {
 
 		/* TODO: let the user decide when or if to show the window. */
 		// glfwShowWindow(glfw_handle);
-
-		if (properties.vSync) {
-			glfwSwapInterval(1); // Enables V Sync.
-		} else {
-			glfwSwapInterval(0);
-		}
+		glfwSwapInterval(this.properties.vSync); // Enables V Sync.
 		/*
 		 * This line is critical for LWJGL's inter-operation with GLFW's OpenGL context,
 		 * or any context that is managed externally. LWJGL detects the context that is
 		 * current in the current thread, creates the GLCapabilities instance and makes
 		 * the OpenGL bindings available for use.
 		 */
-		properties.capabilities = GL.createCapabilities();
+		this.properties.capabilities = GL.createCapabilities();
 		this.initCallBacks();
 		this.input.initInput(glfw_handle);
 		this.addScenes();
@@ -695,7 +696,7 @@ public abstract class GLFWWindow implements Expendable {
 			glfwSetWindowIcon(glfw_handle, null);
 			return;
 		}
-		
+
 		GLFWImage[] i = new GLFWImage[icons.length];
 		GLFWImage.Buffer ibf = GLFWImage.malloc(icons.length);
 		for (int j = 0; j < icons.length; j++) {
@@ -934,8 +935,8 @@ public abstract class GLFWWindow implements Expendable {
 	}
 
 	public void toggleVSync() {
-		properties.vSync = !properties.vSync;
-		glfwSwapInterval((properties.vSync) ? 1 : 0);
+		properties.vSync = properties.vSync == GLFW_TRUE ? GLFW_FALSE : GLFW_TRUE;
+		glfwSwapInterval(properties.vSync);
 	}
 
 	public void setWindowTitle(String title) {
@@ -1024,7 +1025,7 @@ public abstract class GLFWWindow implements Expendable {
 		return properties.fullscreen;
 	}
 
-	public boolean isvSync() {
+	public int isvSync() {
 		return properties.vSync;
 	}
 
@@ -1036,7 +1037,7 @@ public abstract class GLFWWindow implements Expendable {
 		this.sceneManager = sceneManager;
 	}
 
-	public void setvSync(boolean vSync) {
+	public void setvSync(int vSync) {
 		this.properties.vSync = vSync;
 	}
 

@@ -1,0 +1,34 @@
+package net.abi.abisEngine.rendering.shader.parser.fileTypes.yaml;
+
+public class AEShaderGLSLProgram {
+	String AE_SHADER_GLSL_PROGRAM_TYPE;
+	String AE_SHADER_GLSL_PROGRAM_NAME;
+	String AE_SHADER_GLSL_PROGRAM_SOURCE;
+
+	public AEShaderGLSLProgram() {
+	}
+
+	public String getAE_SHADER_GLSL_PROGRAM_TYPE() {
+		return AE_SHADER_GLSL_PROGRAM_TYPE;
+	}
+
+	public void setAE_SHADER_GLSL_PROGRAM_TYPE(String aE_PROGRAM_TYPE) {
+		AE_SHADER_GLSL_PROGRAM_TYPE = aE_PROGRAM_TYPE;
+	}
+
+	public String getAE_SHADER_GLSL_PROGRAM_NAME() {
+		return AE_SHADER_GLSL_PROGRAM_NAME;
+	}
+
+	public void setAE_SHADER_GLSL_PROGRAM_NAME(String aE_PROGRAM_NAME) {
+		AE_SHADER_GLSL_PROGRAM_NAME = aE_PROGRAM_NAME;
+	}
+
+	public String getAE_SHADER_GLSL_PROGRAM_SOURCE() {
+		return AE_SHADER_GLSL_PROGRAM_SOURCE;
+	}
+
+	public void setAE_SHADER_GLSL_PROGRAM_SOURCE(String aE_SHADER_PROGRAM_SOURCE) {
+		AE_SHADER_GLSL_PROGRAM_SOURCE = aE_SHADER_PROGRAM_SOURCE;
+	}
+}

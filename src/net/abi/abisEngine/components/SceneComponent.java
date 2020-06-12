@@ -1,6 +1,6 @@
 package net.abi.abisEngine.components;
 
-import net.abi.abisEngine.core.Entity;
+import net.abi.abisEngine.entities.Entity;
 import net.abi.abisEngine.math.Transform;
 import net.abi.abisEngine.rendering.renderPipeline.RenderingEngine;
 import net.abi.abisEngine.rendering.scene.Scene;

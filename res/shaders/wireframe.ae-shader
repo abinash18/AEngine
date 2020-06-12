@@ -18,7 +18,7 @@ AE_SHADER_GLSL_PROGRAMS:
     AE_SHADER_GLSL_PROGRAM_NAME: "vertex_shader"
     AE_SHADER_GLSL_PROGRAM_SOURCE: |
       #version 330 core
-      #import AE_LIGHTING_IMPORTS:{"LIGHTING"}
+      #import wireframe:{"vertex_shader"}
       precision mediump int;
       precision mediump float;
       layout (location = 0) in vec3 position;

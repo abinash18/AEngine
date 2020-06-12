@@ -8,7 +8,7 @@ import java.util.UUID;
 import net.abi.abisEngine.components.Camera;
 import net.abi.abisEngine.components.Light;
 import net.abi.abisEngine.components.SceneComponent;
-import net.abi.abisEngine.core.Entity;
+import net.abi.abisEngine.entities.Entity;
 import net.abi.abisEngine.input.GLFWInput;
 import net.abi.abisEngine.rendering.renderPipeline.RenderingEngine;
 import net.abi.abisEngine.rendering.window.GLFWWindow;

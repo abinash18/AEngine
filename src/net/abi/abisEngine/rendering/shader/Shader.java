@@ -2,13 +2,8 @@ package net.abi.abisEngine.rendering.shader;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.nio.file.Files;
-import java.nio.file.LinkOption;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL32;
@@ -57,8 +52,9 @@ public class Shader implements AssetI {
 	private ShaderResource shaderProgram;
 
 	public enum ShaderType {
-		AE_VERTEX_SHADER(".glvs"), AE_FRAGMENT_SHADER(".glfs"), AE_GEOMETRY_SHADER(".glgs"), AE_TESSELATION_EVALUATION_SHADER(".glte"),
-		AE_TESSELATION_CONTROL_SHADER(".gltc"), AE_COMPUTE_SHADER(".glc"), AE_HEADER(".glh");
+		AE_VERTEX_SHADER(".glvs"), AE_FRAGMENT_SHADER(".glfs"), AE_GEOMETRY_SHADER(".glgs"),
+		AE_TESSELATION_EVALUATION_SHADER(".glte"), AE_TESSELATION_CONTROL_SHADER(".gltc"), AE_COMPUTE_SHADER(".glc"),
+		AE_HEADER(".glh");
 
 		public String extention;
 
@@ -94,8 +90,7 @@ public class Shader implements AssetI {
 
 		this.context_handle = Long.valueOf(context);
 
-		
-		HashMap<String, ShaderResource> _ss; 
+		HashMap<String, ShaderResource> _ss;
 
 		/*
 		 * Find the Context in the cache.
@@ -198,7 +193,7 @@ public class Shader implements AssetI {
 		Matrix4f MVMatrix = transform.getTransformation(), // Model view matrix, aka world matrix
 				MVPMatrix = engine.getMainCamera().getViewProjection().mul(MVMatrix), // Model View Projection Matrix
 				MVNMatrix = MVMatrix, // Model View Normal Matrix
-				T_PM, //Projection Matrix
+				T_PM, // Projection Matrix
 				T_VPM; // ViewPort Matrix
 		MVNMatrix.transpose().invertGeneric();
 
@@ -648,7 +643,6 @@ public class Shader implements AssetI {
 		case AE_TESSELATION_EVALUATION_SHADER:
 			this.addTesselationEvaluationShader(source);
 			break;
-
 		default:
 			break;
 		}
@@ -756,7 +750,7 @@ public class Shader implements AssetI {
 	public void setUniform1i(String uniformName, int value) {
 		GL40.glUniform1i(shaderProgram.getUniforms().get(uniformName), value);
 	}
-	
+
 	public void setUniformi(String uniformName, int value) {
 		GL40.glUniform1i(shaderProgram.getUniforms().get(uniformName), value);
 	}
@@ -1095,4 +1089,5 @@ public class Shader implements AssetI {
 		}
 
 	}
+
 }
