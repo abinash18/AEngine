@@ -938,6 +938,10 @@ public abstract class GLFWWindow implements Expendable {
 		properties.vSync = properties.vSync == GLFW_TRUE ? GLFW_FALSE : GLFW_TRUE;
 		glfwSwapInterval(properties.vSync);
 	}
+	
+	public void toggleFullScreen() {
+		this.setFullscreen(!properties.fullscreen);
+	}
 
 	public void setWindowTitle(String title) {
 		checkWindowPointer();

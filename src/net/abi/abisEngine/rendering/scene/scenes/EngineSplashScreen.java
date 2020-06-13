@@ -75,8 +75,8 @@ public class EngineSplashScreen extends Scene {
 
 		cameraObject.addComponent(cam);
 		cameraObject.addComponent(new FreeLook(0.35f)).addComponent(new FreeMove(10f));
-		cameraObject.addComponent(spotLight);
-		spotLight.getTransform().setParent(cam.getTransform());
+		//cameraObject.addComponent(spotLight);
+		//spotLight.getTransform().setParent(cam.getTransform());
 
 		// super.addChild(testMesh1);
 
@@ -95,7 +95,7 @@ public class EngineSplashScreen extends Scene {
 		// monkey2.addComponent(
 		// new MeshRenderer(AIMeshLoader.loadModel("monkey.obj", "Suzanne.001", 0),
 		// material).toggleWireFrames());
-		monkey2.getTransform().setTranslation(0, 0, 5);
+		//monkey2.getTransform().setTranslation(0, 0, 5);
 
 		// monkey2.addChild(cameraObject);
 		// monkey2.setTransform(cameraObject.getTransform());
@@ -170,12 +170,16 @@ public class EngineSplashScreen extends Scene {
 		if (in.isKeyDown(GLFWInput.GLFW_KEY_V)) {
 			super.getParentWindow().toggleVSync();
 		}
+		
+		if (in.isKeyDown(GLFWInput.GLFW_KEY_F)) {
+			super.getParentWindow().toggleFullScreen();
+		}
 
 		if (in.isMouseButtonDown(GLFWInput.GLFW_MOUSE_BUTTON_RIGHT)) {
 			MeshRenderer.toggleWireFrames();
 		}
 
-		if (in.isKeyDown(GLFWInput.GLFW_KEY_F)) {
+		if (in.isKeyDown(GLFWInput.GLFW_KEY_N)) {
 			MeshRenderer.drawNormals = !MeshRenderer.drawNormals;
 		}
 

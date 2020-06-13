@@ -1,5 +1,6 @@
 package net.abi.abisEngine.core;
 
+import net.abi.abisEngine.handlers.logging.LogLevel;
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
 
@@ -14,7 +15,7 @@ public abstract class Main {
 		int frameRate = 500;
 		// Options opts = new Options();
 		// LogManager.addFileHandler(1000);
-		// LogManager.setCurrentLevel(LogLevel.ALL);
+		LogManager.setCurrentLevel(LogLevel.ALL);
 		// LogManager.addAllowedLevel(LogLevel.DEBUG);
 //		LogManager.addAllowedLevel(LogLevel.INFO);
 		// LogManager.addAllowedLevel(LogLevel.ERROR);

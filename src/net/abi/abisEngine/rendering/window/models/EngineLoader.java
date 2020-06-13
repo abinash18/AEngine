@@ -18,7 +18,7 @@ public class EngineLoader extends GLFWWindow {
 		super.properties.title = "AEngine";
 		super.properties.sc_height = 1080;
 		super.properties.sc_width = 1920;
-		super.properties.fullscreen = true;
+		super.properties.fullscreen = false;
 		super.properties.vSync = 0;
 		super.properties.renderEngine = new RenderingEngine();
 	}
