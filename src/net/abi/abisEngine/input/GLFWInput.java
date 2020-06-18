@@ -150,7 +150,7 @@ public abstract class GLFWInput {
 	public static final int GLFW_TRUE = 1, GLFW_FALSE = 0;
 
 	protected long glfw_Handle;
-
+	
 	// TODO: Implement Scan Code Instead Of Key Code
 	public abstract void initInput(long hndl);
 

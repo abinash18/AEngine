@@ -130,7 +130,7 @@ public class CoreEngine {
 						//////////////////////////////////////////////
 						//////////// -Just For Debugging-/////////////
 						if (!finestLoglevel) {
-							System.out.println("Frames: " + frames + " Frame Time: " + m_frameTime + "ms");
+							System.out.println("Frames: " + frames + " Frame Time: " + (double) 1 / frames + "ms");
 						} else {
 							logger.finest("Frames: " + frames);
 						}

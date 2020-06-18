@@ -16,10 +16,10 @@ public class EngineLoader extends GLFWWindow {
 		super();
 		super.properties.name = "EngineSplash";
 		super.properties.title = "AEngine";
-		super.properties.sc_height = 1080;
-		super.properties.sc_width = 1920;
+		super.properties.sc_height = 720;
+		super.properties.sc_width = 1270;
 		super.properties.fullscreen = false;
-		super.properties.vSync = 0;
+		super.properties.vSync = GLFW_FALSE;
 		super.properties.renderEngine = new RenderingEngine();
 	}
 
@@ -31,7 +31,8 @@ public class EngineLoader extends GLFWWindow {
 
 	@Override
 	protected void pre_init() {
-
+		// super.addGLFWWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_TRUE);
+		// super.addGLFWWindowHint(GLFW_DECORATED, GLFW_FALSE);
 	}
 
 	@Override
@@ -52,11 +53,12 @@ public class EngineLoader extends GLFWWindow {
 	protected void post_init() {
 		super.centerWindow();
 		super.showWindow();
-		AEImage i = new AEImage(new PathHandle("./res/icons/1x/ae-generic-icon-256x256.png"));
+		AEImage i = new AEImage(new PathHandle("./res/textures/cursor.png"));
 		try {
 			i = AEImage.resize(i, 32, 32);
 			super.setWindowIcon(i);
-			super.setCursor(new StaticCursor("s", i, 0, 0));
+			//super.setCursor(new StaticCursor("s", i, 0, 0));
+			super.setCursor(new StaticCursor("normal"));
 		} catch (AEImageManipulationException | AECursorInitializationException e) {
 			e.printStackTrace();
 		}

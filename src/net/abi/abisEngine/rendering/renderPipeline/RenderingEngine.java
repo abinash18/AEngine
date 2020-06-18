@@ -22,7 +22,7 @@ public class RenderingEngine extends MappedValues implements Expendable {
 	private static final Logger logger = LogManager.getLogger(RenderingEngine.class.getName());
 
 	public static boolean depth_test = false;
-
+	public static Color c = Color.hex2Rgb("#b9bec1").normalize();
 	private HashMap<String, Integer> samplerMap;
 
 	private Shader forwardAmbientShader, depthShader, edge_dectect;
@@ -40,8 +40,6 @@ public class RenderingEngine extends MappedValues implements Expendable {
 
 		super.addVector3f("ambient", new Vector3f(0.1f, 0.1f, 0.1f));
 
-		
-		
 		// RenderingEngine.initGraphics();
 	}
 
@@ -55,7 +53,6 @@ public class RenderingEngine extends MappedValues implements Expendable {
 	public static void clearScreen() {
 		// TODO: Stencil Buffer
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
-		Color c = Color.hex2Rgb("#b9bec1").normalize();
 		GL11.glClearColor(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha());
 	}
 
@@ -66,9 +63,8 @@ public class RenderingEngine extends MappedValues implements Expendable {
 	public void initGraphics() {
 		forwardAmbientShader = new Shader("forward-ambient");
 		depthShader = new Shader("depthVisualizer");
-		//edge_dectect = new Shader("visualizers/edge_detect");
-		
-		
+		// edge_dectect = new Shader("visualizers/edge_detect");
+
 		GL11.glFrontFace(GL11.GL_CW);
 		GL11.glCullFace(GL11.GL_BACK);
 		GL11.glEnable(GL11.GL_CULL_FACE);
@@ -92,7 +88,7 @@ public class RenderingEngine extends MappedValues implements Expendable {
 		} else {
 			renderLights(scene);
 		}
-		//renderVisualizers(scene);
+		// renderVisualizers(scene);
 	}
 
 	private void renderVisualizers(Scene scene) {
@@ -171,7 +167,7 @@ public class RenderingEngine extends MappedValues implements Expendable {
 
 	@Override
 	public void dispose() {
-		
+
 	}
 
 }

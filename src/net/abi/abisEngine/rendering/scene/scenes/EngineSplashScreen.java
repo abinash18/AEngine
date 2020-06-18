@@ -75,8 +75,8 @@ public class EngineSplashScreen extends Scene {
 
 		cameraObject.addComponent(cam);
 		cameraObject.addComponent(new FreeLook(0.35f)).addComponent(new FreeMove(10f));
-		//cameraObject.addComponent(spotLight);
-		//spotLight.getTransform().setParent(cam.getTransform());
+		// cameraObject.addComponent(spotLight);
+		// spotLight.getTransform().setParent(cam.getTransform());
 
 		// super.addChild(testMesh1);
 
@@ -95,7 +95,7 @@ public class EngineSplashScreen extends Scene {
 		// monkey2.addComponent(
 		// new MeshRenderer(AIMeshLoader.loadModel("monkey.obj", "Suzanne.001", 0),
 		// material).toggleWireFrames());
-		//monkey2.getTransform().setTranslation(0, 0, 5);
+		// monkey2.getTransform().setTranslation(0, 0, 5);
 
 		// monkey2.addChild(cameraObject);
 		// monkey2.setTransform(cameraObject.getTransform());
@@ -118,6 +118,7 @@ public class EngineSplashScreen extends Scene {
 				Mesh s = m.getMesh("monkey").bindModel();
 				monkey = new Entity().addComponent(new MeshRenderer(s, anvilmat));
 				monkey.getTransform().setTranslation(new Vector3f(0f, 0f, 10f));
+				monkey.getTransform().setScale(0.025f, 0.025f, 0.025f);
 				monkey.getTransform().getRotation().rotate(Transform.Y_AXIS, (float) Math.toRadians(180));
 				test.addChild(monkey);
 
@@ -130,7 +131,7 @@ public class EngineSplashScreen extends Scene {
 		// man.load("monkey.obj", ModelScene.class, parm);
 //		man.load("Anvil_LowPoly.obj", ModelScene.class, parm);
 		// man.load("monkey.obj", ModelScene.class, parm);
-		man.load("monkey.obj", ModelScene.class, parm);
+		man.load("IronMan.obj", ModelScene.class, parm);
 
 		super.setMainCamera("playerView");
 		// super.addChild(spotLightObject);
@@ -170,9 +171,9 @@ public class EngineSplashScreen extends Scene {
 		if (in.isKeyDown(GLFWInput.GLFW_KEY_V)) {
 			super.getParentWindow().toggleVSync();
 		}
-		
+
 		if (in.isKeyDown(GLFWInput.GLFW_KEY_F)) {
-			super.getParentWindow().toggleFullScreen();
+			// super.getParentWindow().toggleFullScreen();
 		}
 
 		if (in.isMouseButtonDown(GLFWInput.GLFW_MOUSE_BUTTON_RIGHT)) {

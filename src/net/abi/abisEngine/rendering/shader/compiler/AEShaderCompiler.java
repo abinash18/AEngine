@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL45;
-import org.lwjgl.util.shaderc.Shaderc;
-import org.lwjgl.util.shaderc.ShadercIncludeResolveI;
 
 import net.abi.abisEngine.handlers.file.PathHandle;
 import net.abi.abisEngine.handlers.file.PathType;
@@ -16,7 +13,6 @@ import net.abi.abisEngine.rendering.shader.AEShader;
 import net.abi.abisEngine.rendering.shader.AEShader.AEShaderType;
 import net.abi.abisEngine.rendering.shader.AEShader.GLSLUniform;
 import net.abi.abisEngine.rendering.shader.AEShaderResource;
-import net.abi.abisEngine.rendering.shader.Shader;
 import net.abi.abisEngine.rendering.shader.parser.AEShaderParserYAML;
 import net.abi.abisEngine.rendering.shader.parser.fileTypes.yaml.AEShaderFileYAML;
 import net.abi.abisEngine.rendering.shader.parser.fileTypes.yaml.AEShaderGLSLProgram;

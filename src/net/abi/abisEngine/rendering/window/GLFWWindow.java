@@ -101,6 +101,8 @@ public abstract class GLFWWindow implements Expendable {
 			GLFW_ACCUM_RED_BITS = 0x21007, GLFW_ACCUM_GREEN_BITS = 0x21008, GLFW_ACCUM_BLUE_BITS = 0x21009,
 			GLFW_ACCUM_ALPHA_BITS = 0x2100A, GLFW_AUX_BUFFERS = 0x2100B, GLFW_STEREO = 0x2100C, GLFW_SAMPLES = 0x2100D,
 			GLFW_SRGB_CAPABLE = 0x2100E, GLFW_REFRESH_RATE = 0x2100F, GLFW_DOUBLEBUFFER = 0x21010;
+	/** Boolean values. */
+	public static final int GLFW_TRUE = 1, GLFW_FALSE = 0;
 
 	private static Logger logger = LogManager.getLogger(GLFWWindow.class.getName());
 
@@ -938,7 +940,7 @@ public abstract class GLFWWindow implements Expendable {
 		properties.vSync = properties.vSync == GLFW_TRUE ? GLFW_FALSE : GLFW_TRUE;
 		glfwSwapInterval(properties.vSync);
 	}
-	
+
 	public void toggleFullScreen() {
 		this.setFullscreen(!properties.fullscreen);
 	}
