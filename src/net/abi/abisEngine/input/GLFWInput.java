@@ -159,15 +159,6 @@ public abstract class GLFWInput {
 	}
 
 	/**
-	 * Destroys The Call Backs Created.
-	 * 
-	 * Note: -Will Cause Crash If Called Right Before Calling glfwFreeCallbacks(Use
-	 * destroySafe();).
-	 */
-	@Deprecated
-	public abstract void destroy();
-
-	/**
 	 * Safely destroys the callbacks created. This function is safe to use before
 	 * calling glfwDestroyCallbacks.
 	 */

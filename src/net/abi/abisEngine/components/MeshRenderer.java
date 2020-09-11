@@ -5,7 +5,7 @@ import org.lwjgl.opengl.GL45;
 
 import net.abi.abisEngine.rendering.material.Material;
 import net.abi.abisEngine.rendering.mesh.Mesh;
-import net.abi.abisEngine.rendering.renderPipeline.RenderingEngine;
+import net.abi.abisEngine.rendering.pipeline.RenderingEngine;
 import net.abi.abisEngine.rendering.shader.Shader;
 
 public class MeshRenderer extends SceneComponent {
@@ -35,9 +35,9 @@ public class MeshRenderer extends SceneComponent {
 	public void render(Shader shader, RenderingEngine engine) {
 
 		if (drawWireframes) {
-			//shader.bind();
-			//shader.updateUniforms(super.getTransform(), mat, engine);
-			//mesh.draw("vaoOne", GL15.GL_TRIANGLES);
+			shader.bind();
+			shader.updateUniforms(super.getTransform(), mat, engine);
+			mesh.draw("vaoOne", GL15.GL_TRIANGLES);
 			wir.bind();
 			wir.updateUniforms(super.getTransform(), mat, engine);
 			GL45.glEnable(GL45.GL_BLEND);

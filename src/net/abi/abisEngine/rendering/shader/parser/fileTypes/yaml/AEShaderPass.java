@@ -4,7 +4,7 @@ import java.util.List;
 
 public class AEShaderPass {
 	String AE_SHADER_PASS_TAG;
-	List<AEPrepProperties> AE_PREP_PROPERTIES;
+	List<AEPrepProperty> AE_PREP_PROPERTIES;
 	List<AEShaderGLSLProgram> AE_SHADER_GLSL_PROGRAMS;
 
 	public AEShaderPass() {
@@ -18,11 +18,11 @@ public class AEShaderPass {
 		AE_SHADER_PASS_TAG = aE_SHADER_PASS_TAG;
 	}
 
-	public List<AEPrepProperties> getAE_PREP_PROPERTIES() {
+	public List<AEPrepProperty> getAE_PREP_PROPERTIES() {
 		return AE_PREP_PROPERTIES;
 	}
 
-	public void setAE_PREP_PROPERTIES(List<AEPrepProperties> props) {
+	public void setAE_PREP_PROPERTIES(List<AEPrepProperty> props) {
 		this.AE_PREP_PROPERTIES = props;
 	}
 

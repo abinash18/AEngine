@@ -1,5 +1,5 @@
 AE_SHADER_NAME: "!!AE_SHADER_FILE_NAME"
-AE_SHADER_DESC: "Shader for Wireframe."
+AE_SHADER_DESC: "Shader for PointLight."
 #These properties are used to prepare the render.
 AE_PREP_PROPERTIES:
   - AE_PREP_PROPERTY_IDENTIFIER: "GL_ENABLE"

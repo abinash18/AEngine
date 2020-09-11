@@ -12,8 +12,9 @@ public class AEShaderFileYAML {
 	String AE_SHADER_NAME, AE_SHADER_DESC;
 	// AEShaderPass AE_SHADER_PASS;
 	String AE_SHADER_PASS_TAG;
-	List<AEPrepProperties> AE_PREP_PROPERTIES;
+	List<AEPrepProperty> AE_PREP_PROPERTIES;
 	List<AEShaderGLSLProgram> AE_SHADER_GLSL_PROGRAMS;
+	List<AEDemoProperty> AE_DEMO_PROPERTIES;
 
 	public AEShaderFileYAML() {
 	}
@@ -26,11 +27,11 @@ public class AEShaderFileYAML {
 		AE_SHADER_PASS_TAG = aE_SHADER_PASS_TAG;
 	}
 
-	public List<AEPrepProperties> getAE_PREP_PROPERTIES() {
+	public List<AEPrepProperty> getAE_PREP_PROPERTIES() {
 		return AE_PREP_PROPERTIES;
 	}
 
-	public void setAE_PREP_PROPERTIES(List<AEPrepProperties> props) {
+	public void setAE_PREP_PROPERTIES(List<AEPrepProperty> props) {
 		this.AE_PREP_PROPERTIES = props;
 	}
 
@@ -58,12 +59,12 @@ public class AEShaderFileYAML {
 		AE_SHADER_DESC = aE_SHADER_DESC;
 	}
 
-//	public AEShaderPass getAE_SHADER_PASS() {
-//		return AE_SHADER_PASS;
-//	}
-//
-//	public void setAE_SHADER_PASS(AEShaderPass aE_SHADER_PASS) {
-//		AE_SHADER_PASS = aE_SHADER_PASS;
-//	}
+	public List<AEDemoProperty> getAE_DEMO_PROPERTIES() {
+		return AE_DEMO_PROPERTIES;
+	}
+
+	public void setAE_DEMO_PROPERTIES(List<AEDemoProperty> aE_DEMO_PROPERTIES) {
+		AE_DEMO_PROPERTIES = aE_DEMO_PROPERTIES;
+	}
 
 }

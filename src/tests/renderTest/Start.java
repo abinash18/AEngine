@@ -1,33 +1,25 @@
 package tests.renderTest;
 
+import net.abi.abisEngine.core.CoreEngine;
 import net.abi.abisEngine.core.Main;
 import net.abi.abisEngine.rendering.window.models.EngineLoader;
+import net.abi.abisEngine.util.exceptions.AEGLFWWindowInitializationException;
 
 public class Start extends Main {
 
 	static Start s;
 
 	public static void main(String[] args) {
+		// LogManager.setCurrentLevel(LogLevel.DEBUG);
 		s = new Start();
 		s.run(args);
-		/*
-		 * Command buffer test
-		 */
-//		try {
-//			System.out.println(GL45.class.getField("GL_EQUAL"));
-//		} catch (NoSuchFieldException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (SecurityException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		// LogManager.setCurrentLevel(LogLevel.ALL);
+
+		// some time passes
+
 		// PathHandle p =
-		// AEShader.DEFAULT_SHADER_ASSET_DIRECTORY_PATH.resolveChild("wireframe.ae-shader");
-		// AEShaderCompiler c = new AEShaderCompiler(AEShaderParserYAML.parse(p), p);
-		// c.compile();
-		// c.getShaderInstance();
+		// AEShader.DEFAULT_SHADER_ASSET_DIRECTORY_PATH.resolveChild("frameworkTest.ae-shader");
+		// AEShaderCompiler.compile(AEShaderParserYAML.parse(p), p);
+		// GL_CLIPPING_OUTPUT_PRIMITIVES
 	}
 
 	@Override
@@ -36,9 +28,12 @@ public class Start extends Main {
 	}
 
 	@Override
-	protected void addWindows() {
-		new EngineLoader();
-		//new MainGame();
+	protected void openStartingWindow(CoreEngine e) {
+		try {
+			e.getWindowManager().openWindow(new EngineLoader());
+		} catch (AEGLFWWindowInitializationException e1) {
+			e1.printStackTrace();
+		}
 	}
 
 }

@@ -14,9 +14,10 @@ import net.abi.abisEngine.core.CoreEngine;
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
 import net.abi.abisEngine.rendering.asset.AssetStore;
-import net.abi.abisEngine.rendering.renderPipeline.RenderingEngine;
+import net.abi.abisEngine.rendering.pipeline.RenderingEngine;
+import net.abi.abisEngine.rendering.shader.compiler.AEShaderCompiler;
 import net.abi.abisEngine.util.Expendable;
-import net.abi.abisEngine.util.exceptions.AEWindowInitializationException;
+import net.abi.abisEngine.util.exceptions.AEGLFWWindowInitializationException;
 
 /**
  * GLFW Implementation Of Window. This Implementation supports shared contexts.
@@ -394,11 +395,11 @@ public class GLFWWindowManager implements Expendable {
 	 * @param wnd
 	 * @throws Exception
 	 */
-	public void openWindow(GLFWWindow wnd, String sharedContextName) throws AEWindowInitializationException {
+	public void openWindow(GLFWWindow wnd, String sharedContextName) throws AEGLFWWindowInitializationException {
 		openWindow(wnd, getContext(sharedContextName).getKey().context);
 	}
 
-	public void openWindow(GLFWWindow wnd, long sharedContext) throws AEWindowInitializationException {
+	public void openWindow(GLFWWindow wnd, long sharedContext) throws AEGLFWWindowInitializationException {
 
 		if (wnd.getMonitor() == NULL) {
 			logger.info("Monitor Provided Is NULL, Defaulting To Primary Monitor.");
@@ -413,7 +414,8 @@ public class GLFWWindowManager implements Expendable {
 			wnd.create(tempContext.context, tempContext.renderEngine);
 			return;
 		}
-		throw new AEWindowInitializationException(
+		/*Weird but OK.*/
+		throw new AEGLFWWindowInitializationException(
 				"New window could not be initialized. Of desired shared context: " + sharedContext + "", wnd);
 	}
 
@@ -424,21 +426,19 @@ public class GLFWWindowManager implements Expendable {
 	 * as context handle, and if in the future you wish to add a window to this
 	 * context use the window's name as the sharedContextName.
 	 */
-	public void openWindow(GLFWWindow wnd) throws AEWindowInitializationException {
-
+	public void openWindow(GLFWWindow wnd) throws AEGLFWWindowInitializationException {
 		if (wnd.getMonitor() == NULL) {
 			logger.info("Monitor Provided Is NULL, Defaulting To Primary Monitor.");
 		}
 
 		if (findContext(wnd.getWindowName()) != null) {
-			throw new AEWindowInitializationException("Window Already Exits With The Same Name.");
+			throw new AEGLFWWindowInitializationException("Window Already Exits With The Same Name.");
 		}
 
 		GLFWWindowContext context = new GLFWWindowContext(wnd.getWindowName(), wnd.getGlfw_Handle(),
 				wnd.getRenderEngine());
 		AssetStore store = context.store;
 		CopyOnWriteArrayList<GLFWWindow> wnds = new CopyOnWriteArrayList<GLFWWindow>();
-
 		wnd.setAssetStore(store);
 		wnds.add(wnd);
 		windows.put(context, wnds);

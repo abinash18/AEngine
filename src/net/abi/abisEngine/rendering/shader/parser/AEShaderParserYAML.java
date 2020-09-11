@@ -9,6 +9,7 @@ import org.yaml.snakeyaml.constructor.Constructor;
 
 import net.abi.abisEngine.handlers.file.PathHandle;
 import net.abi.abisEngine.rendering.shader.parser.fileTypes.yaml.AEShaderFileYAML;
+import net.abi.abisEngine.rendering.shader.parser.fileTypes.yaml.AEShaderGLSLProgram;
 
 public class AEShaderParserYAML {
 
@@ -20,7 +21,9 @@ public class AEShaderParserYAML {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		if (parsedFile.getAE_SHADER_NAME().equals("!!AE_SHADER_FILE_NAME")) {
+			parsedFile.setAE_SHADER_NAME(file.getNameWithoutExtension());
+		}
 		return parsedFile;
 	}
-
 }

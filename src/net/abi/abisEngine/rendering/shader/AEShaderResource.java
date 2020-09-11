@@ -1,8 +1,6 @@
 package net.abi.abisEngine.rendering.shader;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.lwjgl.opengl.GL15;
@@ -12,39 +10,79 @@ import net.abi.abisEngine.handlers.file.PathHandle;
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
 import net.abi.abisEngine.rendering.asset.AssetI;
-import net.abi.abisEngine.rendering.shader.AEShader.GLSLUniform;
 import net.abi.abisEngine.rendering.shader.compiler.AEShaderCompiler.ShaderSource;
 import net.abi.abisEngine.rendering.window.GLFWWindowManager;
 
 public class AEShaderResource implements AssetI {
 	private static Logger logger = LogManager.getLogger(AEShaderResource.class);
-	public int program, refCount;
-	public String name;
-	public PathHandle path;
-	public HashMap<String, ShaderSource> subPrograms;
-
-	public Map<String, GLSLUniform> uniforms;
+	private int program, refCount;
+	private String name;
+	private PathHandle path;
+	private HashMap<String, ShaderSource> subPrograms;
+	private Map<String, GLSLUniform> uniforms;
+	private Map<Integer, GLSLUniformBlockObject> ubos;
 
 	public AEShaderResource(String name, PathHandle pathToShaderDirectory) {
 		this.path = pathToShaderDirectory;
 		this.subPrograms = new HashMap<String, ShaderSource>();
-		this.program = GL20.glCreateProgram();
+		this.uniforms = new HashMap<String, GLSLUniform>();
+		this.ubos = new HashMap<Integer, GLSLUniformBlockObject>();
+		this.refCount = 1;
+		this.name = name;
+	}
 
+	public void createProgram() {
+		this.program = GL20.glCreateProgram();
 		if (program == 0) {
 			logger.error("Shader creation failed: Could not find valid memory location in constructor",
 					new Exception());
 			logger.info("Exiting...");
 			GLFWWindowManager.raiseStopFlag();
 		}
+	}
 
-		uniforms = new HashMap<String, GLSLUniform>();
+	public Map<Integer, GLSLUniformBlockObject> getUbos() {
+		return ubos;
+	}
 
-		this.refCount = 1;
-		this.name = name;
+	public void setUbos(Map<Integer, GLSLUniformBlockObject> ubos) {
+		this.ubos = ubos;
 	}
 
 	public String getName() {
 		return name;
+	}
+
+	public PathHandle getPath() {
+		return path;
+	}
+
+	public void setPath(PathHandle path) {
+		this.path = path;
+	}
+
+	public HashMap<String, ShaderSource> getSubPrograms() {
+		return subPrograms;
+	}
+
+	public void setSubPrograms(HashMap<String, ShaderSource> subPrograms) {
+		this.subPrograms = subPrograms;
+	}
+
+	public Map<String, GLSLUniform> getUniforms() {
+		return uniforms;
+	}
+
+	public void setUniforms(Map<String, GLSLUniform> uniforms) {
+		this.uniforms = uniforms;
+	}
+
+	public int getRefCount() {
+		return refCount;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public void addShaderSource(ShaderSource source) {

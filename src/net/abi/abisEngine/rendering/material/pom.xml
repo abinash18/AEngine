@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>Abis3DGameEngine</groupId>
 	<artifactId>Abis3DGameEngine</artifactId>
-	<version>4.5.0-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<name>Abi's3DEngine</name>
 	<description>A Java 3D Game Engine</description>
 	<build>
@@ -31,19 +31,7 @@
 		<joml.version>1.9.19</joml.version>
 	</properties>
 
-	<profiles>
-		<profile>
-			<id>lwjgl-natives-linux-amd64</id>
-			<activation>
-				<os>
-					<family>unix</family>
-					<arch>amd64</arch>
-				</os>
-			</activation>
-			<properties>
-				<lwjgl.natives>natives-linux</lwjgl.natives>
-			</properties>
-		</profile>
+		<profiles>
 		<profile>
 			<id>lwjgl-natives-linux-aarch64</id>
 			<activation>
@@ -54,30 +42,6 @@
 			</activation>
 			<properties>
 				<lwjgl.natives>natives-linux-arm64</lwjgl.natives>
-			</properties>
-		</profile>
-		<profile>
-			<id>lwjgl-natives-linux-arm</id>
-			<activation>
-				<os>
-					<family>unix</family>
-					<arch>arm</arch>
-				</os>
-			</activation>
-			<properties>
-				<lwjgl.natives>natives-linux-arm32</lwjgl.natives>
-			</properties>
-		</profile>
-		<profile>
-			<id>lwjgl-natives-linux-arm32</id>
-			<activation>
-				<os>
-					<family>unix</family>
-					<arch>arm32</arch>
-				</os>
-			</activation>
-			<properties>
-				<lwjgl.natives>natives-linux-arm32</lwjgl.natives>
 			</properties>
 		</profile>
 		<profile>
@@ -125,6 +89,15 @@
 		</profile>
 	</profiles>
 
+	<repositories>
+		<repository>
+			<id>sonatype-snapshots</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<releases><enabled>false</enabled></releases>
+			<snapshots><enabled>true</enabled></snapshots>
+		</repository>
+	</repositories>
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -139,16 +112,6 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-api</artifactId>
-			<version>2.13.3</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-			<version>2.13.3</version>
-		</dependency>
-		<dependency>
 			<groupId>org.lwjgl</groupId>
 			<artifactId>lwjgl</artifactId>
 		</dependency>
@@ -162,7 +125,15 @@
 		</dependency>
 		<dependency>
 			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl-bullet</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
 			<artifactId>lwjgl-cuda</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl-driftfx</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.lwjgl</groupId>
@@ -199,6 +170,10 @@
 		<dependency>
 			<groupId>org.lwjgl</groupId>
 			<artifactId>lwjgl-meow</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl-meshoptimizer</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.lwjgl</groupId>
@@ -262,6 +237,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl-spvc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
 			<artifactId>lwjgl-sse</artifactId>
 		</dependency>
 		<dependency>
@@ -317,6 +296,16 @@
 		</dependency>
 		<dependency>
 			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl-bullet</artifactId>
+			<classifier>${lwjgl.natives}</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl-driftfx</artifactId>
+			<classifier>${lwjgl.natives}</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
 			<artifactId>lwjgl-glfw</artifactId>
 			<classifier>${lwjgl.natives}</classifier>
 		</dependency>
@@ -348,6 +337,11 @@
 		<dependency>
 			<groupId>org.lwjgl</groupId>
 			<artifactId>lwjgl-meow</artifactId>
+			<classifier>${lwjgl.natives}</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl-meshoptimizer</artifactId>
 			<classifier>${lwjgl.natives}</classifier>
 		</dependency>
 		<dependency>
@@ -417,6 +411,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl-spvc</artifactId>
+			<classifier>${lwjgl.natives}</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
 			<artifactId>lwjgl-sse</artifactId>
 			<classifier>${lwjgl.natives}</classifier>
 		</dependency>
@@ -466,19 +465,14 @@
 			<version>${steamworks4j-server.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.code-disaster.steamworks4j</groupId>
-			<artifactId>steamworks4j</artifactId>
-			<version>${steamworks4j.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>org.joml</groupId>
 			<artifactId>joml</artifactId>
 			<version>${joml.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.yaml</groupId>
-			<artifactId>snakeyaml</artifactId>
-			<version>1.26</version>
+			<groupId>com.code-disaster.steamworks4j</groupId>
+			<artifactId>steamworks4j</artifactId>
+			<version>${steamworks4j.version}</version>
 		</dependency>
 	</dependencies>
 </project>

@@ -162,6 +162,10 @@ public class Transform {
 		this.scale = (scale);
 	}
 
+	public void setScale(float scale) {
+		this.scale = new Vector3f(scale, scale, scale);
+	}
+
 	public void setScale(float x, float y, float z) {
 		this.scale = new Vector3f(x, y, z);
 	}

@@ -1,10 +1,10 @@
 package net.abi.abisEngine.rendering.shader.parser.fileTypes.yaml;
 
-public class AEPrepProperties {
+public class AEPrepProperty {
 	String AE_PREP_PROPERTY_IDENTIFIER;
 	String[] AE_PREP_PROPERTY_PARAMETERS;
 
-	public AEPrepProperties() {
+	public AEPrepProperty() {
 	}
 
 	public String getAE_PREP_PROPERTY_IDENTIFIER() {

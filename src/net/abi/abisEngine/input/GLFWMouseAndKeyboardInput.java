@@ -11,6 +11,7 @@ import static org.lwjgl.glfw.GLFW.glfwSetScrollCallback;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.lwjgl.glfw.GLFWCharCallback;
 import org.lwjgl.glfw.GLFWCursorEnterCallback;
 import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
@@ -26,6 +27,7 @@ public class GLFWMouseAndKeyboardInput extends GLFWInput {
 	private GLFWCursorPosCallback mousePosCalbk;
 	private GLFWScrollCallback scrlClbk;
 	private GLFWCursorEnterCallback crsNtrClbk;
+	private GLFWCharCallback chrClbk;
 
 	/**
 	 * We are using sets here because they cannot contain duplicates so it is more
@@ -232,18 +234,20 @@ public class GLFWMouseAndKeyboardInput extends GLFWInput {
 	// TODO: try to use an int variable to store state then use an if statement is
 	// return or in the down path function.
 	public void setCursorMode(int mode) {
-
-		if (mode == GLFW_CURSOR_DISABLED) {
+		switch (mode) {
+		case GLFW_CURSOR_DISABLED:
 			mouseHidden = true; // It is hidden when it is set to grabbed or disabled
 			mouseGrabbedAndHidden = true;
-		} else if (mode == GLFW_CURSOR_HIDDEN) {
+			break;
+		case GLFW_CURSOR_HIDDEN:
 			mouseHidden = true;
 			mouseGrabbedAndHidden = false;
-		} else if (mode == GLFW_CURSOR_NORMAL) {
+			break;
+		case GLFW_CURSOR_NORMAL:
 			mouseHidden = false;
 			mouseGrabbedAndHidden = false;
+			break;
 		}
-
 		glfwSetInputMode(glfw_Handle, GLFW_CURSOR, mode);
 	}
 

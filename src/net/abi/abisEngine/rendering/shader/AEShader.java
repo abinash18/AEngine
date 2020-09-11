@@ -22,18 +22,6 @@ public class AEShader {
 		}
 	}
 
-	public static class GLSLUniform {
-		String name, type;
-		int binding;
-
-		public GLSLUniform(String name, String type, int binding) {
-			super();
-			this.name = name;
-			this.type = type;
-			this.binding = binding;
-		}
-	}
-
 	public AEShader(AEShaderResource r) {
 
 	}

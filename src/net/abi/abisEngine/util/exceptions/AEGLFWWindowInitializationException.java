@@ -2,7 +2,7 @@ package net.abi.abisEngine.util.exceptions;
 
 import net.abi.abisEngine.rendering.window.GLFWWindow;
 
-public class AEWindowInitializationException extends AEException {
+public class AEGLFWWindowInitializationException extends AEException {
 
 	/**
 	 * 
@@ -10,12 +10,12 @@ public class AEWindowInitializationException extends AEException {
 	private static final long serialVersionUID = 1L;
 	private String windowProps;
 
-	public AEWindowInitializationException(String cause) {
+	public AEGLFWWindowInitializationException(String cause) {
 		super(cause);
 		windowProps = "N/A";
 	}
 
-	public AEWindowInitializationException(String cause, GLFWWindow wnd) {
+	public AEGLFWWindowInitializationException(String cause, GLFWWindow wnd) {
 		super(cause);
 		windowProps = wnd.toString();
 	}

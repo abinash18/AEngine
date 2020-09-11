@@ -1,4 +1,4 @@
-package net.abi.abisEngine.rendering.renderPipeline;
+package net.abi.abisEngine.rendering.pipeline;
 
 import java.util.HashMap;
 

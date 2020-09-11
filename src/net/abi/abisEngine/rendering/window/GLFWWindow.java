@@ -1,9 +1,10 @@
 package net.abi.abisEngine.rendering.window;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
-import static org.lwjgl.glfw.GLFW.GLFW_TRUE;
-import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.glfw.GLFW.GLFW_DONT_CARE;
+import static org.lwjgl.glfw.GLFW.glfwCreateWindow;
 import static org.lwjgl.glfw.GLFW.glfwDefaultWindowHints;
+import static org.lwjgl.glfw.GLFW.glfwDestroyCursor;
 import static org.lwjgl.glfw.GLFW.glfwDestroyWindow;
 import static org.lwjgl.glfw.GLFW.glfwFocusWindow;
 import static org.lwjgl.glfw.GLFW.glfwGetFramebufferSize;
@@ -14,15 +15,18 @@ import static org.lwjgl.glfw.GLFW.glfwGetWindowFrameSize;
 import static org.lwjgl.glfw.GLFW.glfwGetWindowOpacity;
 import static org.lwjgl.glfw.GLFW.glfwGetWindowPos;
 import static org.lwjgl.glfw.GLFW.glfwGetWindowSize;
+import static org.lwjgl.glfw.GLFW.glfwHideWindow;
 import static org.lwjgl.glfw.GLFW.glfwIconifyWindow;
 import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
 import static org.lwjgl.glfw.GLFW.glfwRequestWindowAttention;
 import static org.lwjgl.glfw.GLFW.glfwRestoreWindow;
+import static org.lwjgl.glfw.GLFW.glfwSetCursor;
 import static org.lwjgl.glfw.GLFW.glfwSetFramebufferSizeCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowAttrib;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowCloseCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowContentScaleCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowFocusCallback;
+import static org.lwjgl.glfw.GLFW.glfwSetWindowIcon;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowIconifyCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowMaximizeCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowMonitor;
@@ -57,7 +61,6 @@ import org.lwjgl.glfw.GLFWWindowPosCallback;
 import org.lwjgl.glfw.GLFWWindowRefreshCallback;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GL;
-import org.lwjgl.opengl.GL45;
 import org.lwjgl.opengl.GLCapabilities;
 import org.lwjgl.system.MemoryStack;
 
@@ -71,16 +74,14 @@ import net.abi.abisEngine.rendering.asset.AssetI;
 import net.abi.abisEngine.rendering.asset.AssetManager;
 import net.abi.abisEngine.rendering.asset.AssetStore;
 import net.abi.abisEngine.rendering.image.AEImage;
-import net.abi.abisEngine.rendering.image.PixelMap;
-import net.abi.abisEngine.rendering.renderPipeline.RenderingEngine;
+import net.abi.abisEngine.rendering.pipeline.RenderingEngine;
 import net.abi.abisEngine.rendering.scene.Scene;
 import net.abi.abisEngine.rendering.scene.SceneManager;
+import net.abi.abisEngine.rendering.shader.compiler.AEShaderCompiler;
 import net.abi.abisEngine.util.Expendable;
-import net.abi.abisEngine.util.Util;
 import net.abi.abisEngine.util.cacheing.GenericCache;
-import net.abi.abisEngine.util.cacheing.TwoFactorGenericCache;
 import net.abi.abisEngine.util.exceptions.AECursorInitializationException;
-import net.abi.abisEngine.util.exceptions.AEWindowInitializationException;
+import net.abi.abisEngine.util.exceptions.AEGLFWWindowInitializationException;
 
 public abstract class GLFWWindow implements Expendable {
 
@@ -300,7 +301,7 @@ public abstract class GLFWWindow implements Expendable {
 				 * This option Synchronizes the frames so they render more steadily instead of
 				 * dropping and causing lag.
 				 */
-				vSync = 0;
+				vSync = 0, startHidden = GLFW_FALSE;
 
 		/** The name is what the engine recognizes and it is used to find the window. */
 		public String name,
@@ -374,11 +375,10 @@ public abstract class GLFWWindow implements Expendable {
 	protected abstract void addScenes();
 
 	/**
-	 * This is method where window hints can be set and attributes added. This
-	 * method is called before the creation of the window and should be the only
-	 * place to set hints and set other constraints. This method should not be
-	 * called externally since it can alter the state of the next window that is
-	 * created.
+	 * This is method where window hints can be set. This method is called before
+	 * the creation of the window and should be the only place to set hints and set
+	 * other constraints. This method should not be called externally since it can
+	 * alter the state of the next window that is created.
 	 */
 	protected abstract void pre_init();
 
@@ -445,9 +445,9 @@ public abstract class GLFWWindow implements Expendable {
 	 * 
 	 * @param share
 	 * @return
-	 * @throws AEWindowInitializationException
+	 * @throws AEGLFWWindowInitializationException
 	 */
-	public GLFWWindow create(long share) throws AEWindowInitializationException {
+	public GLFWWindow create(long share) throws AEGLFWWindowInitializationException {
 		return this.create(share);
 	}
 
@@ -459,9 +459,10 @@ public abstract class GLFWWindow implements Expendable {
 	 * @param share   The handle of the window the new window will share. NULL will
 	 *                make a new GLContext.
 	 * @return
-	 * @throws AEWindowInitializationException
+	 * @throws AEGLFWWindowInitializationException
 	 */
-	public GLFWWindow create(long monitor, long share, RenderingEngine rndEng) throws AEWindowInitializationException {
+	public GLFWWindow create(long monitor, long share, RenderingEngine rndEng)
+			throws AEGLFWWindowInitializationException {
 		this.properties.sharedContext = share;
 		this.create(monitor, rndEng);
 		return this;
@@ -473,15 +474,15 @@ public abstract class GLFWWindow implements Expendable {
 	 * @param monitor
 	 * @param rndEng
 	 * @return
-	 * @throws AEWindowInitializationException
+	 * @throws AEGLFWWindowInitializationException
 	 */
-	public GLFWWindow create(long monitor, RenderingEngine rndEng) throws AEWindowInitializationException {
+	public GLFWWindow create(long monitor, RenderingEngine rndEng) throws AEGLFWWindowInitializationException {
 		this.properties.preferredMonitor = monitor;
 		this.create(rndEng);
 		return this;
 	}
 
-	public GLFWWindow create(RenderingEngine rndEng) throws AEWindowInitializationException {
+	public GLFWWindow create(RenderingEngine rndEng) throws AEGLFWWindowInitializationException {
 		properties.renderEngine = rndEng;
 		this.create();
 		return this;
@@ -496,24 +497,29 @@ public abstract class GLFWWindow implements Expendable {
 	 * will not be updated automatically through the core engine.
 	 * 
 	 * @return
-	 * @throws AEWindowInitializationException
+	 * @throws AEGLFWWindowInitializationException
 	 */
-	public GLFWWindow create() throws AEWindowInitializationException {
+	public GLFWWindow create() throws AEGLFWWindowInitializationException {
 		this.genUniqueID();
 
+		if (this.properties.preferredMonitor == NULL) {
+			this.properties.preferredMonitor = glfwGetPrimaryMonitor();
+		}
+
+		this.currentMonitor = properties.preferredMonitor;
+		long mon = properties.preferredMonitor;
+
+		videoMode = glfwGetVideoMode(currentMonitor);
+		currentRefreshRate = videoMode.refreshRate();
+
 		addGLFWWindowHint(GLFW_REFRESH_RATE, properties.preferredRefreshRate);
+		addGLFWWindowHint(GLFW_VISIBLE, properties.startHidden);
 
 		/*
 		 * Pre initialization is for the user to set any window hints or any other
 		 * action which dose not require a window handle to be created.
 		 */
 		this.pre_init();
-
-		if (this.properties.preferredMonitor == NULL) {
-			this.properties.preferredMonitor = glfwGetPrimaryMonitor();
-		}
-
-		long mon = properties.preferredMonitor;
 
 		/**
 		 * This is done because creating a window defaults to full screen and if the
@@ -535,18 +541,16 @@ public abstract class GLFWWindow implements Expendable {
 		if (this.glfw_handle == NULL) {
 			logger.error("Failed to create the GLFW window: name: '" + properties.name + "' title: '" + properties.title
 					+ "'");
-			throw new AEWindowInitializationException(
+			throw new AEGLFWWindowInitializationException(
 					"Failed to create the GLFW window, Either GLFW denied to create this context or it failed.", this);
 		}
 
 		/* If there is no store provided there is no place to cache assets. */
 		if (store == null) {
-			throw new AEWindowInitializationException("Asset Store Not Defined.", this);
+			throw new AEGLFWWindowInitializationException("Asset Store Not Defined.", this);
 		}
 
 		// this.assetManager = new AssetManager(glfw_handle, store);
-
-		this.currentMonitor = properties.preferredMonitor;
 
 		// Make the OpenGL context current
 		glfwMakeContextCurrent(glfw_handle);
@@ -590,10 +594,6 @@ public abstract class GLFWWindow implements Expendable {
 
 		}
 
-		videoMode = glfwGetVideoMode(currentMonitor);
-
-		currentRefreshRate = videoMode.refreshRate();
-
 		/*
 		 * Post initialization is for the user to center the window set attributes and
 		 * change title or border or anything else they need to do before the window is
@@ -616,11 +616,8 @@ public abstract class GLFWWindow implements Expendable {
 		this.addScenes();
 		this.assetManager = new AssetManager(glfw_handle);
 		this.resetToDefaults();
-
+		AEShaderCompiler.printLibVersionInfo();
 		this.properties.renderEngine.initGraphics();
-
-		logger.debug(GL45.glGetString(GL45.GL_VERSION));
-		logger.debug(GL45.glGetString(GL45.GL_SHADING_LANGUAGE_VERSION));
 		return this;
 	}
 
@@ -864,6 +861,10 @@ public abstract class GLFWWindow implements Expendable {
 
 	public void showWindow() {
 		glfwShowWindow(glfw_handle);
+	}
+
+	public void hideWindow() {
+		glfwHideWindow(glfw_handle);
 	}
 
 	private void initCallBacks() {

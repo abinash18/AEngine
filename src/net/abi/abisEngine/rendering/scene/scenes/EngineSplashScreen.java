@@ -10,9 +10,9 @@ import net.abi.abisEngine.components.MeshRenderer;
 import net.abi.abisEngine.components.PointLight;
 import net.abi.abisEngine.components.SpotLight;
 import net.abi.abisEngine.entities.Entity;
+import net.abi.abisEngine.handlers.file.PathHandle;
 import net.abi.abisEngine.input.GLFWInput;
 import net.abi.abisEngine.input.GLFWMouseAndKeyboardInput;
-import net.abi.abisEngine.math.Transform;
 import net.abi.abisEngine.math.Vector3f;
 import net.abi.abisEngine.rendering.asset.AssetContainer;
 import net.abi.abisEngine.rendering.asset.AssetLoaderParameters.LoadedCallback;
@@ -21,8 +21,11 @@ import net.abi.abisEngine.rendering.asset.loaders.ModelSceneLoader;
 import net.abi.abisEngine.rendering.material.Material;
 import net.abi.abisEngine.rendering.mesh.Mesh;
 import net.abi.abisEngine.rendering.mesh.ModelScene;
-import net.abi.abisEngine.rendering.renderPipeline.RenderingEngine;
+import net.abi.abisEngine.rendering.pipeline.RenderingEngine;
 import net.abi.abisEngine.rendering.scene.Scene;
+import net.abi.abisEngine.rendering.shader.AEShader;
+import net.abi.abisEngine.rendering.shader.compiler.AEShaderCompiler;
+import net.abi.abisEngine.rendering.shader.parser.AEShaderParserYAML;
 import net.abi.abisEngine.rendering.texture.Texture;
 import net.abi.abisEngine.rendering.window.GLFWWindow;
 import net.abi.abisEngine.util.Attenuation;
@@ -42,6 +45,7 @@ public class EngineSplashScreen extends Scene {
 
 	public void init() {
 		super.init();
+
 		test = super.getRootObject();
 		man = new AssetManager(super.getParentWindow().getGlfw_Handle());
 		// man = super.getParentWindow().getAssetManager();
@@ -72,9 +76,8 @@ public class EngineSplashScreen extends Scene {
 		cam = new Camera((float) Math.toRadians(60.0f),
 				(float) super.getParentWindow().getPWidth() / (float) super.getParentWindow().getPHeight(), 0.01f,
 				1000.0f, "playerView");
-
 		cameraObject.addComponent(cam);
-		cameraObject.addComponent(new FreeLook(0.35f)).addComponent(new FreeMove(10f));
+		cameraObject.addComponent(new FreeLook(0.35f)).addComponent(new FreeMove(50f));
 		// cameraObject.addComponent(spotLight);
 		// spotLight.getTransform().setParent(cam.getTransform());
 
@@ -110,16 +113,20 @@ public class EngineSplashScreen extends Scene {
 			@Override
 			public void finishedLoading(AssetManager assetManager, String fileName, AssetContainer container) {
 				Material anvilmat = new Material();
-				anvilmat.addTexture("diffuse", new Texture("defaultModelTexture.png"));
+				anvilmat.addTexture("diffuse", new Texture("defaultTexture.png"));
 				anvilmat.addTexture("normal_map", new Texture("Normal_Map_Anvil.png"));
 				anvilmat.addFloat("specularIntensity", 1);
 				anvilmat.addFloat("specularPower", 8);
 				ModelScene m = assetManager.get(fileName, ModelScene.class);
 				Mesh s = m.getMesh("monkey").bindModel();
 				monkey = new Entity().addComponent(new MeshRenderer(s, anvilmat));
-				monkey.getTransform().setTranslation(new Vector3f(0f, 0f, 10f));
-				monkey.getTransform().setScale(0.025f, 0.025f, 0.025f);
-				monkey.getTransform().getRotation().rotate(Transform.Y_AXIS, (float) Math.toRadians(180));
+				monkey.getTransform().setTranslation(new Vector3f(0f, 0f, 5f)).setScale(10);// .getRotation().rotate(Transform.X_AXIS,
+				// (float) Math.toRadians(-100));
+				// monkey.getTransform().getRotation().rotate(Transform.Y_AXIS, (float)
+				// Math.toRadians(-180));
+				// monkey.getTransform().setScale(0.025f, 0.025f, 0.025f);
+				// monkey.getTransform().getRotation().rotate(Transform.Y_AXIS, (float)
+				// Math.toRadians(180));
 				test.addChild(monkey);
 
 				// monkey2 = new Entity().addComponent(new MeshRenderer(s, anvilmat));
@@ -131,8 +138,11 @@ public class EngineSplashScreen extends Scene {
 		// man.load("monkey.obj", ModelScene.class, parm);
 //		man.load("Anvil_LowPoly.obj", ModelScene.class, parm);
 		// man.load("monkey.obj", ModelScene.class, parm);
-		man.load("IronMan.obj", ModelScene.class, parm);
+		man.load("monkey.obj", ModelScene.class, parm);
 
+		PathHandle p = AEShader.DEFAULT_SHADER_ASSET_DIRECTORY_PATH.resolveChild("wireframe.ae-shader");
+		AEShaderCompiler.compile(AEShaderParserYAML.parse(p), p, true);
+		
 		super.setMainCamera("playerView");
 		// super.addChild(spotLightObject);
 		// super.addChild(new Entity()
@@ -150,7 +160,7 @@ public class EngineSplashScreen extends Scene {
 	@Override
 	public void update(float delta) {
 		super.update(delta);
-		// System.out.println(man.getQueuedAssets());
+		// System.out.println(man.getQueuedAssets() + " " + man.getProgress() * 100);
 		man.update();
 		temp = temp + delta;
 		float angle = (float) Math.toRadians(temp * 180);

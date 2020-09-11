@@ -17,15 +17,11 @@ AE_SHADER_GLSL_PROGRAMS:
   - AE_SHADER_GLSL_PROGRAM_TYPE: "AE_VERTEX_SHADER"
     AE_SHADER_GLSL_PROGRAM_NAME: "vertex_shader"
     AE_SHADER_GLSL_PROGRAM_SOURCE: |
-      #include wireframe/wireframe.glvs
-  - AE_SHADER_GLSL_PROGRAM_TYPE: "AE_GEOMETRY_SHADER"
-    AE_SHADER_GLSL_PROGRAM_NAME: "geometry_shader"
-    AE_SHADER_GLSL_PROGRAM_SOURCE: |
-      #include wireframe/wireframe.glgs
+      #include testVert.glvs
   - AE_SHADER_GLSL_PROGRAM_TYPE: "AE_FRAGMENT_SHADER"
     AE_SHADER_GLSL_PROGRAM_NAME: "fragment_shader"
     AE_SHADER_GLSL_PROGRAM_SOURCE: |
-      #include wireframe/wireframe.glfs
+      #include testFrag.glfs
 #These properties are used to demolish the render.
 AE_DEMO_PROPERTIES:
   - AE_DEMO_PROPERTY_IDENTIFIER: "GL_DISABLE"

@@ -12,7 +12,6 @@ public class Light extends SceneComponent {
 	public Light(Vector3f color, float intensity) {
 		this.color = color;
 		this.intensity = intensity;
-		
 	}
 
 	public Shader getShader() {

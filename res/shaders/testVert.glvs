@@ -1,0 +1,14 @@
+#version 460
+layout (location = 0) in vec3 position;
+layout(shared, row_major) uniform;
+layout (std140, binding = 0) uniform Matrices {
+	mat4 T_MVP;
+	mat4 T_MVN;
+	mat4 T_MV;
+	mat4 T_VPM;
+};
+uniform vec2[2] d;
+//#import AE_LIGHTING_IMPORTS:{"LIGHTING_VARS"};
+void main(){
+  gl_Position = T_MVP * vec4(position, 1.0);
+}

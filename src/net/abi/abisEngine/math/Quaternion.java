@@ -1,5 +1,7 @@
 package net.abi.abisEngine.math;
 
+import org.joml.Math;
+
 public class Quaternion {
 	private float x, y, z, w;
 
@@ -80,16 +82,14 @@ public class Quaternion {
 	}
 
 	public Quaternion rotate(Vector3f axis, float angleRad) {
-		float sinHalfAngle = (float) Math.sin(angleRad / 2);
-		float cosHalfAngle = (float) Math.cos(angleRad / 2);
+		float hangle = angleRad / 2.0f;
+		float sinAngle = (float) Math.sin(hangle);
+		float invVLength = (float) (1.0 / Math.sqrt(axis.x() * axis.x() + axis.y() * axis.y() + axis.z() * axis.z()));
 
-		this.x = axis.x() * sinHalfAngle;
-		this.y = axis.y() * sinHalfAngle;
-		this.z = axis.z() * sinHalfAngle;
-		this.w = cosHalfAngle;
-
-		this.normalize();
-
+		x = axis.x() * invVLength * sinAngle;
+		y = axis.y() * invVLength * sinAngle;
+		z = axis.z() * invVLength * sinAngle;
+		w = (float) Math.cosFromSin(sinAngle, hangle);
 		return (this);
 	}
 

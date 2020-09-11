@@ -2,13 +2,14 @@ package net.abi.abisEngine.rendering.window.models;
 
 import net.abi.abisEngine.handlers.file.PathHandle;
 import net.abi.abisEngine.rendering.image.AEImage;
-import net.abi.abisEngine.rendering.renderPipeline.RenderingEngine;
+import net.abi.abisEngine.rendering.pipeline.RenderingEngine;
 import net.abi.abisEngine.rendering.scene.scenes.EngineSplashScreen;
 import net.abi.abisEngine.rendering.window.GLFWWindow;
 import net.abi.abisEngine.rendering.window.GLFWWindowManager;
 import net.abi.abisEngine.util.exceptions.AECursorInitializationException;
 import net.abi.abisEngine.util.exceptions.AEImageManipulationException;
 import tests.renderTest.scenes.MainMenu;
+import tests.renderTest.scenes.TestGame;
 
 public class EngineLoader extends GLFWWindow {
 
@@ -25,6 +26,7 @@ public class EngineLoader extends GLFWWindow {
 
 	@Override
 	protected void addScenes() {
+		// new TestGame(this);
 		new EngineSplashScreen(this);
 		new MainMenu(this);
 	}
@@ -53,11 +55,11 @@ public class EngineLoader extends GLFWWindow {
 	protected void post_init() {
 		super.centerWindow();
 		super.showWindow();
-		AEImage i = new AEImage(new PathHandle("./res/textures/cursor.png"));
+		AEImage i = new AEImage(new PathHandle("./res/icons/1x/ae-generic-series-2-icon-48-48.png"));
 		try {
 			i = AEImage.resize(i, 32, 32);
 			super.setWindowIcon(i);
-			//super.setCursor(new StaticCursor("s", i, 0, 0));
+			// super.setCursor(new StaticCursor("s", i, 0, 0));
 			super.setCursor(new StaticCursor("normal"));
 		} catch (AEImageManipulationException | AECursorInitializationException e) {
 			e.printStackTrace();

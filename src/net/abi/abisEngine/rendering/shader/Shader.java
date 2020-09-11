@@ -27,7 +27,7 @@ import net.abi.abisEngine.math.Vector3i;
 import net.abi.abisEngine.math.Vector4f;
 import net.abi.abisEngine.rendering.asset.AssetI;
 import net.abi.abisEngine.rendering.material.Material;
-import net.abi.abisEngine.rendering.renderPipeline.RenderingEngine;
+import net.abi.abisEngine.rendering.pipeline.RenderingEngine;
 import net.abi.abisEngine.rendering.texture.Texture;
 import net.abi.abisEngine.util.Util;
 
@@ -553,7 +553,6 @@ public class Shader implements AssetI {
 				attribStartLocation = shaderText.indexOf(ATTRIBUTE_KEYWORD,
 						attribStartLocation + ATTRIBUTE_KEYWORD.length());
 				continue;
-
 			}
 
 			/*
@@ -735,6 +734,7 @@ public class Shader implements AssetI {
 		logger.debug("Successfully Attached Shader: " + shaderProgram.getProgram() + " Log: " + "\n"
 				+ GL20.glGetShaderInfoLog(shader, 1024));
 		logger.finest("Shader Text For '" + text_type + "': '" + shaderProgram.getName() + "'\n" + text);
+		GL20.glDeleteShader(shader);
 	}
 
 	/**

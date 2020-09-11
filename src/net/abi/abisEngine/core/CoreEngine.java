@@ -7,17 +7,11 @@ import static org.lwjgl.glfw.GLFW.glfwTerminate;
 import java.util.Objects;
 
 import org.lwjgl.glfw.GLFWErrorCallback;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL31;
-import org.lwjgl.opengl.GL40;
-import org.lwjgl.opengl.GL43;
 
-import net.abi.abisEngine.handlers.logging.LogLevel;
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
 import net.abi.abisEngine.rendering.mesh.AIMeshLoader;
-import net.abi.abisEngine.rendering.renderPipeline.RenderingEngine;
-import net.abi.abisEngine.rendering.window.GLFWWindow;
+import net.abi.abisEngine.rendering.shader.compiler.AEShaderCompiler;
 import net.abi.abisEngine.rendering.window.GLFWWindowManager;
 import net.abi.abisEngine.rendering.window.models.EngineLoader;
 
@@ -39,15 +33,6 @@ public class CoreEngine {
 		AIMeshLoader.printLibInfo();
 	}
 
-	public void initialize() {
-		this.printDeviceProperties();
-		AIMeshLoader.printLibInfo();
-	}
-
-	public void initialize(RenderingEngine rndrEng) {
-		this.printDeviceProperties();
-	}
-
 	public void initGLFW() {
 		/*
 		 * Setup an error callback. The default implementation will print the error
@@ -60,7 +45,6 @@ public class CoreEngine {
 			logger.error("Unable to initialize GLFW");
 			throw new IllegalStateException("Unable to initialize GLFW");
 		}
-
 		windowManager = new GLFWWindowManager(this);
 	}
 
@@ -85,6 +69,7 @@ public class CoreEngine {
 	/**
 	 * Specifies the entry point to the engine.
 	 */
+	@Deprecated
 	protected void openLoadingWindow() {
 		try {
 			windowManager.openWindow(new EngineLoader());
@@ -96,21 +81,19 @@ public class CoreEngine {
 	private void run() {
 		logger.info("Starting Engine.");
 
-		openLoadingWindow();
+		// openLoadingWindow();
 		isRunning = true;
 
 		int frames = 0;
 		double frameCounter = 0;
 
 		final double m_frameTime = this.frameTime;
-
 		double lastTime = Time.getTime();
 		double unprocessedTime = 0;
-
-		boolean finestLoglevel = LogManager.isLevelAllowed(LogLevel.FINEST);
+		boolean uncapped = true;
 
 		while (isRunning) {
-			boolean render = false;
+			boolean render = uncapped;
 			double startTime = Time.getTime();
 			double passedTime = startTime - lastTime;
 			lastTime = startTime;
@@ -124,18 +107,10 @@ public class CoreEngine {
 				} else {
 					render = true;
 					unprocessedTime -= m_frameTime;
-					windowManager.update((float) m_frameTime);
 					windowManager.input((float) m_frameTime);
+					windowManager.update((float) m_frameTime);
 					if (frameCounter >= 1.0) {
-						//////////////////////////////////////////////
-						//////////// -Just For Debugging-/////////////
-						if (!finestLoglevel) {
-							System.out.println("Frames: " + frames + " Frame Time: " + (double) 1 / frames + "ms");
-						} else {
-							logger.finest("Frames: " + frames);
-						}
-						//////////// -Just For Debugging-/////////////
-						//////////////////////////////////////////////
+						System.out.println("Frames: " + frames + " Frame Time: " + (double) 1000 / frames + "ms");
 						frames = 0;
 						frameCounter = 0;
 					}
@@ -172,16 +147,6 @@ public class CoreEngine {
 		System.exit(exitCode);
 	}
 
-	private void printDeviceProperties() {
-		logger.info(RenderingEngine.getOpenGLVersion());
-		logger.info("OpenGL version: " + GL11.glGetString(GL11.GL_VERSION) + " bytes");
-		logger.info("Max Geometry Uniform Blocks: " + GL31.GL_MAX_GEOMETRY_UNIFORM_BLOCKS + " bytes");
-		logger.info("Max Geometry Shader Invocations: " + GL40.GL_MAX_GEOMETRY_SHADER_INVOCATIONS + " bytes");
-		logger.info("Max Uniform Buffer Bindings: " + GL31.GL_MAX_UNIFORM_BUFFER_BINDINGS + " bytes");
-		logger.info("Max Uniform Block Size: " + GL31.GL_MAX_UNIFORM_BLOCK_SIZE + " bytes");
-		logger.info("Max SSBO Block Size: " + GL43.GL_MAX_SHADER_STORAGE_BLOCK_SIZE + " bytes");
-	}
-
 	public double getFrameRate() {
 		return frameRate;
 	}
@@ -197,6 +162,10 @@ public class CoreEngine {
 
 	public boolean isRunning() {
 		return isRunning;
+	}
+
+	public GLFWWindowManager getWindowManager() {
+		return windowManager;
 	}
 
 }

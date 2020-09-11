@@ -12,6 +12,11 @@ public class Camera extends SceneComponent {
 		super.setName(name);
 	}
 
+	public Camera(float left, float right, float bottom, float top, float zNear, float zFar, String name) {
+		this.projection = new Matrix4f().initOrthographic(left, right, bottom, top, zNear, zFar);
+		super.setName(name);
+	}
+
 	public Camera(Vector3f pos, Vector3f forward, Vector3f up, String name) {
 		up.normalize();
 		forward.normalize();
@@ -19,6 +24,18 @@ public class Camera extends SceneComponent {
 	}
 
 	public Matrix4f getViewProjection() {
+		Matrix4f cameraRotationMatrix = super.getTransform().getTransformedRotation().conjugate().toRotationMatrix();
+		/*
+		 * Doing Negative multiplication here to eradicate the use of it in the return
+		 * statement.
+		 */
+		Vector3f cameraPosition = super.getTransform().getTransformedPosition().mul(-1);
+		Matrix4f cameraTranslationMatrix = new Matrix4f().initTranslation(cameraPosition.x(), cameraPosition.y(),
+				cameraPosition.z());
+		return projection.mul(cameraRotationMatrix.mul(cameraTranslationMatrix));
+	}
+
+	public Matrix4f getViewOrthographic() {
 		Matrix4f cameraRotationMatrix = super.getTransform().getTransformedRotation().conjugate().toRotationMatrix();
 		/*
 		 * Doing Negative multiplication here to eradicate the use of it in the return

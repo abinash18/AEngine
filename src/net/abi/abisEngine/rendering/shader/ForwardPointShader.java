@@ -4,7 +4,7 @@ import net.abi.abisEngine.components.Light;
 import net.abi.abisEngine.components.PointLight;
 import net.abi.abisEngine.math.Transform;
 import net.abi.abisEngine.rendering.material.Material;
-import net.abi.abisEngine.rendering.renderPipeline.RenderingEngine;
+import net.abi.abisEngine.rendering.pipeline.RenderingEngine;
 
 @Deprecated
 public class ForwardPointShader extends Shader {
