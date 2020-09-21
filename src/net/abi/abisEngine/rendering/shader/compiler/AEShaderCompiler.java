@@ -1,19 +1,31 @@
 package net.abi.abisEngine.rendering.shader.compiler;
 
-import static org.lwjgl.system.MemoryStack.stackPush;
-
+import static org.lwjgl.opengl.GL20.GL_ACTIVE_UNIFORMS;
+import static org.lwjgl.opengl.GL20.glGetProgramiv;
+import static org.lwjgl.opengl.GL20.glIsProgram;
+import static org.lwjgl.opengl.GL43.GL_ACTIVE_RESOURCES;
+import static org.lwjgl.opengl.GL43.GL_ACTIVE_VARIABLES;
+import static org.lwjgl.opengl.GL43.GL_ARRAY_STRIDE;
+import static org.lwjgl.opengl.GL43.GL_BLOCK_INDEX;
+import static org.lwjgl.opengl.GL43.GL_BUFFER_BINDING;
+import static org.lwjgl.opengl.GL43.GL_BUFFER_DATA_SIZE;
+import static org.lwjgl.opengl.GL43.GL_IS_ROW_MAJOR;
+import static org.lwjgl.opengl.GL43.GL_LOCATION;
+import static org.lwjgl.opengl.GL43.GL_MATRIX_STRIDE;
+import static org.lwjgl.opengl.GL43.GL_NAME_LENGTH;
+import static org.lwjgl.opengl.GL43.GL_NUM_ACTIVE_VARIABLES;
+import static org.lwjgl.opengl.GL43.GL_OFFSET;
+import static org.lwjgl.opengl.GL43.GL_TYPE;
+import static org.lwjgl.opengl.GL43.GL_UNIFORM;
+import static org.lwjgl.opengl.GL43.GL_UNIFORM_BLOCK;
+import static org.lwjgl.opengl.GL43.glGetProgramInterfacei;
+import static org.lwjgl.opengl.GL43.glGetProgramResourceName;
 import static org.lwjgl.opengl.GL46.*;
-
-import static net.abi.abisEngine.rendering.shader.compiler.Tokens.*;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,8 +35,6 @@ import org.lwjgl.opengl.GL31;
 import org.lwjgl.opengl.GL40;
 import org.lwjgl.opengl.GL43;
 import org.lwjgl.opengl.GL45;
-import org.lwjgl.opengl.GL46;
-import org.lwjgl.system.MemoryStack;
 
 import net.abi.abisEngine.handlers.file.PathHandle;
 import net.abi.abisEngine.handlers.file.PathType;
@@ -62,7 +72,15 @@ public class AEShaderCompiler {
 	private static TwoFactorGenericCache<String, String, AEShaderGLSLProgram> loadedImports = new TwoFactorGenericCache<String, String, AEShaderGLSLProgram>(
 			String.class, String.class, AEShaderGLSLProgram.class);
 
-	private static PrintStream out = System.out;
+	private static PrintStream out;
+
+	public AEShaderCompiler(PrintStream _out) {
+		out = _out;
+	}
+
+	public AEShaderCompiler() {
+		out = System.out;
+	}
 
 	/**
 	 * Compiles and pre process the AE Shader file also auto adds uniforms and
@@ -71,15 +89,6 @@ public class AEShaderCompiler {
 	 * @return
 	 */
 	public static AEShader compile(AEShaderFileYAML p, PathHandle path) {
-		return compile(p, path, true);
-	}
-
-	public static AEShader compile(AEShaderFileYAML p, PathHandle path, PrintStream debugOut) {
-		AEShaderCompiler.out = debugOut;
-		return compile(p, path, true);
-	}
-
-	public static AEShader compile(AEShaderFileYAML p, PathHandle path, boolean autoBindUniforms) {
 
 		float start = System.nanoTime();
 		out.println("Compiling Shader: '" + p.getAE_SHADER_NAME() + "'");
@@ -112,11 +121,13 @@ public class AEShaderCompiler {
 		link(program);
 
 		/*
-		 * If the program is to determine each of the uniform's locations we proccess
+		 * If the program is to determine each of the uniform's locations we process
 		 * this.
 		 */
+		// AEGLInfo.getUniformsInfo(program.getProgram());
 		// if (autoBindUniforms) {
 		// processUniforms(program, _unProccessedShaders);
+		processUniforms(program);
 		// }
 
 		/*
@@ -156,8 +167,113 @@ public class AEShaderCompiler {
 	}
 
 	/**
+	 * Introspect the <b>program</b> and
+	 * 
+	 * @param program
+	 * @return
+	 */
+	private static void processUniforms(AEShaderResource _program) {
+		out.println("Processing Shader Uniforms for: " + _program.getName());
+		int program = _program.getProgram();
+		if (!glIsProgram(program)) {
+			out.println("name: " + program + " is not a program");
+			return;
+		}
+		int index, uniSize, uniMatStride, uniArrayStride;
+		String name;
+		int numUniforms;
+		// out.println("Uniforms Info for program: " + program + " {");
+		int properties[] = { GL_BLOCK_INDEX, GL_TYPE, GL_NAME_LENGTH, GL_LOCATION, GL_ARRAY_STRIDE, GL_MATRIX_STRIDE };
+		int[] values = new int[1];
+		// glGetProgramInterfaceiv(program, GL_UNIFORM, GL_ACTIVE_RESOURCES, values);
+		glGetProgramiv(program, GL_ACTIVE_UNIFORMS, values);
+		numUniforms = values[0];
+		// out.println("Num Uniforms: " + numUniforms + " {");
+		for (int i = 0; i < numUniforms; i++) {
+			values = new int[properties.length];
+			glGetProgramResourceiv(program, GL_UNIFORM, i, properties, null, values);
+			index = values[0]; // GL_BLOCK_INDEX
+			if (index == -1) {
+				name = glGetProgramResourceName(program, GL_UNIFORM, i);
+				GLSLUniform u = new GLSLUniform();
+				_program.getUniforms().put(name, u);
+				u.location = values[3]; // GL_LOCATION
+				u.type = values[1]; // GL_TYPE
+				u.name = name;
+				// out.println("\tName: " + name);
+				// out.println("\tType: " + AEGLInfo.spGLSLType.get(values[1]));
+				// out.println("\tLocation: " + values[3]);
+				int auxSize;
+				if (values[4] > 0) { // If the array stride is greater than 0
+					auxSize = values[4] * AEGLInfo.spGLSLTypeSize.get(values[1]);
+				} else {
+					auxSize = AEGLInfo.spGLSLTypeSize.get(values[1]);
+				}
+				u.size = auxSize;
+				u.arrayStride = values[4]; // GL_ARRAY_STRIDE
+				u.matrixStride = values[5]; // GL_MATRIX_STRIDE
+				// out.println("\tSize: " + auxSize);
+				// if (values[4] > 0) {
+				// out.println("\tStride: " + values[4]);
+				// }
+			}
+		}
+		int blockQueryProperties[] = { GL_BUFFER_DATA_SIZE, GL_BUFFER_BINDING, GL_BLOCK_INDEX };
+		int _blockQueryProperties[] = { GL_NUM_ACTIVE_VARIABLES };
+		int activeUniformQueryProperties[] = { GL_ACTIVE_VARIABLES };
+		int uniformQueryProperties[] = { GL_NAME_LENGTH, GL_TYPE, GL_LOCATION, GL_OFFSET, GL_ARRAY_STRIDE,
+				GL_MATRIX_STRIDE, GL_IS_ROW_MAJOR };
+		int count = glGetProgramInterfacei(program, GL_UNIFORM_BLOCK, GL_ACTIVE_RESOURCES);
+		// out.println("Uniform Block Objects: " + count + " {");
+		for (int i = 0; i < count; i++) {
+			// out.println("\tBlock: " + i + " {");
+			values = new int[blockQueryProperties.length];
+			glGetProgramResourceiv(program, GL_UNIFORM_BLOCK, i, blockQueryProperties, null, values);
+			name = glGetProgramResourceName(program, GL_UNIFORM_BLOCK, values[2]);
+			// out.println("\t\tName: " + name + "\n\t\tSize: " + values[0]);
+			// out.println("\t\tBlock binding point: " + values[2]);
+			// out.println("\t\tBuffer bound to binding point: " + values[1]);
+			values = new int[_blockQueryProperties.length];
+			glGetProgramResourceiv(program, GL_UNIFORM_BLOCK, i, _blockQueryProperties, null, values);
+			int numActiveUnifs = values[0];
+			if (numActiveUnifs == 0) {
+				continue;
+			}
+			values = new int[numActiveUnifs];
+			glGetProgramResourceiv(program, GL_UNIFORM_BLOCK, i, activeUniformQueryProperties, null, values);
+			int[] blockUnifs = values;
+			// out.println("\tMembers of block: " + i + " : {");
+			for (int k = 0; k < numActiveUnifs; k++) {
+				out.println("\t{");
+				values = new int[uniformQueryProperties.length];
+				glGetProgramResourceiv(program, GL_UNIFORM, blockUnifs[k], uniformQueryProperties, null, values);
+				name = glGetProgramResourceName(program, GL_UNIFORM, blockUnifs[k]);
+				// out.println("\t\t" + name + "\n\t\t" + AEGLInfo.spGLSLType.get(values[1]));
+				// out.println("\t\tOffset: " + values[3]);
+				uniSize = AEGLInfo.spGLSLTypeSize.get(values[1]);
+				uniArrayStride = values[4];
+				uniMatStride = values[5];
+				int auxSize;
+				auxSize = AEGLInfo.getUniformByteSize(uniSize, values[1], uniArrayStride, uniMatStride);
+				// out.println("\t\tSize: " + auxSize);
+				// if (uniArrayStride > 0) {
+				// out.println("\t\tArray stride:" + uniArrayStride);
+				// }
+				// if (uniMatStride > 0) {
+				// out.println("\t\tMatrix stride:" + uniMatStride);
+				// }
+				// out.println("\t},");
+			}
+			// out.println("\t}");
+		}
+		// out.println("\t}\n\t}\n}");\
+		out.println("Processing Complete.");
+	}
+
+	/**
 	 * Auto binds attributes in the vertex stage. TODO: Auto detect index overlap.
 	 */
+	@Deprecated
 	private static void processAttributes(AEShaderResource program, ShaderSource gp) {
 		String source = gp.source;
 		int inStartIndex = source.indexOf(Keywords.IN.word), inLocation = 0;
@@ -236,6 +352,10 @@ public class AEShaderCompiler {
 		GL45.glBindAttribLocation(program.getProgram(), index, attribname);
 	}
 
+	public static void setAttribLocation(int program, String attribName, int location) {
+		GL20.glBindAttribLocation(program, location, attribName);
+	}
+
 	/**
 	 * Extracts qualifiers from the layout keyword. layout(qualifier1,
 	 * qualifier2,...)
@@ -254,16 +374,10 @@ public class AEShaderCompiler {
 		return qualifierTokens;
 	}
 
-	public static void setAttribLocation(int program, String attribName, int location) {
-		GL20.glBindAttribLocation(program, location, attribName);
-	}
-
-	/*
-	 * TODO:
-	 */
 	/**
 	 * Automatically binds uniforms found in program source provided.
 	 */
+	@Deprecated
 	private static void processUniforms(AEShaderResource program, ArrayList<ShaderSource> _unProccessedShaders) {
 		out.println("---Processing Uniforms---");
 		for (ShaderSource s : _unProccessedShaders) {
@@ -533,7 +647,7 @@ public class AEShaderCompiler {
 
 		if (GL20.glGetProgrami(program.getProgram(), GL20.GL_LINK_STATUS) == 0) {
 			out.println("Error From Shader Program: '" + program.getName() + "'");
-			logger.error(GL20.glGetProgramInfoLog(program.getProgram(), 1024));
+			out.println(GL20.glGetProgramInfoLog(program.getProgram(), 1024));
 			throw new AEShaderCompilerRuntimeException("Error Linking Program: " + program.getName());
 		}
 
@@ -541,7 +655,7 @@ public class AEShaderCompiler {
 
 		if (GL20.glGetProgrami(program.getProgram(), GL20.GL_VALIDATE_STATUS) == 0) {
 			out.println("Error From Shader Program: '" + program.getName() + "'");
-			logger.error(GL20.glGetProgramInfoLog(program.getProgram(), 1024));
+			out.println(GL20.glGetProgramInfoLog(program.getProgram(), 1024));
 			throw new AEShaderCompilerRuntimeException("Error Validating Program: " + program.getName());
 		}
 
@@ -577,7 +691,7 @@ public class AEShaderCompiler {
 		int shader = GL20.glCreateShader(s.type.glType);
 		if (shader == 0) {
 			out.println("Error From Shader Program: '" + program.getName() + "'");
-			logger.error("Shader creation failed: Could not find valid memory location when adding shader");
+			out.println("Shader creation failed: Could not find valid memory location when adding shader");
 			throw new AEShaderCompilerRuntimeException(
 					"Could not create program: " + program.getName() + " Path:" + program.getPath());
 		}
@@ -588,7 +702,7 @@ public class AEShaderCompiler {
 		out.println("Success");
 		if (GL20.glGetShaderi(shader, GL20.GL_COMPILE_STATUS) == 0) {
 			out.println("Error From Shader Program: '" + program.getName() + "'");
-			logger.error(GL20.glGetShaderInfoLog(shader, 2048));
+			out.println(GL20.glGetShaderInfoLog(shader, 2048));
 			throw new AEShaderCompilerRuntimeException(
 					"Could not create program: " + program.getName() + " Path:" + program.getPath());
 		}
@@ -598,7 +712,7 @@ public class AEShaderCompiler {
 		// TODO: attach status
 		out.println("Successfully Attached Shader: " + program.getProgram() + " Log: " + "\n"
 				+ GL20.glGetShaderInfoLog(shader, 1024));
-		logger.finest("Shader Text For '" + s.type.toString() + "': '" + program.getName() + "'\n" + s.source);
+		out.println("Shader Text For '" + s.type.toString() + "': '" + program.getName() + "'\n" + s.source);
 
 		GL20.glDeleteShader(shader);
 		// TODO:DeleteStatus
@@ -643,7 +757,7 @@ public class AEShaderCompiler {
 		/* Optimize the loading process. */
 		String file;
 		StringBuilder source = new StringBuilder();
-		file = line.replace(Tokens.AE_INCLUDE_DIRECTIVE, "").trim();
+		file = line.replace(Tokens.AE_INCLUDE_DIRECTIVE, "").trim().replaceAll("\"", "");
 		if (file.equals(callingProgram)) {
 			throw new AEShaderCompilerRuntimeException(
 					"Recursive Overflow Detected, This include is calling it self. Program: " + callingProgram);
@@ -660,13 +774,13 @@ public class AEShaderCompiler {
 		} catch (Exception e) {
 			logger.error("Unable to parse shader " + f.getName(), e);
 			logger.info("Exiting...");
-			throw new AEShaderCompilerRuntimeException("Enable to parse shader.", e);
+			throw new AEShaderCompilerRuntimeException("Unable to parse shader.", e);
 		}
 		out.println("Including file (" + file + ") in shader: " + callingProgram);
 		return processShaderSource(source.toString(), file);
 	}
 
-	private static String processImportLine(String line, String callingProgram) {
+	private String processImportLine(String line, String callingProgram) {
 		StringBuilder loadedImport = new StringBuilder();
 		/*
 		 * Now we need to separate out the import file and programs.
@@ -839,5 +953,4 @@ public class AEShaderCompiler {
 		}
 
 	}
-
 }

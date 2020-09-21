@@ -7,10 +7,10 @@ public class BricksTwo extends Material {
 
 	public BricksTwo() {
 		super();
-		super.addTexture("diffuse", new Texture("bricks2.jpg"));
-		super.addTexture("normal_map", new Texture("bricks2_normal.jpg"));
+		super.addTexture("diffuse", new Texture("bricks2.jpg").load());
+		super.addTexture("normal_map", new Texture("bricks2_normal.jpg").load());
 		super.addFloat("specularIntensity", 1);
 		super.addFloat("specularPower", 8);
 	}
-	
+
 }

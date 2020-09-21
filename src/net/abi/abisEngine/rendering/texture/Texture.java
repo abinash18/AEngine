@@ -3,7 +3,6 @@ package net.abi.abisEngine.rendering.texture;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.nio.ByteBuffer;
-import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
@@ -17,16 +16,19 @@ import net.abi.abisEngine.rendering.image.PixelMap;
 import net.abi.abisEngine.util.Expendable;
 import net.abi.abisEngine.util.Util;
 
+/**
+ * TODO: ADD Cache to this class.
+ * @author abinash
+ *
+ */
 public class Texture implements Expendable {
-
 	public static final String TEXTURES_DIR = "./res/textures/";
 	private static Logger logger = LogManager.getLogger(Texture.class.getName());
-	
+
 	public class TextureData {
 		private PixelMap data;
-		
 	}
-	
+
 	// private static HashMap<String, TextureResource> loadedTextures = new
 	// HashMap<String, TextureResource>();
 	private String fileName;
@@ -35,10 +37,18 @@ public class Texture implements Expendable {
 
 	public Texture(String fileName) {
 		this.fileName = fileName;
-		this.id = loadTexture(fileName);
+		this.id = -1;
 		// This is added after loadTexture is executed since if it fails then there is
-		// no refrence.
-		this.refCount = 1;
+		// no reference.
+		this.refCount = 0;
+	}
+
+	public Texture load() {
+		if (id == -1) {
+			id = loadTexture(fileName);
+			this.refCount = 1;
+		}
+		return this;
 	}
 
 	public void addReference() {

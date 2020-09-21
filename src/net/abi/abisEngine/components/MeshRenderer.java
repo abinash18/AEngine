@@ -33,7 +33,6 @@ public class MeshRenderer extends SceneComponent {
 
 	@Override
 	public void render(Shader shader, RenderingEngine engine) {
-
 		if (drawWireframes) {
 			shader.bind();
 			shader.updateUniforms(super.getTransform(), mat, engine);
@@ -71,7 +70,6 @@ public class MeshRenderer extends SceneComponent {
 
 	@Override
 	public void init() {
-
 	}
 
 	@Override

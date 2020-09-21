@@ -82,7 +82,6 @@ public class Entity implements EntityI {
 	 */
 	public void inputAll(float delta) {
 		this.input(delta);
-
 		for (Entity child : children) {
 			child.inputAll(delta);
 		}
@@ -109,7 +108,6 @@ public class Entity implements EntityI {
 		 * Transformations.
 		 */
 		transform.update();
-
 		for (SceneComponent component : components) {
 			component.input(delta);
 		}

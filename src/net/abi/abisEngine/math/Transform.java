@@ -49,7 +49,6 @@ public class Transform {
 			oldScale.set(scale);
 		} else {
 			oldPosition = new Vector3f(0, 0, 0).set(position).add(1.0f); // This way if these are not set somehow it is
-																			// guaranteed
 			// that they will not be null.
 			oldRotation = new Quaternion(0, 0, 0, 0).set(rotation).mul(0.5f);
 			oldScale = new Vector3f(0, 0, 0).set(scale).add(1.0f);

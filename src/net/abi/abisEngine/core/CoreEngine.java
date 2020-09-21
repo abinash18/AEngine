@@ -11,7 +11,6 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
 import net.abi.abisEngine.rendering.mesh.AIMeshLoader;
-import net.abi.abisEngine.rendering.shader.compiler.AEShaderCompiler;
 import net.abi.abisEngine.rendering.window.GLFWWindowManager;
 import net.abi.abisEngine.rendering.window.models.EngineLoader;
 
@@ -80,7 +79,7 @@ public class CoreEngine {
 
 	private void run() {
 		logger.info("Starting Engine.");
-
+		Runtime runtime = Runtime.getRuntime();
 		// openLoadingWindow();
 		isRunning = true;
 
@@ -111,6 +110,10 @@ public class CoreEngine {
 					windowManager.update((float) m_frameTime);
 					if (frameCounter >= 1.0) {
 						System.out.println("Frames: " + frames + " Frame Time: " + (double) 1000 / frames + "ms");
+						// Run the garbage collector
+						// runtime.gc();
+						long memory = runtime.totalMemory() - runtime.freeMemory();
+						System.out.println("Memory Usage: " + memory / (1024L * 1024L) + "MB");
 						frames = 0;
 						frameCounter = 0;
 					}

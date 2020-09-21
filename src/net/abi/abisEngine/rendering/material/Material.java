@@ -3,7 +3,6 @@ package net.abi.abisEngine.rendering.material;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.abi.abisEngine.rendering.shader.Shader;
 import net.abi.abisEngine.rendering.texture.Texture;
 import net.abi.abisEngine.util.Color;
 import net.abi.abisEngine.util.MappedValues;
@@ -11,11 +10,10 @@ import net.abi.abisEngine.util.MappedValues;
 public class Material extends MappedValues {
 
 	public static final String DEFAULT_TEXTURE = "defaultModelTexture.png";
-	public static final Material DEFAULT_MATERIAL = new Material().addTexture("default", new Texture(DEFAULT_TEXTURE));
+	public static final Material DEFAULT_MATERIAL = new Material().addTexture("default",
+			new Texture(Material.DEFAULT_TEXTURE).load());
 	private Map<String, Texture> textureBinds;
 	private Map<String, Color> colorBinds;
-
-	private Map<String, Shader> shaders;
 
 	public Material() {
 		super();
@@ -51,27 +49,17 @@ public class Material extends MappedValues {
 	 */
 	public Texture getTexture(String name) {
 		Texture result = textureBinds.get(name);
-//		if (result != null) {
-//			return result;
-//		} else {
-//			this.addTexture(name, new Texture(DEFAULT_TEXTURE));
-//		}
+		if (result == null) {
+			this.addTexture(name, new Texture(DEFAULT_TEXTURE));
+		}
 		return result;
 	}
 
-	public Shader getShader(String nameOrPassTag) {
-
-		Shader result = shaders.get(nameOrPassTag);
-
-		if (result == null) {
-			shaders.put(nameOrPassTag, Shader.DEFAULT_SHADER);
-		}
-
-		return shaders.get(nameOrPassTag);
+	public Map<String, Texture> getTextureBinds() {
+		return textureBinds;
 	}
 
-	public void addShader(String nameOrPassTag, String shaderSource) {
-		// shaders.put(nameOrPassTag, new Shader());
+	public Map<String, Color> getColorBinds() {
+		return colorBinds;
 	}
-
 }

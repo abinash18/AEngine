@@ -13,9 +13,7 @@ public class Start extends Main {
 		// LogManager.setCurrentLevel(LogLevel.DEBUG);
 		s = new Start();
 		s.run(args);
-
-		// some time passes
-
+		//System.out.println(Runtime.get);
 		// PathHandle p =
 		// AEShader.DEFAULT_SHADER_ASSET_DIRECTORY_PATH.resolveChild("frameworkTest.ae-shader");
 		// AEShaderCompiler.compile(AEShaderParserYAML.parse(p), p);

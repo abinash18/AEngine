@@ -74,6 +74,7 @@ import net.abi.abisEngine.rendering.asset.AssetI;
 import net.abi.abisEngine.rendering.asset.AssetManager;
 import net.abi.abisEngine.rendering.asset.AssetStore;
 import net.abi.abisEngine.rendering.image.AEImage;
+import net.abi.abisEngine.rendering.material.Material;
 import net.abi.abisEngine.rendering.pipeline.RenderingEngine;
 import net.abi.abisEngine.rendering.scene.Scene;
 import net.abi.abisEngine.rendering.scene.SceneManager;
@@ -616,8 +617,10 @@ public abstract class GLFWWindow implements Expendable {
 		this.addScenes();
 		this.assetManager = new AssetManager(glfw_handle);
 		this.resetToDefaults();
-		AEShaderCompiler.printLibVersionInfo();
 		this.properties.renderEngine.initGraphics();
+
+		Material.DEFAULT_MATERIAL.getTexture("default").load();
+
 		return this;
 	}
 

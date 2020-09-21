@@ -3,9 +3,7 @@ package net.abi.abisEngine.rendering.asset;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Stack;
-import java.util.concurrent.ConcurrentHashMap;
 
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
@@ -334,7 +332,7 @@ public class AssetManager implements Expendable {
 
 	/**
 	 * Updates the AssetManager for a single task. Returns if the current task is
-	 * still being processed or there arew no tasks, otherwise it finishes the
+	 * still being processed or there are no tasks, otherwise it finishes the
 	 * current task and starts the next task.
 	 * 
 	 * @return true if all loading is finished.
@@ -347,8 +345,10 @@ public class AssetManager implements Expendable {
 					nextTask();
 				}
 				// have we not found a task? We are done!
-				if (tasks.size() == 0)
+				if (tasks.size() == 0) {
+					executor.dispose();
 					return true;
+				}
 			}
 			return updateTask() && loadQueue.size() == 0 && tasks.size() == 0;
 		} catch (Exception t) {

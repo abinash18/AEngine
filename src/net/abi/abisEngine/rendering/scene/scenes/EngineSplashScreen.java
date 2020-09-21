@@ -29,8 +29,6 @@ import net.abi.abisEngine.rendering.shader.parser.AEShaderParserYAML;
 import net.abi.abisEngine.rendering.texture.Texture;
 import net.abi.abisEngine.rendering.window.GLFWWindow;
 import net.abi.abisEngine.util.Attenuation;
-import tests.renderTest.materials.BricksOne;
-import tests.renderTest.materials.BricksTwo;
 
 public class EngineSplashScreen extends Scene {
 
@@ -41,6 +39,8 @@ public class EngineSplashScreen extends Scene {
 	private Entity monkey, monkey2, cameraObject, anvil, test;
 	private Camera cam;
 
+	Material _m;
+
 	private AssetManager man;
 
 	public void init() {
@@ -50,15 +50,6 @@ public class EngineSplashScreen extends Scene {
 		man = new AssetManager(super.getParentWindow().getGlfw_Handle());
 		// man = super.getParentWindow().getAssetManager();
 		man.setLoader(ModelScene.class, "", new ModelSceneLoader("./res/models/"));
-
-		BricksOne material = new BricksOne();
-		BricksTwo material2 = new BricksTwo();
-
-		// MeshRenderer meshRenderer2 = new
-		// MeshRenderer(AIMeshLoader.loadModel("Anvil_LowPoly.obj", "Cube.003", 0),
-		// material2).toggleWireFrames();
-
-		// planeObject.getTransform().getPosition().set(0, -1, 5);
 
 		Entity directionalLightObject = new Entity();
 		DirectionalLight directionalLight = new DirectionalLight(new Vector3f(1, 1, 1), 0.5f);
@@ -95,32 +86,19 @@ public class EngineSplashScreen extends Scene {
 		// monkey.addComponent(meshRenderer2);
 
 		monkey2 = new Entity();
-		// monkey2.addComponent(
-		// new MeshRenderer(AIMeshLoader.loadModel("monkey.obj", "Suzanne.001", 0),
-		// material).toggleWireFrames());
-		// monkey2.getTransform().setTranslation(0, 0, 5);
-
-		// monkey2.addChild(cameraObject);
-		// monkey2.setTransform(cameraObject.getTransform());
-		// cam.getTransform().setTranslation(0, 0, -5);
-
-		// Entity anvil = new Entity().addComponent(
-		// new MeshRenderer(AIMeshLoader.loadModel("monkey.obj", "Suzanne.001",
-		// 0).bindModel(), anvilmat));
-
+		_m = new Material();
+		_m.addTexture("diffuse", new Texture("defaultTexture.png").load());
+		_m.addTexture("normal_map", new Texture("Normal_Map_Anvil.png").load());
+		_m.addFloat("specularIntensity", 1);
+		_m.addFloat("specularPower", 8);
 		ModelSceneLoader.Parameter parm = new ModelSceneLoader.Parameter();
 		parm.loadedCallback = new LoadedCallback() {
 			@Override
 			public void finishedLoading(AssetManager assetManager, String fileName, AssetContainer container) {
-				Material anvilmat = new Material();
-				anvilmat.addTexture("diffuse", new Texture("defaultTexture.png"));
-				anvilmat.addTexture("normal_map", new Texture("Normal_Map_Anvil.png"));
-				anvilmat.addFloat("specularIntensity", 1);
-				anvilmat.addFloat("specularPower", 8);
 				ModelScene m = assetManager.get(fileName, ModelScene.class);
 				Mesh s = m.getMesh("monkey").bindModel();
-				monkey = new Entity().addComponent(new MeshRenderer(s, anvilmat));
-				monkey.getTransform().setTranslation(new Vector3f(0f, 0f, 5f)).setScale(10);// .getRotation().rotate(Transform.X_AXIS,
+				monkey = new Entity().addComponent(new MeshRenderer(s, _m));
+				monkey.getTransform().setTranslation(new Vector3f(0f, 0f, 5f)).setScale(1);// .getRotation().rotate(Transform.X_AXIS,
 				// (float) Math.toRadians(-100));
 				// monkey.getTransform().getRotation().rotate(Transform.Y_AXIS, (float)
 				// Math.toRadians(-180));
@@ -135,22 +113,17 @@ public class EngineSplashScreen extends Scene {
 
 		};
 
-		// man.load("monkey.obj", ModelScene.class, parm);
-//		man.load("Anvil_LowPoly.obj", ModelScene.class, parm);
-		// man.load("monkey.obj", ModelScene.class, parm);
-		man.load("monkey.obj", ModelScene.class, parm);
+		man.load("IronMan.obj", ModelScene.class, parm);
 
-		PathHandle p = AEShader.DEFAULT_SHADER_ASSET_DIRECTORY_PATH.resolveChild("wireframe.ae-shader");
-		AEShaderCompiler.compile(AEShaderParserYAML.parse(p), p, true);
-		
+		PathHandle p = AEShader.DEFAULT_SHADER_ASSET_DIRECTORY_PATH.resolveChild("frameworkTest.ae-shader");
+		AEShaderCompiler c = new AEShaderCompiler(System.out);
+		c.compile(AEShaderParserYAML.parse(p), p);
 		super.setMainCamera("playerView");
 		// super.addChild(spotLightObject);
 		// super.addChild(new Entity()
 		// .addComponent(new MeshRenderer(AIMeshLoader.loadModel("plane3.obj", "Cube",
 		// 0), new BricksOne())));
 		super.addChild(directionalLightObject);
-		// super.addChild(monkey2);
-		// super.addChild(ironMan);
 		super.addChild(cameraObject);
 	}
 
@@ -162,8 +135,8 @@ public class EngineSplashScreen extends Scene {
 		super.update(delta);
 		// System.out.println(man.getQueuedAssets() + " " + man.getProgress() * 100);
 		man.update();
-		temp = temp + delta;
-		float angle = (float) Math.toRadians(temp * 180);
+		// temp = temp + delta;
+		// float angle = (float) Math.toRadians(temp * 180);
 		// monkey.getTransform().getRotation().rotate(Transform.X_AXIS, (float)
 		// Math.toRadians(angle * 20));
 	}
@@ -172,7 +145,7 @@ public class EngineSplashScreen extends Scene {
 
 	@Override
 	public void input(float delta) {
-		in = (GLFWMouseAndKeyboardInput) super.getInputController();
+		// in = (GLFWMouseAndKeyboardInput) super.getInputController();
 		super.input(delta);
 		if (in.isKeyDown(GLFWInput.GLFW_KEY_ESCAPE)) {
 			in.setCursorMode(GLFW.GLFW_CURSOR_NORMAL);
@@ -184,6 +157,27 @@ public class EngineSplashScreen extends Scene {
 
 		if (in.isKeyDown(GLFWInput.GLFW_KEY_F)) {
 			// super.getParentWindow().toggleFullScreen();
+			ModelSceneLoader.Parameter parm = new ModelSceneLoader.Parameter();
+			parm.loadedCallback = new LoadedCallback() {
+				@Override
+				public void finishedLoading(AssetManager assetManager, String fileName, AssetContainer container) {
+					ModelScene m = assetManager.get(fileName, ModelScene.class);
+					Mesh s = ((Mesh) m.getMeshes().values().toArray()[0]).bindModel();
+					monkey = new Entity().addComponent(new MeshRenderer(s, _m));
+					monkey.getTransform().setTranslation(new Vector3f(0f, 0f, 50f)).setScale(10);// .getRotation().rotate(Transform.X_AXIS,
+					// (float) Math.toRadians(-100));
+					// monkey.getTransform().getRotation().rotate(Transform.Y_AXIS, (float)
+					// Math.toRadians(-180));
+					// monkey.getTransform().setScale(0.025f, 0.025f, 0.025f);
+					// monkey.getTransform().getRotation().rotate(Transform.Y_AXIS, (float)
+					// Math.toRadians(180));
+					test.addChild(monkey);
+
+					// monkey2 = new Entity().addComponent(new MeshRenderer(s, anvilmat));
+					// monkey2.getTransform().setTranslation(0, 0, 10.0f);
+				}
+			};
+			man.load("bunny.obj", ModelScene.class, parm);
 		}
 
 		if (in.isMouseButtonDown(GLFWInput.GLFW_MOUSE_BUTTON_RIGHT)) {
