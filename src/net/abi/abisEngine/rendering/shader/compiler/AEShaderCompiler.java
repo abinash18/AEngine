@@ -780,7 +780,7 @@ public class AEShaderCompiler {
 		return processShaderSource(source.toString(), file);
 	}
 
-	private String processImportLine(String line, String callingProgram) {
+	private static String processImportLine(String line, String callingProgram) {
 		StringBuilder loadedImport = new StringBuilder();
 		/*
 		 * Now we need to separate out the import file and programs.

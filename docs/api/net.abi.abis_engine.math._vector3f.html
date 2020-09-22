@@ -1,0 +1,4240 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class Vector3f
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class Vector3f
+   ">
+    <meta name="generator" content="docfx 2.56.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+                
+                <ul class="nav level1 navbar-nav">
+                      <li>
+                          <a href="../articles/intro.html" title="Articles">Articles</a>
+                      </li>
+                      <li>
+                          <a href="../api/index.html" title="Api Documentation">Api Documentation</a>
+                      </li>
+                </ul>    </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list"></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div>
+              <div class="sidefilter">
+                <form class="toc-filter">
+                  <span class="glyphicon glyphicon-filter filter-icon"></span>
+                  <input type="text" id="toc_filter_input" placeholder="Enter here to filter..." onkeypress="if(event.keyCode==13) {return false;}">
+                </form>
+              </div>
+              <div class="sidetoc">
+                <div class="toc" id="toc">
+                  
+                  <ul class="nav level1">
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="net.abi.abis_engine.components.html" title="net.abi.abisEngine.components" class="">net.abi.abisEngine.components</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="net.abi.abis_engine.components._camera.html" title="Camera" class="">Camera</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.components._directional_light.html" title="DirectionalLight" class="">DirectionalLight</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.components._free_look.html" title="FreeLook" class="">FreeLook</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.components._free_move.html" title="FreeMove" class="">FreeMove</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.components._light.html" title="Light" class="">Light</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.components._lock_view.html" title="LockView" class="">LockView</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.components._mesh_renderer.html" title="MeshRenderer" class="">MeshRenderer</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.components._point_light.html" title="PointLight" class="">PointLight</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.components._scene_component.html" title="SceneComponent" class="">SceneComponent</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.components._spot_light.html" title="SpotLight" class="">SpotLight</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="net.abi.abis_engine.core.html" title="net.abi.abisEngine.core" class="">net.abi.abisEngine.core</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="net.abi.abis_engine.core._core_engine.html" title="CoreEngine" class="">CoreEngine</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.core._main.html" title="Main" class="">Main</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.core._time.html" title="Time" class="">Time</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="net.abi.abis_engine.entities.html" title="net.abi.abisEngine.entities" class="">net.abi.abisEngine.entities</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="net.abi.abis_engine.entities._entity.html" title="Entity" class="">Entity</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.entities._entity_i.html" title="EntityI" class="">EntityI</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="net.abi.abis_engine.handlers.file.html" title="net.abi.abisEngine.handlers.file" class="">net.abi.abisEngine.handlers.file</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="net.abi.abis_engine.handlers.file._file_handler.html" title="FileHandler" class="">FileHandler</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.handlers.file._path_handle.html" title="PathHandle" class="">PathHandle</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.handlers.file._path_resolve_i.html" title="PathResolveI" class="">PathResolveI</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.handlers.file._path_type.html" title="PathType" class="">PathType</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="net.abi.abis_engine.handlers.logging.html" title="net.abi.abisEngine.handlers.logging" class="">net.abi.abisEngine.handlers.logging</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="net.abi.abis_engine.handlers.logging._logger.html" title="Logger" class="">Logger</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.handlers.logging._log_level.html" title="LogLevel" class="">LogLevel</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.handlers.logging._log_manager.html" title="LogManager" class="">LogManager</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="net.abi.abis_engine.input.html" title="net.abi.abisEngine.input" class="">net.abi.abisEngine.input</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="net.abi.abis_engine.input._g_l_f_w_input.html" title="GLFWInput" class="">GLFWInput</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.input._g_l_f_w_mouse_and_keyboard_input.html" title="GLFWMouseAndKeyboardInput" class="">GLFWMouseAndKeyboardInput</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="net.abi.abis_engine.math.html" title="net.abi.abisEngine.math" class="">net.abi.abisEngine.math</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="net.abi.abis_engine.math._math.html" title="Math" class="">Math</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.math._matrix.html" title="Matrix" class="">Matrix</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.math._matrix4f.html" title="Matrix4f" class="">Matrix4f</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.math._quaternion.html" title="Quaternion" class="">Quaternion</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.math._transform.html" title="Transform" class="">Transform</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.math._vector2f.html" title="Vector2f" class="">Vector2f</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.math._vector2i.html" title="Vector2i" class="">Vector2i</a>
+                          </li>
+                          <li class="active">
+                            <a href="net.abi.abis_engine.math._vector3f.html" title="Vector3f" class="active">Vector3f</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.math._vector3i.html" title="Vector3i" class="">Vector3i</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.math._vector4f.html" title="Vector4f" class="">Vector4f</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.math._vector4f_i.html" title="Vector4fI" class="">Vector4fI</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="net.abi.abis_engine.rendering.asset.html" title="net.abi.abisEngine.rendering.asset" class="">net.abi.abisEngine.rendering.asset</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.asset._asset_classifier.html" title="AssetClassifier" class="">AssetClassifier</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.asset._asset_container.html" title="AssetContainer" class="">AssetContainer</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.asset._asset_i.html" title="AssetI" class="">AssetI</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.asset._asset_loader_parameters.html" title="AssetLoaderParameters" class="">AssetLoaderParameters</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.asset._asset_loader_parameters._loaded_callback.html" title="AssetLoaderParameters.LoadedCallback" class="">AssetLoaderParameters.LoadedCallback</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.asset._asset_load_task.html" title="AssetLoadTask" class="">AssetLoadTask</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.asset._asset_manager.html" title="AssetManager" class="">AssetManager</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.asset._asset_store.html" title="AssetStore" class="">AssetStore</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.asset._task_complete_handler.html" title="TaskCompleteHandler" class="">TaskCompleteHandler</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="net.abi.abis_engine.rendering.asset.loaders.html" title="net.abi.abisEngine.rendering.asset.loaders" class="">net.abi.abisEngine.rendering.asset.loaders</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.asset.loaders._asset_loader.html" title="AssetLoader" class="">AssetLoader</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.asset.loaders._async_asset_loader.html" title="AsyncAssetLoader" class="">AsyncAssetLoader</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.asset.loaders._model_scene_loader.html" title="ModelSceneLoader" class="">ModelSceneLoader</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.asset.loaders._model_scene_loader._parameter.html" title="ModelSceneLoader.Parameter" class="">ModelSceneLoader.Parameter</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.asset.loaders._sync_asset_loader.html" title="SyncAssetLoader" class="">SyncAssetLoader</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="net.abi.abis_engine.rendering.image.html" title="net.abi.abisEngine.rendering.image" class="">net.abi.abisEngine.rendering.image</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.image._a_e_image.html" title="AEImage" class="">AEImage</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.image._image_meta_data.html" title="ImageMetaData" class="">ImageMetaData</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.image._pixel_map.html" title="PixelMap" class="">PixelMap</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="net.abi.abis_engine.rendering.material.html" title="net.abi.abisEngine.rendering.material" class="">net.abi.abisEngine.rendering.material</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.material._material.html" title="Material" class="">Material</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="net.abi.abis_engine.rendering.mesh.html" title="net.abi.abisEngine.rendering.mesh" class="">net.abi.abisEngine.rendering.mesh</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.mesh._a_i_mesh_loader.html" title="AIMeshLoader" class="">AIMeshLoader</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.mesh._mesh.html" title="Mesh" class="">Mesh</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.mesh._mesh_resource.html" title="MeshResource" class="">MeshResource</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.mesh._model.html" title="Model" class="">Model</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.mesh._model_scene.html" title="ModelScene" class="">ModelScene</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.mesh._vertex.html" title="Vertex" class="">Vertex</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="net.abi.abis_engine.rendering.pipeline.html" title="net.abi.abisEngine.rendering.pipeline" class="">net.abi.abisEngine.rendering.pipeline</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.pipeline._rendering_engine.html" title="RenderingEngine" class="">RenderingEngine</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="net.abi.abis_engine.rendering.scene.html" title="net.abi.abisEngine.rendering.scene" class="">net.abi.abisEngine.rendering.scene</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.scene._scene.html" title="Scene" class="">Scene</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.scene._scene_manager.html" title="SceneManager" class="">SceneManager</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="net.abi.abis_engine.rendering.scene.scenes.html" title="net.abi.abisEngine.rendering.scene.scenes" class="">net.abi.abisEngine.rendering.scene.scenes</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.scene.scenes._engine_splash_screen.html" title="EngineSplashScreen" class="">EngineSplashScreen</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="net.abi.abis_engine.rendering.shader.html" title="net.abi.abisEngine.rendering.shader" class="">net.abi.abisEngine.rendering.shader</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.shader._a_e_shader.html" title="AEShader" class="">AEShader</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.shader._a_e_shader._a_e_shader_type.html" title="AEShader.AEShaderType" class="">AEShader.AEShaderType</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.shader._a_e_shader_resource.html" title="AEShaderResource" class="">AEShaderResource</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.shader._forward_ambient_shader.html" title="ForwardAmbientShader" class="">ForwardAmbientShader</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.shader._forward_directional_shader.html" title="ForwardDirectionalShader" class="">ForwardDirectionalShader</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.shader._forward_point_shader.html" title="ForwardPointShader" class="">ForwardPointShader</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.shader._forward_spot_shader.html" title="ForwardSpotShader" class="">ForwardSpotShader</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.shader._g_l_s_l_layout_qualifier.html" title="GLSLLayoutQualifier" class="">GLSLLayoutQualifier</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.shader._g_l_s_l_uniform.html" title="GLSLUniform" class="">GLSLUniform</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.shader._g_l_s_l_uniform_block_object.html" title="GLSLUniformBlockObject" class="">GLSLUniformBlockObject</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.shader._g_l_s_l_uniform_block_object_data.html" title="GLSLUniformBlockObjectData" class="">GLSLUniformBlockObjectData</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.shader._shader.html" title="Shader" class="">Shader</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.shader._shader._shader_source.html" title="Shader.ShaderSource" class="">Shader.ShaderSource</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.shader._shader._shader_type.html" title="Shader.ShaderType" class="">Shader.ShaderType</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.shader._shader_resource.html" title="ShaderResource" class="">ShaderResource</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.shader._wire_frame_shader.html" title="WireFrameShader" class="">WireFrameShader</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="net.abi.abis_engine.rendering.shader.compiler.html" title="net.abi.abisEngine.rendering.shader.compiler" class="">net.abi.abisEngine.rendering.shader.compiler</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.shader.compiler._a_e_g_l_info.html" title="AEGLInfo" class="">AEGLInfo</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.shader.compiler._a_e_shader_compiler.html" title="AEShaderCompiler" class="">AEShaderCompiler</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.shader.compiler._a_e_shader_compiler._g_l_s_l_struct.html" title="AEShaderCompiler.GLSLStruct" class="">AEShaderCompiler.GLSLStruct</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.shader.compiler._a_e_shader_compiler._shader_data.html" title="AEShaderCompiler.ShaderData" class="">AEShaderCompiler.ShaderData</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.shader.compiler._a_e_shader_compiler._shader_source.html" title="AEShaderCompiler.ShaderSource" class="">AEShaderCompiler.ShaderSource</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.shader.compiler._tokens.html" title="Tokens" class="">Tokens</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.shader.compiler._tokens._keywords.html" title="Tokens.Keywords" class="">Tokens.Keywords</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.shader.compiler._tokens._operators.html" title="Tokens.Operators" class="">Tokens.Operators</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.shader.compiler._tokens._qualifiers.html" title="Tokens.Qualifiers" class="">Tokens.Qualifiers</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="net.abi.abis_engine.rendering.shader.loader.html" title="net.abi.abisEngine.rendering.shader.loader" class="">net.abi.abisEngine.rendering.shader.loader</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.shader.loader._a_e_shader_loader.html" title="AEShaderLoader" class="">AEShaderLoader</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="net.abi.abis_engine.rendering.shader.parser.html" title="net.abi.abisEngine.rendering.shader.parser" class="">net.abi.abisEngine.rendering.shader.parser</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.shader.parser._a_e_shader_parser_y_a_m_l.html" title="AEShaderParserYAML" class="">AEShaderParserYAML</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="net.abi.abis_engine.rendering.shader.parser.file_types.yaml.html" title="net.abi.abisEngine.rendering.shader.parser.fileTypes.yaml" class="">net.abi.abisEngine.rendering.shader.parser.fileTypes.yaml</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.shader.parser.file_types.yaml._a_e_demo_property.html" title="AEDemoProperty" class="">AEDemoProperty</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.shader.parser.file_types.yaml._a_e_prep_property.html" title="AEPrepProperty" class="">AEPrepProperty</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.shader.parser.file_types.yaml._a_e_shader_file_y_a_m_l.html" title="AEShaderFileYAML" class="">AEShaderFileYAML</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.shader.parser.file_types.yaml._a_e_shader_g_l_s_l_program.html" title="AEShaderGLSLProgram" class="">AEShaderGLSLProgram</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.shader.parser.file_types.yaml._a_e_shader_pass.html" title="AEShaderPass" class="">AEShaderPass</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="net.abi.abis_engine.rendering.texture.html" title="net.abi.abisEngine.rendering.texture" class="">net.abi.abisEngine.rendering.texture</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.texture._texture.html" title="Texture" class="">Texture</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.texture._texture._texture_data.html" title="Texture.TextureData" class="">Texture.TextureData</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.texture._texture_resource.html" title="TextureResource" class="">TextureResource</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="net.abi.abis_engine.rendering.window.html" title="net.abi.abisEngine.rendering.window" class="">net.abi.abisEngine.rendering.window</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.window._g_l_f_w_window.html" title="GLFWWindow" class="">GLFWWindow</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.window._g_l_f_w_window._animated_cursor.html" title="GLFWWindow.AnimatedCursor" class="">GLFWWindow.AnimatedCursor</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.window._g_l_f_w_window._cursor_i.html" title="GLFWWindow.CursorI" class="">GLFWWindow.CursorI</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.window._g_l_f_w_window._g_l_f_w_window_properties.html" title="GLFWWindow.GLFWWindowProperties" class="">GLFWWindow.GLFWWindowProperties</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.window._g_l_f_w_window._static_cursor.html" title="GLFWWindow.StaticCursor" class="">GLFWWindow.StaticCursor</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.window._g_l_f_w_window._static_cursor_resource.html" title="GLFWWindow.StaticCursorResource" class="">GLFWWindow.StaticCursorResource</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.window._g_l_f_w_window_manager.html" title="GLFWWindowManager" class="">GLFWWindowManager</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.window._g_l_f_w_window_manager._g_l_f_w_window_context.html" title="GLFWWindowManager.GLFWWindowContext" class="">GLFWWindowManager.GLFWWindowContext</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="net.abi.abis_engine.rendering.window.models.html" title="net.abi.abisEngine.rendering.window.models" class="">net.abi.abisEngine.rendering.window.models</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="net.abi.abis_engine.rendering.window.models._engine_loader.html" title="EngineLoader" class="">EngineLoader</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="net.abi.abis_engine.util.html" title="net.abi.abisEngine.util" class="">net.abi.abisEngine.util</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="net.abi.abis_engine.util._attenuation.html" title="Attenuation" class="">Attenuation</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.util._color.html" title="Color" class="">Color</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.util._expendable.html" title="Expendable" class="">Expendable</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.util._i_o_util.html" title="IOUtil" class="">IOUtil</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.util._mapped_values.html" title="MappedValues" class="">MappedValues</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.util._thread_utils.html" title="ThreadUtils" class="">ThreadUtils</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.util._util.html" title="Util" class="">Util</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="net.abi.abis_engine.util.async.html" title="net.abi.abisEngine.util.async" class="">net.abi.abisEngine.util.async</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="net.abi.abis_engine.util.async._async.html" title="Async" class="">Async</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.util.async._async_result.html" title="AsyncResult" class="">AsyncResult</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.util.async._async_task.html" title="AsyncTask" class="">AsyncTask</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.util.async._async_thread_dispatcher.html" title="AsyncThreadDispatcher" class="">AsyncThreadDispatcher</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="net.abi.abis_engine.util.cacheing.html" title="net.abi.abisEngine.util.cacheing" class="">net.abi.abisEngine.util.cacheing</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="net.abi.abis_engine.util.cacheing._generic_cache.html" title="GenericCache" class="">GenericCache</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.util.cacheing._generic_cache_i.html" title="GenericCacheI" class="">GenericCacheI</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.util.cacheing._two_factor_generic_cache.html" title="TwoFactorGenericCache" class="">TwoFactorGenericCache</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.util.cacheing._two_factor_generic_cache_i.html" title="TwoFactorGenericCacheI" class="">TwoFactorGenericCacheI</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="net.abi.abis_engine.util.exceptions.html" title="net.abi.abisEngine.util.exceptions" class="">net.abi.abisEngine.util.exceptions</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="net.abi.abis_engine.util.exceptions._a_e_cursor_initialization_exception.html" title="AECursorInitializationException" class="">AECursorInitializationException</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.util.exceptions._a_e_exception.html" title="AEException" class="">AEException</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.util.exceptions._a_e_g_l_f_w_window_initialization_exception.html" title="AEGLFWWindowInitializationException" class="">AEGLFWWindowInitializationException</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.util.exceptions._a_e_image_manipulation_exception.html" title="AEImageManipulationException" class="">AEImageManipulationException</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.util.exceptions._a_e_i_o_exception.html" title="AEIOException" class="">AEIOException</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.util.exceptions._a_e_runtime_exception.html" title="AERuntimeException" class="">AERuntimeException</a>
+                          </li>
+                          <li class="">
+                            <a href="net.abi.abis_engine.util.exceptions._a_e_shader_compiler_runtime_exception.html" title="AEShaderCompilerRuntimeException" class="">AEShaderCompilerRuntimeException</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="tests.render_test.html" title="tests.renderTest" class="">tests.renderTest</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="tests.render_test._start.html" title="Start" class="">Start</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="tests.render_test.entitys.html" title="tests.renderTest.entitys" class="">tests.renderTest.entitys</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="tests.render_test.entitys._flat_plane.html" title="FlatPlane" class="">FlatPlane</a>
+                          </li>
+                          <li class="">
+                            <a href="tests.render_test.entitys._monkey_head.html" title="MonkeyHead" class="">MonkeyHead</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="tests.render_test.materials.html" title="tests.renderTest.materials" class="">tests.renderTest.materials</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="tests.render_test.materials._bricks_one.html" title="BricksOne" class="">BricksOne</a>
+                          </li>
+                          <li class="">
+                            <a href="tests.render_test.materials._bricks_two.html" title="BricksTwo" class="">BricksTwo</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="tests.render_test.scenes.html" title="tests.renderTest.scenes" class="">tests.renderTest.scenes</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="tests.render_test.scenes._main_menu.html" title="MainMenu" class="">MainMenu</a>
+                          </li>
+                          <li class="">
+                            <a href="tests.render_test.scenes._test_game.html" title="TestGame" class="">TestGame</a>
+                          </li>
+                        </ul>  </li>
+                    <li class="">
+                      <span class="expand-stub"></span>
+                      <a href="tests.render_test.windows.html" title="tests.renderTest.windows" class="">tests.renderTest.windows</a>
+                        
+                        <ul class="nav level2">
+                          <li class="">
+                            <a href="tests.render_test.windows._main_game.html" title="MainGame" class="">MainGame</a>
+                          </li>
+                        </ul>  </li>
+                  </ul>        </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="net.abi.abis_engine.math._vector3f">
+  
+  
+  <h1 id="net_abi_abis_engine_math__vector3f" data-uid="net.abi.abis_engine.math._vector3f" class="text-break">Class Vector3f
+  </h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">java.lang.Object</span></div>
+    <div class="level1"><span class="xref">Vector3f</span></div>
+  </div>
+  <h6><strong>Namespace</strong>: </h6>
+  <h6><strong>Assembly</strong>: .dll</h6>
+  <h5 id="net_abi_abis_engine_math__vector3f_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class Vector3f</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_Vector3f_" data-uid="net.abi.abis_engine.math._vector3f.Vector3f*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_Vector3f_float_float_float_" data-uid="net.abi.abis_engine.math._vector3f.Vector3f(float,float,float)">Vector3f(float x, float y, float z)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f(float x, float y, float z)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">x</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">y</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">z</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_abs_" data-uid="net.abi.abis_engine.math._vector3f.abs*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_abs__" data-uid="net.abi.abis_engine.math._vector3f.abs()">abs()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f abs()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_absolute_" data-uid="net.abi.abis_engine.math._vector3f.absolute*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_absolute__" data-uid="net.abi.abis_engine.math._vector3f.absolute()">absolute()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f absolute()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_absolute_" data-uid="net.abi.abis_engine.math._vector3f.absolute*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_absolute_Vector3f_" data-uid="net.abi.abis_engine.math._vector3f.absolute(Vector3f)">absolute(Vector3f dest)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f absolute(Vector3f dest)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">dest</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_add_" data-uid="net.abi.abis_engine.math._vector3f.add*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_add_float_" data-uid="net.abi.abis_engine.math._vector3f.add(float)">add(float r)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f add(float r)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">r</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_add_" data-uid="net.abi.abis_engine.math._vector3f.add*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_add_float_float_float_" data-uid="net.abi.abis_engine.math._vector3f.add(float,float,float)">add(float xr, float yr, float zr)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f add(float xr, float yr, float zr)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">xr</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">yr</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">zr</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_add_" data-uid="net.abi.abis_engine.math._vector3f.add*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_add_Vector3f_" data-uid="net.abi.abis_engine.math._vector3f.add(Vector3f)">add(Vector3f r)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f add(Vector3f r)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">r</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_angle_" data-uid="net.abi.abis_engine.math._vector3f.angle*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_angle_Vector3f_" data-uid="net.abi.abis_engine.math._vector3f.angle(Vector3f)">angle(Vector3f v)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float angle(Vector3f v)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">v</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_angleCos_" data-uid="net.abi.abis_engine.math._vector3f.angleCos*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_angleCos_Vector3f_" data-uid="net.abi.abis_engine.math._vector3f.angleCos(Vector3f)">angleCos(Vector3f v)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float angleCos(Vector3f v)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">v</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_angleSigned_" data-uid="net.abi.abis_engine.math._vector3f.angleSigned*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_angleSigned_float_float_float_float_float_float_" data-uid="net.abi.abis_engine.math._vector3f.angleSigned(float,float,float,float,float,float)">angleSigned(float x, float y, float z, float nx, float ny, float nz)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float angleSigned(float x, float y, float z, float nx, float ny, float nz)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">x</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">y</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">z</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">nx</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">ny</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">nz</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_angleSigned_" data-uid="net.abi.abis_engine.math._vector3f.angleSigned*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_angleSigned_Vector3f_Vector3f_" data-uid="net.abi.abis_engine.math._vector3f.angleSigned(Vector3f,Vector3f)">angleSigned(Vector3f v, Vector3f n)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float angleSigned(Vector3f v, Vector3f n)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">v</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">n</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_ceil_" data-uid="net.abi.abis_engine.math._vector3f.ceil*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_ceil__" data-uid="net.abi.abis_engine.math._vector3f.ceil()">ceil()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f ceil()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_ceil_" data-uid="net.abi.abis_engine.math._vector3f.ceil*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_ceil_Vector3f_" data-uid="net.abi.abis_engine.math._vector3f.ceil(Vector3f)">ceil(Vector3f dest)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f ceil(Vector3f dest)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">dest</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_cross_" data-uid="net.abi.abis_engine.math._vector3f.cross*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_cross_Vector3f_" data-uid="net.abi.abis_engine.math._vector3f.cross(Vector3f)">cross(Vector3f r)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f cross(Vector3f r)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">r</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_distance_" data-uid="net.abi.abis_engine.math._vector3f.distance*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_distance_float_float_float_" data-uid="net.abi.abis_engine.math._vector3f.distance(float,float,float)">distance(float x, float y, float z)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float distance(float x, float y, float z)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">x</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">y</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">z</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_distance_" data-uid="net.abi.abis_engine.math._vector3f.distance*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_distance_float_float_float_float_float_float_" data-uid="net.abi.abis_engine.math._vector3f.distance(float,float,float,float,float,float)">distance(float x1, float y1, float z1, float x2, float y2, float z2)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static float distance(float x1, float y1, float z1, float x2, float y2, float z2)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">x1</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">y1</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">z1</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">x2</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">y2</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">z2</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_distance_" data-uid="net.abi.abis_engine.math._vector3f.distance*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_distance_Vector3f_" data-uid="net.abi.abis_engine.math._vector3f.distance(Vector3f)">distance(Vector3f v)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float distance(Vector3f v)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">v</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_distanceSquared_" data-uid="net.abi.abis_engine.math._vector3f.distanceSquared*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_distanceSquared_float_float_float_" data-uid="net.abi.abis_engine.math._vector3f.distanceSquared(float,float,float)">distanceSquared(float x, float y, float z)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float distanceSquared(float x, float y, float z)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">x</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">y</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">z</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_distanceSquared_" data-uid="net.abi.abis_engine.math._vector3f.distanceSquared*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_distanceSquared_float_float_float_float_float_float_" data-uid="net.abi.abis_engine.math._vector3f.distanceSquared(float,float,float,float,float,float)">distanceSquared(float x1, float y1, float z1, float x2, float y2, float z2)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static float distanceSquared(float x1, float y1, float z1, float x2, float y2, float z2)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">x1</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">y1</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">z1</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">x2</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">y2</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">z2</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_distanceSquared_" data-uid="net.abi.abis_engine.math._vector3f.distanceSquared*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_distanceSquared_Vector3f_" data-uid="net.abi.abis_engine.math._vector3f.distanceSquared(Vector3f)">distanceSquared(Vector3f v)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float distanceSquared(Vector3f v)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">v</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_div_" data-uid="net.abi.abis_engine.math._vector3f.div*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_div_float_" data-uid="net.abi.abis_engine.math._vector3f.div(float)">div(float r)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f div(float r)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">r</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_div_" data-uid="net.abi.abis_engine.math._vector3f.div*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_div_Vector3f_" data-uid="net.abi.abis_engine.math._vector3f.div(Vector3f)">div(Vector3f r)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f div(Vector3f r)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">r</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_dot_" data-uid="net.abi.abis_engine.math._vector3f.dot*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_dot_float_float_float_" data-uid="net.abi.abis_engine.math._vector3f.dot(float,float,float)">dot(float x, float y, float z)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float dot(float x, float y, float z)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">x</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">y</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">z</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_dot_" data-uid="net.abi.abis_engine.math._vector3f.dot*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_dot_Vector3f_" data-uid="net.abi.abis_engine.math._vector3f.dot(Vector3f)">dot(Vector3f r)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float dot(Vector3f r)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">r</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_equals_" data-uid="net.abi.abis_engine.math._vector3f.equals*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_equals_Vector3f_" data-uid="net.abi.abis_engine.math._vector3f.equals(Vector3f)">equals(Vector3f r)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public boolean equals(Vector3f r)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">r</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>boolean</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_floor_" data-uid="net.abi.abis_engine.math._vector3f.floor*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_floor__" data-uid="net.abi.abis_engine.math._vector3f.floor()">floor()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f floor()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_floor_" data-uid="net.abi.abis_engine.math._vector3f.floor*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_floor_Vector3f_" data-uid="net.abi.abis_engine.math._vector3f.floor(Vector3f)">floor(Vector3f dest)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f floor(Vector3f dest)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">dest</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_get_" data-uid="net.abi.abis_engine.math._vector3f.get*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_get_int_" data-uid="net.abi.abis_engine.math._vector3f.get(int)">get(int component)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float get(int component)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>int</td>
+        <td><span class="parametername">component</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_getXY_" data-uid="net.abi.abis_engine.math._vector3f.getXY*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_getXY__" data-uid="net.abi.abis_engine.math._vector3f.getXY()">getXY()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector2f getXY()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector2f.html">Vector2f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_getXZ_" data-uid="net.abi.abis_engine.math._vector3f.getXZ*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_getXZ__" data-uid="net.abi.abis_engine.math._vector3f.getXZ()">getXZ()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector2f getXZ()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector2f.html">Vector2f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_getYX_" data-uid="net.abi.abis_engine.math._vector3f.getYX*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_getYX__" data-uid="net.abi.abis_engine.math._vector3f.getYX()">getYX()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector2f getYX()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector2f.html">Vector2f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_getYZ_" data-uid="net.abi.abis_engine.math._vector3f.getYZ*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_getYZ__" data-uid="net.abi.abis_engine.math._vector3f.getYZ()">getYZ()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector2f getYZ()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector2f.html">Vector2f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_getZX_" data-uid="net.abi.abis_engine.math._vector3f.getZX*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_getZX__" data-uid="net.abi.abis_engine.math._vector3f.getZX()">getZX()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector2f getZX()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector2f.html">Vector2f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_getZY_" data-uid="net.abi.abis_engine.math._vector3f.getZY*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_getZY__" data-uid="net.abi.abis_engine.math._vector3f.getZY()">getZY()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector2f getZY()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector2f.html">Vector2f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_half_" data-uid="net.abi.abis_engine.math._vector3f.half*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_half_float_float_float_" data-uid="net.abi.abis_engine.math._vector3f.half(float,float,float)">half(float x, float y, float z)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f half(float x, float y, float z)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">x</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">y</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">z</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_half_" data-uid="net.abi.abis_engine.math._vector3f.half*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_half_float_float_float_Vector3f_" data-uid="net.abi.abis_engine.math._vector3f.half(float,float,float,Vector3f)">half(float x, float y, float z, Vector3f dest)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f half(float x, float y, float z, Vector3f dest)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">x</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">y</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">z</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">dest</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_half_" data-uid="net.abi.abis_engine.math._vector3f.half*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_half_Vector3f_" data-uid="net.abi.abis_engine.math._vector3f.half(Vector3f)">half(Vector3f other)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f half(Vector3f other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_half_" data-uid="net.abi.abis_engine.math._vector3f.half*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_half_Vector3f_Vector3f_" data-uid="net.abi.abis_engine.math._vector3f.half(Vector3f,Vector3f)">half(Vector3f other, Vector3f dest)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f half(Vector3f other, Vector3f dest)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">dest</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_hashCode_" data-uid="net.abi.abis_engine.math._vector3f.hashCode*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_hashCode__" data-uid="net.abi.abis_engine.math._vector3f.hashCode()">hashCode()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int hashCode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>int</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_hermite_" data-uid="net.abi.abis_engine.math._vector3f.hermite*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_hermite_Vector3f_Vector3f_Vector3f_float_Vector3f_" data-uid="net.abi.abis_engine.math._vector3f.hermite(Vector3f,Vector3f,Vector3f,float,Vector3f)">hermite(Vector3f t0, Vector3f v1, Vector3f t1, float t, Vector3f dest)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f hermite(Vector3f t0, Vector3f v1, Vector3f t1, float t, Vector3f dest)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">t0</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">v1</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">t1</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">t</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">dest</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_isFinite_" data-uid="net.abi.abis_engine.math._vector3f.isFinite*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_isFinite__" data-uid="net.abi.abis_engine.math._vector3f.isFinite()">isFinite()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public boolean isFinite()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>boolean</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_length_" data-uid="net.abi.abis_engine.math._vector3f.length*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_length__" data-uid="net.abi.abis_engine.math._vector3f.length()">length()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float length()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_lengthSquared_" data-uid="net.abi.abis_engine.math._vector3f.lengthSquared*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_lengthSquared__" data-uid="net.abi.abis_engine.math._vector3f.lengthSquared()">lengthSquared()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float lengthSquared()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_lengthSquared_" data-uid="net.abi.abis_engine.math._vector3f.lengthSquared*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_lengthSquared_float_float_float_" data-uid="net.abi.abis_engine.math._vector3f.lengthSquared(float,float,float)">lengthSquared(float x, float y, float z)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static float lengthSquared(float x, float y, float z)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">x</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">y</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">z</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_lerp_" data-uid="net.abi.abis_engine.math._vector3f.lerp*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_lerp_Vector3f_float_" data-uid="net.abi.abis_engine.math._vector3f.lerp(Vector3f,float)">lerp(Vector3f dest, float lerpFactor)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f lerp(Vector3f dest, float lerpFactor)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">dest</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">lerpFactor</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_max_" data-uid="net.abi.abis_engine.math._vector3f.max*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_max__" data-uid="net.abi.abis_engine.math._vector3f.max()">max()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float max()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_maxComponent_" data-uid="net.abi.abis_engine.math._vector3f.maxComponent*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_maxComponent__" data-uid="net.abi.abis_engine.math._vector3f.maxComponent()">maxComponent()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int maxComponent()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>int</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_min_" data-uid="net.abi.abis_engine.math._vector3f.min*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_min_Vector3f_" data-uid="net.abi.abis_engine.math._vector3f.min(Vector3f)">min(Vector3f v)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float min(Vector3f v)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">v</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_minComponent_" data-uid="net.abi.abis_engine.math._vector3f.minComponent*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_minComponent__" data-uid="net.abi.abis_engine.math._vector3f.minComponent()">minComponent()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int minComponent()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>int</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_mul_" data-uid="net.abi.abis_engine.math._vector3f.mul*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_mul_float_" data-uid="net.abi.abis_engine.math._vector3f.mul(float)">mul(float r)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f mul(float r)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">r</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_mul_" data-uid="net.abi.abis_engine.math._vector3f.mul*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_mul_Vector3f_" data-uid="net.abi.abis_engine.math._vector3f.mul(Vector3f)">mul(Vector3f r)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f mul(Vector3f r)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">r</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_negate_" data-uid="net.abi.abis_engine.math._vector3f.negate*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_negate__" data-uid="net.abi.abis_engine.math._vector3f.negate()">negate()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f negate()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_negate_" data-uid="net.abi.abis_engine.math._vector3f.negate*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_negate_Vector3f_" data-uid="net.abi.abis_engine.math._vector3f.negate(Vector3f)">negate(Vector3f dest)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f negate(Vector3f dest)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">dest</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_normalize_" data-uid="net.abi.abis_engine.math._vector3f.normalize*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_normalize__" data-uid="net.abi.abis_engine.math._vector3f.normalize()">normalize()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f normalize()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_orthogonalize_" data-uid="net.abi.abis_engine.math._vector3f.orthogonalize*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_orthogonalize_Vector3f_" data-uid="net.abi.abis_engine.math._vector3f.orthogonalize(Vector3f)">orthogonalize(Vector3f v)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f orthogonalize(Vector3f v)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">v</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_orthogonalize_" data-uid="net.abi.abis_engine.math._vector3f.orthogonalize*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_orthogonalize_Vector3f_Vector3f_" data-uid="net.abi.abis_engine.math._vector3f.orthogonalize(Vector3f,Vector3f)">orthogonalize(Vector3f v, Vector3f dest)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f orthogonalize(Vector3f v, Vector3f dest)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">v</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">dest</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_orthogonalizeUnit_" data-uid="net.abi.abis_engine.math._vector3f.orthogonalizeUnit*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_orthogonalizeUnit_Vector3f_" data-uid="net.abi.abis_engine.math._vector3f.orthogonalizeUnit(Vector3f)">orthogonalizeUnit(Vector3f v)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f orthogonalizeUnit(Vector3f v)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">v</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_orthogonalizeUnit_" data-uid="net.abi.abis_engine.math._vector3f.orthogonalizeUnit*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_orthogonalizeUnit_Vector3f_Vector3f_" data-uid="net.abi.abis_engine.math._vector3f.orthogonalizeUnit(Vector3f,Vector3f)">orthogonalizeUnit(Vector3f v, Vector3f dest)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f orthogonalizeUnit(Vector3f v, Vector3f dest)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">v</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">dest</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_reflect_" data-uid="net.abi.abis_engine.math._vector3f.reflect*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_reflect_float_float_float_" data-uid="net.abi.abis_engine.math._vector3f.reflect(float,float,float)">reflect(float x, float y, float z)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f reflect(float x, float y, float z)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">x</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">y</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">z</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_reflect_" data-uid="net.abi.abis_engine.math._vector3f.reflect*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_reflect_float_float_float_Vector3f_" data-uid="net.abi.abis_engine.math._vector3f.reflect(float,float,float,Vector3f)">reflect(float x, float y, float z, Vector3f dest)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f reflect(float x, float y, float z, Vector3f dest)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">x</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">y</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">z</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">dest</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_reflect_" data-uid="net.abi.abis_engine.math._vector3f.reflect*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_reflect_Vector3f_" data-uid="net.abi.abis_engine.math._vector3f.reflect(Vector3f)">reflect(Vector3f normal)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f reflect(Vector3f normal)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">normal</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_reflect_" data-uid="net.abi.abis_engine.math._vector3f.reflect*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_reflect_Vector3f_Vector3f_" data-uid="net.abi.abis_engine.math._vector3f.reflect(Vector3f,Vector3f)">reflect(Vector3f normal, Vector3f dest)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f reflect(Vector3f normal, Vector3f dest)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">normal</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">dest</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_rotate_" data-uid="net.abi.abis_engine.math._vector3f.rotate*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_rotate_float_Vector3f_" data-uid="net.abi.abis_engine.math._vector3f.rotate(float,Vector3f)">rotate(float angleInDegrees, Vector3f axis)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f rotate(float angleInDegrees, Vector3f axis)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">angleInDegrees</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">axis</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_rotate_" data-uid="net.abi.abis_engine.math._vector3f.rotate*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_rotate_Quaternion_" data-uid="net.abi.abis_engine.math._vector3f.rotate(Quaternion)">rotate(Quaternion rotation)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f rotate(Quaternion rotation)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._quaternion.html">Quaternion</a></td>
+        <td><span class="parametername">rotation</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_rotateAxis_" data-uid="net.abi.abis_engine.math._vector3f.rotateAxis*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_rotateAxis_float_float_float_float_Vector3f_" data-uid="net.abi.abis_engine.math._vector3f.rotateAxis(float,float,float,float,Vector3f)">rotateAxis(float angle, float aX, float aY, float aZ, Vector3f dest)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f rotateAxis(float angle, float aX, float aY, float aZ, Vector3f dest)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">angle</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">aX</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">aY</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">aZ</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">dest</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_rotateAxis_" data-uid="net.abi.abis_engine.math._vector3f.rotateAxis*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_rotateAxis_float_float_float_float_" data-uid="net.abi.abis_engine.math._vector3f.rotateAxis(float,float,float,float)">rotateAxis(float angle, float x, float y, float z)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f rotateAxis(float angle, float x, float y, float z)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">angle</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">x</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">y</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">z</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_rotateX_" data-uid="net.abi.abis_engine.math._vector3f.rotateX*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_rotateX_float_" data-uid="net.abi.abis_engine.math._vector3f.rotateX(float)">rotateX(float angle)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f rotateX(float angle)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">angle</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_rotateX_" data-uid="net.abi.abis_engine.math._vector3f.rotateX*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_rotateX_float_Vector3f_" data-uid="net.abi.abis_engine.math._vector3f.rotateX(float,Vector3f)">rotateX(float angle, Vector3f dest)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f rotateX(float angle, Vector3f dest)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">angle</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">dest</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_rotateY_" data-uid="net.abi.abis_engine.math._vector3f.rotateY*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_rotateY_float_" data-uid="net.abi.abis_engine.math._vector3f.rotateY(float)">rotateY(float angle)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f rotateY(float angle)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">angle</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_rotateY_" data-uid="net.abi.abis_engine.math._vector3f.rotateY*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_rotateY_float_Vector3f_" data-uid="net.abi.abis_engine.math._vector3f.rotateY(float,Vector3f)">rotateY(float angle, Vector3f dest)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f rotateY(float angle, Vector3f dest)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">angle</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">dest</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_rotateZ_" data-uid="net.abi.abis_engine.math._vector3f.rotateZ*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_rotateZ_float_" data-uid="net.abi.abis_engine.math._vector3f.rotateZ(float)">rotateZ(float angle)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f rotateZ(float angle)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">angle</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_rotateZ_" data-uid="net.abi.abis_engine.math._vector3f.rotateZ*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_rotateZ_float_Vector3f_" data-uid="net.abi.abis_engine.math._vector3f.rotateZ(float,Vector3f)">rotateZ(float angle, Vector3f dest)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f rotateZ(float angle, Vector3f dest)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">angle</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">dest</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_round_" data-uid="net.abi.abis_engine.math._vector3f.round*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_round__" data-uid="net.abi.abis_engine.math._vector3f.round()">round()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f round()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_round_" data-uid="net.abi.abis_engine.math._vector3f.round*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_round_Vector3f_" data-uid="net.abi.abis_engine.math._vector3f.round(Vector3f)">round(Vector3f dest)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f round(Vector3f dest)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">dest</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_set_" data-uid="net.abi.abis_engine.math._vector3f.set*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_set_float_float_float_" data-uid="net.abi.abis_engine.math._vector3f.set(float,float,float)">set(float x, float y, float z)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f set(float x, float y, float z)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">x</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">y</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">z</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_set_" data-uid="net.abi.abis_engine.math._vector3f.set*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_set_Vector3f_" data-uid="net.abi.abis_engine.math._vector3f.set(Vector3f)">set(Vector3f other)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f set(Vector3f other)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">other</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_setX_" data-uid="net.abi.abis_engine.math._vector3f.setX*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_setX_float_" data-uid="net.abi.abis_engine.math._vector3f.setX(float)">setX(float x)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void setX(float x)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">x</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_setY_" data-uid="net.abi.abis_engine.math._vector3f.setY*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_setY_float_" data-uid="net.abi.abis_engine.math._vector3f.setY(float)">setY(float y)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void setY(float y)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">y</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_setZ_" data-uid="net.abi.abis_engine.math._vector3f.setZ*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_setZ_float_" data-uid="net.abi.abis_engine.math._vector3f.setZ(float)">setZ(float z)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void setZ(float z)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">z</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_smoothStep_" data-uid="net.abi.abis_engine.math._vector3f.smoothStep*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_smoothStep_Vector3f_float_Vector3f_" data-uid="net.abi.abis_engine.math._vector3f.smoothStep(Vector3f,float,Vector3f)">smoothStep(Vector3f v, float t, Vector3f dest)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f smoothStep(Vector3f v, float t, Vector3f dest)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">v</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">t</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">dest</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_sub_" data-uid="net.abi.abis_engine.math._vector3f.sub*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_sub_float_" data-uid="net.abi.abis_engine.math._vector3f.sub(float)">sub(float r)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f sub(float r)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td><span class="parametername">r</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_sub_" data-uid="net.abi.abis_engine.math._vector3f.sub*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_sub_Vector3f_" data-uid="net.abi.abis_engine.math._vector3f.sub(Vector3f)">sub(Vector3f r)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f sub(Vector3f r)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td><span class="parametername">r</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_toString_" data-uid="net.abi.abis_engine.math._vector3f.toString*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_toString__" data-uid="net.abi.abis_engine.math._vector3f.toString()">toString()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public String toString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>String</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_x_" data-uid="net.abi.abis_engine.math._vector3f.x*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_x__" data-uid="net.abi.abis_engine.math._vector3f.x()">x()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float x()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_y_" data-uid="net.abi.abis_engine.math._vector3f.y*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_y__" data-uid="net.abi.abis_engine.math._vector3f.y()">y()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float y()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_z_" data-uid="net.abi.abis_engine.math._vector3f.z*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_z__" data-uid="net.abi.abis_engine.math._vector3f.z()">z()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float z()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>float</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="net_abi_abis_engine_math__vector3f_zero_" data-uid="net.abi.abis_engine.math._vector3f.zero*"></a>
+  <h4 id="net_abi_abis_engine_math__vector3f_zero__" data-uid="net.abi.abis_engine.math._vector3f.zero()">zero()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3f zero()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="net.abi.abis_engine.math._vector3f.html">Vector3f</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

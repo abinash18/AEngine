@@ -117,7 +117,7 @@ public class EngineSplashScreen extends Scene {
 
 		PathHandle p = AEShader.DEFAULT_SHADER_ASSET_DIRECTORY_PATH.resolveChild("frameworkTest.ae-shader");
 		AEShaderCompiler c = new AEShaderCompiler(System.out);
-		c.compile(AEShaderParserYAML.parse(p), p);
+		//c.compile(AEShaderParserYAML.parse(p), p);
 		super.setMainCamera("playerView");
 		// super.addChild(spotLightObject);
 		// super.addChild(new Entity()
