@@ -1,0 +1,7 @@
+var searchData=
+[
+  ['x_2521',['x',['../classnet_1_1abi_1_1abis_engine_1_1math_1_1_quaternion.html#a1594ce6be64a4c1bec51889834040398',1,'net.abi.abisEngine.math.Quaternion.x()'],['../classnet_1_1abi_1_1abis_engine_1_1math_1_1_vector2f.html#a1937d0fd929252a58b2b8ad23abb91c6',1,'net.abi.abisEngine.math.Vector2f.x()'],['../classnet_1_1abi_1_1abis_engine_1_1math_1_1_vector2i.html#abd1a53381ccb895b4265071c132b1b82',1,'net.abi.abisEngine.math.Vector2i.x()'],['../classnet_1_1abi_1_1abis_engine_1_1math_1_1_vector3f.html#a8c2513648ba0abbdc944011bbae76e7f',1,'net.abi.abisEngine.math.Vector3f.x()'],['../classnet_1_1abi_1_1abis_engine_1_1math_1_1_vector3i.html#ac4884c67a9956148dc176f34f0f534fa',1,'net.abi.abisEngine.math.Vector3i.x()'],['../classnet_1_1abi_1_1abis_engine_1_1math_1_1_vector4f.html#afbbaf72f70647f3a6359c1a3338b83af',1,'net.abi.abisEngine.math.Vector4f.x()']]],
+  ['x_5faxis_2522',['X_AXIS',['../classnet_1_1abi_1_1abis_engine_1_1math_1_1_transform.html#ae8db270f8d28d6214d39c84d2d5a26c0',1,'net::abi::abisEngine::math::Transform']]],
+  ['xy_5faxis_2523',['XY_AXIS',['../classnet_1_1abi_1_1abis_engine_1_1math_1_1_transform.html#ab144feb673fd97cbf38b1859e2db62cf',1,'net::abi::abisEngine::math::Transform']]],
+  ['xyz_5faxis_2524',['XYZ_AXIS',['../classnet_1_1abi_1_1abis_engine_1_1math_1_1_transform.html#abeff214860885d4743e66d930bb49a76',1,'net::abi::abisEngine::math::Transform']]]
+];
