@@ -1,0 +1,26 @@
+digraph "net.abi.abisEngine.rendering.window.GLFWWindow.setSizeLimit"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="net.abi.abisEngine.rendering.window.\lGLFWWindow.setSizeLimit",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="net.abi.abisEngine.rendering.window.\lGLFWWindow.checkWindowPointer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d77/classnet_1_1abi_1_1abis_engine_1_1rendering_1_1window_1_1_g_l_f_w_window.html#a1bbb07ad10dc45550d9ad8a21315b16e",tooltip=" "];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="net.abi.abisEngine.handlers.logging.\lLogger.error",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d70/classnet_1_1abi_1_1abis_engine_1_1handlers_1_1logging_1_1_logger.html#a727393246670340903256caee1911ee8",tooltip=" "];
+  Node3 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="net.abi.abisEngine.handlers.logging.\lLogger.checkAllowed",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d70/classnet_1_1abi_1_1abis_engine_1_1handlers_1_1logging_1_1_logger.html#a13b7504675f442f02ae706a156d7cc13",tooltip=" "];
+  Node4 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="net.abi.abisEngine.handlers.logging.\lLogManager.getCurrentLevel",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d1a/classnet_1_1abi_1_1abis_engine_1_1handlers_1_1logging_1_1_log_manager.html#aefd2b12f57fa489b76386bc1a595cd24",tooltip=" "];
+  Node4 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="net.abi.abisEngine.handlers.logging.\lLogManager.isLevelAllowed",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d1a/classnet_1_1abi_1_1abis_engine_1_1handlers_1_1logging_1_1_log_manager.html#a374085310fb87ec9d7aa8fedbd7bdf5f",tooltip=" "];
+  Node3 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="net.abi.abisEngine.handlers.logging.\lLogger.formatLog",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d70/classnet_1_1abi_1_1abis_engine_1_1handlers_1_1logging_1_1_logger.html#a751b93e83d31f2234d948985a8472c3c",tooltip=" "];
+  Node7 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="net.abi.abisEngine.handlers.logging.\lLogManager.getCurrentTimeAndDate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d1a/classnet_1_1abi_1_1abis_engine_1_1handlers_1_1logging_1_1_log_manager.html#ad4e72d19a4ef8512439ccd41da205c78",tooltip=" "];
+  Node3 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="net.abi.abisEngine.handlers.logging.\lLogger.println",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d70/classnet_1_1abi_1_1abis_engine_1_1handlers_1_1logging_1_1_logger.html#ad25894ef47ad269a6e56b327c5e5c3cf",tooltip=" "];
+  Node9 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="net.abi.abisEngine.handlers.file.\lFileHandler.getMaxLines",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d32/classnet_1_1abi_1_1abis_engine_1_1handlers_1_1file_1_1_file_handler.html#aa4eaca3163774bc59be7b3709cece75e",tooltip=" "];
+}

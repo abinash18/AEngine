@@ -1,0 +1,43 @@
+digraph "net.abi.abisEngine.rendering.shader.Shader.setUniformSpotLight"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="net.abi.abisEngine.rendering.shader.\lShader.setUniformSpotLight",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="net.abi.abisEngine.rendering.shader.\lShader.setUniform3f",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/dff/classnet_1_1abi_1_1abis_engine_1_1rendering_1_1shader_1_1_shader.html#a8758069495af1ca9427c851ff919edd0",tooltip=" "];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="net.abi.abisEngine.rendering.shader.\lShaderResource.getUniforms",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d77/classnet_1_1abi_1_1abis_engine_1_1rendering_1_1shader_1_1_shader_resource.html#a09805e3074c80747809d82ae30e9b838",tooltip=" "];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="net.abi.abisEngine.rendering.shader.\lShader.setUniformf",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/dff/classnet_1_1abi_1_1abis_engine_1_1rendering_1_1shader_1_1_shader.html#ac0a881e1011f1cc33906f5a34345bed0",tooltip=" "];
+  Node4 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="net.abi.abisEngine.rendering.shader.\lShader.setUniformPointLight",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/dff/classnet_1_1abi_1_1abis_engine_1_1rendering_1_1shader_1_1_shader.html#a3134962936e23147c0bd63d7aa72782a",tooltip=" "];
+  Node5 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="net.abi.abisEngine.components.\lPointLight.getAttenuation",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/dbe/classnet_1_1abi_1_1abis_engine_1_1components_1_1_point_light.html#ae93347bf2259a15c0e4e0acf8b5df842",tooltip=" "];
+  Node5 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="net.abi.abisEngine.util.\lAttenuation.getConstant",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/dc2/classnet_1_1abi_1_1abis_engine_1_1util_1_1_attenuation.html#abf148502b76332177e0c1c364457c74c",tooltip=" "];
+  Node5 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="net.abi.abisEngine.util.\lAttenuation.getExponent",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/dc2/classnet_1_1abi_1_1abis_engine_1_1util_1_1_attenuation.html#a65c84f7641e5bcfd8b9fc8d1a24a60e9",tooltip=" "];
+  Node5 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="net.abi.abisEngine.util.\lAttenuation.getLinear",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/dc2/classnet_1_1abi_1_1abis_engine_1_1util_1_1_attenuation.html#a34d30a1d8b6e4e70c4e09a50a31ff7b6",tooltip=" "];
+  Node5 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="net.abi.abisEngine.math.\lTransform.getPosition",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/d33/classnet_1_1abi_1_1abis_engine_1_1math_1_1_transform.html#a48d989ec636631892108bc4c55bff5f0",tooltip=" "];
+  Node5 -> Node11 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="net.abi.abisEngine.components.\lPointLight.getRange",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/dbe/classnet_1_1abi_1_1abis_engine_1_1components_1_1_point_light.html#ab512834f9840a8236323f35ee2a62648",tooltip=" "];
+  Node5 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="net.abi.abisEngine.components.\lSceneComponent.getTransform",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d76/classnet_1_1abi_1_1abis_engine_1_1components_1_1_scene_component.html#ab32253dd2bc2fbe04ac0446f7cb0cf10",tooltip=" "];
+  Node12 -> Node13 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="net.abi.abisEngine.entities.\lEntity.getTransform",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d36/classnet_1_1abi_1_1abis_engine_1_1entities_1_1_entity.html#ac55898ab885b84dcbe9a1258999bda11",tooltip=" "];
+  Node5 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 -> Node14 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="net.abi.abisEngine.rendering.shader.\lShader.setUniformLight",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/dff/classnet_1_1abi_1_1abis_engine_1_1rendering_1_1shader_1_1_shader.html#af34d590e667272560653eb5ad8165bcd",tooltip=" "];
+  Node14 -> Node15 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="net.abi.abisEngine.components.\lLight.getColor",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/d7a/classnet_1_1abi_1_1abis_engine_1_1components_1_1_light.html#aa13d1d53c93290edd60ca678f9379f4b",tooltip=" "];
+  Node14 -> Node16 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="net.abi.abisEngine.components.\lLight.getIntensity",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/d7a/classnet_1_1abi_1_1abis_engine_1_1components_1_1_light.html#af7a8528626d3f45994ae2d1a43b6c351",tooltip=" "];
+  Node14 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

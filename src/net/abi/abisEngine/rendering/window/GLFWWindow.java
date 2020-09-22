@@ -78,7 +78,6 @@ import net.abi.abisEngine.rendering.material.Material;
 import net.abi.abisEngine.rendering.pipeline.RenderingEngine;
 import net.abi.abisEngine.rendering.scene.Scene;
 import net.abi.abisEngine.rendering.scene.SceneManager;
-import net.abi.abisEngine.rendering.shader.compiler.AEShaderCompiler;
 import net.abi.abisEngine.util.Expendable;
 import net.abi.abisEngine.util.cacheing.GenericCache;
 import net.abi.abisEngine.util.exceptions.AECursorInitializationException;

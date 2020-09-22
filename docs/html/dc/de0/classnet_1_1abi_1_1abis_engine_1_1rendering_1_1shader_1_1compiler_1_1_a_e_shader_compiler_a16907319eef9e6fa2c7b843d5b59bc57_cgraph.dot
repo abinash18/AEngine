@@ -1,0 +1,12 @@
+digraph "net.abi.abisEngine.rendering.shader.compiler.AEShaderCompiler.loadAllImportsInFile"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="net.abi.abisEngine.rendering.shader.compiler.\lAEShaderCompiler.loadAllImportsInFile",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="net.abi.abisEngine.rendering.shader.parser.file\lTypes.yaml.AEShaderFileYAML.getAE\l_SHADER_GLSL_PROGRAMS",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/def/classnet_1_1abi_1_1abis_engine_1_1rendering_1_1shader_1_1parser_1_1file_types_1_1yaml_1_1_a_e_shader_file_y_a_m_l.html#a58ea0cb6fa6f980b80fe40744744d5aa",tooltip=" "];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="net.abi.abisEngine.rendering.shader.parser.file\lTypes.yaml.AEShaderFileYAML.getAE\l_SHADER_NAME",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/def/classnet_1_1abi_1_1abis_engine_1_1rendering_1_1shader_1_1parser_1_1file_types_1_1yaml_1_1_a_e_shader_file_y_a_m_l.html#a57a2e426ad4dbec88cd4d567de88a640",tooltip=" "];
+}

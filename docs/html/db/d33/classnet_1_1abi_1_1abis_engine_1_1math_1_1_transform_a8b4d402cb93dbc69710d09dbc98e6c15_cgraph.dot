@@ -1,0 +1,19 @@
+digraph "net.abi.abisEngine.math.Transform.rotate"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="net.abi.abisEngine.math.\lTransform.rotate",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="net.abi.abisEngine.math.\lQuaternion.mul",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/daf/classnet_1_1abi_1_1abis_engine_1_1math_1_1_quaternion.html#adbdf9329563540c33b28c38554036c7d",tooltip=" "];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="net.abi.abisEngine.math.\lQuaternion.Quaternion",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/daf/classnet_1_1abi_1_1abis_engine_1_1math_1_1_quaternion.html#ae771c00d16a745336fd2652a324d72c0",tooltip=" "];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="net.abi.abisEngine.math.\lQuaternion.normalize",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/daf/classnet_1_1abi_1_1abis_engine_1_1math_1_1_quaternion.html#ade2bec40a5718918004393debec0dd8f",tooltip=" "];
+  Node4 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="net.abi.abisEngine.math.\lQuaternion.length",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/daf/classnet_1_1abi_1_1abis_engine_1_1math_1_1_quaternion.html#ac70c7a94d61e360453f5783486db29d3",tooltip=" "];
+  Node5 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="net.abi.abisEngine.math.\lMath.sqrt",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/dbb/classnet_1_1abi_1_1abis_engine_1_1math_1_1_math.html#a84178ee9d6bb66fbca6a47147f616808",tooltip=" "];
+  Node4 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

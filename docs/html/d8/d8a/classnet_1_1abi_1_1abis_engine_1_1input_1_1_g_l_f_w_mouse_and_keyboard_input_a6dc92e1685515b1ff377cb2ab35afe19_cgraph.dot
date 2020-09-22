@@ -1,0 +1,18 @@
+digraph "net.abi.abisEngine.input.GLFWMouseAndKeyboardInput.initInput"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="net.abi.abisEngine.input.\lGLFWMouseAndKeyboardInput.initInput",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="net.abi.abisEngine.math.\lVector2f.mul",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/db9/classnet_1_1abi_1_1abis_engine_1_1math_1_1_vector2f.html#a237ebd8a779d1dc21f58a9816b33735c",tooltip=" "];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="net.abi.abisEngine.math.\lVector2f.Vector2f",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/db9/classnet_1_1abi_1_1abis_engine_1_1math_1_1_vector2f.html#aced42f9a11b240f2f9df02605580cffd",tooltip=" "];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="net.abi.abisEngine.input.\lGLFWMouseAndKeyboardInput.setScroll\lOffset",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/d8a/classnet_1_1abi_1_1abis_engine_1_1input_1_1_g_l_f_w_mouse_and_keyboard_input.html#a9b8edb202203be954acbeba2ee8770ad",tooltip=" "];
+  Node1 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="net.abi.abisEngine.math.\lVector2f.setX",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/db9/classnet_1_1abi_1_1abis_engine_1_1math_1_1_vector2f.html#ad295d049caea46874441190f6d142c7c",tooltip=" "];
+  Node1 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="net.abi.abisEngine.math.\lVector2f.setY",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/db9/classnet_1_1abi_1_1abis_engine_1_1math_1_1_vector2f.html#a452435fbd9bf3749d36943cb80d0eb09",tooltip=" "];
+}

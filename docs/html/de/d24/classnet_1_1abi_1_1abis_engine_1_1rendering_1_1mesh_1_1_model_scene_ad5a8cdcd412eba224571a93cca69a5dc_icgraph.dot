@@ -1,0 +1,10 @@
+digraph "net.abi.abisEngine.rendering.mesh.ModelScene.free"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="net.abi.abisEngine.rendering.mesh.\lModelScene.free",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="net.abi.abisEngine.rendering.mesh.\lModelScene.dispose",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d24/classnet_1_1abi_1_1abis_engine_1_1rendering_1_1mesh_1_1_model_scene.html#affa4c7ced5313eb3cf7907d9c13ce88c",tooltip=" "];
+}

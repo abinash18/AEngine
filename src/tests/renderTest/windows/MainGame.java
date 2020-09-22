@@ -9,13 +9,13 @@ public class MainGame extends GLFWWindow {
 
 	public MainGame() {
 		super();
-		super.properties.name = "EngineSplash";
-		super.properties.title = "AEngine";
-		super.properties.sc_height = 720;
-		super.properties.sc_width = 1270;
-		super.properties.fullscreen = false;
-		super.properties.vSync = GLFW_FALSE;
-		super.properties.renderEngine = new RenderingEngine();
+		super.properties.GLFWWindowProperties.setName("EngineSplash");
+		super.properties.GLFWWindowProperties.setTitle("AEngine");
+		super.properties.GLFWWindowProperties.setSc_height(720);
+		super.properties.GLFWWindowProperties.setSc_width(1270);
+		super.properties.GLFWWindowProperties.setFullscreen(false);
+		super.properties.GLFWWindowProperties.setvSync(GLFW_FALSE);
+		super.properties.GLFWWindowProperties.setRenderEngine(new RenderingEngine());
 	}
 
 	@Override

@@ -1,0 +1,30 @@
+digraph "net.abi.abisEngine.math.Vector3f.cross"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="net.abi.abisEngine.math.\lVector3f.cross",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="net.abi.abisEngine.components.\lCamera.getLeft",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d64/classnet_1_1abi_1_1abis_engine_1_1components_1_1_camera.html#ab130119b1e6b2110ddfb816dbb8b666c",tooltip=" "];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="net.abi.abisEngine.components.\lCamera.getRight",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d64/classnet_1_1abi_1_1abis_engine_1_1components_1_1_camera.html#a38d12310808839fa686e6785e25b2eaa",tooltip=" "];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="net.abi.abisEngine.math.\lMatrix4f.initRotation",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d7f/classnet_1_1abi_1_1abis_engine_1_1math_1_1_matrix4f.html#a14bb7856f2d75d9d3391c21c508f55c4",tooltip=" "];
+  Node1 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="net.abi.abisEngine.math.\lVector3f.rotate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/de5/classnet_1_1abi_1_1abis_engine_1_1math_1_1_vector3f.html#ae5dbe5ff36cc486308fe8ceb20ca833d",tooltip=" "];
+  Node5 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="net.abi.abisEngine.math.\lQuaternion.getBack",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/daf/classnet_1_1abi_1_1abis_engine_1_1math_1_1_quaternion.html#a903ce3546f16594975fa728676f1e3d5",tooltip=" "];
+  Node5 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="net.abi.abisEngine.math.\lQuaternion.getDown",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/daf/classnet_1_1abi_1_1abis_engine_1_1math_1_1_quaternion.html#a684299f8d3e27a9013bfe3f569601e6c",tooltip=" "];
+  Node5 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="net.abi.abisEngine.math.\lQuaternion.getForward",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/daf/classnet_1_1abi_1_1abis_engine_1_1math_1_1_quaternion.html#a038320c332c566a1240b702ec9c06eb5",tooltip=" "];
+  Node8 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="net.abi.abisEngine.components.\lSpotLight.getDirection",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d64/classnet_1_1abi_1_1abis_engine_1_1components_1_1_spot_light.html#a667402bf82c2badebd6f12fada1fa9d2",tooltip=" "];
+  Node5 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="net.abi.abisEngine.math.\lQuaternion.getLeft",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/daf/classnet_1_1abi_1_1abis_engine_1_1math_1_1_quaternion.html#acc895c67055f6df4755a2da223f34d2e",tooltip=" "];
+  Node5 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="net.abi.abisEngine.math.\lQuaternion.getRight",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/daf/classnet_1_1abi_1_1abis_engine_1_1math_1_1_quaternion.html#a373e436e55a1d818884be0e0f9c7ac81",tooltip=" "];
+  Node5 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="net.abi.abisEngine.math.\lQuaternion.getUp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/daf/classnet_1_1abi_1_1abis_engine_1_1math_1_1_quaternion.html#a7ee0571bb31e69e5b0c8c4f6d3f1302d",tooltip=" "];
+}

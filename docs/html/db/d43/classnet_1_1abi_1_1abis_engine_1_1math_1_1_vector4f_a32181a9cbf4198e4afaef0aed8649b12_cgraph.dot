@@ -1,0 +1,26 @@
+digraph "net.abi.abisEngine.math.Vector4f.rotateX"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="net.abi.abisEngine.math.\lVector4f.rotateX",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="net.abi.abisEngine.math.\lVector4f.angle",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/d43/classnet_1_1abi_1_1abis_engine_1_1math_1_1_vector4f.html#ad0fc9f8bdafb77e93ee19d2a8a58c53f",tooltip=" "];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="net.abi.abisEngine.math.\lMath.acos",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/dbb/classnet_1_1abi_1_1abis_engine_1_1math_1_1_math.html#ac496c702f60803466f9a067b22711d50",tooltip=" "];
+  Node2 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="net.abi.abisEngine.math.\lVector4f.angleCos",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/d43/classnet_1_1abi_1_1abis_engine_1_1math_1_1_vector4f.html#aab02fe30e05cad3995e9bc71acb59fd3",tooltip=" "];
+  Node4 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="net.abi.abisEngine.math.\lVector4f.dot",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/d43/classnet_1_1abi_1_1abis_engine_1_1math_1_1_vector4f.html#a6b334832f24e318923edab7991116cc3",tooltip=" "];
+  Node4 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="net.abi.abisEngine.math.\lMath.sqrt",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/dbb/classnet_1_1abi_1_1abis_engine_1_1math_1_1_math.html#a84178ee9d6bb66fbca6a47147f616808",tooltip=" "];
+  Node1 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="net.abi.abisEngine.math.\lMath.cosFromSin",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/dbb/classnet_1_1abi_1_1abis_engine_1_1math_1_1_math.html#a11f242a94788b3393aed7a5e8c2a6d9b",tooltip=" "];
+  Node7 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="net.abi.abisEngine.math.\lMath.cos",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/dbb/classnet_1_1abi_1_1abis_engine_1_1math_1_1_math.html#a1406b63d4f0a266cb389ad5ad2b5d05c",tooltip=" "];
+  Node7 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="net.abi.abisEngine.math.\lMath.sin",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/dbb/classnet_1_1abi_1_1abis_engine_1_1math_1_1_math.html#a079a54d6578d174f2c189f91b0a2b1ab",tooltip=" "];
+  Node7 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

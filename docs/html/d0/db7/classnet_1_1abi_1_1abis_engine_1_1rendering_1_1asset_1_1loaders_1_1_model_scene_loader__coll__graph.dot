@@ -1,0 +1,20 @@
+digraph "net.abi.abisEngine.rendering.asset.loaders.ModelSceneLoader"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="net.abi.abisEngine.rendering.asset.loaders.\lModelSceneLoader",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="net.abi.abisEngine.rendering.asset.loaders.\lAsyncAssetLoader\< ModelScene, ModelSceneLoader.\lParameter \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/db1/classnet_1_1abi_1_1abis_engine_1_1rendering_1_1asset_1_1loaders_1_1_async_asset_loader.html",tooltip=" "];
+  Node3 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" scene" ,fontname="Helvetica"];
+  Node3 [label="net.abi.abisEngine.rendering.mesh.\lModelScene",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d24/classnet_1_1abi_1_1abis_engine_1_1rendering_1_1mesh_1_1_model_scene.html",tooltip=" "];
+  Node4 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="net.abi.abisEngine.util.\lExpendable",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d27/interfacenet_1_1abi_1_1abis_engine_1_1util_1_1_expendable.html",tooltip=" "];
+  Node5 -> Node3 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" mats" ,fontname="Helvetica"];
+  Node5 [label="List\< net.abi.abisEngine.rendering.material.\lMaterial \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node6 -> Node3 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" meshes" ,fontname="Helvetica"];
+  Node6 [label="Map\< String, net.abi.abis\lEngine.rendering.mesh.Mesh \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node7 -> Node3 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" ai_scene" ,fontname="Helvetica"];
+  Node7 [label="AIScene",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+}

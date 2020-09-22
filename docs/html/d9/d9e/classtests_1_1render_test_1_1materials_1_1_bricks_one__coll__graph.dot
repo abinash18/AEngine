@@ -1,0 +1,21 @@
+digraph "tests.renderTest.materials.BricksOne"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="tests.renderTest.materials.\lBricksOne",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="net.abi.abisEngine.rendering.material.\lMaterial",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d88/classnet_1_1abi_1_1abis_engine_1_1rendering_1_1material_1_1_material.html",tooltip=" "];
+  Node3 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="net.abi.abisEngine.util.\lMappedValues",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/de9/classnet_1_1abi_1_1abis_engine_1_1util_1_1_mapped_values.html",tooltip=" "];
+  Node4 -> Node3 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" floatBinds" ,fontname="Helvetica"];
+  Node4 [label="Map\< String, Float \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node5 -> Node3 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" vec3fBinds" ,fontname="Helvetica"];
+  Node5 [label="Map\< String, net.abi.abis\lEngine.math.Vector3f \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node6 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" textureBinds" ,fontname="Helvetica"];
+  Node6 [label="Map\< String, net.abi.abis\lEngine.rendering.texture.Texture \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node2 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" DEFAULT_MATERIAL" ,fontname="Helvetica"];
+  Node7 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" colorBinds" ,fontname="Helvetica"];
+  Node7 [label="Map\< String, net.abi.abis\lEngine.util.Color \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+}

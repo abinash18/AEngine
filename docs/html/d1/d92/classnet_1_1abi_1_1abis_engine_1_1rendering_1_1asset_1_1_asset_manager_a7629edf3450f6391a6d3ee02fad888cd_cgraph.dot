@@ -1,0 +1,14 @@
+digraph "net.abi.abisEngine.rendering.asset.AssetManager.addTask"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="net.abi.abisEngine.rendering.asset.\lAssetManager.addTask",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="net.abi.abisEngine.rendering.asset.\lAssetClassifier.getFileName",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/d3c/classnet_1_1abi_1_1abis_engine_1_1rendering_1_1asset_1_1_asset_classifier.html#a0ead7cec217293e9bba78e518abd224c",tooltip=" "];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="net.abi.abisEngine.rendering.asset.\lAssetManager.getLoader",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d92/classnet_1_1abi_1_1abis_engine_1_1rendering_1_1asset_1_1_asset_manager.html#a6c3009b2fe2dabf3d783e7eea9bd0689",tooltip=" "];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="net.abi.abisEngine.rendering.asset.\lAssetClassifier.getType",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/d3c/classnet_1_1abi_1_1abis_engine_1_1rendering_1_1asset_1_1_asset_classifier.html#ad3d2a0f50ba5dcb11c930078330e528d",tooltip=" "];
+}

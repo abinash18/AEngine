@@ -1,0 +1,12 @@
+digraph "net.abi.abisEngine.handlers.logging.LogManager.getLogger"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="net.abi.abisEngine.handlers.logging.\lLogManager.getLogger",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="net.abi.abisEngine.handlers.logging.\lLogManager.getLogger",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d1a/classnet_1_1abi_1_1abis_engine_1_1handlers_1_1logging_1_1_log_manager.html#ae395c931ac1759b003e9b547be8b67d5",tooltip=" "];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="net.abi.abisEngine.handlers.logging.\lLogger.setOutputForLogFile",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d70/classnet_1_1abi_1_1abis_engine_1_1handlers_1_1logging_1_1_logger.html#aa1928d92edb4e5cf385e81d160a4afc2",tooltip=" "];
+}

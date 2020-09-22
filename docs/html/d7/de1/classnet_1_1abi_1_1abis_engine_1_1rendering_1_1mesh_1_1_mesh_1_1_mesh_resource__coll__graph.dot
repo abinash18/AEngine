@@ -1,0 +1,37 @@
+digraph "net.abi.abisEngine.rendering.mesh.Mesh.MeshResource"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="net.abi.abisEngine.rendering.mesh.\lMesh.MeshResource",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="net.abi.abisEngine.rendering.asset.\lAssetI",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/d3c/interfacenet_1_1abi_1_1abis_engine_1_1rendering_1_1asset_1_1_asset_i.html",tooltip=" "];
+  Node3 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="net.abi.abisEngine.util.\lExpendable",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d27/interfacenet_1_1abi_1_1abis_engine_1_1util_1_1_expendable.html",tooltip=" "];
+  Node4 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" vaos" ,fontname="Helvetica"];
+  Node4 [label="HashMap\< String, net.abi.abis\lEngine.rendering.mesh.Mesh.VAO \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node5 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" meshData" ,fontname="Helvetica"];
+  Node5 [label="net.abi.abisEngine.rendering.mesh.\lMesh.MeshData",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d5f/classnet_1_1abi_1_1abis_engine_1_1rendering_1_1mesh_1_1_mesh_1_1_mesh_data.html",tooltip=" "];
+  Node6 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" model" ,fontname="Helvetica"];
+  Node6 [label="net.abi.abisEngine.rendering.mesh.\lModel",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/dfd/classnet_1_1abi_1_1abis_engine_1_1rendering_1_1mesh_1_1_model.html",tooltip=" "];
+  Node7 -> Node6 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" indices" ,fontname="Helvetica"];
+  Node7 [label="ArrayList\< Integer \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node8 -> Node6 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" texCoords" ,fontname="Helvetica"];
+  Node8 [label="ArrayList\< net.abi.abisEngine.math.\lVector2f \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node9 -> Node6 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" normals\npositions\ntangents\nvBCC" ,fontname="Helvetica"];
+  Node9 [label="ArrayList\< net.abi.abisEngine.math.\lVector3f \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node10 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" material" ,fontname="Helvetica"];
+  Node10 [label="net.abi.abisEngine.rendering.material.\lMaterial",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d88/classnet_1_1abi_1_1abis_engine_1_1rendering_1_1material_1_1_material.html",tooltip=" "];
+  Node11 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="net.abi.abisEngine.util.\lMappedValues",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/de9/classnet_1_1abi_1_1abis_engine_1_1util_1_1_mapped_values.html",tooltip=" "];
+  Node12 -> Node11 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" floatBinds" ,fontname="Helvetica"];
+  Node12 [label="Map\< String, Float \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node13 -> Node11 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" vec3fBinds" ,fontname="Helvetica"];
+  Node13 [label="Map\< String, net.abi.abis\lEngine.math.Vector3f \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node14 -> Node10 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" textureBinds" ,fontname="Helvetica"];
+  Node14 [label="Map\< String, net.abi.abis\lEngine.rendering.texture.Texture \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node10 -> Node10 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" DEFAULT_MATERIAL" ,fontname="Helvetica"];
+  Node15 -> Node10 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" colorBinds" ,fontname="Helvetica"];
+  Node15 [label="Map\< String, net.abi.abis\lEngine.util.Color \>",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+}

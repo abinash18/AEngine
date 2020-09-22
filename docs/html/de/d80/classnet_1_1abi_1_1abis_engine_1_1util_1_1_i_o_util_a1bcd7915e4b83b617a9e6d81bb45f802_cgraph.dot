@@ -1,0 +1,12 @@
+digraph "net.abi.abisEngine.util.IOUtil.ioResourceToByteBuffer"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="net.abi.abisEngine.util.\lIOUtil.ioResourceToByteBuffer",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="net.abi.abisEngine.util.\lUtil.createByteBuffer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/d9d/classnet_1_1abi_1_1abis_engine_1_1util_1_1_util.html#aff88c061ab40a7ee74a6422ae563dfb2",tooltip=" "];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="net.abi.abisEngine.util.\lIOUtil.resizeBuffer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d80/classnet_1_1abi_1_1abis_engine_1_1util_1_1_i_o_util.html#a31cb2efcc2f2e56e65955719679653d9",tooltip=" "];
+}

@@ -1,5 +1,5 @@
 var annotated_dup =
 [
-    [ "net", "namespacenet.html", "namespacenet" ],
-    [ "tests", "namespacetests.html", "namespacetests" ]
+    [ "net", "dc/d27/namespacenet.html", "dc/d27/namespacenet" ],
+    [ "tests", "d9/df4/namespacetests.html", "d9/df4/namespacetests" ]
 ];
