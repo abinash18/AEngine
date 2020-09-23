@@ -7,6 +7,13 @@
 	<version>4.5.0-SNAPSHOT</version>
 	<name>Abi's3DEngine</name>
 	<description>A Java 3D Game Engine</description>
+	<properties>
+		<orchid.version>0.21.0</orchid.version>
+		<lwjgl.version>3.2.3</lwjgl.version>
+		<steamworks4j-server.version>1.8.0</steamworks4j-server.version>
+		<steamworks4j.version>1.8.0</steamworks4j.version>
+		<joml.version>1.9.19</joml.version>
+	</properties>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
@@ -24,12 +31,6 @@
 	<organization>
 		<name>ABI ENTERPRISES</name>
 	</organization>
-	<properties>
-		<lwjgl.version>3.2.3</lwjgl.version>
-		<steamworks4j-server.version>1.8.0</steamworks4j-server.version>
-		<steamworks4j.version>1.8.0</steamworks4j.version>
-		<joml.version>1.9.19</joml.version>
-	</properties>
 	<profiles>
 		<profile>
 			<id>lwjgl-natives-linux-amd64</id>
