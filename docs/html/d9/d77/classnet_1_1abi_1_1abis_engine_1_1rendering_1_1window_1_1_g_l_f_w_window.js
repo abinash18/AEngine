@@ -2,6 +2,7 @@ var classnet_1_1abi_1_1abis_engine_1_1rendering_1_1window_1_1_g_l_f_w_window =
 [
     [ "AnimatedCursor", "d9/d95/classnet_1_1abi_1_1abis_engine_1_1rendering_1_1window_1_1_g_l_f_w_window_1_1_animated_cursor.html", "d9/d95/classnet_1_1abi_1_1abis_engine_1_1rendering_1_1window_1_1_g_l_f_w_window_1_1_animated_cursor" ],
     [ "CursorI", "d0/d9c/interfacenet_1_1abi_1_1abis_engine_1_1rendering_1_1window_1_1_g_l_f_w_window_1_1_cursor_i.html", "d0/d9c/interfacenet_1_1abi_1_1abis_engine_1_1rendering_1_1window_1_1_g_l_f_w_window_1_1_cursor_i" ],
+    [ "GLFWWindowProperties", "d1/d82/classnet_1_1abi_1_1abis_engine_1_1rendering_1_1window_1_1_g_l_f_w_window_1_1_g_l_f_w_window_properties.html", "d1/d82/classnet_1_1abi_1_1abis_engine_1_1rendering_1_1window_1_1_g_l_f_w_window_1_1_g_l_f_w_window_properties" ],
     [ "StaticCursor", "d6/d8c/classnet_1_1abi_1_1abis_engine_1_1rendering_1_1window_1_1_g_l_f_w_window_1_1_static_cursor.html", "d6/d8c/classnet_1_1abi_1_1abis_engine_1_1rendering_1_1window_1_1_g_l_f_w_window_1_1_static_cursor" ],
     [ "StaticCursorResource", "d8/dc3/classnet_1_1abi_1_1abis_engine_1_1rendering_1_1window_1_1_g_l_f_w_window_1_1_static_cursor_resource.html", "d8/dc3/classnet_1_1abi_1_1abis_engine_1_1rendering_1_1window_1_1_g_l_f_w_window_1_1_static_cursor_resource" ],
     [ "GLFWWindow", "d9/d77/classnet_1_1abi_1_1abis_engine_1_1rendering_1_1window_1_1_g_l_f_w_window.html#a7675e67b2794c48af585000123655505", null ],

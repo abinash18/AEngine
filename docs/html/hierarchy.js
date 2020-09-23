@@ -93,7 +93,7 @@ var hierarchy =
       [ "net.abi.abisEngine.input.GLFWMouseAndKeyboardInput", "d8/d8a/classnet_1_1abi_1_1abis_engine_1_1input_1_1_g_l_f_w_mouse_and_keyboard_input.html", null ]
     ] ],
     [ "net.abi.abisEngine.rendering.window.GLFWWindowManager.GLFWWindowContext", "d2/db9/classnet_1_1abi_1_1abis_engine_1_1rendering_1_1window_1_1_g_l_f_w_window_manager_1_1_g_l_f_w_window_context.html", null ],
-    [ "net.abi.abisEngine.rendering.window.GLFWWindowProperties", "d8/d55/classnet_1_1abi_1_1abis_engine_1_1rendering_1_1window_1_1_g_l_f_w_window_properties.html", null ],
+    [ "net.abi.abisEngine.rendering.window.GLFWWindow.GLFWWindowProperties", "d1/d82/classnet_1_1abi_1_1abis_engine_1_1rendering_1_1window_1_1_g_l_f_w_window_1_1_g_l_f_w_window_properties.html", null ],
     [ "net.abi.abisEngine.rendering.shader.GLSLLayoutQualifier", "de/d29/classnet_1_1abi_1_1abis_engine_1_1rendering_1_1shader_1_1_g_l_s_l_layout_qualifier.html", null ],
     [ "net.abi.abisEngine.rendering.shader.compiler.AEShaderCompiler.GLSLStruct", "d9/d0d/classnet_1_1abi_1_1abis_engine_1_1rendering_1_1shader_1_1compiler_1_1_a_e_shader_compiler_1_1_g_l_s_l_struct.html", null ],
     [ "net.abi.abisEngine.rendering.shader.Shader.GLSLStruct", "d7/d95/classnet_1_1abi_1_1abis_engine_1_1rendering_1_1shader_1_1_shader_1_1_g_l_s_l_struct.html", null ],

@@ -1,6 +1,5 @@
 var NAVTREEINDEX8 =
 {
-"da/d0e/_image_meta_data_8java.html":[1,0,0,0,0,0,7,2,1],
 "da/d13/classnet_1_1abi_1_1abis_engine_1_1rendering_1_1shader_1_1parser_1_1_a_e_shader_parser_y_a_m_l.html":[0,0,0,0,0,6,6,2,1],
 "da/d13/classnet_1_1abi_1_1abis_engine_1_1rendering_1_1shader_1_1parser_1_1_a_e_shader_parser_y_a_m_l.html#a7539ac81920d97c547ee59932c46b244":[0,0,0,0,0,6,6,2,1,0],
 "da/d18/_g_l_f_w_mouse_and_keyboard_input_8java.html":[1,0,0,0,0,0,4,1],
@@ -249,5 +248,6 @@ var NAVTREEINDEX8 =
 "db/d43/classnet_1_1abi_1_1abis_engine_1_1math_1_1_vector4f.html#a869455c651a10bfe295902389122b509":[0,0,0,0,0,5,9,35],
 "db/d43/classnet_1_1abi_1_1abis_engine_1_1math_1_1_vector4f.html#a963b248a0e44cde8057bfa4ef0b2dbb2":[0,0,0,0,0,5,9,32],
 "db/d43/classnet_1_1abi_1_1abis_engine_1_1math_1_1_vector4f.html#a9c98774f787cd0a309fd653730992bbd":[0,0,0,0,0,5,9,11],
-"db/d43/classnet_1_1abi_1_1abis_engine_1_1math_1_1_vector4f.html#a9e88ab1f5857ae5f9a6d0f527afaac1c":[0,0,0,0,0,5,9,53]
+"db/d43/classnet_1_1abi_1_1abis_engine_1_1math_1_1_vector4f.html#a9e88ab1f5857ae5f9a6d0f527afaac1c":[0,0,0,0,0,5,9,53],
+"db/d43/classnet_1_1abi_1_1abis_engine_1_1math_1_1_vector4f.html#aa2fb68048b3f648972fbfa0b82701238":[0,0,0,0,0,5,9,48]
 };
