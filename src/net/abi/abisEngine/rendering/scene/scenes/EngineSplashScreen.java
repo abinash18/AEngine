@@ -1,3 +1,18 @@
+/*******************************************************************************
+ * Copyright 2020 Abinash Singh | ABI INC.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License.  You may obtain a copy
+ * of the License at
+ * 
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ ******************************************************************************/
 package net.abi.abisEngine.rendering.scene.scenes;
 
 import org.lwjgl.glfw.GLFW;
@@ -13,6 +28,7 @@ import net.abi.abisEngine.entities.Entity;
 import net.abi.abisEngine.handlers.file.PathHandle;
 import net.abi.abisEngine.input.GLFWInput;
 import net.abi.abisEngine.input.GLFWMouseAndKeyboardInput;
+import net.abi.abisEngine.math.Transform;
 import net.abi.abisEngine.math.Vector3f;
 import net.abi.abisEngine.rendering.asset.AssetContainer;
 import net.abi.abisEngine.rendering.asset.AssetLoaderParameters.LoadedCallback;
@@ -25,7 +41,7 @@ import net.abi.abisEngine.rendering.pipeline.RenderingEngine;
 import net.abi.abisEngine.rendering.scene.Scene;
 import net.abi.abisEngine.rendering.shader.AEShader;
 import net.abi.abisEngine.rendering.shader.compiler.AEShaderCompiler;
-import net.abi.abisEngine.rendering.shader.parser.AEShaderParserYAML;
+import net.abi.abisEngine.rendering.shader.compiler.parser.AEShaderParserYAML;
 import net.abi.abisEngine.rendering.texture.Texture;
 import net.abi.abisEngine.rendering.window.GLFWWindow;
 import net.abi.abisEngine.util.Attenuation;
@@ -68,7 +84,7 @@ public class EngineSplashScreen extends Scene {
 				(float) super.getParentWindow().getPWidth() / (float) super.getParentWindow().getPHeight(), 0.01f,
 				1000.0f, "playerView");
 		cameraObject.addComponent(cam);
-		cameraObject.addComponent(new FreeLook(0.35f)).addComponent(new FreeMove(50f));
+		cameraObject.addComponent(new FreeLook(0.35f)).addComponent(new FreeMove(5f));
 		// cameraObject.addComponent(spotLight);
 		// spotLight.getTransform().setParent(cam.getTransform());
 
@@ -98,7 +114,8 @@ public class EngineSplashScreen extends Scene {
 				ModelScene m = assetManager.get(fileName, ModelScene.class);
 				Mesh s = m.getMesh("monkey").bindModel();
 				monkey = new Entity().addComponent(new MeshRenderer(s, _m));
-				monkey.getTransform().setTranslation(new Vector3f(0f, 0f, 5f)).setScale(1);// .getRotation().rotate(Transform.X_AXIS,
+				monkey.getTransform().setTranslation(new Vector3f(0f, 0f, 5f)).setScale(3);// .getRotation().rotate(Transform.X_AXIS,
+				monkey.getTransform().rotate(Transform.Y_AXIS, (float) Math.toRadians(180));
 				// (float) Math.toRadians(-100));
 				// monkey.getTransform().getRotation().rotate(Transform.Y_AXIS, (float)
 				// Math.toRadians(-180));
@@ -113,11 +130,11 @@ public class EngineSplashScreen extends Scene {
 
 		};
 
-		man.load("IronMan.obj", ModelScene.class, parm);
+		man.load("monkey.obj", ModelScene.class, parm);
 
 		PathHandle p = AEShader.DEFAULT_SHADER_ASSET_DIRECTORY_PATH.resolveChild("frameworkTest.ae-shader");
 		AEShaderCompiler c = new AEShaderCompiler(System.out);
-		//c.compile(AEShaderParserYAML.parse(p), p);
+		// c.compile(AEShaderParserYAML.parse(p), p);
 		super.setMainCamera("playerView");
 		// super.addChild(spotLightObject);
 		// super.addChild(new Entity()

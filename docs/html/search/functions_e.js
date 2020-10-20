@@ -1,4 +1,0 @@
-var searchData=
-[
-  ['quaternion_2002',['Quaternion',['../classnet_1_1abi_1_1abis_engine_1_1math_1_1_quaternion.html#ae771c00d16a745336fd2652a324d72c0',1,'net.abi.abisEngine.math.Quaternion.Quaternion()'],['../classnet_1_1abi_1_1abis_engine_1_1math_1_1_quaternion.html#a8f66ac12a10b512ec5758bfaf8f7fc67',1,'net.abi.abisEngine.math.Quaternion.Quaternion(float x, float y, float z, float w)'],['../classnet_1_1abi_1_1abis_engine_1_1math_1_1_quaternion.html#a1fe435fa79ca1a03ed222f9c8ce9f5b0',1,'net.abi.abisEngine.math.Quaternion.Quaternion(Quaternion r)'],['../classnet_1_1abi_1_1abis_engine_1_1math_1_1_quaternion.html#a3fa7154e6526704a614a9d967ee416c1',1,'net.abi.abisEngine.math.Quaternion.Quaternion(Vector3f axis, float anglerad)'],['../classnet_1_1abi_1_1abis_engine_1_1math_1_1_quaternion.html#ab881a6c920efbbd8ab409414dda207b4',1,'net.abi.abisEngine.math.Quaternion.Quaternion(Matrix4f rot)']]]
-];

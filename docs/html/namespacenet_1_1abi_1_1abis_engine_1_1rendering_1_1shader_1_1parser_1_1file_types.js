@@ -1,4 +1,0 @@
-var namespacenet_1_1abi_1_1abis_engine_1_1rendering_1_1shader_1_1parser_1_1file_types =
-[
-    [ "yaml", "namespacenet_1_1abi_1_1abis_engine_1_1rendering_1_1shader_1_1parser_1_1file_types_1_1yaml.html", "namespacenet_1_1abi_1_1abis_engine_1_1rendering_1_1shader_1_1parser_1_1file_types_1_1yaml" ]
-];

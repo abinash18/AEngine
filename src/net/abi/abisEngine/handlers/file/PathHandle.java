@@ -250,7 +250,7 @@ public class PathHandle {
 		 */
 		@Override
 		public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-			if (path.getFileName().equals(fileName)) {
+			if (path.getFileName().toString().equals(fileName)) {
 				isPresent = true;
 			}
 			return null;

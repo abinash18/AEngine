@@ -1,7 +1,20 @@
+/*******************************************************************************
+ * Copyright 2020 Abinash Singh | ABI INC.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License.  You may obtain a copy
+ * of the License at
+ * 
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ ******************************************************************************/
 package net.abi.abisEngine.rendering.shader.compiler;
 
-import static org.lwjgl.opengl.GL20.GL_ACTIVE_UNIFORMS;
-import static org.lwjgl.opengl.GL20.glGetProgramiv;
 import static org.lwjgl.opengl.GL20.glIsProgram;
 import static org.lwjgl.opengl.GL43.GL_ACTIVE_RESOURCES;
 import static org.lwjgl.opengl.GL43.GL_ACTIVE_VARIABLES;
@@ -20,7 +33,7 @@ import static org.lwjgl.opengl.GL43.GL_UNIFORM;
 import static org.lwjgl.opengl.GL43.GL_UNIFORM_BLOCK;
 import static org.lwjgl.opengl.GL43.glGetProgramInterfacei;
 import static org.lwjgl.opengl.GL43.glGetProgramResourceName;
-import static org.lwjgl.opengl.GL46.*;
+import static org.lwjgl.opengl.GL43.glGetProgramResourceiv;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -28,7 +41,7 @@ import java.io.FileReader;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL31;
@@ -40,19 +53,16 @@ import net.abi.abisEngine.handlers.file.PathHandle;
 import net.abi.abisEngine.handlers.file.PathType;
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
+import net.abi.abisEngine.rendering.gl.memory.GLBuffer;
+import net.abi.abisEngine.rendering.gl.memory.GLUniform;
+import net.abi.abisEngine.rendering.gl.memory.GLUniformBuffer;
 import net.abi.abisEngine.rendering.shader.AEShader;
 import net.abi.abisEngine.rendering.shader.AEShader.AEShaderType;
 import net.abi.abisEngine.rendering.shader.AEShaderResource;
-import net.abi.abisEngine.rendering.shader.GLSLLayoutQualifier;
-import net.abi.abisEngine.rendering.shader.GLSLUniform;
-import net.abi.abisEngine.rendering.shader.GLSLUniformBlockObject;
-import net.abi.abisEngine.rendering.shader.GLSLUniformBlockObjectData;
-import net.abi.abisEngine.rendering.shader.compiler.Tokens.Keywords;
 import net.abi.abisEngine.rendering.shader.compiler.Tokens.Operators;
-import net.abi.abisEngine.rendering.shader.compiler.Tokens.Qualifiers;
-import net.abi.abisEngine.rendering.shader.parser.AEShaderParserYAML;
-import net.abi.abisEngine.rendering.shader.parser.fileTypes.yaml.AEShaderFileYAML;
-import net.abi.abisEngine.rendering.shader.parser.fileTypes.yaml.AEShaderGLSLProgram;
+import net.abi.abisEngine.rendering.shader.compiler.parser.AEShaderParserYAML;
+import net.abi.abisEngine.rendering.shader.compiler.parser.fileTypes.yaml.AEShaderFileYAML;
+import net.abi.abisEngine.rendering.shader.compiler.parser.fileTypes.yaml.AEShaderGLSLProgram;
 import net.abi.abisEngine.util.cacheing.TwoFactorGenericCache;
 import net.abi.abisEngine.util.exceptions.AERuntimeException;
 import net.abi.abisEngine.util.exceptions.AEShaderCompilerRuntimeException;
@@ -60,7 +70,10 @@ import net.abi.abisEngine.util.exceptions.AEShaderCompilerRuntimeException;
 /**
  * Compiles and creates of Shader objects in AE.
  * 
- * @author abina
+ * NOTE: Uniforms and Uniform Buffers will be added automatically and so will
+ * attributes.
+ * 
+ * @author Abinash Singh
  *
  */
 public class AEShaderCompiler {
@@ -68,7 +81,7 @@ public class AEShaderCompiler {
 	private static Logger logger = LogManager.getLogger(AEShaderCompiler.class);
 	public static final PathHandle DEFAULT_SHADER_ASSET_DIRECTORY_PATH = new PathHandle("res/shaders/",
 			PathType.Internal);
-	private static final String CURRENT_VERSION = "Compiler Version: 1.02-rev6";
+	private static final String CURRENT_VERSION = "Compiler Version: 2.03-rev2";
 	private static TwoFactorGenericCache<String, String, AEShaderGLSLProgram> loadedImports = new TwoFactorGenericCache<String, String, AEShaderGLSLProgram>(
 			String.class, String.class, AEShaderGLSLProgram.class);
 
@@ -89,7 +102,6 @@ public class AEShaderCompiler {
 	 * @return
 	 */
 	public static AEShader compile(AEShaderFileYAML p, PathHandle path) {
-
 		float start = System.nanoTime();
 		out.println("Compiling Shader: '" + p.getAE_SHADER_NAME() + "'");
 		/*
@@ -151,11 +163,13 @@ public class AEShaderCompiler {
 		loadAllImportsInFile(p);
 		for (AEShaderGLSLProgram gp : p.getAE_SHADER_GLSL_PROGRAMS()) {
 			if (AEShaderType.valueOf(gp.getAE_SHADER_GLSL_PROGRAM_TYPE()) != AEShaderType.AE_SHADER_IMPORT) {
+				List<String> callingPrograms = new ArrayList<>();
+				callingPrograms.add(gp.getAE_SHADER_GLSL_PROGRAM_NAME());
 				ShaderSource s = new ShaderSource(gp.getAE_SHADER_GLSL_PROGRAM_NAME(),
 						/*
 						 * process the source.
 						 */
-						processShaderSource(gp.getAE_SHADER_GLSL_PROGRAM_SOURCE(), gp.getAE_SHADER_GLSL_PROGRAM_NAME()),
+						processShaderSource(gp.getAE_SHADER_GLSL_PROGRAM_SOURCE(), callingPrograms),
 						AEShaderType.valueOf(gp.getAE_SHADER_GLSL_PROGRAM_TYPE()));
 				_shaders.add(s);
 				out.println("Shader Name: " + gp.getAE_SHADER_GLSL_PROGRAM_NAME() + "\nShader Type: "
@@ -173,179 +187,164 @@ public class AEShaderCompiler {
 	 * @return
 	 */
 	private static void processUniforms(AEShaderResource _program) {
-		out.println("Processing Shader Uniforms for: " + _program.getName());
+		out.println("Processing Shader Uniforms for: " + _program.getName() + "...");
+
+		// Check if the program is valid. Then look for number of active resources.
 		int program = _program.getProgram();
+
 		if (!glIsProgram(program)) {
 			out.println("name: " + program + " is not a program");
 			return;
 		}
+
+		// Temporary variables for uniform resources.
 		int index, uniSize, uniMatStride, uniArrayStride;
 		String name;
 		int numUniforms;
-		// out.println("Uniforms Info for program: " + program + " {");
+
+		// These are the elements we need to retrieve from
 		int properties[] = { GL_BLOCK_INDEX, GL_TYPE, GL_NAME_LENGTH, GL_LOCATION, GL_ARRAY_STRIDE, GL_MATRIX_STRIDE };
-		int[] values = new int[1];
-		// glGetProgramInterfaceiv(program, GL_UNIFORM, GL_ACTIVE_RESOURCES, values);
-		glGetProgramiv(program, GL_ACTIVE_UNIFORMS, values);
-		numUniforms = values[0];
-		// out.println("Num Uniforms: " + numUniforms + " {");
+
+		// A temporary array in which the native gl methods will fill values into.
+		int[] values;
+		numUniforms = glGetProgramInterfacei(program, GL_UNIFORM, GL_ACTIVE_RESOURCES);
+
+		// Loop over all resources found and IF they are uniforms in the DEFAULT BLOCK
+		// then process, we process blocked uniforms later.
 		for (int i = 0; i < numUniforms; i++) {
+
+			// We now make a new array to be filled with the properties we want.
 			values = new int[properties.length];
+
+			// We send the array into the native method to retrieve the properties.
 			glGetProgramResourceiv(program, GL_UNIFORM, i, properties, null, values);
 			index = values[0]; // GL_BLOCK_INDEX
+
+			// If the blocks index is -1 then it is in the default block so we process it.
 			if (index == -1) {
 				name = glGetProgramResourceName(program, GL_UNIFORM, i);
-				GLSLUniform u = new GLSLUniform();
+				GLUniform u = new GLUniform(name);
+
 				_program.getUniforms().put(name, u);
-				u.location = values[3]; // GL_LOCATION
-				u.type = values[1]; // GL_TYPE
-				u.name = name;
-				// out.println("\tName: " + name);
-				// out.println("\tType: " + AEGLInfo.spGLSLType.get(values[1]));
-				// out.println("\tLocation: " + values[3]);
+
+				u.addAttribute(GL_LOCATION, values[3]); // GL_LOCATION
+				u.addAttribute(GL_TYPE, values[1]); // GL_TYPE
+
 				int auxSize;
 				if (values[4] > 0) { // If the array stride is greater than 0
 					auxSize = values[4] * AEGLInfo.spGLSLTypeSize.get(values[1]);
 				} else {
 					auxSize = AEGLInfo.spGLSLTypeSize.get(values[1]);
 				}
-				u.size = auxSize;
-				u.arrayStride = values[4]; // GL_ARRAY_STRIDE
-				u.matrixStride = values[5]; // GL_MATRIX_STRIDE
-				// out.println("\tSize: " + auxSize);
-				// if (values[4] > 0) {
-				// out.println("\tStride: " + values[4]);
-				// }
+
+				u.setSize(auxSize);
+				u.addAttribute(GL_ARRAY_STRIDE, values[4]); // GL_ARRAY_STRIDE
+				u.addAttribute(GL_MATRIX_STRIDE, values[5]); // GL_MATRIX_STRIDE
+
+				// Add the uniform to the list in the shader program.
+				_program.getUniforms().put(u.name, u);
 			}
-		}
+		} // End Uniform Loop
+
+		// Out source to a different function to add UBOs
+		processUniformBlocks(_program);
+
+		out.print(" Done.");
+	}
+
+	/**
+	 * Query {@link AEShaderResource} 's GLSL program for active or any Uniform
+	 * blocks and adds them to the engine's shader resource. This function can add
+	 * GLSLUniformBlocks to the engine and bind them. This function will auto add
+	 * UBOs, if it finds a uniform that is the same name it will check against the
+	 * one in record or it will use the one found and it will find discrepancies and
+	 * warn. If there isn't one found the function will use the first found in code
+	 * as a reference, and add that to the uniform buffer map and bind it.
+	 * 
+	 * @param _program An active {@link AEShaderResource}, which has been created
+	 *                 and validated.
+	 */
+	private static void processUniformBlocks(AEShaderResource _program) {
+		// Check if the program is valid. Then look for number of active resources.
+		int program = _program.getProgram();
+
+		// Temporary variables for uniform resources.
+		int index, uniSize, uniMatStride, uniArrayStride;
+		String name;
+
+		// A temporary array in which the native GL methods will fill values into.
+		int[] values;
+
+		// Now we account for the Uniform blocks. These are arrays of query properties.
 		int blockQueryProperties[] = { GL_BUFFER_DATA_SIZE, GL_BUFFER_BINDING, GL_BLOCK_INDEX };
-		int _blockQueryProperties[] = { GL_NUM_ACTIVE_VARIABLES };
 		int activeUniformQueryProperties[] = { GL_ACTIVE_VARIABLES };
 		int uniformQueryProperties[] = { GL_NAME_LENGTH, GL_TYPE, GL_LOCATION, GL_OFFSET, GL_ARRAY_STRIDE,
 				GL_MATRIX_STRIDE, GL_IS_ROW_MAJOR };
-		int count = glGetProgramInterfacei(program, GL_UNIFORM_BLOCK, GL_ACTIVE_RESOURCES);
-		// out.println("Uniform Block Objects: " + count + " {");
-		for (int i = 0; i < count; i++) {
-			// out.println("\tBlock: " + i + " {");
+
+		// Number of active uniform blocks.
+		int numUniformBlocks = glGetProgramInterfacei(program, GL_UNIFORM_BLOCK, GL_ACTIVE_RESOURCES);
+
+		// Loop over the uniform blocks found.
+		for (int i = 0; i < numUniformBlocks; i++) {
+			GLUniformBuffer ubo;
+			// Create a new array to fit the block query properties.
 			values = new int[blockQueryProperties.length];
 			glGetProgramResourceiv(program, GL_UNIFORM_BLOCK, i, blockQueryProperties, null, values);
 			name = glGetProgramResourceName(program, GL_UNIFORM_BLOCK, values[2]);
-			// out.println("\t\tName: " + name + "\n\t\tSize: " + values[0]);
-			// out.println("\t\tBlock binding point: " + values[2]);
-			// out.println("\t\tBuffer bound to binding point: " + values[1]);
-			values = new int[_blockQueryProperties.length];
-			glGetProgramResourceiv(program, GL_UNIFORM_BLOCK, i, _blockQueryProperties, null, values);
+
+			// If the buffer has been defined by the engine we can continue, else we can
+			// move to the next buffer.
+			// If we find a UBO already defined we have to compare so we can warn the user.
+			if ((ubo = GLUniformBuffer.GlobalUniformBuffers.get(name)) == null) {
+				GLUniformBuffer.GlobalUniformBuffers.put(name, (ubo = new GLUniformBuffer(name, values[0])));
+			}
+
+			// We check the buffer to see if its bound, if not then bind it to the base that
+			// has been defined. Else, means that it has been bound previously but to a
+			// different base, we then warn the user.
+			// If its bound but not to the same base we warn and continue.
+			if (ubo.getBinding() == GLBuffer.NULL_BOUND_BUFFER_OBJECT) {
+				ubo.bindBufferBase(values[1]);
+			} else {
+				if (ubo.getBinding() != values[1]) {
+					out.print("WARNING!: UBO: " + name
+							+ " is bound to different basses in different programs. It is bound to base: " + values[1]
+							+ " in shader: " + _program.toString() + " but is already bound to base: "
+							+ ubo.getBinding() + " in another previously compiled. Continuing.");
+				}
+			}
+
+			// We now have to receive the amount of active uniform objects inside the block.
+			values = new int[1];
+			glGetProgramResourceiv(program, GL_UNIFORM_BLOCK, i, new int[] { GL_NUM_ACTIVE_VARIABLES }, null, values);
 			int numActiveUnifs = values[0];
+
+			// If they are no active uniforms we just move on to the next block.
 			if (numActiveUnifs == 0) {
 				continue;
 			}
+
+			// Receive the active uniform query properties.
 			values = new int[numActiveUnifs];
 			glGetProgramResourceiv(program, GL_UNIFORM_BLOCK, i, activeUniformQueryProperties, null, values);
 			int[] blockUnifs = values;
-			// out.println("\tMembers of block: " + i + " : {");
+
+			// Now we loop over all the found uniforms inside the block and add them to the
+			// UBO.
 			for (int k = 0; k < numActiveUnifs; k++) {
-				out.println("\t{");
+				// Create a new array to hold the uniform's properties.
 				values = new int[uniformQueryProperties.length];
+
+				// Get the uniform's properties.
 				glGetProgramResourceiv(program, GL_UNIFORM, blockUnifs[k], uniformQueryProperties, null, values);
 				name = glGetProgramResourceName(program, GL_UNIFORM, blockUnifs[k]);
-				// out.println("\t\t" + name + "\n\t\t" + AEGLInfo.spGLSLType.get(values[1]));
-				// out.println("\t\tOffset: " + values[3]);
 				uniSize = AEGLInfo.spGLSLTypeSize.get(values[1]);
 				uniArrayStride = values[4];
 				uniMatStride = values[5];
 				int auxSize;
 				auxSize = AEGLInfo.getUniformByteSize(uniSize, values[1], uniArrayStride, uniMatStride);
-				// out.println("\t\tSize: " + auxSize);
-				// if (uniArrayStride > 0) {
-				// out.println("\t\tArray stride:" + uniArrayStride);
-				// }
-				// if (uniMatStride > 0) {
-				// out.println("\t\tMatrix stride:" + uniMatStride);
-				// }
-				// out.println("\t},");
 			}
-			// out.println("\t}");
 		}
-		// out.println("\t}\n\t}\n}");\
-		out.println("Processing Complete.");
-	}
-
-	/**
-	 * Auto binds attributes in the vertex stage. TODO: Auto detect index overlap.
-	 */
-	@Deprecated
-	private static void processAttributes(AEShaderResource program, ShaderSource gp) {
-		String source = gp.source;
-		int inStartIndex = source.indexOf(Keywords.IN.word), inLocation = 0;
-		while (inStartIndex != -1) {
-			/*
-			 * Check if the Keyword is a token and not part of a word.
-			 */
-			if (!(inStartIndex != 0
-					&& (Character.isWhitespace(source.charAt(inStartIndex - 1))
-							|| Operators.SEMICOLON.op.equals(Character.toString(source.charAt(inStartIndex - 1))))
-					&& Character.isWhitespace(source.charAt(inStartIndex + Keywords.IN.word.length())))) {
-				inStartIndex = source.indexOf(Keywords.IN.word, inStartIndex + Keywords.IN.word.length());
-				continue;
-			}
-			/*
-			 * Beginning index of the in definition.
-			 */
-			int beginAtrribDefinitionIndex = inStartIndex + Keywords.IN.word.length() + 1;
-			int endOfDefinitionIndex = source.indexOf(Operators.SEMICOLON.op, beginAtrribDefinitionIndex);
-			/*
-			 * Now we have to find the layout keyword if there is one to define location or
-			 * use the in file location instead.
-			 */
-			String attribLine = source.substring(beginAtrribDefinitionIndex, endOfDefinitionIndex);
-			// System.out.println(attribLine);
-			String attribName = attribLine.substring(attribLine.indexOf(' ') + 1, attribLine.length());
-			String attribType = attribLine.substring(0, attribLine.indexOf(' '));
-			/*
-			 * If there is a layout qualifier than there will be a empty space then a
-			 * Parenthesis end char right before the in.
-			 */
-			int parenthesisEndIndex = inStartIndex; // = source.lastIndexOf(Operators.PARANTHESIS_END.op, inStartIndex -
-													// 1);
-			while (Character.isWhitespace(source.charAt(parenthesisEndIndex - 1))) {
-				parenthesisEndIndex--;
-			}
-			/*
-			 * We substring the the in and the end parenthesis and then remove white space,
-			 * if they are right next to each other than we know that the layout belongs to
-			 * this attribute.
-			 */
-			String temp = source.substring(parenthesisEndIndex - 1, inStartIndex + 1);
-			temp = cleanLine(temp).replaceAll("\\s+", "");
-			if (Operators.PARANTHESIS_END.op.equals(Character.toString(temp.charAt(0))) && temp.charAt(1) == 'i') {
-				/*
-				 * Qualifier, Value
-				 */
-				Map<Qualifiers, String> qualifierTokens;
-				/*
-				 * Now that we have the end of the parenthesis we can find the layout's index
-				 * which gives us
-				 */
-				int layoutIndex = source.lastIndexOf(Keywords.LAYOUT.word, parenthesisEndIndex);
-				int parenthesisStartIndex = source.indexOf(Operators.PARANTHESIS_BEGIN.op,
-						layoutIndex + Keywords.LAYOUT.word.length());
-				qualifierTokens = extractQualifiers(
-						source.substring(parenthesisStartIndex + 1, parenthesisEndIndex - 1));
-				String v = qualifierTokens.get(Qualifiers.LOCATION);
-				if (v == null) {
-					throw new AEShaderCompilerRuntimeException(
-							"Invalid Layout invocation, no index for location provided. Shader: " + program.getName());
-				}
-				inLocation = Integer.parseInt(v);
-			}
-			bindAttribute(program, inLocation, attribName);
-			/*
-			 * Increment the location for the next cycle.
-			 */
-			inLocation++;
-			inStartIndex = source.indexOf(Keywords.IN.word, endOfDefinitionIndex);
-		}
-
 	}
 
 	private static void bindAttribute(AEShaderResource program, int index, String attribname) {
@@ -356,198 +355,11 @@ public class AEShaderCompiler {
 		GL20.glBindAttribLocation(program, location, attribName);
 	}
 
-	/**
-	 * Extracts qualifiers from the layout keyword. layout(qualifier1,
-	 * qualifier2,...)
-	 * 
-	 * @param layout
-	 * @return
-	 */
-	private static HashMap<Qualifiers, String> extractQualifiers(String layout) {
-		HashMap<Qualifiers, String> qualifierTokens = new HashMap<>();
-		String[] qualifiers = layout.replaceAll("\\s+", "").split(",");
-		for (int i = 0; i < qualifiers.length; i++) {
-			String[] values = qualifiers[i].split("=");
-			Qualifiers q = Qualifiers.valueOf(values[0].toUpperCase());
-			qualifierTokens.put(q, (values.length > 1) ? values[1] : null);
-		}
-		return qualifierTokens;
-	}
-
-	/**
-	 * Automatically binds uniforms found in program source provided.
-	 */
-	@Deprecated
-	private static void processUniforms(AEShaderResource program, ArrayList<ShaderSource> _unProccessedShaders) {
-		out.println("---Processing Uniforms---");
-		for (ShaderSource s : _unProccessedShaders) {
-			float start = System.nanoTime();
-			out.println("----Currently Proccessing Source: " + s.name + "----");
-			Map<String, GLSLStruct> structs = processStructs(s.source);
-			/*
-			 * A list to track all the buffers used in this program, or if they don't exist
-			 * throw an exception.
-			 */
-			ArrayList<GLSLUniformBlockObject> UBOs = new ArrayList<GLSLUniformBlockObject>();
-
-			// Find the start of the uniform keyword.
-			int uniformStartIndex = s.source.indexOf(Keywords.UNIFORM.word);
-
-			// Loop while there is a new index.
-			while (uniformStartIndex != -1) {
-				/*
-				 * Check if the Keyword is a token and not part of a word.
-				 */
-				if (!(uniformStartIndex != 0
-						&& (Character.isWhitespace(s.source.charAt(uniformStartIndex - 1)) || Operators.SEMICOLON.op
-								.equals(Character.toString(s.source.charAt(uniformStartIndex - 1))))
-						&& Character
-								.isWhitespace(s.source.charAt(uniformStartIndex + Keywords.UNIFORM.word.length())))) {
-					uniformStartIndex = s.source.indexOf(Keywords.UNIFORM.word,
-							uniformStartIndex + Keywords.UNIFORM.word.length());
-					continue;
-				}
-
-				int beginUniformDefinitionIndex = uniformStartIndex + Keywords.UNIFORM.word.length();
-				boolean isBlock = false;
-				int lineEnd = beginUniformDefinitionIndex;
-				/*
-				 * Loop while it doesn't reach a semicolon (line end).
-				 * 
-				 * If the uniform is in fact a block, and has correct syntax, then between the
-				 * uniform keyword index and the semicolon index we will find a opening brace.
-				 * if not then it means its not a block.
-				 */
-				while (s.source.charAt(lineEnd + 1) != ';') {
-					lineEnd++;
-					if (s.source.charAt(lineEnd) == '{') {
-						isBlock = true;
-					}
-				}
-
-				/*
-				 * Figure out if this is a uniform we care about or its a uniform def that sets
-				 * defaults for the program.
-				 */
-				// TODO: Use defaults for uniforms that don't have a layout-qualifier.
-				if (s.source.substring(beginUniformDefinitionIndex, lineEnd + 1).isBlank()) {
-					continue;
-				}
-
-				/*
-				 * There has to be a line end before this or it is at the start of the file.
-				 */
-				int lastLineEnd = ((lastLineEnd = s.source.lastIndexOf(Operators.SEMICOLON.op,
-						uniformStartIndex)) == -1) ? 0 : lastLineEnd;
-
-				/*
-				 * Now we find if there is a layout def between the last line end and this one.
-				 */
-				String potentialLayoutDef = s.source.substring(lastLineEnd, uniformStartIndex).trim();
-				/*
-				 * Now we actually look for the specific definition of the layout keyword.
-				 */
-				int layoutIndex = potentialLayoutDef.indexOf(Keywords.LAYOUT.word);
-				/*
-				 * If its there then only one of it should be there so we can just look for (
-				 * and ) and send this to extract qualifiers.
-				 */
-				HashMap<Qualifiers, String> qualifiers = null;
-				if (layoutIndex != -1) {
-					qualifiers = extractQualifiers(
-							potentialLayoutDef.substring(potentialLayoutDef.indexOf(Operators.PARANTHESIS_BEGIN.op) + 1,
-									potentialLayoutDef.indexOf(Operators.PARANTHESIS_END.op)));
-				}
-
-				// If the check for this being a block is false then we treat this as a normal
-				// typed uniform.
-				if (!isBlock) {
-					int beginUniformTypeIndex = beginUniformDefinitionIndex;
-					while (Character.isWhitespace(s.source.charAt(beginUniformTypeIndex + 1))) {
-						beginUniformTypeIndex++;
-					}
-
-					int endUniformTypeIndex = beginUniformTypeIndex + 1;
-					while (!Character.isWhitespace(s.source.charAt(endUniformTypeIndex + 1))
-							&& !(isBlock = Operators.CURLEY_BRACKET_BEGIN.op
-									.equals(Character.toString(s.source.charAt(endUniformTypeIndex + 1))))) {
-						endUniformTypeIndex++;
-					}
-					String uniformType = s.source.substring(beginUniformTypeIndex, endUniformTypeIndex + 1).trim();
-					int beginUniformNameIndex = endUniformTypeIndex;
-					while (Character.isWhitespace(s.source.charAt(beginUniformNameIndex + 1))) {
-						beginUniformNameIndex++;
-					}
-					int endUniformNameIndex = beginUniformNameIndex;
-					while (!Character.isWhitespace(s.source.charAt(endUniformNameIndex + 1))) {
-						endUniformNameIndex++;
-					}
-					String uniformName = s.source.substring(beginUniformNameIndex, endUniformNameIndex).trim();
-					GLSLUniform uniform = new GLSLUniform();
-					uniform.name = uniformName;
-					uniform.type = uniformType;
-					program.getUniforms().put(uniformName, uniform);
-					addUniform(program, uniform, structs);
-				} else { // Else here we treat it as a block, since blocks arc over all of the programs
-							// in the current context we need to handle this separately.
-					String UBOName;
-					int beginNameIndex = beginUniformDefinitionIndex;
-					while (Character.isWhitespace(s.source.charAt(beginNameIndex + 1))) {
-						beginNameIndex++;
-					}
-					int endNameIndex = beginNameIndex + 1;
-					while (!Character.isWhitespace(s.source.charAt(endNameIndex + 1))) {
-						endNameIndex++;
-					}
-					UBOName = s.source.substring(beginNameIndex, endNameIndex + 1).trim();
-					GLSLUniformBlockObjectData ubod = new GLSLUniformBlockObjectData(UBOName);
-					GLSLLayoutQualifier q = new GLSLLayoutQualifier();
-					q.layoutQualifierIDList = qualifiers;
-					ubod.setQualifiers(q);
-					GLSLUniformBlockObject ubo = new GLSLUniformBlockObject(ubod);
-					addUniformBufferObject(program, ubo, structs);
-				}
-				uniformStartIndex = s.source.indexOf(Keywords.UNIFORM.word,
-						uniformStartIndex + Keywords.UNIFORM.word.length());
-			}
-			out.println("----Done Processing Source----");
-		}
-	}
-
-	public static void addUniformBufferObject(AEShaderResource program, GLSLUniformBlockObject buffer,
-			Map<String, GLSLStruct> structs) {
-		int uboIndexInShader = GL31.glGetUniformBlockIndex(program.getProgram(), buffer.getData().getName());
-		program.getUbos().put(uboIndexInShader, buffer);
-		int definedBinding = 0;
-		if (buffer.getData().getQualifiers().layoutQualifierIDList.containsKey(Qualifiers.BINDING)) {
-			definedBinding = Integer
-					.parseInt(buffer.getData().getQualifiers().layoutQualifierIDList.get(Qualifiers.BINDING));
-
-		} else {
-			// TODO: Make a look up table for block bindings specific to the engine, else
-			// throw and exception.
-		}
-
-	}
-
-	public static void addUniform(AEShaderResource program, GLSLUniform uniform, Map<String, GLSLStruct> structs) {
-		boolean addThis = true;
-		GLSLStruct struct = structs.get(uniform.type);
-		if (struct != null) {
-			addThis = false;
-			for (GLSLUniform component : struct.components) {
-				GLSLUniform temp = new GLSLUniform();
-				temp.name = uniform.name + "." + component.name;
-				temp.type = component.type;
-				addUniform(program, temp, structs);
-			}
-		}
-		if (!addThis) {
-			return;
-		}
+	public static void addUniform(AEShaderResource program, GLUniform uniform) {
 		int uniformLocation = 0;
 		// GL20.glGetUniformLocation(program.getProgram(), uniform.name);
-		uniform.qualifiers.layoutQualifierIDList.put(Qualifiers.LOCATION, String.valueOf(uniformLocation));
+		// uniform.qualifiers.layoutQualifierIDList.put(Qualifiers.LOCATION,
+		// String.valueOf(uniformLocation));
 		out.println("Uniform " + "'" + uniform.name + "'" + " At Location: " + uniformLocation);
 		if (uniformLocation == 0xFFFFFFFF) {
 			logger.warning("Error: Could not find uniform: " + "'" + uniform.name + "'"
@@ -557,85 +369,8 @@ public class AEShaderCompiler {
 		program.getUniforms().put(uniform.name, uniform);
 	}
 
-	/*
-	 * Finds and binds UBOS.
-	 */
-//	private static GLSLUniformBlockObject processUBO(GLSLUniformBlockObjectData ub) {
-	// GLSLUniformBlockObject ubo = new GLSLUniformBlockObject();
-
-	// return ubo;
-	// }
-
-	private static Map<String, GLSLStruct> processStructs(String source) {
-		Map<String, GLSLStruct> structs = new HashMap<String, GLSLStruct>();
-		/*
-		 * Find the structs using the keyword.
-		 */
-		int structStartIndex = source.indexOf(Keywords.STRUCT.word);
-		while (structStartIndex != -1) {
-			/*
-			 * Check if the Keyword is a token and not part of a word.
-			 */
-			if (!(structStartIndex != 0
-					&& (Character.isWhitespace(source.charAt(structStartIndex - 1))
-							|| Operators.SEMICOLON.op.equals(Character.toString(source.charAt(structStartIndex - 1))))
-					&& Character.isWhitespace(source.charAt(structStartIndex + Keywords.STRUCT.word.length())))) {
-				structStartIndex = source.indexOf(Keywords.STRUCT.word,
-						structStartIndex + Keywords.STRUCT.word.length());
-				continue;
-			}
-
-			int beginStructNameDefinitionIndex = structStartIndex + Keywords.STRUCT.word.length() + 1;
-			int structBracketBeginIndex = source.indexOf(Operators.CURLEY_BRACKET_BEGIN.op,
-					beginStructNameDefinitionIndex);
-			int structBracketEndIndex = source.indexOf(Operators.CURLEY_BRACKET_END.op, structBracketBeginIndex);
-
-			String structName = source.substring(beginStructNameDefinitionIndex, structBracketBeginIndex).trim();
-			// Semi colon at the end of the struct component.
-			int structComponentEndIndex = source.indexOf(Operators.SEMICOLON.op, structBracketBeginIndex);
-			GLSLStruct result = new GLSLStruct();
-			result.components = new ArrayList<GLSLUniform>();
-			while (structComponentEndIndex != -1 && structComponentEndIndex < structBracketEndIndex) {
-				int structComponentNameEnd = structComponentEndIndex + 1;
-				while (Character.isWhitespace(source.charAt(structComponentNameEnd - 1)) || Operators.SEMICOLON.op
-						.equals(Character.toString(source.charAt(structComponentNameEnd - 1)))) {
-					structComponentNameEnd--;
-				}
-
-				int structComponentNameStart = structComponentEndIndex;
-				while (!Character.isWhitespace(source.charAt(structComponentNameStart - 1))) {
-					structComponentNameStart--; // Back up a character.
-				}
-
-				int structComponentTypeEnd = structComponentNameStart;
-				while (Character.isWhitespace(source.charAt(structComponentTypeEnd - 1))) {
-					structComponentTypeEnd--;
-				}
-
-				int structComponentTypeStart = structComponentTypeEnd;
-				while (!Character.isWhitespace(source.charAt(structComponentTypeStart - 1))) {
-					structComponentTypeStart--; // Back up a character.
-				}
-
-				String componentName = source.substring(structComponentNameStart, structComponentEndIndex);
-				String componentType = source.substring(structComponentTypeStart, structComponentTypeEnd);
-
-				GLSLUniform structComponent = new GLSLUniform();
-				structComponent.name = componentName;
-				structComponent.type = componentType;
-				result.components.add(structComponent);
-				structComponentEndIndex = source.indexOf(Operators.SEMICOLON.op, structComponentEndIndex + 1);
-			}
-			result.name = structName;
-			structs.put(structName, result);
-			structStartIndex = source.indexOf(Keywords.STRUCT.word, structStartIndex + Keywords.STRUCT.word
-					.length()); /* This is to prevent it from looping over the same uniform keyword. */
-		}
-		return structs;
-	}
-
 	public static class GLSLStruct {
-		ArrayList<GLSLUniform> components;
+		ArrayList<GLUniform> components;
 		String name;
 	}
 
@@ -726,7 +461,7 @@ public class AEShaderCompiler {
 		}
 	}
 
-	private static String processShaderSource(String gp, String callingProgram) {
+	private static String processShaderSource(String gp, List<String> callingPrograms) {
 		String[] lines = gp.split("\\r?\\n");
 		StringBuilder proccessedSource = new StringBuilder();
 		for (int i = 0; i < lines.length; i++) {
@@ -735,9 +470,9 @@ public class AEShaderCompiler {
 			if (line.isEmpty() || line.isBlank())
 				continue;
 			if (line.startsWith(Tokens.AE_IMPORT_DIRECTIVE)) {
-				proccessedSource.append(processImportLine(line, callingProgram));
+				proccessedSource.append(processImportLine(line, callingPrograms));
 			} else if (line.startsWith(Tokens.AE_INCLUDE_DIRECTIVE)) {
-				proccessedSource.append(processIncludeLine(line, callingProgram));
+				proccessedSource.append(processIncludeLine(line, callingPrograms));
 			} else {
 				if (!line.isEmpty() && !line.isBlank()) {
 					proccessedSource.append(line).append("\n");
@@ -750,17 +485,19 @@ public class AEShaderCompiler {
 	/**
 	 * 
 	 * @param line
-	 * @param callingProgram
+	 * @param callingPrograms
 	 * @return
 	 */
-	private static String processIncludeLine(String line, String callingProgram) {
+	private static String processIncludeLine(String line, List<String> callingPrograms) {
 		/* Optimize the loading process. */
 		String file;
 		StringBuilder source = new StringBuilder();
 		file = line.replace(Tokens.AE_INCLUDE_DIRECTIVE, "").trim().replaceAll("\"", "");
-		if (file.equals(callingProgram)) {
+		if (callingPrograms.contains(file)) {
 			throw new AEShaderCompilerRuntimeException(
-					"Recursive Overflow Detected, This include is calling it self. Program: " + callingProgram);
+					"Recursive Overflow Detected, This include is calling it self. Program: " + callingPrograms);
+		} else {
+			callingPrograms.add(file);
 		}
 		File f = DEFAULT_SHADER_ASSET_DIRECTORY_PATH.resolveChild(file).getFileInstance();
 		BufferedReader shaderReader = null;
@@ -776,11 +513,11 @@ public class AEShaderCompiler {
 			logger.info("Exiting...");
 			throw new AEShaderCompilerRuntimeException("Unable to parse shader.", e);
 		}
-		out.println("Including file (" + file + ") in shader: " + callingProgram);
-		return processShaderSource(source.toString(), file);
+		out.println("Including file (" + file + ") in shader: " + callingPrograms);
+		return processShaderSource(source.toString(), callingPrograms);
 	}
 
-	private static String processImportLine(String line, String callingProgram) {
+	private static String processImportLine(String line, List<String> callingPrograms) {
 		StringBuilder loadedImport = new StringBuilder();
 		/*
 		 * Now we need to separate out the import file and programs.
@@ -834,16 +571,18 @@ public class AEShaderCompiler {
 			 * Prevents Recursive overflows, meaning that the same import can't call it self
 			 * ever.
 			 */
-			if (program.equals(callingProgram)) {
+			if (callingPrograms.contains(program)) {
 				throw new AEShaderCompilerRuntimeException(
-						"Recursive Overflow Detected, This import is calling it self. Program: " + callingProgram);
+						"Recursive Overflow Detected, This import is calling it self. Program: " + program);
+			} else {
+				callingPrograms.add(program);
 			}
-			loadedImport.append(processImport(program, importFile));
+			loadedImport.append(processImport(program, importFile, callingPrograms));
 		}
 		return loadedImport.toString();
 	}
 
-	private static String processImport(String programName, String fileName) {
+	private static String processImport(String programName, String fileName, List<String> callingPrograms) {
 		StringBuilder program = new StringBuilder();
 		AEShaderGLSLProgram gp = null;
 		/*
@@ -877,7 +616,8 @@ public class AEShaderCompiler {
 		/*
 		 * Otherwise we recursively process it and append it to the original source.
 		 */
-		program.append(processShaderSource(gp.getAE_SHADER_GLSL_PROGRAM_SOURCE(), gp.getAE_SHADER_GLSL_PROGRAM_NAME()));
+		callingPrograms.add(gp.getAE_SHADER_GLSL_PROGRAM_NAME());
+		program.append(processShaderSource(gp.getAE_SHADER_GLSL_PROGRAM_SOURCE(), callingPrograms));
 		return program.toString();
 	}
 

@@ -1,3 +1,18 @@
+/*******************************************************************************
+ * Copyright 2020 Abinash Singh | ABI INC.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License.  You may obtain a copy
+ * of the License at
+ * 
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ ******************************************************************************/
 package tests.renderTest.windows;
 
 import net.abi.abisEngine.rendering.pipeline.RenderingEngine;
@@ -9,13 +24,13 @@ public class MainGame extends GLFWWindow {
 
 	public MainGame() {
 		super();
-		super.properties.GLFWWindowProperties.setName("EngineSplash");
-		super.properties.GLFWWindowProperties.setTitle("AEngine");
-		super.properties.GLFWWindowProperties.setSc_height(720);
-		super.properties.GLFWWindowProperties.setSc_width(1270);
-		super.properties.GLFWWindowProperties.setFullscreen(false);
-		super.properties.GLFWWindowProperties.setvSync(GLFW_FALSE);
-		super.properties.GLFWWindowProperties.setRenderEngine(new RenderingEngine());
+		super.properties.name = "EngineSplash";
+		super.properties.title = "AEngine";
+		super.properties.sc_height = 720;
+		super.properties.sc_width = 1270;
+		super.properties.fullscreen = false;
+		super.properties.vSync = GLFW_FALSE;
+		super.properties.renderEngine = new RenderingEngine();
 	}
 
 	@Override
@@ -34,8 +49,8 @@ public class MainGame extends GLFWWindow {
 
 	@Override
 	protected void post_init() {
-		//super.centerWindow();
-		//super.showWindow();
+		// super.centerWindow();
+		// super.showWindow();
 	}
 
 }

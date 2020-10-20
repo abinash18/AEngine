@@ -1,3 +1,18 @@
+/*******************************************************************************
+ * Copyright 2020 Abinash Singh | ABI INC.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License.  You may obtain a copy
+ * of the License at
+ * 
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ ******************************************************************************/
 package net.abi.abisEngine.rendering.shader;
 
 import java.util.HashMap;
@@ -10,6 +25,8 @@ import net.abi.abisEngine.handlers.file.PathHandle;
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
 import net.abi.abisEngine.rendering.asset.AssetI;
+import net.abi.abisEngine.rendering.gl.memory.GLUniform;
+import net.abi.abisEngine.rendering.gl.memory.GLUniformBuffer;
 import net.abi.abisEngine.rendering.shader.compiler.AEShaderCompiler.ShaderSource;
 import net.abi.abisEngine.rendering.window.GLFWWindowManager;
 
@@ -19,14 +36,14 @@ public class AEShaderResource implements AssetI {
 	private String name;
 	private PathHandle path;
 	private HashMap<String, ShaderSource> subPrograms;
-	private Map<String, GLSLUniform> uniforms;
-	private Map<Integer, GLSLUniformBlockObject> ubos;
+	private Map<String, GLUniform> uniforms;
+	private Map<Integer, GLUniformBuffer> ubos;
 
 	public AEShaderResource(String name, PathHandle pathToShaderDirectory) {
 		this.path = pathToShaderDirectory;
 		this.subPrograms = new HashMap<String, ShaderSource>();
-		this.uniforms = new HashMap<String, GLSLUniform>();
-		this.ubos = new HashMap<Integer, GLSLUniformBlockObject>();
+		this.uniforms = new HashMap<String, GLUniform>();
+		this.ubos = new HashMap<Integer, GLUniformBuffer>();
 		this.refCount = 1;
 		this.name = name;
 	}
@@ -41,11 +58,11 @@ public class AEShaderResource implements AssetI {
 		}
 	}
 
-	public Map<Integer, GLSLUniformBlockObject> getUbos() {
+	public Map<Integer, GLUniformBuffer> getUBOS() {
 		return ubos;
 	}
 
-	public void setUbos(Map<Integer, GLSLUniformBlockObject> ubos) {
+	public void setUbos(Map<Integer, GLUniformBuffer> ubos) {
 		this.ubos = ubos;
 	}
 
@@ -69,11 +86,11 @@ public class AEShaderResource implements AssetI {
 		this.subPrograms = subPrograms;
 	}
 
-	public Map<String, GLSLUniform> getUniforms() {
+	public Map<String, GLUniform> getUniforms() {
 		return uniforms;
 	}
 
-	public void setUniforms(Map<String, GLSLUniform> uniforms) {
+	public void setUniforms(Map<String, GLUniform> uniforms) {
 		this.uniforms = uniforms;
 	}
 

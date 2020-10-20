@@ -1,9 +1,0 @@
-digraph "net.abi.abisEngine.util.Color"
-{
- // LATEX_PDF_SIZE
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  Node1 [label="net.abi.abisEngine.util.\lColor",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip=" "];
-  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node2 [label="net.abi.abisEngine.math.\lVector3f",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/de5/classnet_1_1abi_1_1abis_engine_1_1math_1_1_vector3f.html",tooltip=" "];
-}

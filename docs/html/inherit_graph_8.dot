@@ -1,8 +1,0 @@
-digraph "Graphical Class Hierarchy"
-{
- // LATEX_PDF_SIZE
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  rankdir="LR";
-  Node0 [label="net.abi.abisEngine.handlers.file.\lPathResolveI",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/d39/interfacenet_1_1abi_1_1abis_engine_1_1handlers_1_1file_1_1_path_resolve_i.html",tooltip=" "];
-}

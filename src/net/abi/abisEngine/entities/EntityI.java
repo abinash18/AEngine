@@ -5,7 +5,7 @@ package net.abi.abisEngine.entities;
 
 import net.abi.abisEngine.math.Transform;
 import net.abi.abisEngine.rendering.pipeline.RenderingEngine;
-import net.abi.abisEngine.rendering.shader.Shader;
+import net.abi.abisEngine.rendering.shader.legacy.Shader;
 
 /**
  * @author abinash Basic Way Of Communicating With An Game Entity

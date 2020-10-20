@@ -1,3 +1,18 @@
+#-------------------------------------------------------------------------------
+# Copyright 2020 Abinash Singh | ABI INC.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not
+# use this file except in compliance with the License.  You may obtain a copy
+# of the License at
+# 
+#   http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+# License for the specific language governing permissions and limitations under
+# the License.
+#-------------------------------------------------------------------------------
 1. LICENSE AGREEMENT FOR NVIDIA SOFTWARE DEVELOPMENT KITS
 ---------------------------------------------------------
 
@@ -11,9 +26,9 @@ COPYING OR USING THE LICENSED SOFTWARE:
 -------------------------------------------------------
 
 This license agreement, including exhibits attached
-("Agreement”) is a legal agreement between you and NVIDIA
+("Agreement�?) is a legal agreement between you and NVIDIA
 Corporation ("NVIDIA") and governs your use of a NVIDIA
-software development kit (“SDK”).
+software development kit (“SDK�?).
 
 Each SDK has its own set of software and materials, but here
 is a description of the types of items that may be included in
@@ -29,7 +44,7 @@ of majority in the country in which the SDK is used.
 If you are entering into this Agreement on behalf of a company
 or other legal entity, you represent that you have the legal
 authority to bind the entity to this Agreement, in which case
-“you” will mean the entity you represent.
+“you�? will mean the entity you represent.
 
 If you don’t have the required age or authority to accept
 this Agreement, or if you don’t accept all the terms and
@@ -77,7 +92,7 @@ the distribution grant:
   3. The following notice shall be included in modifications
     and derivative works of sample source code distributed:
     “This software contains source code provided by NVIDIA
-    Corporation.”
+    Corporation.�?
 
   4. Unless a developer tool is identified in this Agreement
     as distributable, it is delivered for your internal use
@@ -260,8 +275,8 @@ SDK:
 
 1.4. No Warranties
 
-THE SDK IS PROVIDED BY NVIDIA “AS IS” AND “WITH ALL
-FAULTS.” TO THE MAXIMUM EXTENT PERMITTED BY LAW, NVIDIA AND
+THE SDK IS PROVIDED BY NVIDIA “AS IS�? AND “WITH ALL
+FAULTS.�? TO THE MAXIMUM EXTENT PERMITTED BY LAW, NVIDIA AND
 ITS AFFILIATES EXPRESSLY DISCLAIM ALL WARRANTIES OF ANY KIND
 OR NATURE, WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING,
 BUT NOT LIMITED TO, ANY WARRANTIES OF MERCHANTABILITY, FITNESS
@@ -375,9 +390,9 @@ Each party acknowledges and agrees that the other is an
 independent contractor in the performance of this Agreement.
 
 The SDK has been developed entirely at private expense and is
-“commercial items” consisting of “commercial computer
-software” and “commercial computer software
-documentation” provided with RESTRICTED RIGHTS. Use,
+“commercial items�? consisting of “commercial computer
+software�? and “commercial computer software
+documentation�? provided with RESTRICTED RIGHTS. Use,
 duplication or disclosure by the U.S. Government or a U.S.
 Government subcontractor is subject to the restrictions in
 this Agreement pursuant to DFARS 227.7202-3(a) or as set forth
@@ -425,26 +440,26 @@ in this SLA, shall have the meanings set forth below:
 
   1.
 
-    “Affiliate” means any legal entity that Owns, is Owned
-    by, or is commonly Owned with a party. “Own” means
+    “Affiliate�? means any legal entity that Owns, is Owned
+    by, or is commonly Owned with a party. “Own�? means
     having more than 50% ownership or the right to direct the
     management of the entity.
 
   2.
 
-    “AGREEMENT” means this SLA and all associated
+    “AGREEMENT�? means this SLA and all associated
     Supplements entered by the parties referencing this SLA.
 
   3.
 
-    “Authorized Users” means your Enterprise individual
+    “Authorized Users�? means your Enterprise individual
     employees and any of your Enterprise’s Contractors,
     subject to the terms of the “Enterprise and Contractors
-    Usage” section.
+    Usage�? section.
 
   4.
 
-    “Confidential Information” means the Licensed Software
+    “Confidential Information�? means the Licensed Software
     (unless made publicly available by NVIDIA without
     confidentiality obligations), and any NVIDIA business,
     marketing, pricing, research and development, know-how,
@@ -468,13 +483,13 @@ in this SLA, shall have the meanings set forth below:
 
   5.
 
-    “Contractor” means an individual who works primarily
+    “Contractor�? means an individual who works primarily
     for your Enterprise on a contractor basis from your secure
     network.
 
   6.
 
-    “Documentation” means the NVIDIA documentation made
+    “Documentation�? means the NVIDIA documentation made
     available for use with the Software, including (without
     limitation) user manuals, datasheets, operations
     instructions, installation guides, release notes and other
@@ -482,7 +497,7 @@ in this SLA, shall have the meanings set forth below:
 
   7.
 
-    “Enterprise” means you or any company or legal entity
+    “Enterprise�? means you or any company or legal entity
     for which you accepted the terms of this SLA, and their
     subsidiaries of which your company or legal entity owns
     more than fifty percent (50%) of the issued and
@@ -490,14 +505,14 @@ in this SLA, shall have the meanings set forth below:
 
   8.
 
-    “Feedback” means any and all suggestions, feature
+    “Feedback�? means any and all suggestions, feature
     requests, comments or other feedback regarding the
     Licensed Software, including possible enhancements or
     modifications thereto.
 
   9.
 
-    “Intellectual Property Rights” means all patent,
+    “Intellectual Property Rights�? means all patent,
     copyright, trademark, trade secret, trade dress, trade
     names, utility models, mask work, moral rights, rights of
     attribution or integrity service marks, master recording
@@ -515,12 +530,12 @@ in this SLA, shall have the meanings set forth below:
 
   10.
 
-    “Licensed Software” means Software, Documentation and
+    “Licensed Software�? means Software, Documentation and
     all modifications owned by NVIDIA.
 
   11.
 
-    “Open Source License” includes, without limitation, a
+    “Open Source License�? includes, without limitation, a
     software license that requires as a condition of use,
     modification, and/or distribution of such software that
     the Software be (i) disclosed or distributed in source
@@ -530,7 +545,7 @@ in this SLA, shall have the meanings set forth below:
 
   12.
 
-    “Order” means a purchase order issued by you, a signed
+    “Order�? means a purchase order issued by you, a signed
     purchase agreement with you, or other ordering document
     issued by you to NVIDIA or a NVIDIA authorized reseller
     (including any on-line acceptance process) that references
@@ -538,13 +553,13 @@ in this SLA, shall have the meanings set forth below:
 
   13.
 
-    “Software” means the NVIDIA software programs licensed
+    “Software�? means the NVIDIA software programs licensed
     to you under the AGREEMENT including, without limitation,
     libraries, sample code, utility programs and programming
     code.
 
   14.
 
-    “Supplement” means the additional terms and conditions
+    “Supplement�? means the additional terms and conditions
     beyond those stated in this SLA that apply to certain
     Licensed Software licensed hereunder.

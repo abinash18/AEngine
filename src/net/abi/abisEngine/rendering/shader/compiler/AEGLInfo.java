@@ -1,3 +1,18 @@
+/*******************************************************************************
+ * Copyright 2020 Abinash Singh | ABI INC.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License.  You may obtain a copy
+ * of the License at
+ * 
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ ******************************************************************************/
 package net.abi.abisEngine.rendering.shader.compiler;
 
 import static org.lwjgl.opengl.GL11.glGetInteger;
@@ -46,6 +61,7 @@ import static org.lwjgl.opengl.GL43.GL_ARRAY_STRIDE;
 import static org.lwjgl.opengl.GL43.GL_BLOCK_INDEX;
 import static org.lwjgl.opengl.GL43.GL_BUFFER_BINDING;
 import static org.lwjgl.opengl.GL43.GL_BUFFER_DATA_SIZE;
+import static org.lwjgl.opengl.GL43.GL_IS_ROW_MAJOR;
 import static org.lwjgl.opengl.GL43.GL_LOCATION;
 import static org.lwjgl.opengl.GL43.GL_MATRIX_STRIDE;
 import static org.lwjgl.opengl.GL43.GL_NAME_LENGTH;
@@ -57,7 +73,7 @@ import static org.lwjgl.opengl.GL43.GL_UNIFORM_BLOCK;
 import static org.lwjgl.opengl.GL43.glGetProgramInterfacei;
 import static org.lwjgl.opengl.GL43.glGetProgramResourceName;
 import static org.lwjgl.opengl.GL43.glGetProgramResourceiv;
-import static org.lwjgl.opengl.GL46.*;
+
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -331,6 +347,19 @@ public class AEGLInfo {
 		spBufferBinding.put(GL46.GL_COPY_WRITE_BUFFER_BINDING, "GL_COPY_WRITE_BUFFER");
 		spBufferBinding.put(GL46.GL_DRAW_INDIRECT_BUFFER_BINDING, "GL_DRAW_INDIRECT_BUFFER");
 		spBufferBinding.put(GL46.GL_ATOMIC_COUNTER_BUFFER_BINDING, "GL_ATOMIC_COUNTER_BUFFER");
+
+		spBufferBinding.put(GL46.GL_ARRAY_BUFFER, "GL_ARRAY_BUFFER");
+		spBufferBinding.put(GL46.GL_ELEMENT_ARRAY_BUFFER, "GL_ELEMENT_ARRAY_BUFFER");
+		spBufferBinding.put(GL46.GL_PIXEL_PACK_BUFFER, "GL_PIXEL_PACK_BUFFER");
+		spBufferBinding.put(GL46.GL_PIXEL_UNPACK_BUFFER, "GL_PIXEL_UNPACK_BUFFER");
+		spBufferBinding.put(GL46.GL_TRANSFORM_FEEDBACK_BUFFER, "GL_TRANSFORM_FEEDBACK_BUFFER");
+		spBufferBinding.put(GL46.GL_UNIFORM_BUFFER, "GL_UNIFORM_BUFFER");
+
+		spBufferBinding.put(GL46.GL_TEXTURE_BUFFER, "GL_TEXTURE_BUFFER");
+		spBufferBinding.put(GL46.GL_COPY_READ_BUFFER, "GL_COPY_READ_BUFFER");
+		spBufferBinding.put(GL46.GL_COPY_WRITE_BUFFER, "GL_COPY_WRITE_BUFFER");
+		spBufferBinding.put(GL46.GL_DRAW_INDIRECT_BUFFER, "GL_DRAW_INDIRECT_BUFFER");
+		spBufferBinding.put(GL46.GL_ATOMIC_COUNTER_BUFFER, "GL_ATOMIC_COUNTER_BUFFER");
 
 		spBufferBound.put(GL46.GL_ARRAY_BUFFER_BINDING, GL46.GL_ARRAY_BUFFER);
 		spBufferBound.put(GL46.GL_ELEMENT_ARRAY_BUFFER_BINDING, GL46.GL_ELEMENT_ARRAY_BUFFER);
