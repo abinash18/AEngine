@@ -30,8 +30,8 @@ public class TestGame extends Scene {
 
 	public void init() {
 		super.init();
-		//PathHandle p = AEShader.DEFAULT_SHADER_ASSET_DIRECTORY_PATH.resolveChild("wireframe.ae-shader");
-		//AEShaderCompiler.compile(AEShaderParserYAML.parse(p), p, true);
+		PathHandle p = AEShader.DEFAULT_SHADER_ASSET_DIRECTORY_PATH.resolveChild("wireframe.ae-shader");
+		AEShaderCompiler.compile(AEShaderParserYAML.parse(p), p);
 	}
 
 	float temp = 0.0f;

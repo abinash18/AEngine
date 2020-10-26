@@ -286,4 +286,18 @@ public class GLBuffer implements Expendable {
 		return usage;
 	}
 
+	/**
+	 * @param size the size to set
+	 */
+	public void setSize(int size) {
+		this.size = size;
+	}
+
+	@Override
+	public String toString() {
+		String s = "GLBuffer Size: " + size + " Type: " + AEGLInfo.spBufferBinding.get(type) + " Usage: "
+				+ AEGLInfo.spBufferUsage.get(usage) + " ID: " + bufferID;
+		return s;
+	}
+
 }

@@ -18,6 +18,10 @@ package net.abi.abisEngine.rendering.gl.memory;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.lwjgl.opengl.GL45;
+
+import net.abi.abisEngine.rendering.shader.compiler.AEGLInfo;
+
 /**
  * @author Abinash Singh
  *
@@ -34,7 +38,7 @@ public class GLUniform {
 	 * will be non 0, and if this variable is a Matrix then the Matrix Stride will
 	 * be non 0.
 	 */
-	public int size = 0;
+	public int size = -1;
 
 	/**
 	 * The attributes of this uniform such as its location, offset and others.
@@ -45,6 +49,7 @@ public class GLUniform {
 	 * Initializes the Uniform to the name.
 	 */
 	public GLUniform(String name) {
+		this.name = name;
 		attributes = new HashMap<>();
 	}
 
@@ -52,40 +57,29 @@ public class GLUniform {
 		attributes.put(attrib, value);
 	}
 
-	public void getAttribute(int attrib, int value) {
-		attributes.get(attrib);
+	public int getAttribute(int attrib) {
+		return attributes.get(attrib);
 	}
 
 	public void setSize(int size) {
 		this.size = size;
 	}
 
-//	/**
-//	 * The raw GLSL type integer
-//	 */
-//	public int type = -1;
-//
-//	/**
-//	 * The location this uniform is bound in on the shader program if -1 then not
-//	 * bound.
-//	 */
-//	public int location = -1;
-//
+	public int getSize() {
+		return size;
+	}
 
-//
-//	/**
-//	 * If the current uniform is a Mat then this will be its stride otherwise it is
-//	 * 0 by default.
-//	 */
-//	public int matrixStride = 0;
-//
-//	/**
-//	 * If the current uniform is a Array then this will be its stride otherwise it
-//	 * is 0.
-//	 */
-//	public int arrayStride = 0;
-//	/**
-//	 * 
-//	 */
-//	public int offset = 0;
+	@Override
+	public String toString() {
+		StringBuilder s = new StringBuilder();
+		s.append("\nUniform Name: " + name + " Size: " + size + " \n");
+		attributes.forEach((k, v) -> {
+			if (k == GL45.GL_TYPE) {
+				s.append("| " + AEGLInfo.spInternalF.get(k) + " : " + AEGLInfo.glslTypeToWord.get(v) + " |");
+			} else {
+				s.append("| " + AEGLInfo.spInternalF.get(k) + " : " + v + " |");
+			}
+		});
+		return s.toString();// + super.toString();
+	}
 }

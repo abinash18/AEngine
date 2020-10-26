@@ -1,4 +1,4 @@
-AE_SHADER_NAME: "!!AE_SHADER_FILE_NAME"
+AE_SHADER_NAME: "Wireframe"
 AE_SHADER_DESC: "Shader for Wireframe."
 #These properties are used to prepare the render.
 AE_PREP_PROPERTIES:

@@ -59,176 +59,6 @@ public class Mesh implements AssetI {
 	private static final int VAO_POSITIONS_INDEX = 0, VAO_TEXTURE_COORDINATE_INDEX = 1, VAO_NORMAL_INDEX = 2,
 			VAO_TANGENT_INDEX = 3, VAO_INDICES_INDEX = 4, VAO_BC_INDEX = 1, NUM_BUFFERS = 5;
 
-	/**
-	 * Contains the VAOID ID and VBO Buffer ID's for the mesh.
-	 * 
-	 * @author abinash
-	 *
-	 */
-	class VAO {
-		/**
-		 * Just so I can recognize them while I am Debugging.
-		 */
-		String name = "randomVAO: ";
-		/**
-		 * Mesh Resource ID.
-		 */
-		private int VAOID;
-
-		/**
-		 * Array Containing the IDs for all the opengl buffers.
-		 */
-		private int[] VAOBuffers;
-
-		boolean bound = false;
-
-		public VAO() {
-
-		}
-
-		public VAO(String name) {
-			this.name = name;
-		}
-
-		public void bind() {
-			if (bound)
-				return;
-			/* Bind the VAOID to create buffers */
-			GL30.glBindVertexArray(VAOID);
-		}
-
-		public VAO initVAO(int numBuffers) {
-
-			VAOBuffers = new int[numBuffers];
-
-			/* Generate a VAOID to use. */
-			VAOID = GL30.glGenVertexArrays();
-
-			/* Bind the VAOID to create buffers */
-			GL30.glBindVertexArray(VAOID);
-
-			/* Generate VBOs */
-			GL30.glGenBuffers(VAOBuffers);
-
-			bound = true;
-			return this;
-		}
-
-		public void unbind() {
-			GL30.glBindVertexArray(0);
-			bound = false;
-		}
-
-	}
-
-	/**
-	 * Contains the Model Data and the name and Materials that are used on this
-	 * mesh.
-	 * 
-	 * @author abinash
-	 *
-	 */
-	class MeshData {
-		Model model;
-		String meshName;
-		Material material;
-
-		int refCount = 1;
-
-		/**
-		 * @param model
-		 * @param meshName
-		 * @param material
-		 */
-		public MeshData(Model model, String meshName, Material material) {
-			this.model = model;
-			this.meshName = meshName;
-			this.material = material;
-		}
-
-	}
-
-	/**
-	 * Contains the reference count to the mesh along with the size of the indices
-	 * and VAOID and MeshData.
-	 * 
-	 * @author abinash
-	 *
-	 */
-	class MeshResource implements AssetI {
-		String name;
-		int size, refCount;
-		HashMap<String, VAO> vaos;
-		MeshData meshData;
-
-		boolean initialized = false;
-
-		/**
-		 * @param size
-		 * @param meshData
-		 */
-		public MeshResource(String name, MeshData meshData) {
-			this.name = name;
-			this.size = meshData.model.getIndices().size() - 1;
-			this.refCount = 1;
-			this.meshData = meshData;
-			this.vaos = new HashMap<String, VAO>();
-		}
-
-		VAO addVAO(String name) {
-			VAO _vao = new VAO(name);
-
-			this.vaos.put(name, _vao);
-
-			return _vao;
-		}
-
-		VAO getVAO(String name) {
-			return vaos.get(name);
-		}
-
-		public void incRef() {
-			refCount++;
-		}
-
-		public void decRef() {
-			refCount--;
-		}
-
-		public int decAndGetRef() {
-			refCount--;
-			return refCount;
-		}
-
-		int getAndDecRef() {
-			int _refs = refCount;
-			refCount--;
-			return _refs;
-		}
-
-		public int incAndGetRef() {
-			refCount++;
-			return refCount;
-		}
-
-		int getAndIncRef() {
-			int _refs = refCount;
-			refCount++;
-			return _refs;
-		}
-
-		@Override
-		public void dispose() {
-
-		}
-
-		@Override
-		public int getRefs() {
-			return refCount;
-		}
-
-	}
-
 	// private static HashMap<Long, HashMap<String, MeshResource>> loadedModels =
 	// new HashMap<Long, HashMap<String, MeshResource>>();
 
@@ -236,7 +66,7 @@ public class Mesh implements AssetI {
 			Long.class, String.class, MeshResource.class);
 
 	/**
-	 * The data is managed seperatly from the MeshResources since there can be
+	 * The data is managed separately from the MeshResources since there can be
 	 * multiple GLContexts
 	 */
 	// private static HashMap<String, MeshData> loadedModelData = new
@@ -379,7 +209,7 @@ public class Mesh implements AssetI {
 			return this;
 		}
 
-		VAO _v = meshResource.addVAO("vaoOne").initVAO(NUM_BUFFERS);
+		VertexArrayObject _v = meshResource.addVAO("vaoOne").initVAO(NUM_BUFFERS);
 
 		/* Positions */
 		bindBuffer(_v, GL15.GL_ARRAY_BUFFER, VAO_POSITIONS_INDEX, VAO_POSITIONS_INDEX, 3,
@@ -398,7 +228,7 @@ public class Mesh implements AssetI {
 				Util.createFlippedBuffer(meshResource.meshData.model.getTangents()), draw_usage);
 
 		/* Indices */
-		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, _v.VAOBuffers[VAO_INDICES_INDEX]);
+		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, _v.getVAOBuffers()[VAO_INDICES_INDEX]);
 		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, Util.createIntBuffer(meshResource.meshData.model.getIndices()),
 				draw_usage);
 
@@ -408,8 +238,8 @@ public class Mesh implements AssetI {
 		return this;
 	}
 
-	private void bindBuffer(VAO _v, int type, int index, int pos, int numValues, FloatBuffer data, int draw_usage) {
-		GL15.glBindBuffer(type, _v.VAOBuffers[index]);
+	private void bindBuffer(VertexArrayObject _v, int type, int index, int pos, int numValues, FloatBuffer data, int draw_usage) {
+		GL15.glBindBuffer(type, _v.getVAOBuffers()[index]);
 		GL15.glBufferData(type, data, draw_usage);
 		GL20.glVertexAttribPointer(pos, numValues, GL11.GL_FLOAT, false, 0, 0);
 		// GL15.glBindBuffer(type, 0);
@@ -421,30 +251,22 @@ public class Mesh implements AssetI {
 		// glDeleteVertexArrays(v.VAO);
 		// });
 
-		for (Iterator<Map.Entry<String, VAO>> iterator = meshResource.vaos.entrySet().iterator(); iterator.hasNext();) {
-			Map.Entry<String, VAO> entry = iterator.next();
+		for (Iterator<Map.Entry<String, VertexArrayObject>> iterator = meshResource.vaos.entrySet().iterator(); iterator.hasNext();) {
+			Map.Entry<String, VertexArrayObject> entry = iterator.next();
 
-			VAO _v = entry.getValue();
+			VertexArrayObject _v = entry.getValue();
 
-			glDeleteBuffers(_v.VAOBuffers);
-			glDeleteVertexArrays(_v.VAOID);
+			glDeleteBuffers(_v.getVAOBuffers());
+			glDeleteVertexArrays(_v.getVAOID());
 		}
 
 	}
 
-	private void init(VAO _v) {
-
+	private void init(VertexArrayObject _v) {
 		_v.bind();
-
-		for (int i = 0; i < _v.VAOBuffers.length; i++) {
+		for (int i = 0; i < _v.getVAOBuffers().length; i++) {
 			GL30.glEnableVertexAttribArray(i);
 		}
-		// GL30.glBindVertexArray(meshResource.vaos.get("vaoOne").VAOID);
-		// glEnableVertexAttribArray(0);
-		// glEnableVertexAttribArray(1);
-		// glEnableVertexAttribArray(2);
-		// glEnableVertexAttribArray(3);
-		// glEnableVertexAttribArray(4);
 	}
 
 	public void draw(String vaoName, int draw_option) {
@@ -453,18 +275,11 @@ public class Mesh implements AssetI {
 		deInit(meshResource.getVAO(vaoName));
 	}
 
-	private void deInit(VAO _v) {
-		for (int i = 0; i < _v.VAOBuffers.length; i++) {
+	private void deInit(VertexArrayObject _v) {
+		for (int i = 0; i < _v.getVAOBuffers().length; i++) {
 			glDisableVertexAttribArray(i);
 		}
 		_v.unbind();
-
-		// glDisableVertexAttribArray(0);
-		// glDisableVertexAttribArray(1);
-		// glDisableVertexAttribArray(2);
-		// glDisableVertexAttribArray(3);
-		// glDisableVertexAttribArray(4);
-		// GL30.glBindVertexArray(0);
 	}
 
 	public int getSize() {

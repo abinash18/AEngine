@@ -80,6 +80,7 @@ public class GLUniformBuffer extends GLBuffer {
 	 */
 	public GLUniformBuffer(String name, int size) {
 		super(GL31.GL_UNIFORM_BUFFER, GL31.GL_DYNAMIC_DRAW, size);
+		this.members = new HashMap<>();
 		this.name = name;
 	}
 
@@ -159,6 +160,13 @@ public class GLUniformBuffer extends GLBuffer {
 	}
 
 	/**
+	 * @param binding the binding to set
+	 */
+	public void setBinding(int binding) {
+		this.binding = binding;
+	}
+
+	/**
 	 * @return the members
 	 */
 	public Map<String, GLUniform> getMembers() {
@@ -169,6 +177,16 @@ public class GLUniformBuffer extends GLBuffer {
 	public void dispose() {
 		binding = NULL_BOUND_BUFFER_OBJECT;
 		super.dispose();
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder s = new StringBuilder();
+		s.append(super.toString() + " Uniform Buffer Name: " + name + " Binding: " + binding + " ");
+		members.forEach((k, v) -> {
+			s.append(v);
+		});
+		return s.toString();
 	}
 
 }

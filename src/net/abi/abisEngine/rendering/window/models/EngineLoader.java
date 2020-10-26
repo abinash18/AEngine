@@ -24,6 +24,7 @@ import net.abi.abisEngine.rendering.window.GLFWWindowManager;
 import net.abi.abisEngine.util.exceptions.AECursorInitializationException;
 import net.abi.abisEngine.util.exceptions.AEImageManipulationException;
 import tests.renderTest.scenes.MainMenu;
+import tests.renderTest.scenes.TestGame;
 
 public class EngineLoader extends GLFWWindow {
 
@@ -40,7 +41,7 @@ public class EngineLoader extends GLFWWindow {
 
 	@Override
 	protected void addScenes() {
-		// new TestGame(this);
+		new TestGame(this);
 		new EngineSplashScreen(this);
 		new MainMenu(this);
 	}

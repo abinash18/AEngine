@@ -3,82 +3,86 @@
  */
 package net.abi.abisEngine.rendering.mesh;
 
-import org.lwjgl.opengl.GL15;
+import java.util.HashMap;
+
+import net.abi.abisEngine.rendering.asset.AssetI;
 
 /**
+ * Contains the reference count to the mesh along with the size of the indices
+ * and VAOID and MeshData.
+ * 
  * @author abinash
- * Stores A Mesh And All Its Components
+ *
  */
-public class MeshResource {
+public class MeshResource implements AssetI {
+	String name;
+	int size, refCount;
+	HashMap<String, VertexArrayObject> vaos;
+	MeshData meshData;
 
-	private int vbo, ibo, size, refCount;
+	boolean initialized = false;
 
-	public MeshResource(int size) {
-		this.vbo = GL15.glGenBuffers();
-		this.ibo = GL15.glGenBuffers();
-		this.size = size;
+	/**
+	 * @param size
+	 * @param meshData
+	 */
+	public MeshResource(String name, MeshData meshData) {
+		this.name = name;
+		this.size = meshData.model.getIndices().size() - 1;
 		this.refCount = 1;
+		this.meshData = meshData;
+		this.vaos = new HashMap<String, VertexArrayObject>();
 	}
 
-	@Deprecated
-	public MeshResource() {
-		this.vbo = GL15.glGenBuffers();
-		this.ibo = GL15.glGenBuffers();
-		this.size = 0;
+	VertexArrayObject addVAO(String name) {
+		VertexArrayObject _vao = new VertexArrayObject(name);
+
+		this.vaos.put(name, _vao);
+
+		return _vao;
 	}
 
-	@Override
-	protected void finalize() {
-		try {
-			super.finalize();
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-		GL15.glDeleteBuffers(vbo);
-		GL15.glDeleteBuffers(ibo);
-
+	VertexArrayObject getVAO(String name) {
+		return vaos.get(name);
 	}
 
-	public void addReference() {
+	public void incRef() {
 		refCount++;
 	}
 
-	public boolean removeRefrence() {
+	public void decRef() {
 		refCount--;
-		return refCount == 0;
 	}
 
-	public int getVbo() {
-		return vbo;
-	}
-
-	public void setVbo(int vbo) {
-		this.vbo = vbo;
-	}
-
-	public int getIbo() {
-		return ibo;
-	}
-
-	public void setIbo(int ibo) {
-		this.ibo = ibo;
-	}
-
-	public int getSize() {
-		return size;
-	}
-
-	public int getRefCount() {
+	public int decAndGetRef() {
+		refCount--;
 		return refCount;
 	}
 
-	public void setRefCount(int refCount) {
-		this.refCount = refCount;
+	int getAndDecRef() {
+		int _refs = refCount;
+		refCount--;
+		return _refs;
 	}
 
-	@Deprecated
-	public void setSize(int size) {
-		this.size = size;
+	public int incAndGetRef() {
+		refCount++;
+		return refCount;
 	}
 
+	int getAndIncRef() {
+		int _refs = refCount;
+		refCount++;
+		return _refs;
+	}
+
+	@Override
+	public void dispose() {
+
+	}
+
+	@Override
+	public int getRefs() {
+		return refCount;
+	}
 }

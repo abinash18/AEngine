@@ -37,13 +37,19 @@ public class AEShaderResource implements AssetI {
 	private PathHandle path;
 	private HashMap<String, ShaderSource> subPrograms;
 	private Map<String, GLUniform> uniforms;
-	private Map<Integer, GLUniformBuffer> ubos;
+	private Map<String, GLUniformBuffer> ubos;
+	// The inputs and outputs on a shader program are not uniform but its just a
+	// wrapper for properties.
+	private Map<String, GLUniform> inputs;
+	private Map<String, GLUniform> outputs;
 
 	public AEShaderResource(String name, PathHandle pathToShaderDirectory) {
 		this.path = pathToShaderDirectory;
 		this.subPrograms = new HashMap<String, ShaderSource>();
 		this.uniforms = new HashMap<String, GLUniform>();
-		this.ubos = new HashMap<Integer, GLUniformBuffer>();
+		this.ubos = new HashMap<String, GLUniformBuffer>();
+		this.inputs = new HashMap<String, GLUniform>();
+		this.outputs = new HashMap<String, GLUniform>();
 		this.refCount = 1;
 		this.name = name;
 	}
@@ -51,18 +57,18 @@ public class AEShaderResource implements AssetI {
 	public void createProgram() {
 		this.program = GL20.glCreateProgram();
 		if (program == 0) {
-			logger.error("Shader creation failed: Could not find valid memory location in constructor",
-					new Exception());
-			logger.info("Exiting...");
+			System.out.println("Shader creation failed: Could not find valid memory location in constructor"
+					+ new Exception().getStackTrace());
+			System.out.println("Exiting...");
 			GLFWWindowManager.raiseStopFlag();
 		}
 	}
 
-	public Map<Integer, GLUniformBuffer> getUBOS() {
+	public Map<String, GLUniformBuffer> getUBOS() {
 		return ubos;
 	}
 
-	public void setUbos(Map<Integer, GLUniformBuffer> ubos) {
+	public void setUbos(Map<String, GLUniformBuffer> ubos) {
 		this.ubos = ubos;
 	}
 
@@ -149,6 +155,41 @@ public class AEShaderResource implements AssetI {
 	public int decAndGetRef() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	/**
+	 * @return the inputs
+	 */
+	public Map<String, GLUniform> getInputs() {
+		return inputs;
+	}
+
+	/**
+	 * @param inputs the inputs to set
+	 */
+	public void setInputs(Map<String, GLUniform> inputs) {
+		this.inputs = inputs;
+	}
+
+	/**
+	 * @return the outputs
+	 */
+	public Map<String, GLUniform> getOutputs() {
+		return outputs;
+	}
+
+	/**
+	 * @param outputs the outputs to set
+	 */
+	public void setOutputs(Map<String, GLUniform> outputs) {
+		this.outputs = outputs;
+	}
+
+	/**
+	 * @return the ubos
+	 */
+	public Map<String, GLUniformBuffer> getUbos() {
+		return ubos;
 	}
 
 }

@@ -17,11 +17,11 @@ AE_SHADER_GLSL_PROGRAMS:
   - AE_SHADER_GLSL_PROGRAM_TYPE: "AE_VERTEX_SHADER"
     AE_SHADER_GLSL_PROGRAM_NAME: "vertex_shader"
     AE_SHADER_GLSL_PROGRAM_SOURCE: |
-      #version 330 core
+      #version 460 core
       layout (location = 0) in vec3 position;
       layout (location = 1) in vec2 texCoord;
       layout (location = 2) in vec3 normal;
-      layout (location = 3) in vec3 tangent;
+      layout (location = 3) in vec3 tangent;    
       out vec2 texCoord0;
       out vec3 normal0;
       out vec3 worldPosition0;

@@ -24,7 +24,6 @@ import org.yaml.snakeyaml.constructor.Constructor;
 
 import net.abi.abisEngine.handlers.file.PathHandle;
 import net.abi.abisEngine.rendering.shader.compiler.parser.fileTypes.yaml.AEShaderFileYAML;
-import net.abi.abisEngine.rendering.shader.compiler.parser.fileTypes.yaml.AEShaderGLSLProgram;
 
 public class AEShaderParserYAML {
 

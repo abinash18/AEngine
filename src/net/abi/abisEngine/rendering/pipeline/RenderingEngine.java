@@ -18,6 +18,8 @@ package net.abi.abisEngine.rendering.pipeline;
 import java.util.HashMap;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL45;
+import org.lwjgl.opengl.GLDebugMessageCallbackI;
 
 import net.abi.abisEngine.components.Camera;
 import net.abi.abisEngine.components.Light;
@@ -79,7 +81,14 @@ public class RenderingEngine extends MappedValues implements Expendable {
 		forwardAmbientShader = new Shader("forward-ambient");
 		depthShader = new Shader("depthVisualizer");
 		// edge_dectect = new Shader("visualizers/edge_detect");
-
+		GL11.glEnable(GL45.GL_DEBUG_OUTPUT);
+		GL45.glDebugMessageCallback(new GLDebugMessageCallbackI() {
+			@Override
+			public void invoke(int source, int type, int id, int severity, int length, long message, long userParam) {
+				System.out.println("GL CALLBACK: " + (type == GL45.GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : "")
+						+ " type = 0x" + type + ", severity = 0x" + severity + ", message = " + message + "\n");
+			}
+		}, 0);
 		GL11.glFrontFace(GL11.GL_CW);
 		GL11.glCullFace(GL11.GL_BACK);
 		GL11.glEnable(GL11.GL_CULL_FACE);
@@ -117,24 +126,16 @@ public class RenderingEngine extends MappedValues implements Expendable {
 	}
 
 	private void renderLights(Scene scene) {
-
 		scene.getRootObject().renderAll(forwardAmbientShader, this);
-
 		GL11.glEnable(GL11.GL_BLEND);
-
 		GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
-
 		GL11.glDepthMask(false);
-
 		GL11.glDepthFunc(GL11.GL_EQUAL);
-
 		for (Light light : scene.getLights()) {
 			this.activeLight = light;
 			scene.getRootObject().renderAll(light.getShader(), this);
 		}
-
 		GL11.glDepthFunc(GL11.GL_LESS);
-
 		GL11.glDepthMask(true);
 		GL11.glDisable(GL11.GL_BLEND);
 	}
