@@ -33,13 +33,12 @@ import net.abi.abisEngine.handlers.file.PathHandle;
 import net.abi.abisEngine.handlers.file.PathType;
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
-import net.abi.abisEngine.math.Matrix;
-import net.abi.abisEngine.math.Matrix4f;
 import net.abi.abisEngine.math.Transform;
-import net.abi.abisEngine.math.Vector2f;
-import net.abi.abisEngine.math.Vector3f;
-import net.abi.abisEngine.math.Vector3i;
-import net.abi.abisEngine.math.Vector4f;
+import net.abi.abisEngine.math.matrix.Matrix4f;
+import net.abi.abisEngine.math.vector.Vector2f;
+import net.abi.abisEngine.math.vector.Vector3f;
+import net.abi.abisEngine.math.vector.Vector3i;
+import net.abi.abisEngine.math.vector.Vector4f;
 import net.abi.abisEngine.rendering.asset.AssetI;
 import net.abi.abisEngine.rendering.material.Material;
 import net.abi.abisEngine.rendering.pipeline.RenderingEngine;
@@ -204,9 +203,8 @@ public class Shader implements AssetI {
 	}
 
 	public void updateUniforms(Transform transform, Material mat, RenderingEngine engine) {
-
 		Matrix4f MVMatrix = transform.getTransformation(), // Model view matrix, aka world matrix
-				MVPMatrix = engine.getMainCamera().getViewProjection().mul(MVMatrix), // Model View Projection Matrix
+				MVPMatrix = engine.getActiveCamera().getViewProjection().mul(MVMatrix), // Model View Projection Matrix
 				MVNMatrix = MVMatrix, // Model View Normal Matrix
 				T_PM, // Projection Matrix
 				T_VPM; // ViewPort Matrix
@@ -275,7 +273,7 @@ public class Shader implements AssetI {
 				}
 			} else if (uniformName.startsWith("C_")) {
 				if (uniformName.equals("C_eyePos")) {
-					setUniform3f(uniformName, engine.getMainCamera().getTransform().getTransformedPosition());
+					setUniform3f(uniformName, engine.getActiveCamera().getTransform().getTransformedPosition());
 				} else {
 					logger.error("'" + uniformName
 							+ "' is not a valid component of Camera. Or is misspelled, please check shader program or change the prefix of the variable.",
@@ -806,7 +804,7 @@ public class Shader implements AssetI {
 	}
 
 	public void setUniform3i(String uniformName, Vector3i value) {
-		GL32.glUniform3i(shaderProgram.getUniforms().get(uniformName), value.getX(), value.getY(), value.getZ());
+		GL32.glUniform3i(shaderProgram.getUniforms().get(uniformName), value.x(), value.y(), value.z());
 	}
 
 	public void setUniform3iv(String uniformName, int[] value) {
@@ -814,7 +812,7 @@ public class Shader implements AssetI {
 	}
 
 	public void setUniform3ui(String uniformName, Vector3i value) {
-		GL32.glUniform3ui(shaderProgram.getUniforms().get(uniformName), value.getX(), value.getY(), value.getZ());
+		GL32.glUniform3ui(shaderProgram.getUniforms().get(uniformName), value.x(), value.y(), value.z());
 	}
 
 	public void setUniform3uiv(String uniformName, int[] value) {
@@ -830,7 +828,7 @@ public class Shader implements AssetI {
 	 */
 	// TODO: All Other types of matrices.
 
-	public void setUniformMatrix4fv(String uniformName, Matrix value) {
+	public void setUniformMatrix4fv(String uniformName, Matrix4f value) {
 		GL20.glUniformMatrix4fv(shaderProgram.getUniforms().get(uniformName), true, Util.createFlippedBuffer(value));
 	}
 

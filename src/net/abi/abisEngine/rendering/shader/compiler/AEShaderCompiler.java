@@ -18,23 +18,27 @@ package net.abi.abisEngine.rendering.shader.compiler;
 import static org.lwjgl.opengl.GL20.glIsProgram;
 import static org.lwjgl.opengl.GL43.GL_ACTIVE_RESOURCES;
 import static org.lwjgl.opengl.GL43.GL_ACTIVE_VARIABLES;
+import static org.lwjgl.opengl.GL43.GL_ARRAY_SIZE;
 import static org.lwjgl.opengl.GL43.GL_ARRAY_STRIDE;
 import static org.lwjgl.opengl.GL43.GL_BLOCK_INDEX;
 import static org.lwjgl.opengl.GL43.GL_BUFFER_BINDING;
 import static org.lwjgl.opengl.GL43.GL_BUFFER_DATA_SIZE;
+import static org.lwjgl.opengl.GL43.GL_IS_PER_PATCH;
 import static org.lwjgl.opengl.GL43.GL_IS_ROW_MAJOR;
 import static org.lwjgl.opengl.GL43.GL_LOCATION;
+import static org.lwjgl.opengl.GL43.GL_LOCATION_INDEX;
 import static org.lwjgl.opengl.GL43.GL_MATRIX_STRIDE;
-import static org.lwjgl.opengl.GL43.GL_NAME_LENGTH;
 import static org.lwjgl.opengl.GL43.GL_NUM_ACTIVE_VARIABLES;
 import static org.lwjgl.opengl.GL43.GL_OFFSET;
+import static org.lwjgl.opengl.GL43.GL_PROGRAM_INPUT;
+import static org.lwjgl.opengl.GL43.GL_PROGRAM_OUTPUT;
 import static org.lwjgl.opengl.GL43.GL_TYPE;
 import static org.lwjgl.opengl.GL43.GL_UNIFORM;
 import static org.lwjgl.opengl.GL43.GL_UNIFORM_BLOCK;
 import static org.lwjgl.opengl.GL43.glGetProgramInterfacei;
 import static org.lwjgl.opengl.GL43.glGetProgramResourceName;
 import static org.lwjgl.opengl.GL43.glGetProgramResourceiv;
-import static org.lwjgl.opengl.GL45.*;
+import static org.lwjgl.opengl.GL44.GL_LOCATION_COMPONENT;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -92,7 +96,7 @@ public class AEShaderCompiler {
 	 * 
 	 * @return
 	 */
-	public static AEShader compile(AEShaderFileYAML p, PathHandle path) {
+	public static AEShaderResource compile(AEShaderFileYAML p, PathHandle path) {
 		float start = System.nanoTime();
 		out.println("===========================================================");
 		out.println("Compiling Shader: '" + p.getAE_SHADER_NAME() + "'");
@@ -109,7 +113,6 @@ public class AEShaderCompiler {
 		out.println("---Linking---");
 		// Now we link.
 		linkProgram(program);
-		out.println();
 		// And also process inputs and outputs.
 		processInputs(program);
 		processOutputs(program);
@@ -118,13 +121,12 @@ public class AEShaderCompiler {
 		// AEGLInfo.getUniformsInfo(program.getProgram());
 		processUniforms(program);
 		// linked program.
-		AEShader shader = new AEShader(program);
 		out.println("Successfuly Compiled Shader.");
 		float end = System.nanoTime();
 		float elapsedTime = end - start;
 		out.println("Time To Completion: " + (elapsedTime / 1000000000) + "s");
 		out.println("===========================================================");
-		return shader;
+		return program;
 	}
 
 	/**

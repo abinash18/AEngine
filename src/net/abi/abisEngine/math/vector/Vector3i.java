@@ -13,12 +13,14 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  ******************************************************************************/
-package net.abi.abisEngine.math;
+package net.abi.abisEngine.math.vector;
+
+import net.abi.abisEngine.math.Math;
 
 public class Vector3i {
-	private int x;
-	private int y;
-	private int z;
+	public int x;
+	public int y;
+	public int z;
 
 	public Vector3i(int x, int y, int z) {
 		this.x = x;
@@ -31,13 +33,13 @@ public class Vector3i {
 	}
 
 	public float dot(Vector3i r) {
-		return x * r.getX() + y * r.getY() + z * r.getZ();
+		return x * r.x() + y * r.y() + z * r.z();
 	}
 
 	public Vector3i cross(Vector3i r) {
-		int x_ = y * r.getZ() - z * r.getY();
-		int y_ = z * r.getX() - x * r.getZ();
-		int z_ = x * r.getY() - y * r.getX();
+		int x_ = y * r.z() - z * r.y();
+		int y_ = z * r.x() - x * r.z();
+		int z_ = x * r.y() - y * r.x();
 
 		return new Vector3i(x_, y_, z_);
 	}
@@ -64,12 +66,12 @@ public class Vector3i {
 	}
 
 	public Vector3i set(Vector3i other) {
-		this.set(other.getX(), other.getY(), other.getZ());
+		this.set(other.x(), other.y(), other.z());
 		return this;
 	}
 
 	public boolean equals(Vector3i r) {
-		return (x == r.getX() && y == r.getY() && z == r.getZ());
+		return (x == r.x() && y == r.y() && z == r.z());
 	}
 
 	public Vector2f getXY() {
@@ -97,7 +99,7 @@ public class Vector3i {
 	}
 
 	public Vector3i add(Vector3i r) {
-		return new Vector3i(x + r.getX(), y + r.getY(), z + r.getZ());
+		return new Vector3i(x + r.x(), y + r.y(), z + r.z());
 	}
 
 	public Vector3i add(int r) {
@@ -105,7 +107,7 @@ public class Vector3i {
 	}
 
 	public Vector3i sub(Vector3i r) {
-		return new Vector3i(x - r.getX(), y - r.getY(), z - r.getZ());
+		return new Vector3i(x - r.x(), y - r.y(), z - r.z());
 	}
 
 	public Vector3i sub(int r) {
@@ -113,7 +115,7 @@ public class Vector3i {
 	}
 
 	public Vector3i mul(Vector3i r) {
-		return new Vector3i(x * r.getX(), y * r.getY(), z * r.getZ());
+		return new Vector3i(x * r.x(), y * r.y(), z * r.z());
 	}
 
 	public Vector3i mul(int r) {
@@ -121,7 +123,7 @@ public class Vector3i {
 	}
 
 	public Vector3i div(Vector3i r) {
-		return new Vector3i(x / r.getX(), y / r.getY(), z / r.getZ());
+		return new Vector3i(x / r.x(), y / r.y(), z / r.z());
 	}
 
 	public Vector3i div(int r) {
@@ -132,7 +134,7 @@ public class Vector3i {
 		return (new Vector3i(Math.abs(x), Math.abs(y), Math.abs(z)));
 	}
 
-	public int getX() {
+	public int x() {
 		return x;
 	}
 
@@ -140,7 +142,7 @@ public class Vector3i {
 		this.x = x;
 	}
 
-	public int getY() {
+	public int y() {
 		return y;
 	}
 
@@ -148,7 +150,7 @@ public class Vector3i {
 		this.y = y;
 	}
 
-	public int getZ() {
+	public int z() {
 		return z;
 	}
 

@@ -18,7 +18,7 @@ package net.abi.abisEngine.util;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.abi.abisEngine.math.Vector3f;
+import net.abi.abisEngine.math.vector.Vector3f;
 
 public abstract class MappedValues {
 	private Map<String, Float> floatBinds;

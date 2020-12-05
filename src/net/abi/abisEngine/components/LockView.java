@@ -15,7 +15,7 @@
  ******************************************************************************/
 package net.abi.abisEngine.components;
 
-import net.abi.abisEngine.math.Quaternion;
+import net.abi.abisEngine.math.Quaternionf;
 import net.abi.abisEngine.math.Transform;
 import net.abi.abisEngine.rendering.pipeline.RenderingEngine;
 import net.abi.abisEngine.rendering.shader.legacy.Shader;
@@ -27,7 +27,7 @@ public class LockView extends SceneComponent {
 	@Override
 	public void update(float delta) {
 		if (engine != null) {
-			Quaternion newRotation = super.getTransform().getLookAtDirection(
+			Quaternionf newRotation = super.getTransform().getLookAtDirection(
 					super.getParentScene().getMainCamera().getTransform().getTransformedPosition(), Transform.Y_AXIS);
 			// super.getTransform().setRotation(super.getTransform().getRotation().nlerp(newRotation,
 			// delta * 2, true));

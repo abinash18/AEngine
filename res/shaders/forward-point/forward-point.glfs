@@ -1,5 +1,5 @@
 #version 330 core
-#include "lighting-frag.glh"
+#include "includes/lighting-frag.glh"
 
 uniform PointLight R_pointLight;
 
@@ -7,4 +7,4 @@ vec4 calcLighting(vec3 normal, vec3 worldPos) {
 	return calcPointLight(R_pointLight, normal, worldPos);
 }
 
-#include "lighting-main.glh"
+#include "includes/lighting-main.glh"

@@ -13,15 +13,15 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  ******************************************************************************/
-package net.abi.abisEngine.math;
+package net.abi.abisEngine.math.vector;
 
 import net.abi.abisEngine.math.Math;
 
-public class Vector4f implements Vector4fI {
-	private float x;
-	private float y;
-	private float z;
-	private float w;
+public class Vector4f {
+	public float x;
+	public float y;
+	public float z;
+	public float w;
 
 	public Vector4f(float x, float y, float z, float w) {
 		this.x = x;

@@ -15,8 +15,8 @@
  ******************************************************************************/
 package net.abi.abisEngine.components;
 
-import net.abi.abisEngine.math.Vector3f;
-import net.abi.abisEngine.rendering.shader.legacy.Shader;
+import net.abi.abisEngine.math.vector.Vector3f;
+import net.abi.abisEngine.rendering.shader.shaders.ForwardPointShader;
 import net.abi.abisEngine.util.Attenuation;
 
 /**
@@ -24,47 +24,17 @@ import net.abi.abisEngine.util.Attenuation;
  *
  */
 public class PointLight extends Light {
-
 	private static final int COLOR_DEPTH = 256;
-
 	private Attenuation attenuation;
 	private float range;
 
-	// TODO: Find a better way or add baselight back to parameter.
-	@Deprecated
-	public PointLight(Vector3f color, float intensity, float constant, float linear, float exponent) {
-
-		super(color, intensity);
-
-		/*
-		 * this.constant = constant; this.linear = linear; this.exponent = exponent;
-		 */
-
-		float a = exponent, b = linear, c = constant - COLOR_DEPTH * getIntensity() * getColor().max();
-
-		this.range = (float) (-b + Math.sqrt(b * b - 4 * a * c)) / (2 * a);// 1000.0f; // TODO: Try To Calculate This.
-//		super.setShader(ForwardPointShader.getInstance());
-		super.setShader(new Shader("forward-point"));
-		// System.out.println(range);
-	}
-
-	/**
-	 * 
-	 * @param color
-	 * @param intensity
-	 * @param attenuation x is constant, y is linear, z is exponent in a Vector3f
-	 * @param position
-	 * @param range
-	 */
 	public PointLight(Vector3f color, float intensity, Attenuation attenuation) {
 		super(color, intensity);
 		this.attenuation = attenuation;
 		float a = attenuation.getExponent(), b = attenuation.getLinear(),
 				c = attenuation.getConstant() - COLOR_DEPTH * getIntensity() * getColor().max();
-
-		this.range = (float) (-b + Math.sqrt(b * b - 4 * a * c)) / (2 * a);// 1000.0f; // TODO: Try To Calculate This.
-		super.setShader(new Shader("forward-point"));
-		// System.out.println(range);
+		this.range = (float) (-b + Math.sqrt(b * b - 4 * a * c)) / (2 * a);
+		super.setShader(new ForwardPointShader());
 	}
 
 	public float getRange() {
@@ -82,5 +52,4 @@ public class PointLight extends Light {
 	public void setAttenuation(Attenuation attenuation) {
 		this.attenuation = attenuation;
 	}
-
 }

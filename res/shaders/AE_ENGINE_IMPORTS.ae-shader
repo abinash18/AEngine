@@ -1,0 +1,20 @@
+---
+AE_SHADER_NAME: "AE_ENGINE_IMPORTS.ae-shader"
+AE_SHADER_DESC: "A file for generic imports used through out the engine shader library."
+AE_SHADER_GLSL_PROGRAMS:
+  - AE_SHADER_GLSL_PROGRAM_TYPE: "AE_SHADER_IMPORT"
+    AE_SHADER_GLSL_PROGRAM_NAME: "LIGHTING_UBO"
+    AE_SHADER_GLSL_PROGRAM_SOURCE: |
+        #import AE_ENGINE_IMPORTS:{"AE_ENGINE_DEFAULT_UBO_BINDINGS"};
+        layout (std140, binding = DEFAULT_IMPORT_UBO_CAMERA) uniform Camera {
+           vec3 C_eyePos;  
+        };
+        layout (std140, binding = DEFAULT_IMPORT_UBO_LIGHTING) uniform Lights {
+            
+        };
+  - AE_SHADER_GLSL_PROGRAM_TYPE: "AE_SHADER_IMPORT"
+    AE_SHADER_GLSL_PROGRAM_NAME: "AE_ENGINE_DEFAULT_UBO_BINDINGS"
+    AE_SHADER_GLSL_PROGRAM_SOURCE: |
+        #define DEFAULT_IMPORT_UBO_LIGHTING 1
+        #define DEFAULT_IMPORT_UBO_CAMERA 2
+...

@@ -14,6 +14,7 @@ import org.lwjgl.opengl.GL42;
 import org.lwjgl.opengl.GL43;
 import org.lwjgl.opengl.GL45;
 
+import net.abi.abisEngine.math.vector.Vector3f;
 import net.abi.abisEngine.rendering.shader.compiler.AEGLInfo;
 import net.abi.abisEngine.util.Expendable;
 
@@ -144,6 +145,16 @@ public class GLBuffer implements Expendable {
 	 */
 	public void addData(FloatBuffer buffer) {
 		GL31.glBufferData(type, buffer, usage);
+	}
+
+	public void updateData(String memberName, Vector3f v) {
+		ByteBuffer b = mapBuffer(GL45.GL_READ_WRITE);
+		b.clear();
+		b.putFloat(v.x());
+		b.putFloat(v.y());
+		b.putFloat(v.z());
+		b.flip();
+		unMapBuffer();
 	}
 
 	/**

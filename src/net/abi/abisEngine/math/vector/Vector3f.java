@@ -13,12 +13,15 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  ******************************************************************************/
-package net.abi.abisEngine.math;
+package net.abi.abisEngine.math.vector;
+
+import net.abi.abisEngine.math.Math;
+import net.abi.abisEngine.math.Quaternionf;
 
 public class Vector3f {
-	private float x;
-	private float y;
-	private float z;
+	public float x;
+	public float y;
+	public float z;
 
 	public Vector3f(float x, float y, float z) {
 		this.x = x;
@@ -65,14 +68,14 @@ public class Vector3f {
 						axis.mul(this.dot(axis.mul(1 - cosAngle))))); // Rotation on local Y
 	}
 
-	public Vector3f rotate(Quaternion rotation) {
+	public Vector3f rotate(Quaternionf rotation) {
 
-		Quaternion conjugate = rotation.conjugate();
-		Quaternion w = rotation.mul(this).mul(conjugate);
+		Quaternionf conjugate = rotation.conjugate();
+		Quaternionf w = rotation.mul(this).mul(conjugate);
 
-		x = w.getX();
-		y = w.getY();
-		z = w.getZ();
+		x = w.x();
+		y = w.y();
+		z = w.z();
 
 		return (new Vector3f(x, y, z));
 	}

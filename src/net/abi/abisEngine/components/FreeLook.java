@@ -18,7 +18,7 @@ package net.abi.abisEngine.components;
 import net.abi.abisEngine.input.GLFWInput;
 import net.abi.abisEngine.input.GLFWMouseAndKeyboardInput;
 import net.abi.abisEngine.math.Transform;
-import net.abi.abisEngine.math.Vector2f;
+import net.abi.abisEngine.math.vector.Vector2f;
 
 public class FreeLook extends SceneComponent {
 

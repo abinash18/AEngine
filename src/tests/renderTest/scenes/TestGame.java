@@ -30,7 +30,7 @@ public class TestGame extends Scene {
 
 	public void init() {
 		super.init();
-		PathHandle p = AEShader.DEFAULT_SHADER_ASSET_DIRECTORY_PATH.resolveChild("wireframe.ae-shader");
+		PathHandle p = AEShader.DEFAULT_SHADER_ASSET_DIRECTORY_PATH.resolveChild("PointLight.ae-shader");
 		AEShaderCompiler.compile(AEShaderParserYAML.parse(p), p);
 	}
 

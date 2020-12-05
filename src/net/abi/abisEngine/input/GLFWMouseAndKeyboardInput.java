@@ -33,7 +33,7 @@ import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.lwjgl.glfw.GLFWScrollCallback;
 
-import net.abi.abisEngine.math.Vector2f;
+import net.abi.abisEngine.math.vector.Vector2f;
 
 public class GLFWMouseAndKeyboardInput extends GLFWInput {
 

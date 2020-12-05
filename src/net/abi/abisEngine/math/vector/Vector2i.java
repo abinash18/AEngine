@@ -13,7 +13,9 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  ******************************************************************************/
-package net.abi.abisEngine.math;
+package net.abi.abisEngine.math.vector;
+
+import net.abi.abisEngine.math.Math;
 
 public class Vector2i {
 	/**
@@ -116,11 +118,6 @@ public class Vector2i {
 		return Math.sqrt(lengthSquared(x, y));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.joml.Vector2ic#add(org.joml.Vector2ic, org.joml.Vector2i)
-	 */
 	public Vector2i add(Vector2i v) {
 		this.x = x + v.x();
 		this.y = y + v.y();
@@ -145,29 +142,14 @@ public class Vector2i {
 		return this;
 	}
 
-	/**
-	 * Set all components to zero.
-	 *
-	 * @return a vector holding the result
-	 */
 	public Vector2i zero() {
 		return this.set(0, 0);
 	}
 
-	/**
-	 * Negate this vector.
-	 *
-	 * @return a vector holding the result
-	 */
 	public Vector2i negate() {
 		return negate(this);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.joml.Vector2ic#negate(org.joml.Vector2i)
-	 */
 	public Vector2i negate(Vector2i dest) {
 		dest.x = -x;
 		dest.y = -y;

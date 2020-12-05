@@ -17,8 +17,8 @@ package net.abi.abisEngine.rendering.mesh;
 
 import java.util.ArrayList;
 
-import net.abi.abisEngine.math.Vector2f;
-import net.abi.abisEngine.math.Vector3f;
+import net.abi.abisEngine.math.vector.Vector2f;
+import net.abi.abisEngine.math.vector.Vector3f;
 
 public class Model {
 	private ArrayList<Vector3f> positions, normals, tangents, vBCC;

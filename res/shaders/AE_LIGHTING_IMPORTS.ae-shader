@@ -42,44 +42,6 @@ AE_SHADER_GLSL_PROGRAMS:
         float cutoff;
       };
   - AE_SHADER_GLSL_PROGRAM_TYPE: "AE_SHADER_IMPORT"
-    AE_SHADER_GLSL_PROGRAM_NAME: "LIGHTING_VARS_UNIFORM_BLOCK"
-    AE_SHADER_GLSL_PROGRAM_SOURCE: |
-      // Vars
-      //Position of the camera.
-      layout (std140, binding = 1) uniform Camera {
-       uniform vec3 C_eyePos; 
-      };
-      
-      uniform float specularIntensity;
-      uniform float specularPower;
-      // Booleans 0 - true, 1 - false.
-      uniform int normal_mapping_enabled;
-      // Structures
-      struct BaseLight {
-        vec3 color;
-        float intensity;
-      };
-      struct DirectionalLight {
-        BaseLight base;
-        vec3 direction;
-      };
-      struct Attenuation {
-        float constant;
-        float linear;
-        float exponent;
-      };
-      struct PointLight {
-        BaseLight base;
-        Attenuation atten;
-        vec3 position;
-        float range;
-      };
-      struct SpotLight {
-        PointLight pointLight;
-        vec3 direction;
-        float cutoff;
-      };
-  - AE_SHADER_GLSL_PROGRAM_TYPE: "AE_SHADER_IMPORT"
     AE_SHADER_GLSL_PROGRAM_NAME: "LIGHTING_FUNC_CALCLIGHT" #Different from caclLighting since thats light specific.
     AE_SHADER_GLSL_PROGRAM_SOURCE: | #The compiler will insert the vars at the index of the import keyword.
       vec4 calcLight(BaseLight base, vec3 direction, vec3 normal, vec3 worldPosition) {

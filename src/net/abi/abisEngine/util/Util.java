@@ -24,10 +24,9 @@ import java.util.List;
 
 import org.lwjgl.BufferUtils;
 
-import net.abi.abisEngine.math.Matrix;
-import net.abi.abisEngine.math.Matrix4f;
-import net.abi.abisEngine.math.Vector2f;
-import net.abi.abisEngine.math.Vector3f;
+import net.abi.abisEngine.math.matrix.Matrix4f;
+import net.abi.abisEngine.math.vector.Vector2f;
+import net.abi.abisEngine.math.vector.Vector3f;
 import net.abi.abisEngine.rendering.mesh.Vertex;
 
 public class Util {
@@ -49,18 +48,18 @@ public class Util {
 		return buffer;
 	}
 
-	 /**
-     * Allocates a direct native-ordered {@code ByteBuffer} with the specified capacity.
-     *
-     * @param capacity the capacity, in bytes
-     *
-     * @return a {@code ByteBuffer}
-     */
-    public static ByteBuffer createByteBuffer(int capacity) {
-        return ByteBuffer.allocateDirect(capacity).order(ByteOrder.nativeOrder());
-    }
+	/**
+	 * Allocates a direct native-ordered {@code ByteBuffer} with the specified
+	 * capacity.
+	 *
+	 * @param capacity the capacity, in bytes
+	 *
+	 * @return a {@code ByteBuffer}
+	 */
+	public static ByteBuffer createByteBuffer(int capacity) {
+		return ByteBuffer.allocateDirect(capacity).order(ByteOrder.nativeOrder());
+	}
 
-	
 	public static FloatBuffer createFlippedBuffer(Vertex[] vertices) {
 		FloatBuffer buffer = createFloatBuffer(vertices.length * Vertex.SIZE);
 
@@ -142,25 +141,11 @@ public class Util {
 
 	public static FloatBuffer createFlippedBuffer(Matrix4f value) {
 		FloatBuffer buffer = createFloatBuffer(4 * 4);
-
 		for (int i = 0; i < 4; i++)
 			for (int j = 0; j < 4; j++)
 				buffer.put(value.get(i, j));
 
 		buffer.flip();
-
-		return buffer;
-	}
-	
-	public static FloatBuffer createFlippedBuffer(Matrix value) {
-		FloatBuffer buffer = createFloatBuffer(4 * 4);
-
-		for (int i = 0; i < value.getCols(); i++)
-			for (int j = 0; j < value.getRows(); j++)
-				buffer.put(value.get(i, j));
-
-		buffer.flip();
-
 		return buffer;
 	}
 

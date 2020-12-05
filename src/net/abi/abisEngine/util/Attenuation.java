@@ -15,7 +15,7 @@
  ******************************************************************************/
 package net.abi.abisEngine.util;
 
-import net.abi.abisEngine.math.Vector3f;
+import net.abi.abisEngine.math.vector.Vector3f;
 
 public class Attenuation extends Vector3f {
 

@@ -35,8 +35,8 @@ import org.lwjgl.assimp.Assimp;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 
-import net.abi.abisEngine.math.Vector2f;
-import net.abi.abisEngine.math.Vector3f;
+import net.abi.abisEngine.math.vector.Vector2f;
+import net.abi.abisEngine.math.vector.Vector3f;
 import net.abi.abisEngine.rendering.asset.AssetManager;
 import net.abi.abisEngine.rendering.material.Material;
 import net.abi.abisEngine.rendering.texture.Texture;

@@ -1,6 +1,5 @@
 AE_SHADER_NAME: "!!AE_SHADER_FILE_NAME"
 AE_SHADER_DESC: "Shader for PointLight."
-#These properties are used to prepare the render.
 AE_PREP_PROPERTIES:
   - AE_PREP_PROPERTY_IDENTIFIER: "GL_ENABLE"
     AE_PREP_PROPERTY_PARAMETERS: ["BLEND"]
@@ -12,21 +11,22 @@ AE_PREP_PROPERTIES:
     AE_PREP_PROPERTY_PARAMETERS: ["GL_EQUAL"]
   - AE_PREP_PROPERTY_IDENTIFIER: "GL_DRAW_MODE"
     AE_PREP_PROPERTY_PARAMETERS: ["GL_TRIANGLES"]
-#Here is where you define the shaders
 AE_SHADER_GLSL_PROGRAMS:
   - AE_SHADER_GLSL_PROGRAM_TYPE: "AE_VERTEX_SHADER"
     AE_SHADER_GLSL_PROGRAM_NAME: "vertex_shader"
     AE_SHADER_GLSL_PROGRAM_SOURCE: |
-      #include wireframe/wireframe.glvs
-  - AE_SHADER_GLSL_PROGRAM_TYPE: "AE_GEOMETRY_SHADER"
-    AE_SHADER_GLSL_PROGRAM_NAME: "geometry_shader"
-    AE_SHADER_GLSL_PROGRAM_SOURCE: |
-      #include wireframe/wireframe.glgs
+      #version 330 core
+      #include "includes/lighting-vert.glh"
   - AE_SHADER_GLSL_PROGRAM_TYPE: "AE_FRAGMENT_SHADER"
     AE_SHADER_GLSL_PROGRAM_NAME: "fragment_shader"
     AE_SHADER_GLSL_PROGRAM_SOURCE: |
-      #include wireframe/wireframe.glfs
-#These properties are used to demolish the render.
+      #version 330 core
+      #include "includes/lighting-frag.glh"
+      uniform PointLight R_pointLight;
+      vec4 calcLighting(vec3 normal, vec3 worldPos) {
+        return calcPointLight(R_pointLight, normal, worldPos);
+      }
+      #include "includes/lighting-main.glh"
 AE_DEMO_PROPERTIES:
   - AE_DEMO_PROPERTY_IDENTIFIER: "GL_DISABLE"
     AE_DEMO_PROPERTY_PARAMETERS: ["BLEND"]

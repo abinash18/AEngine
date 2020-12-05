@@ -15,7 +15,7 @@
  ******************************************************************************/
 package net.abi.abisEngine.util;
 
-import net.abi.abisEngine.math.Vector3f;
+import net.abi.abisEngine.math.vector.Vector3f;
 
 /**
  * This Class Allows To Have A Alpha Value To Be Set And Wraps Around A Vector3f

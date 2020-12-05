@@ -16,11 +16,13 @@
 package net.abi.abisEngine.rendering.window.models;
 
 import net.abi.abisEngine.handlers.file.PathHandle;
+import net.abi.abisEngine.input.GLFWInput;
 import net.abi.abisEngine.rendering.image.AEImage;
 import net.abi.abisEngine.rendering.pipeline.RenderingEngine;
 import net.abi.abisEngine.rendering.scene.scenes.EngineSplashScreen;
 import net.abi.abisEngine.rendering.window.GLFWWindow;
 import net.abi.abisEngine.rendering.window.GLFWWindowManager;
+import net.abi.abisEngine.rendering.window.StaticCursor;
 import net.abi.abisEngine.util.exceptions.AECursorInitializationException;
 import net.abi.abisEngine.util.exceptions.AEImageManipulationException;
 import tests.renderTest.scenes.MainMenu;
@@ -32,8 +34,8 @@ public class EngineLoader extends GLFWWindow {
 		super();
 		super.properties.name = "EngineSplash";
 		super.properties.title = "AEngine";
-		super.properties.sc_height = 720;
-		super.properties.sc_width = 1270;
+		super.properties.sc_height = 1080;
+		super.properties.sc_width = 1920;
 		super.properties.fullscreen = false;
 		super.properties.vSync = GLFW_FALSE;
 		super.properties.renderEngine = new RenderingEngine();
@@ -75,7 +77,7 @@ public class EngineLoader extends GLFWWindow {
 			i = AEImage.resize(i, 32, 32);
 			super.setWindowIcon(i);
 			// super.setCursor(new StaticCursor("s", i, 0, 0));
-			super.setCursor(new StaticCursor("normal"));
+			super.setCursor(new StaticCursor("arrow", GLFWInput.GLFW_CROSSHAIR_CURSOR));
 		} catch (AEImageManipulationException | AECursorInitializationException e) {
 			e.printStackTrace();
 		}

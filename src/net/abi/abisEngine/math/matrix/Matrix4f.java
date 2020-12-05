@@ -13,17 +13,24 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  ******************************************************************************/
-package net.abi.abisEngine.math;
+package net.abi.abisEngine.math.matrix;
 
-public class Matrix4f implements Matrix {
+import net.abi.abisEngine.math.Math;
+import net.abi.abisEngine.math.vector.Vector3f;
+
+public class Matrix4f {
 	private float[][] m;
 
 	public Matrix4f() {
 		m = new float[4][4];
+		initIdentity();
 	}
 
 	public Matrix4f(float[][] _m) {
-		m = _m;
+		m = new float[4][4];
+		for (int i = 0; i < _m.length; i++)
+			for (int j = 0; j < _m[0].length; i++)
+				m[i][j] = _m[i][j];
 	}
 
 	public Matrix4f initIdentity() {
@@ -43,7 +50,6 @@ public class Matrix4f implements Matrix {
 		m[3][1] = 0;
 		m[3][2] = 0;
 		m[3][3] = 1;
-
 		return this;
 	}
 
@@ -58,11 +64,9 @@ public class Matrix4f implements Matrix {
 	 * @return
 	 */
 	public Matrix4f initPerspective(float fov, float width, float height, float zNear, float zFar) {
-
 		float aspectRatio = width / height;
 		float tanHalfFOV = (float) Math.tan(Math.toRadians(fov / 2));
 		float zRange = zNear - zFar;
-
 		m[0][0] = 1.0f / (tanHalfFOV * aspectRatio);
 		m[0][1] = 0;
 		m[0][2] = 0;
@@ -79,17 +83,14 @@ public class Matrix4f implements Matrix {
 		m[3][1] = 0;
 		m[3][2] = 1;
 		m[3][3] = 0;
-
 		return this;
 	}
 
 	public Matrix4f initProjection(float fov, float aspectRatio, float zNear, float zFar) {
-
 		// float aspectRatio = width / height;
 		// float tanHalfFOV = (float) Math.tan(Math.toRadians(fov / 2));
 		float tanHalfFOV = (float) Math.tan(fov / 2);
 		float zRange = zNear - zFar;
-
 		m[0][0] = 1.0f / (tanHalfFOV * aspectRatio);
 		m[0][1] = 0;
 		m[0][2] = 0;
@@ -106,7 +107,6 @@ public class Matrix4f implements Matrix {
 		m[3][1] = 0;
 		m[3][2] = 1;
 		m[3][3] = 0;
-
 		return this;
 	}
 
@@ -115,7 +115,6 @@ public class Matrix4f implements Matrix {
 	 * @return
 	 */
 	public Matrix4f initOrthographic(float left, float right, float bottom, float top, float near, float far) {
-
 		float width = right - left, height = top - bottom, depth = far - near;
 		m[0][0] = 2 / width;
 		m[0][1] = 0;
@@ -133,7 +132,6 @@ public class Matrix4f implements Matrix {
 		m[3][1] = 0;
 		m[3][2] = 0;
 		m[3][3] = 1;
-
 		return this;
 	}
 
@@ -154,7 +152,6 @@ public class Matrix4f implements Matrix {
 		m[3][1] = 0;
 		m[3][2] = 0;
 		m[3][3] = 1;
-
 		return this;
 	}
 
@@ -175,7 +172,6 @@ public class Matrix4f implements Matrix {
 		m[3][1] = 0;
 		m[3][2] = 0;
 		m[3][3] = 1;
-
 		return this;
 	}
 
@@ -183,11 +179,9 @@ public class Matrix4f implements Matrix {
 		Matrix4f rx = new Matrix4f();
 		Matrix4f ry = new Matrix4f();
 		Matrix4f rz = new Matrix4f();
-
 		x = (float) Math.toRadians(x);
 		y = (float) Math.toRadians(y);
 		z = (float) Math.toRadians(z);
-
 		rz.m[0][0] = (float) Math.cos(z);
 		rz.m[0][1] = -(float) Math.sin(z);
 		rz.m[0][2] = 0;
@@ -204,7 +198,6 @@ public class Matrix4f implements Matrix {
 		rz.m[3][1] = 0;
 		rz.m[3][2] = 0;
 		rz.m[3][3] = 1;
-
 		rx.m[0][0] = 1;
 		rx.m[0][1] = 0;
 		rx.m[0][2] = 0;
@@ -221,7 +214,6 @@ public class Matrix4f implements Matrix {
 		rx.m[3][1] = 0;
 		rx.m[3][2] = 0;
 		rx.m[3][3] = 1;
-
 		ry.m[0][0] = (float) Math.cos(y);
 		ry.m[0][1] = 0;
 		ry.m[0][2] = -(float) Math.sin(y);
@@ -238,23 +230,17 @@ public class Matrix4f implements Matrix {
 		ry.m[3][1] = 0;
 		ry.m[3][2] = 0;
 		ry.m[3][3] = 1;
-
 		m = rz.mul(ry.mul(rx)).get();
-
 		return this;
 	}
 
 	public Matrix4f initRotation(Vector3f forward, Vector3f up) {
-
 		Vector3f f = forward.normalize();
-
 		Vector3f r = up.normalize();
 		// This Makes r cross f so f is very angry and when he gets angry people say
 		// WTF!
 		r = r.cross(f);
-
 		Vector3f u = f.cross(r);
-
 		// m[0][0] = r.getX(); m[0][1] = r.getY(); m[0][2] = r.getZ(); m[0][3] = 0;
 		// m[1][0] = u.getX(); m[1][1] = u.getY(); m[1][2] = u.getZ(); m[1][3] = 0;
 		// m[2][0] = f.getX(); m[2][1] = f.getY(); m[2][2] = f.getZ(); m[2][3] = 0;
@@ -264,11 +250,9 @@ public class Matrix4f implements Matrix {
 	}
 
 	public Matrix4f initRotation(Vector3f forward, Vector3f up, Vector3f right) {
-
 		Vector3f f = forward;
 		Vector3f r = right;
 		Vector3f u = up;
-
 		m[0][0] = r.x();
 		m[0][1] = r.y();
 		m[0][2] = r.z();
@@ -285,33 +269,27 @@ public class Matrix4f implements Matrix {
 		m[3][1] = 0;
 		m[3][2] = 0;
 		m[3][3] = 1;
-
 		return this;
 	}
 
 	public Matrix4f mul(Matrix4f r) {
 		Matrix4f res = new Matrix4f();
-
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
 				res.set(i, j,
 						m[i][0] * r.get(0, j) + m[i][1] * r.get(1, j) + m[i][2] * r.get(2, j) + m[i][3] * r.get(3, j));
 			}
 		}
-
 		return res;
 	}
 
 	public float[][] get() {
-
 		float[][] res = new float[4][4];
-
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
 				res[i][j] = m[i][j];
 			}
 		}
-
 		return (res);
 	}
 
@@ -329,11 +307,9 @@ public class Matrix4f implements Matrix {
 	}
 
 	public Vector3f transform(Vector3f other) {
-
 		return new Vector3f(m[0][0] * other.x() + m[0][1] * other.y() + m[0][2] * other.z() + m[0][3],
 				m[1][0] * other.x() + m[1][1] * other.y() + m[1][2] * other.z() + m[1][3],
 				m[2][0] * other.x() + m[2][1] * other.y() + m[2][2] * other.z() + m[2][3]);
-
 	}
 
 	/**
@@ -361,9 +337,7 @@ public class Matrix4f implements Matrix {
 	}
 
 	public Matrix4f invertGeneric(Matrix4f dest) {
-
 		float[][] res = new float[4][4];
-
 		float a = m[0][0] * m[1][1] - m[0][1] * m[1][0];
 		float b = m[0][0] * m[1][2] - m[0][2] * m[1][0];
 		float c = m[0][0] * m[1][3] - m[0][3] * m[1][0];
@@ -401,9 +375,7 @@ public class Matrix4f implements Matrix {
 	public Matrix4f invertPerspective(Matrix4f dest) {
 		float a = 1.0f / (m[0][0] * m[0][0]);
 		float l = -1.0f / (m[0][0] * m[0][0]);
-
 		float[][] res = new float[4][4];
-
 		res[0][0] = m[0][0] * a;
 		res[0][1] = 0;
 		res[0][2] = 0;
@@ -420,19 +392,19 @@ public class Matrix4f implements Matrix {
 		res[3][1] = 0;
 		res[3][2] = -m[0][0] * l;
 		res[3][3] = m[0][0] * l;
-
 		dest.set(res);
 		return dest;
 	}
 
-	@Override
 	public int getCols() {
+		if (m == null)
+			return 0;
 		return (m[0].length);
 	}
 
-	@Override
 	public int getRows() {
+		if (m == null)
+			return 0;
 		return (m.length);
 	}
-
 }

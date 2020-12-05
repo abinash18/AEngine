@@ -15,8 +15,8 @@
  ******************************************************************************/
 package net.abi.abisEngine.components;
 
-import net.abi.abisEngine.math.Matrix4f;
-import net.abi.abisEngine.math.Vector3f;
+import net.abi.abisEngine.math.matrix.Matrix4f;
+import net.abi.abisEngine.math.vector.Vector3f;
 
 public class Camera extends SceneComponent {
 

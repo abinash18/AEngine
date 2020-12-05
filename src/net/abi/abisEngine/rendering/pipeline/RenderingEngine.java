@@ -16,17 +16,22 @@
 package net.abi.abisEngine.rendering.pipeline;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL45;
 import org.lwjgl.opengl.GLDebugMessageCallbackI;
+import org.lwjgl.openvr.VREventInputBindingLoad;
+import org.yaml.snakeyaml.reader.UnicodeReader;
 
 import net.abi.abisEngine.components.Camera;
 import net.abi.abisEngine.components.Light;
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
 import net.abi.abisEngine.math.Transform;
-import net.abi.abisEngine.math.Vector3f;
+import net.abi.abisEngine.math.vector.Vector3f;
+import net.abi.abisEngine.rendering.gl.memory.GLUniform;
+import net.abi.abisEngine.rendering.gl.memory.GLUniformBuffer;
 import net.abi.abisEngine.rendering.material.Material;
 import net.abi.abisEngine.rendering.scene.Scene;
 import net.abi.abisEngine.rendering.shader.legacy.Shader;
@@ -40,24 +45,24 @@ public class RenderingEngine extends MappedValues implements Expendable {
 
 	public static boolean depth_test = false;
 	public static Color c = Color.hex2Rgb("#b9bec1").normalize();
-	private HashMap<String, Integer> samplerMap;
-
+	private Map<String, Integer> samplerMap;
+	private Map<String, GLUniformBuffer> globalUniformBuffer;
+	GLUniformBuffer cameraBuffer;
 	private Shader forwardAmbientShader, depthShader, edge_dectect;
 
 	private Light activeLight;
-	private Camera mainCamera;
+	private Camera activeCamera;
 
 	public RenderingEngine() {
 		super();
-
 		samplerMap = new HashMap<String, Integer>();
-
 		samplerMap.put("diffuse", 0);
 		samplerMap.put("normal_map", 1);
-
+		globalUniformBuffer = new HashMap<>();
+		globalUniformBuffer.put("Camera", (cameraBuffer = new GLUniformBuffer("Camera", 4 * 3)));
+		cameraBuffer.addUniform("C_eyePos", new GLUniform("C_eyePos"));
+		cameraBuffer.bindBufferBase(2);
 		super.addVector3f("ambient", new Vector3f(0.1f, 0.1f, 0.1f));
-
-		// RenderingEngine.initGraphics();
 	}
 
 	public void updateUniformStruct(Transform transform, Material mat, Shader shader, String uniformName,
@@ -102,8 +107,8 @@ public class RenderingEngine extends MappedValues implements Expendable {
 	}
 
 	public void render(Scene scene) {
-		if (this.mainCamera != scene.getMainCamera()) {
-			this.mainCamera = scene.getMainCamera();
+		if (this.activeCamera != scene.getMainCamera()) {
+			this.activeCamera = scene.getMainCamera();
 		}
 		// Clear Screen Before Rendering
 		clearScreen();
@@ -144,7 +149,7 @@ public class RenderingEngine extends MappedValues implements Expendable {
 		logger.debug("Adding Camera" + camera);
 	}
 
-	public HashMap<String, Integer> getSamplerMap() {
+	public Map<String, Integer> getSamplerMap() {
 		return samplerMap;
 	}
 
@@ -164,21 +169,19 @@ public class RenderingEngine extends MappedValues implements Expendable {
 		this.activeLight = activeLight;
 	}
 
-	public Camera getMainCamera() {
-		return mainCamera;
+	public Camera getActiveCamera() {
+		return activeCamera;
 	}
 
-	public void setMainCamera(Camera mainCamera) {
-		this.mainCamera = mainCamera;
+	public void setActiveCamera(Camera camera) {
+		this.activeCamera = camera;
 	}
 
 	/**
 	 * 
 	 */
 	public static void toggleDepthTest() {
-
 		depth_test = depth_test == false ? true : false;
-
 	}
 
 	@Override

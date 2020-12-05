@@ -22,7 +22,7 @@ import static net.abi.abisEngine.input.GLFWInput.GLFW_KEY_W;
 
 import net.abi.abisEngine.input.GLFWInput;
 import net.abi.abisEngine.input.GLFWMouseAndKeyboardInput;
-import net.abi.abisEngine.math.Vector3f;
+import net.abi.abisEngine.math.vector.Vector3f;
 
 public class FreeMove extends SceneComponent {
 

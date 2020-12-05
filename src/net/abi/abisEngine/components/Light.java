@@ -15,21 +15,20 @@
  ******************************************************************************/
 package net.abi.abisEngine.components;
 
-import net.abi.abisEngine.math.Vector3f;
-import net.abi.abisEngine.rendering.shader.legacy.Shader;
+import net.abi.abisEngine.math.vector.Vector3f;
+import net.abi.abisEngine.rendering.shader.AEShader;
 
 public class Light extends SceneComponent {
-
 	private Vector3f color;
 	private float intensity;
-	private Shader shader;
+	private AEShader shader;
 
 	public Light(Vector3f color, float intensity) {
 		this.color = color;
 		this.intensity = intensity;
 	}
 
-	public Shader getShader() {
+	public AEShader getShader() {
 		return shader;
 	}
 
@@ -38,7 +37,7 @@ public class Light extends SceneComponent {
 		super.getParentScene().addLight(this);
 	}
 
-	public void setShader(Shader shader) {
+	public void setShader(AEShader shader) {
 		this.shader = shader;
 	}
 
@@ -57,5 +56,4 @@ public class Light extends SceneComponent {
 	public void setIntensity(float intensity) {
 		this.intensity = intensity;
 	}
-
 }

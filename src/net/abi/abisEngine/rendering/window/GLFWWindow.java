@@ -16,10 +16,8 @@
 package net.abi.abisEngine.rendering.window;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
-import static org.lwjgl.glfw.GLFW.GLFW_DONT_CARE;
 import static org.lwjgl.glfw.GLFW.glfwCreateWindow;
 import static org.lwjgl.glfw.GLFW.glfwDefaultWindowHints;
-import static org.lwjgl.glfw.GLFW.glfwDestroyCursor;
 import static org.lwjgl.glfw.GLFW.glfwDestroyWindow;
 import static org.lwjgl.glfw.GLFW.glfwFocusWindow;
 import static org.lwjgl.glfw.GLFW.glfwGetFramebufferSize;
@@ -63,7 +61,6 @@ import static org.lwjgl.system.MemoryStack.stackPush;
 import java.nio.IntBuffer;
 import java.util.UUID;
 
-import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
 import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.glfw.GLFWVidMode;
@@ -81,11 +78,9 @@ import org.lwjgl.system.MemoryStack;
 
 import net.abi.abisEngine.handlers.logging.LogManager;
 import net.abi.abisEngine.handlers.logging.Logger;
-import net.abi.abisEngine.input.GLFWInput;
 import net.abi.abisEngine.input.GLFWMouseAndKeyboardInput;
-import net.abi.abisEngine.math.Vector2f;
-import net.abi.abisEngine.math.Vector2i;
-import net.abi.abisEngine.rendering.asset.AssetI;
+import net.abi.abisEngine.math.vector.Vector2f;
+import net.abi.abisEngine.math.vector.Vector2i;
 import net.abi.abisEngine.rendering.asset.AssetManager;
 import net.abi.abisEngine.rendering.asset.AssetStore;
 import net.abi.abisEngine.rendering.image.AEImage;
@@ -122,239 +117,8 @@ public abstract class GLFWWindow implements Expendable {
 
 	private static Logger logger = LogManager.getLogger(GLFWWindow.class.getName());
 
-	private static GenericCache<String, StaticCursorResource> cursors = new GenericCache<String, StaticCursorResource>(
+	public static GenericCache<String, StaticCursorResource> cursors = new GenericCache<String, StaticCursorResource>(
 			String.class, StaticCursorResource.class);
-
-	public interface CursorI extends Expendable {
-		public long create() throws AECursorInitializationException;
-
-		public String getID();
-
-		public StaticCursorResource getCursorResource();
-
-		public long getHandle();
-	}
-
-	public class AnimatedCursor implements CursorI {
-		String id;
-		long cursor_handle;
-		AEImage animationStages[];
-		int yHotspot = 0, xHotspot = 0;
-
-		@Override
-		public void dispose() {
-
-		}
-
-		@Override
-		public long create() throws AECursorInitializationException {
-			return 0L;
-		}
-
-		@Override
-		public String getID() {
-			return null;
-		}
-
-		@Override
-		public long getHandle() {
-			return 0;
-		}
-
-		@Override
-		public StaticCursorResource getCursorResource() {
-			return null;
-		}
-	}
-
-	public class StaticCursorResource implements AssetI {
-		String id;
-		long cursor_handle;
-		AEImage image;
-		int standardCursorType = 0, yHotspot = 0, xHotspot = 0, refs = 1;
-
-		@Override
-		public void dispose() {
-			if (refs <= 0) {
-				image.decRef();
-				glfwDestroyCursor(cursor_handle);
-			}
-		}
-
-		@Override
-		public void incRef() {
-			refs += 1;
-		}
-
-		@Override
-		public int incAndGetRef() {
-			incRef();
-			return refs;
-		}
-
-		@Override
-		public void decRef() {
-			refs -= 1;
-		}
-
-		@Override
-		public int decAndGetRef() {
-			decRef();
-			return refs;
-		}
-
-		@Override
-		public int getRefs() {
-			return refs;
-		}
-	}
-
-	public class StaticCursor implements CursorI {
-
-		StaticCursorResource cr;
-
-		/**
-		 * Creates a standard GLFW_ARROW_CURSOR
-		 * 
-		 * @param id
-		 */
-		public StaticCursor(String id) {
-			this(id, GLFWInput.GLFW_ARROW_CURSOR);
-		}
-
-		public StaticCursor(String id, int standardCursor) {
-			if ((this.cr = cursors.get(id)) == null) {
-				this.cr = new StaticCursorResource();
-				this.cr.id = id;
-				this.cr.standardCursorType = GLFWInput.GLFW_ARROW_CURSOR;
-				cursors.put(id, cr);
-			} else {
-				/*
-				 * This is the only thing we need to do since the user decided to make a copy of
-				 * the cursor.
-				 */
-				this.cr.incRef();
-			}
-		}
-
-		public StaticCursor(String id, AEImage imageToUse, int xHot, int yHot) {
-			if ((this.cr = cursors.get(id)) == null) {
-				this.cr = new StaticCursorResource();
-				this.cr.id = id;
-				this.cr.image = imageToUse;
-				this.cr.xHotspot = xHot;
-				this.cr.yHotspot = yHot;
-			} else {
-				/*
-				 * This is the only thing we need to do since the user decided to make a copy of
-				 * the cursor.
-				 */
-				this.cr.incRef();
-			}
-
-		}
-
-		public long create() throws AECursorInitializationException {
-			if (this.cr.standardCursorType != 0) {
-				this.cr.cursor_handle = GLFW.glfwCreateStandardCursor(this.cr.standardCursorType);
-			} else {
-				GLFWImage i = GLFWImage.malloc();
-				i.set(this.cr.image.getImageMetaData().width, this.cr.image.getImageMetaData().height,
-						this.cr.image.getData().getPixelsInByteBuffer());
-				this.cr.cursor_handle = GLFW.glfwCreateCursor(i, this.cr.xHotspot, this.cr.yHotspot);
-				i.free();
-			}
-			if (this.cr.cursor_handle == NULL) {
-				throw new AECursorInitializationException("Failed to create cursor.", this);
-			}
-			return this.cr.cursor_handle;
-		}
-
-		public String getID() {
-			return cr.id;
-		}
-
-		@Override
-		public void dispose() {
-			this.cr.decRef();
-		}
-
-		@Override
-		public long getHandle() {
-			return cr.cursor_handle;
-		}
-
-		@Override
-		public StaticCursorResource getCursorResource() {
-			return cr;
-		}
-	}
-
-	public static class GLFWWindowProperties {
-		public long preferredMonitor = 0, sharedContext = 0;
-		/**
-		 * sc_ is the dimensions of the window in screen coordinates, This is different
-		 * than pixels since the positive of the y axis is inverted meaning it points
-		 * down instead of up so the 0, 0 of the window is in the top left of the
-		 * corner.
-		 */
-		public int sc_width, sc_height,
-				/**
-				 * The dimensions of the window in pixels this corresponds to the size of the
-				 * frame buffer and may not always be the size of the window, since some
-				 * displays can have a higher pixel density.
-				 */
-				p_width, p_height,
-				/**
-				 * Stores the size of each of the frame elements, if the window is not decorated
-				 * than the value is zero.
-				 */
-				f_top, f_left, f_right, f_bottom,
-				/* The refresh rate used by VSync */
-				preferredRefreshRate = GLFW_DONT_CARE,
-				/**
-				 * This option Synchronizes the frames so they render more steadily instead of
-				 * dropping and causing lag.
-				 */
-				vSync = 0, startHidden = GLFW_FALSE;
-
-		/** The name is what the engine recognizes and it is used to find the window. */
-		public String name,
-				/**
-				 * The title to show on the decorated frame and the general title where ever it
-				 * is showed.
-				 */
-				title;
-		public boolean fullscreen = false,
-				/** If the window is currently focused on or not. */
-				focused,
-				/** If the window has been minimized to tray (iconified) */
-				minimized,
-				/** If the window is maximized or not */
-				maximized;
-		/**
-		 * GLFW Supports whole window transparency, but only if the system supports it
-		 * as well.
-		 */
-		public float opacity = 1.0f;
-
-		/** Position of the window in screen coordinates (the top left of the window) */
-		public Vector2i position;
-
-		public GLCapabilities capabilities;
-		public GLFWFramebufferSizeCallback frmBffrClbk;
-		public GLFWWindowCloseCallback wndCloseClbk;
-		public GLFWWindowContentScaleCallback wndCntSclClbk;
-		public GLFWWindowFocusCallback wndFcsClbk;
-		public GLFWWindowIconifyCallback wndIconifyClbk;
-		public GLFWWindowMaximizeCallback wndMxmzClbk;
-		public GLFWWindowPosCallback wndPosClbk;
-		public GLFWWindowSizeCallback wndSizeClbk;
-		public GLFWWindowRefreshCallback wndRfrshClbk;
-
-		public RenderingEngine renderEngine;
-
-	}
 
 	/**
 	 * Properties and preferences
@@ -638,7 +402,7 @@ public abstract class GLFWWindow implements Expendable {
 		return this;
 	}
 
-	public void setCursorType() {
+	public void setCursorType(int cursor) {
 
 	}
 

@@ -13,10 +13,9 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  ******************************************************************************/
-package net.abi.abisEngine.math;
+package net.abi.abisEngine.math.vector;
 
 import org.joml.Math;
-import org.joml.Vector2fc;
 
 public class Vector2f {
 	protected float x;
@@ -89,9 +88,7 @@ public class Vector2f {
 	}
 
 	public float cross(Vector3f r) {
-
 		return (x * r.y() - y * r.x());
-
 	}
 
 	public Vector2f zero() {
